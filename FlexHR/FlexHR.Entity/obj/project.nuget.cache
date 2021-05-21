@@ -1,12 +1,15 @@
 {
   "version": 2,
-<<<<<<< HEAD
   "dgSpecHash": "vtFryCHP/Z1CVUkl4m1eCv2MJF+4UbpG8PWdIc2RXEty8Ef+XCbKzGPBJY2vrbRH6vw9njHBlA4YiP4Q2PeSAQ==",
-=======
-  "dgSpecHash": "9n1dseEXZehNslhzGO173YIlF2i4FHk0bLP0KqnLvvIae44lB7vrHy/grdzlTBuTb3wST1qHoJoT1+AfZNpw3g==",
->>>>>>> 2e8cc5ac57fae711767d0bdbc48a554d1d5111e8
   "success": true,
-  "projectFilePath": "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.Entity\\FlexHR.Entity.csproj",
+  "projectFilePath": "C:\\Yuchisoft\\FlexHR\\FlexHR.Entity\\FlexHR.Entity.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Yuchisoft\\FlexHR\\FlexHR.Entity\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
