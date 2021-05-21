@@ -34,3 +34,4 @@ C:\Yuchisoft\FlexHR\FlexHR.Web\obj\Debug\netcoreapp3.1\FlexHR.Web.dll
 C:\Yuchisoft\FlexHR\FlexHR.Web\obj\Debug\netcoreapp3.1\FlexHR.Web.pdb
 C:\Yuchisoft\FlexHR\FlexHR.Web\obj\Debug\netcoreapp3.1\FlexHR.Web.genruntimeconfig.cache
 C:\Yuchisoft\FlexHR\FlexHR.Web\obj\Debug\netcoreapp3.1\FlexHR.Web.csproj.CopyComplete
+C:\Yuchisoft\FlexHR\FlexHR.Web\obj\Debug\netcoreapp3.1\FlexHR.Web.csprojAssemblyReference.cache
