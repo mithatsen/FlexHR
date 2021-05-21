@@ -10,5 +10,6 @@ namespace FlexHR.DataAccess
         public int korcil { get; set; }
         public int sen { get; set; }
 
+        public int ssss { get; set; }
     }
 }
