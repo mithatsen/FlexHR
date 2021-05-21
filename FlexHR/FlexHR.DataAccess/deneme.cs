@@ -7,5 +7,7 @@ namespace FlexHR.DataAccess
    public class deneme
     {
         public int mami { get; set; }
+        public int korcil { get; set; }
+
     }
 }
