@@ -8,6 +8,7 @@ namespace FlexHR.DataAccess
     {
         public int mami { get; set; }
         public int korcil { get; set; }
+        public int sen { get; set; }
 
     }
 }
