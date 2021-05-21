@@ -1,0 +1,9 @@
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\bin\Debug\netcoreapp3.1\FlexHR.DataAccess.deps.json
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\bin\Debug\netcoreapp3.1\FlexHR.DataAccess.dll
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\bin\Debug\netcoreapp3.1\FlexHR.DataAccess.pdb
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\obj\Debug\netcoreapp3.1\FlexHR.DataAccess.csprojAssemblyReference.cache
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\obj\Debug\netcoreapp3.1\FlexHR.DataAccess.AssemblyInfoInputs.cache
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\obj\Debug\netcoreapp3.1\FlexHR.DataAccess.AssemblyInfo.cs
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\obj\Debug\netcoreapp3.1\FlexHR.DataAccess.csproj.CoreCompileInputs.cache
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\obj\Debug\netcoreapp3.1\FlexHR.DataAccess.dll
+D:\Yuchisoft\Projects\flex.hr\FlexHR\FlexHR.DataAccess\obj\Debug\netcoreapp3.1\FlexHR.DataAccess.pdb
