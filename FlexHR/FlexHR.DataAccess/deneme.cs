@@ -6,5 +6,6 @@ namespace FlexHR.DataAccess
 {
    public class deneme
     {
+        public int mami { get; set; }
     }
 }
