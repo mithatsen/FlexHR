@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FlexHR.DataAccess
 {
-    class deneme
+   public class deneme
     {
     }
 }
