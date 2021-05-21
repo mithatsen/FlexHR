@@ -1,8 +1,12 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "2QGc+Fwh5PMmpGSZsaB6NiiJ9kaNxSqXT5NUKGJNHg/K/hXyh2QG/+Z6BjL+nOqB1W9ApnMtxEAjA7i6bTXDVA==",
+=======
+  "dgSpecHash": "DylRyEHe3BVciphY0gC/WRnatFcX5bh6Ve/KoYu12y0E3XZcFU0v6noU4vZd50YaB2eXvyhw5vl8E8nF/SoN9g==",
+>>>>>>> 2e8cc5ac57fae711767d0bdbc48a554d1d5111e8
   "success": true,
-  "projectFilePath": "C:\\Yuchisoft\\FlexHR\\FlexHR.DataAccess\\FlexHR.DataAccess.csproj",
+  "projectFilePath": "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.DataAccess\\FlexHR.DataAccess.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

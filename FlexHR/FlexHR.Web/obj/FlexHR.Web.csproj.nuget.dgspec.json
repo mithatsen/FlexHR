@@ -1,14 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Yuchisoft\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj": {}
+    "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj": {}
   },
   "projects": {
-    "C:\\Yuchisoft\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj": {
+    "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Yuchisoft\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj",
+        "projectUniqueName": "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj",
         "projectName": "FlexHR.Web",
+<<<<<<< HEAD
         "projectPath": "C:\\Yuchisoft\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj",
         "packagesPath": "C:\\Users\\Murat\\.nuget\\packages\\",
         "outputPath": "C:\\Yuchisoft\\FlexHR\\FlexHR.Web\\obj\\",
@@ -16,6 +17,19 @@
         "configFilePaths": [
           "C:\\Users\\Murat\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+=======
+        "projectPath": "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.Web\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+>>>>>>> 2e8cc5ac57fae711767d0bdbc48a554d1d5111e8
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -26,7 +40,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -38,7 +51,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "imports": [
             "net461",
             "net462",
@@ -57,7 +69,11 @@
               "privateAssets": "all"
             }
           },
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
+>>>>>>> 2e8cc5ac57fae711767d0bdbc48a554d1d5111e8
         }
       }
     }

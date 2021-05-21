@@ -1,8 +1,12 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "ChVNaFMklYg22fT/+OKU71JN/iqbakoSLzE7mvzePGxxR1cL7sXPJUVN3Cyse9HSjfl1LMSh2iNWlpXqlfHBKA==",
+=======
+  "dgSpecHash": "IMD38MQTv9pT1/mDHtwDz8w9KhsxoUVEeZJHNLhECn3K75WCaShFwIf9c3jNdOnlfV07drhiynEbFRXJt37Y6w==",
+>>>>>>> 2e8cc5ac57fae711767d0bdbc48a554d1d5111e8
   "success": true,
-  "projectFilePath": "C:\\Yuchisoft\\FlexHR\\FlexHR.DTO\\FlexHR.DTO.csproj",
+  "projectFilePath": "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.DTO\\FlexHR.DTO.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

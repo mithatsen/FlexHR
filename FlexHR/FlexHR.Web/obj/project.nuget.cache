@@ -1,8 +1,12 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "rnR/tFDQKbZ30L7KxNzmat1WgDEFNPBWfjhO0mSwgVA6fMFZYlfcdPR5R75IKj8gWG/uW1rXWNwQ6Wvyh4PMFg==",
+=======
+  "dgSpecHash": "1zSJbLrvtN56hS7LrNV6Cv6Ke1LgSav5IO1TouvLEcta1P5wagZjiVpT15elnAD0kRuqzisZdzqBUQyCR+SgyA==",
+>>>>>>> 2e8cc5ac57fae711767d0bdbc48a554d1d5111e8
   "success": true,
-  "projectFilePath": "C:\\Yuchisoft\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj",
+  "projectFilePath": "D:\\Yuchisoft\\Projects\\flex.hr\\FlexHR\\FlexHR.Web\\FlexHR.Web.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
