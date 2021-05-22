@@ -11,6 +11,7 @@ namespace FlexHR.DataAccess
         public int sen { get; set; }
         public int gumushane { get; set; }
         public int damn { get; set; }
+        public int salihli { get; set; }
         public int manisa { get; set; }
         public int ssss { get; set; }
     }
