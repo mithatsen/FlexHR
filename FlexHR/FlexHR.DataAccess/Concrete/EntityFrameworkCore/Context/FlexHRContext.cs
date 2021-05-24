@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FlexHR.DataAccess.Context
+namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
 {
     public class FlexHRContext:DbContext
     {

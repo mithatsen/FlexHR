@@ -11,7 +11,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<CompanyBranch> CompanyBranch { get; set; }
-        public virtual DbSet<Country> Country { get; set; }
+        public virtual DbSet<CountryMap> Country { get; set; }
         public virtual DbSet<EmailHistory> EmailHistory { get; set; }
         public virtual DbSet<Event> Event { get; set; }
         public virtual DbSet<GeneralSubType> GeneralSubType { get; set; }
@@ -81,7 +81,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
                     .HasConstraintName("FK_CompanyBranch_Company");
             });
 
-            modelBuilder.Entity<Country>(entity =>
+            modelBuilder.Entity<CountryMap>(entity =>
             {
                 entity.Property(e => e.Abbreviation)
                     .IsRequired()
