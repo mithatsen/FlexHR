@@ -1,10 +1,13 @@
-﻿using System;
+﻿using FlexHR.Entity.Concrete;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
 {
-    public class StaffPersonelInfoMapping : IEntityTypeConfiguration<StaffPersonelInfo>
+    public class StaffPersonelInfoMap : IEntityTypeConfiguration<StaffPersonelInfo>
     {
         public void Configure(EntityTypeBuilder<StaffPersonelInfo> entity)
         {

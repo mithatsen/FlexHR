@@ -5,10 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-=======
-    <Folder Include="Concrete\EntityFrameworkCore\Repositories\" />
->>>>>>> cacc6701d9e9f30c1bc46ae797ef41c48089d9a4
+    <!--<Folder Include="Concrete\EntityFrameworkCore\Repositories\" /> --> 
+    <Folder Include="Concrete\EntityFrameworkCore\NewFolder\" /> 
     <Folder Include="Interface\" />
   </ItemGroup>
 

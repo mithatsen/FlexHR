@@ -1,10 +1,13 @@
-﻿using System;
+﻿using FlexHR.Entity.Concrete;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
 {
-    public class UserMapping : IEntityTypeConfiguration<User>
+    public class UserMap : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> entity)
         {

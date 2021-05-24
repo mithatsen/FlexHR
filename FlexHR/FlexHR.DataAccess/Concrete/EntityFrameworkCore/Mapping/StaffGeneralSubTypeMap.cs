@@ -1,10 +1,13 @@
-﻿using System;
+﻿using FlexHR.Entity.Concrete;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
 {
-    public class StaffGeneralSubTypeMapping : IEntityTypeConfiguration<StaffGeneralSubType>
+    public class StaffGeneralSubTypeMap : IEntityTypeConfiguration<StaffGeneralSubType>
     {
         public void Configure(EntityTypeBuilder<StaffGeneralSubType> entity)
         {
