@@ -1,10 +1,50 @@
-﻿using System;
+﻿using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context;
+using FlexHR.DataAccess.Interface;
+using FlexHR.Entity.Interface;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 {
-    public class EfGenericRepository
+    public class EfGenericRepository<T> : IGenericDal<T> where T : class, ITable, new()
     {
+        private readonly FlexHRContext _context;
+        public EfGenericRepository(FlexHRContext context)
+        {
+            _context = context;
+        }
+        public void Delete(int id)
+        {
+            var temp = _context.Set<T>().Find(id);
+            _context.Set<T>().Remove(temp);
+            _context.SaveChanges();
+        }
+
+        public List<T> GetAll()
+        {
+           
+            return _context.Set<T>().ToList();
+        }
+
+        public T GetWithId(int id)
+        {
+            return _context.Set<T>().Find(id);
+        }
+
+        public void Add(T param)
+        {
+
+            _context.Set<T>().Add(param);
+            _context.SaveChanges();
+
+        }
+
+        public void Update(T param)
+        {
+            _context.Set<T>().Update(param);
+            _context.SaveChanges();
+        }
     }
 }
