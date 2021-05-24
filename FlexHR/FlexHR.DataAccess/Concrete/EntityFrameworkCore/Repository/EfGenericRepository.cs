@@ -33,17 +33,17 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             return _context.Set<T>().Find(id);
         }
 
-        public void Add(T param)
+        public void Add(T table)
         {
 
-            _context.Set<T>().Add(param);
+            _context.Set<T>().Add(table);
             _context.SaveChanges();
 
         }
 
-        public void Update(T param)
+        public void Update(T table)
         {
-            _context.Set<T>().Update(param);
+            _context.Set<T>().Update(table);
             _context.SaveChanges();
         }
     }

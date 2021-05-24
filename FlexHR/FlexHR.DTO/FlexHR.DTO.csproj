@@ -8,4 +8,8 @@
     <Folder Include="Dtos\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FlexHR.DataAccess\FlexHR.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
