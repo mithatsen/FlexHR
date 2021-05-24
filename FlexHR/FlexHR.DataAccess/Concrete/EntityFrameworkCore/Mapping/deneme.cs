@@ -8,7 +8,43 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
     {
 
 
+<<<<<<< HEAD
 
+=======
+        public virtual DbSet<City> City { get; set; }
+        public virtual DbSet<Company> Company { get; set; }
+        public virtual DbSet<CompanyBranch> CompanyBranch { get; set; }
+        public virtual DbSet<CountryMap> Country { get; set; }
+        public virtual DbSet<EmailHistory> EmailHistory { get; set; }
+        public virtual DbSet<Event> Event { get; set; }
+        public virtual DbSet<GeneralSubType> GeneralSubType { get; set; }
+        public virtual DbSet<GeneralType> GeneralType { get; set; }
+        public virtual DbSet<PublicHoliday> PublicHoliday { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<Staff> Staff { get; set; }
+        public virtual DbSet<StaffCareer> StaffCareer { get; set; }
+        public virtual DbSet<StaffDebit> StaffDebit { get; set; }
+        public virtual DbSet<StaffFile> StaffFile { get; set; }
+        public virtual DbSet<StaffGeneralSubType> StaffGeneralSubType { get; set; }
+        public virtual DbSet<StaffLeave> StaffLeave { get; set; }
+        public virtual DbSet<StaffOtherInfo> StaffOtherInfo { get; set; }
+        public virtual DbSet<StaffPayment> StaffPayment { get; set; }
+        public virtual DbSet<StaffPersonelInfo> StaffPersonelInfo { get; set; }
+        public virtual DbSet<StaffSalary> StaffSalary { get; set; }
+        public virtual DbSet<StaffShift> StaffShift { get; set; }
+        public virtual DbSet<Town> Town { get; set; }
+        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserRole> UserRole { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-2NBD61T\\SQLEXPRESS;Database=FlexHR;Integrated Security=True;");
+            }
+        }
+>>>>>>> cacc6701d9e9f30c1bc46ae797ef41c48089d9a4
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,7 +85,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
                     .HasConstraintName("FK_CompanyBranch_Company");
             });
 
-            modelBuilder.Entity<Country>(entity =>
+            modelBuilder.Entity<CountryMap>(entity =>
             {
                 entity.Property(e => e.Abbreviation)
                     .IsRequired()
