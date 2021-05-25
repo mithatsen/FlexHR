@@ -1,3 +1,5 @@
 FlexHR/FlexHR.DataAccess/Migrations/20210525194333_Initial_Create.cs
 FlexHR/FlexHR.DataAccess/Migrations/20210525194333_Initial_Create.Designer.cs
 FlexHR/FlexHR.DataAccess/Migrations/FlexHRContextModelSnapshot.cs
+FlexHR/FlexHR.DataAccess/Migrations/20210525222757_initializeCreate.cs
+FlexHR/FlexHR.DataAccess/Migrations/20210525222757_initializeCreate.Designer.cs
