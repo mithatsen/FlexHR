@@ -7,9 +7,9 @@ using System.Text;
 
 namespace FlexHR.Business.Concrete
 {
-    public class RoleManager : GenericManager<Role>, IRoleService
+    public class StaffLeaveManager : GenericManager<StaffLeave>, IStaffLeaveService
     {
-        public RoleManager(IRoleDal roleDal) : base(roleDal)
+        public StaffLeaveManager(IStaffLeaveDal staffLeaveDal) : base(staffLeaveDal)
         {
 
         }

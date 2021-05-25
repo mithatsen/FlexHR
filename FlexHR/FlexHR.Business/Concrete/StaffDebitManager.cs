@@ -1,4 +1,5 @@
-﻿using FlexHR.DataAccess.Interface;
+﻿using FlexHR.Business.Interface;
+using FlexHR.DataAccess.Interface;
 using FlexHR.Entity.Concrete;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace FlexHR.Business.Concrete
 {
     public class StaffDebitManager : GenericManager<StaffDebit>, IStaffDebitService
     {
-        public StaffDebitManager(IStaffDebitDal emailHistoryDal) : base(emailHistoryDal)
+        public StaffDebitManager(IStaffDebitDal staffDebitDal) : base(staffDebitDal)
         {
 
         }

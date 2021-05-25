@@ -1,4 +1,5 @@
-﻿using FlexHR.DataAccess.Interface;
+﻿using FlexHR.Business.Interface;
+using FlexHR.DataAccess.Interface;
 using FlexHR.Entity.Concrete;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace FlexHR.Business.Concrete
 {
     public class StaffManager : GenericManager<Staff>, IStaffService
     {
-        public StaffManager(IStaffDal emailHistoryDal) : base(emailHistoryDal)
+        public StaffManager(IStaffDal staffDal) : base(staffDal)
         {
 
         }
