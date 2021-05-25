@@ -4,9 +4,9 @@ using FlexHR.Entity.Concrete;
 
 namespace FlexHR.Business.Concrete
 {
-    public class UserManager : GenericManager<User>, IUserService
+    public class StaffSalaryManager : GenericManager<StaffSalary>, IStaffSalaryService
     {
-        public UserManager(IUserDal userDal) : base(userDal)
+        public StaffSalaryManager(IStaffSalaryDal taffSalaryDal) : base(taffSalaryDal)
         {
 
         }
