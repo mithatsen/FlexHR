@@ -1,3 +1,4 @@
+using FlexHR.Business.DIContainer;
 using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,7 @@ namespace FlexHR.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<FlexHRContext>();
+            services.AddContainerWithDependencies();
             services.AddRazorPages();
         }
 
