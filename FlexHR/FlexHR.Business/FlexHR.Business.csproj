@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\" />
-    <Folder Include="Concrete\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FlexHR.DataAccess\FlexHR.DataAccess.csproj" />
     <ProjectReference Include="..\FlexHR.DTO\FlexHR.DTO.csproj" />
   </ItemGroup>

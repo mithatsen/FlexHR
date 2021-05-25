@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FlexHR.DataAccess.Interface
+namespace FlexHR.Business.Interface
 {
-    public interface IStaffDebitDal : IGenericDal<StaffDebit>
+    public interface ICityService:IGenericService<City>
     {
     }
 }
