@@ -1,4 +1,5 @@
-﻿using FlexHR.Entity.Concrete;
+﻿using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping;
+using FlexHR.Entity.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -48,5 +49,34 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<Town> Town { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CompanyBranchMap());
+            modelBuilder.ApplyConfiguration(new CompanyMap());
+            modelBuilder.ApplyConfiguration(new CountryMap());
+            modelBuilder.ApplyConfiguration(new EmailHistoryMap());
+            modelBuilder.ApplyConfiguration(new EventMap());
+            modelBuilder.ApplyConfiguration(new GeneralSubTypeMap());
+            modelBuilder.ApplyConfiguration(new GeneralTypeMap());
+            modelBuilder.ApplyConfiguration(new PublicHolidayMap());
+            modelBuilder.ApplyConfiguration(new RoleMap());
+            modelBuilder.ApplyConfiguration(new StaffCareerMap());
+            modelBuilder.ApplyConfiguration(new StaffDebitMap());
+            modelBuilder.ApplyConfiguration(new CityMap());
+            modelBuilder.ApplyConfiguration(new TownMap());
+            modelBuilder.ApplyConfiguration(new StaffFileMap());
+            modelBuilder.ApplyConfiguration(new StaffGeneralSubTypeMap());
+            modelBuilder.ApplyConfiguration(new StaffLeaveMap());
+            modelBuilder.ApplyConfiguration(new StaffMap());
+            modelBuilder.ApplyConfiguration(new StaffOtherInfoMap());
+            modelBuilder.ApplyConfiguration(new StaffPaymentMap());
+            modelBuilder.ApplyConfiguration(new StaffPersonelInfoMap());
+            modelBuilder.ApplyConfiguration(new StaffSalaryMap());
+            modelBuilder.ApplyConfiguration(new StaffShiftMap());
+            modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new UserRoleMap());
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
