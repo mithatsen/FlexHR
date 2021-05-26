@@ -27,6 +27,7 @@ namespace FlexHR.Web
         {
             services.AddDbContext<FlexHRContext>();
             services.AddContainerWithDependencies();
+            services.AddAutoMapper(typeof(Startup));
             services.AddRazorPages();
         }
 
@@ -53,7 +54,9 @@ namespace FlexHR.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Staff}/{action=Index}/{id?}");
             });
         }
     }

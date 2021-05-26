@@ -1,1 +1,58 @@
-﻿<h1>absab</h1>
+﻿@model List<ListStaffDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+<div class="container">
+
+    <!--begin::Row-->
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <!--begin::Col-->
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b card-stretch">
+                    <!--begin::Body-->
+                    <div class="card-body text-center pt-4">
+
+                        <!--begin::User-->
+                        <div class="mt-7">
+                            <div class="symbol symbol-circle symbol-lg-75">
+                                <img src="assets/media/users/300_14.jpg" alt="image" />
+                            </div>
+                            <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
+                                <span class="font-size-h3 font-weight-boldest">JB</span>
+                            </div>
+                        </div>
+                        <!--end::User-->
+                        <!--begin::Name-->
+                        <div class="my-2">
+                            <a href="#" class="text-dark font-weight-bold text-hover-primary font-size-h4">@item.NameSurname</a>
+                        </div>
+                        <!--end::Name-->
+                        <!--begin::Label-->
+                        <span class="label label-inline label-lg label-light-warning btn-sm font-weight-bold">@item.EmailPersonal</span>
+                        <span class="label label-inline label-lg label-light-warning btn-sm font-weight-bold">@item.EmailJob</span>
+                        <!--end::Label-->
+                        <!--begin::Buttons-->
+                        <div class="mt-9 mb-6">
+                            <span class="label label-inline label-lg label-light-warning btn-sm font-weight-bold">@item.PhoneJob</span>
+                        </div>
+                        <!--end::Buttons-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+            </div>
+            <!--end::Col-->
+        }
+        </div>
+    <!--end::Row-->
+</div>
+
