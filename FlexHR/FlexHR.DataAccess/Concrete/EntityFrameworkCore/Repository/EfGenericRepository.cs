@@ -28,7 +28,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             return _context.Set<T>().ToList();
         }
 
-        public T GetWithId(int id)
+        public T GetById(int id)
         {
             return _context.Set<T>().Find(id);
         }

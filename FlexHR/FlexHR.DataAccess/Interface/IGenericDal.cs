@@ -10,7 +10,7 @@ namespace FlexHR.DataAccess.Interface
         void Add(T table);
         void Delete(int id);
         void Update(T table);
-        T GetWithId(int id);
+        T GetById(int id);
         List<T> GetAll();
 
 

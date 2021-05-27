@@ -25,5 +25,23 @@ namespace FlexHR.Web.Controllers
             var result = _staffService.GetAll();
             return View(_mapper.Map<List<ListStaffDto>>(result));
         }
+        public IActionResult UpdateStaff(int id)
+        {
+            var result = _staffService.GetAllTables(id);
+            var model = new UpdateStaffDto
+            {
+                EmailJob = result.EmailJob,
+                EmailPersonal = result.EmailPersonal,
+                JobFinishDate = result.JobFinishDate,
+                JobJoinDate = result.JobJoinDate,
+                NameSurname = result.NameSurname,
+                PhoneJob = result.PhoneJob,
+                PhonePersonal = result.PhonePersonal,
+                StaffId = result.StaffId,
+                IsActive = result.IsActive,
+                DepartmantName = result.StaffGeneralSubType.FirstOrDefault().GeneralSubType.Description
+            };
+            return View(model);
+        }
     }
 }

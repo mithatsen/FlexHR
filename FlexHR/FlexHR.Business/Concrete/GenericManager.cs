@@ -31,9 +31,9 @@ namespace FlexHR.Business.Concrete
             return _genericDal.GetAll();
         }
 
-        public T GetWithId(int id)
+        public T GetById(int id)
         {
-            return _genericDal.GetWithId(id);
+            return _genericDal.GetById(id);
         }
 
         public void Update(T table)

@@ -29,6 +29,7 @@ namespace FlexHR.Web
             services.AddContainerWithDependencies();
             services.AddAutoMapper(typeof(Startup));
             services.AddRazorPages();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

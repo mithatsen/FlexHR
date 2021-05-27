@@ -8,12 +8,14 @@ var KTBootstrapDatetimepicker = function () {
 
         // Demo 2
         $('#kt_datetimepicker_2').datetimepicker({
-            locale: 'de'
+            locale: 'tr',
+            format:'DD.MM.YYYY'
         });
 
         // Demo 3
         $('#kt_datetimepicker_3').datetimepicker({
-            format: 'L'
+            locale: 'tr',
+            format: 'DD.MM.YYYY'
         });
 
         // Demo 4
