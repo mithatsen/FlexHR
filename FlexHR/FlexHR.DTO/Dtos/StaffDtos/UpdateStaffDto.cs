@@ -17,6 +17,7 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public DateTime? JobFinishDate { get; set; }
         public bool IsActive { get; set; }
         public string DepartmantName { get; set; }
+        public string Superscription { get; set; }
         public virtual ICollection<StaffGeneralSubType> StaffGeneralSubType { get; set; }
     }
 }

@@ -3,260 +3,359 @@
     ViewData["Title"] = "UpdateStaff";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<!--begin::Profile Personal Information-->
-<div class="d-flex flex-row">
-    <!--begin::Aside-->
-    <div class="flex-row-auto offcanvas-mobile w-300px w-xxl-400px" id="kt_profile_aside">
-        <!--begin::Profile Card-->
-        <div class="card card-custom card-stretch">
-            <!--begin::Body-->
-            <div class="card-body pt-4">
-                <!--begin::Toolbar-->
-                <div class="d-flex justify-content-end">
-                    <div class="dropdown dropdown-inline">
-                        <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="ki ki-bold-more-hor"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                            <!--begin::Navigation-->
-                            <ul class="navi navi-hover">
-                                <li class="navi-item bg-danger">
-                                    <a href="#" class="navi-link">
-                                        <span class="navi-icon">
-                                            <i class="flaticon2-drop"></i>
-                                        </span>
-                                        <span class="navi-text">İşten Çıkart</span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--end::Navigation-->
-                        </div>
-                    </div>
-                </div>
-                <!--end::Toolbar-->
-                <!--begin::User-->
-                <div class="d-flex align-items-center">
-                    <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
-                        <div class="symbol symbol-label symbol-lg-100">
-                            <img src="~/assets/media/users/300_5.jpg" alt="image" />
-                        </div>
-                        <i class="symbol-badge bg-success"></i>
-                    </div>
-                    <div>
-                        <a href="#" class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">@Model.NameSurname</a>
-                        <div class="text-muted">@Model.DepartmantName</div>
-
-                    </div>
-                </div>
-                <!--end::User-->
-                <!--begin::Contact-->
-                <div class="py-9">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="font-weight-bold mr-2">İşe başlama tarihi:</span>
-                        <span class="text-muted ">@Model.JobJoinDate</span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="font-weight-bold mr-2">Şube:</span>
-                        <span class="text-muted ">Gebze</span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="font-weight-bold mr-2">Departman:</span>
-                        <span class="text-muted ">Software Engineer</span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="font-weight-bold mr-2">Unvan:</span>
-                        <span class="text-muted ">Personel</span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="font-weight-bold mr-2">Şirket:</span>
-                        <span class="text-muted ">Yuchisoft</span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="font-weight-bold mr-2">İş telefonu :</span>
-                        <span class="text-muted">44(76)34254578</span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="font-weight-bold mr-2">Email:</span>
-                        <a href="#" class="text-muted text-hover-primary">matt@fifestudios.com</a>
-                    </div>
-                </div>
-
-            </div>
-            <!--end::Body-->
-        </div>
-        <!--end::Profile Card-->
-    </div>
-    <!--end::Aside-->
-    <!--begin::Content-->
-    <div class="flex-row-fluid ml-lg-8">
-        <!--begin::Card-->
-        <div class="card card-custom card-stretch">
-            <!--begin::Header-->
-            <div class="card-header py-3">
-                <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">Personal Information</h3>
-                    <span class="text-muted font-weight-bold font-size-sm mt-1">Update your personal informaiton</span>
-                </div>
-                <div class="card-toolbar">
-                    <button type="reset" class="btn btn-success mr-2">Save Changes</button>
-                    <button type="reset" class="btn btn-secondary">Cancel</button>
-                </div>
-            </div>
-            <!--end::Header-->
-            <!--begin::Form-->
-            <form class="form">
-                <!--begin::Body-->
-                <div class="card-body">
-
-                    <div class="row">
-
-                        <div class="col-md-6">
-                            <div class="form-group row ">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <input asp-for="NameSurname" class="form-control form-control-lg form-control-solid" type="text" />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (İş)</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <div class="input-group input-group-lg input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="la la-at"></i>
-                                            </span>
-                                        </div>
-                                        <input asp-for="EmailJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Email" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Telefon (İş)</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <div class="input-group input-group-lg input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="la la-phone"></i>
-                                            </span>
-                                        </div>
-                                        <input asp-for="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Phone" />
-                                    </div>
-                                    <span class="form-text text-muted">We'll never share your email with anyone else.</span>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <select class="form-control form-control-solid ">
-                                        <option selected>Seçiniz</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Çalışma Takvimi</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <select class="form-control form-control-solid ">
-                                        <option selected>Seçiniz</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-form-label text-right col-lg-3 col-sm-12">İşe Başlama Tarihi</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                        <input asp-for="JobJoinDate" type="text" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_2" />
-                                        <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
-                                            <span class="input-group-text">
-                                                <i class="ki ki-calendar"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (Kişisel)</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <div class="input-group input-group-lg input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="la la-at"></i>
-                                            </span>
-                                        </div>
-                                        <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Telefon (Kişisel)</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <div class="input-group input-group-lg input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="la la-phone"></i>
-                                            </span>
-                                        </div>
-                                        <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" />
-                                    </div>
-                                    <span class="form-text text-muted">We'll never share your email with anyone else.</span>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-form-label text-right col-lg-3 col-sm-12">Sözleşme Bitiş Tarihi</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                        <input asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_3" />
-                                        <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
-                                            <span class="input-group-text">
-                                                <i class="ki ki-calendar"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <select class="form-control form-control-solid ">
-                                        <option selected>Seçiniz</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end::Body-->
-            </form>
-            <!--end::Form-->
+<!--begin::Card-->
+<div class="card card-custom">
+    <!--Begin::Header-->
+    <div class="card-header card-header-tabs-line">
+        <div class="card-toolbar">
+            <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
+                <li class="nav-item mr-3">
+                    <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-address-book"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Genel </span>
+                    </a>
+                </li>
+                <li class="nav-item mr-3">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-briefcase"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Kariyer</span>
+                    </a>
+                </li>
+                <li class="nav-item mr-3">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-user-edit"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Kişisel Bilgiler</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_1">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-house-user"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Diğer Bilgiler</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_1">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-plane-departure"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">İzinler</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_1">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-wallet"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Ödemeler</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_1">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-user-clock"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Mesai</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_1">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-folder"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Dosyalar</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
-    <!--end::Content-->
+    <!--end::Header-->
+    <!--Begin::Body-->
+    <div class="card-body">
+        <!--begin::Profile Personal Information-->
+        <div class="d-flex flex-row">
+            <!--begin::Aside-->
+            <div class="flex-row-auto offcanvas-mobile w-300px w-xxl-400px" id="kt_profile_aside">
+                <!--begin::Profile Card-->
+                <div class="card card-custom card-stretch">
+                    <!--begin::Body-->
+                    <div class="card-body pt-4">
+                        <!--begin::Toolbar-->
+                        <div class="d-flex justify-content-end">
+                            <div class="dropdown dropdown-inline">
+                                <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="ki ki-bold-more-hor"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                    <!--begin::Navigation-->
+                                    <ul class="navi navi-hover">
+                                        <li class="navi-item bg-danger">
+                                            <a href="#" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="flaticon2-drop"></i>
+                                                </span>
+                                                <span class="navi-text">İşten Çıkart</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!--end::Navigation-->
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Toolbar-->
+                        <!--begin::User-->
+                        <div class="d-flex align-items-center">
+                            <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
+                                <div class="symbol symbol-label symbol-lg-100">
+                                    <img src="~/assets/media/users/300_5.jpg" alt="image" />
+                                </div>
+                                <i class="symbol-badge bg-success"></i>
+                            </div>
+                            <div>
+                                <a href="#" class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">@Model.NameSurname</a>
+                                <div class="text-muted">@Model.DepartmantName</div>
+
+                            </div>
+                        </div>
+                        <!--end::User-->
+                        <!--begin::Contact-->
+                        <div class="py-9">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="font-weight-bold mr-2">İşe başlama tarihi:</span>
+                                <span class="text-muted ">@Model.JobJoinDate.ToShortDateString()</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="font-weight-bold mr-2">Şube:</span>
+                                <span class="text-muted ">Gebze</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="font-weight-bold mr-2">Departman:</span>
+                                <span class="text-muted ">@Model.DepartmantName</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="font-weight-bold mr-2">Unvan:</span>
+                                <span class="text-muted ">@Model.Superscription</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="font-weight-bold mr-2">Şirket:</span>
+                                <span class="text-muted ">Yuchisoft</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="font-weight-bold mr-2">Telefon (İş):</span>
+                                <span class="text-muted">@Model.PhoneJob</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="font-weight-bold mr-2">E-Posta (İş):</span>
+                                <a href="#" class="text-muted text-hover-primary">@Model.EmailJob</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Profile Card-->
+            </div>
+            <!--end::Aside-->
+            <!--begin::Content-->
+            <div class="flex-row-fluid ml-lg-8">
+                <!--begin::Card-->
+                <div class="card card-custom card-stretch">
+                    <!--begin::Header-->
+                    <div class="card-header py-3">
+                        <div class="card-title align-items-start flex-column">
+                            <h3 class="card-label font-weight-bolder text-dark">Kişisel Bilgiler</h3>
+                            <span class="text-muted font-weight-bold font-size-sm mt-1">Kişisel bilgilerinizi düzenleyin</span>
+                        </div>
+                        <div class="card-toolbar">
+                            <button type="reset" class="btn btn-primary mr-2">Kaydet</button>
+                            <button type="reset" class="btn btn-secondary">Geri</button>
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Form-->
+                    <form class="form">
+                        <div class="container">
+                            <!--begin::Body-->
+                            <div class="card-body">
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group row ">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input asp-for="NameSurname" class="form-control form-control-lg form-control-solid" type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (İş)</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group input-group-lg input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="la la-at"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input asp-for="EmailJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Email" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Telefon (İş)</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group input-group-lg input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="la la-phone"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input asp-for="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Phone" />
+                                                </div>
+                                                <span class="form-text text-muted">We'll never share your email with anyone else.</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <select class="form-control form-control-solid ">
+                                                    <option selected>Seçiniz</option>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Çalışma Takvimi</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <select class="form-control form-control-solid ">
+                                                    <option selected>Seçiniz</option>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">İşe Başlama Tarihi</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
+                                                    <input asp-for="JobJoinDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Select date & time" data-target="#kt_datetimepicker_2" />
+                                                    <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
+                                                        <span class="input-group-text">
+                                                            <i class="ki ki-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (Kişisel)</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group input-group-lg input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="la la-at"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Telefon (Kişisel)</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group input-group-lg input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="la la-phone"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                                </div>
+                                                <span class="form-text text-muted">We'll never share your email with anyone else.</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                    <input asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_3" />
+                                                    <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                        <span class="input-group-text">
+                                                            <i class="ki ki-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <select class="form-control form-control-solid ">
+                                                    <option selected>Seçiniz</option>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                       
+                    </form>
+                    <!--end::Form-->
+                </div>
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Profile Personal Information-->
+    </div>
+    <!--end::Body-->
 </div>
-<!--end::Profile Personal Information-->
+<!--end::Card-->
+
 @section Scripts{
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>

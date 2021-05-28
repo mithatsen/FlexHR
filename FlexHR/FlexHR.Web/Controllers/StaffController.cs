@@ -32,15 +32,17 @@ namespace FlexHR.Web.Controllers
             var result = _staffService.GetAllTables(id);
             var temp = _staffGeneralSubTypeService.GetByStaffId(id);
             var  departmentName ="";
+            var superscription = "";
             foreach (var item in temp)
             {
                 if (item.GeneralSubType.GeneralTypeId == 3)
                 {
                     departmentName = item.GeneralSubType.Description;
+                }else if (item.GeneralSubType.GeneralTypeId == 5)
+                {
+                    superscription = item.GeneralSubType.Description;
                 }
-
             }
-
 
             var model = new UpdateStaffDto
             {
@@ -53,8 +55,8 @@ namespace FlexHR.Web.Controllers
                 PhonePersonal = result.PhonePersonal,
                 StaffId = result.StaffId,
                 IsActive = result.IsActive,
-                DepartmantName=departmentName
-         
+                DepartmantName=departmentName,
+                Superscription=superscription
             };
             return View(model);
         }
