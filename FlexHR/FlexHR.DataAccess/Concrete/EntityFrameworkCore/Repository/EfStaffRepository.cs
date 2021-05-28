@@ -19,7 +19,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
         public Staff GetAllTables(int id)
         {
-            return _context.Staff.Include(x => x.StaffGeneralSubType).ThenInclude(x => x.GeneralSubType).ThenInclude(x => x.GeneralType).FirstOrDefault();
+            return _context.Staff.Include(x => x.StaffGeneralSubType).ThenInclude(x => x.GeneralSubType).ThenInclude(x => x.GeneralType).Where(p=>p.StaffId==id).FirstOrDefault();
         }
     }
 }

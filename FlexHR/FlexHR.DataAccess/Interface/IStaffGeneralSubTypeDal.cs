@@ -7,5 +7,6 @@ namespace FlexHR.DataAccess.Interface
 {
     public interface IStaffGeneralSubTypeDal : IGenericDal<StaffGeneralSubType>
     {
+        List<StaffGeneralSubType> GetByStaffId(int id);
     }
 }

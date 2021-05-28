@@ -13,11 +13,13 @@ namespace FlexHR.Web.Controllers
     public class StaffController : Controller
     {
         private readonly IStaffService _staffService;
+        private readonly IStaffGeneralSubTypeService _staffGeneralSubTypeService;
         private readonly IMapper _mapper;
-        public StaffController(IStaffService staffService, IMapper mapper)
+        public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService)
         {
             _staffService = staffService;
             _mapper = mapper;
+            _staffGeneralSubTypeService = staffGeneralSubTypeService;
         }
 
         public IActionResult Index()
@@ -28,6 +30,18 @@ namespace FlexHR.Web.Controllers
         public IActionResult UpdateStaff(int id)
         {
             var result = _staffService.GetAllTables(id);
+            var temp = _staffGeneralSubTypeService.GetByStaffId(id);
+            var  departmentName ="";
+            foreach (var item in temp)
+            {
+                if (item.GeneralSubType.GeneralTypeId == 3)
+                {
+                    departmentName = item.GeneralSubType.Description;
+                }
+
+            }
+
+
             var model = new UpdateStaffDto
             {
                 EmailJob = result.EmailJob,
@@ -39,7 +53,8 @@ namespace FlexHR.Web.Controllers
                 PhonePersonal = result.PhonePersonal,
                 StaffId = result.StaffId,
                 IsActive = result.IsActive,
-                DepartmantName = result.StaffGeneralSubType.FirstOrDefault().GeneralSubType.Description
+                DepartmantName=departmentName
+         
             };
             return View(model);
         }

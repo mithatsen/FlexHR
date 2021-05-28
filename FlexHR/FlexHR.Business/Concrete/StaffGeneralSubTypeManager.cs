@@ -9,9 +9,15 @@ namespace FlexHR.Business.Concrete
 {
     public class StaffGeneralSubTypeManager : GenericManager<StaffGeneralSubType>, IStaffGeneralSubTypeService
     {
+        private readonly IStaffGeneralSubTypeDal _generalSubTypeDal;
         public StaffGeneralSubTypeManager(IStaffGeneralSubTypeDal generalSubTypeDal) : base(generalSubTypeDal)
         {
+            _generalSubTypeDal = generalSubTypeDal;
+        }
 
+        public List<StaffGeneralSubType> GetByStaffId(int id)
+        {
+            return _generalSubTypeDal.GetByStaffId(id);
         }
     }
 }

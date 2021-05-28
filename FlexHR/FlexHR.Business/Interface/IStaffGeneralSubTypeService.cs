@@ -7,5 +7,6 @@ namespace FlexHR.Business.Interface
 {
     public interface IStaffGeneralSubTypeService : IGenericService<StaffGeneralSubType>
     {
+        List<StaffGeneralSubType> GetByStaffId(int id);
     }
 }
