@@ -9,9 +9,16 @@ namespace FlexHR.Business.Concrete
 {
     public class GeneralSubTypeManager : GenericManager<GeneralSubType>, IGeneralSubTypeService
     {
-        public GeneralSubTypeManager(IGeneralSubTypeDal emailHistoryDal) : base(emailHistoryDal)
+        private readonly IGeneralSubTypeDal _generalSubTypeDal;
+        public GeneralSubTypeManager(IGeneralSubTypeDal generalSubTypeDal) : base(generalSubTypeDal)
         {
+            _generalSubTypeDal = generalSubTypeDal;
 
+        }
+
+        public List<GeneralSubType> GetGeneralSubTypeByGeneralTypeId(int generalTypeId)
+        {
+            return _generalSubTypeDal.GetGeneralSubTypeByGeneralTypeId(generalTypeId);
         }
     }
 }

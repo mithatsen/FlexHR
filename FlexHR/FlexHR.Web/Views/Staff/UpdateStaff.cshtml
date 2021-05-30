@@ -86,7 +86,7 @@
                                 <i class="fas fa-folder"></i>
                             </span>
                         </span>
-                        <span class="nav-text font-weight-bold">Dosyalar</span>
+                        <span class="nav-text font-weight-bold">Belgeler</span>
                     </a>
                 </li>
             </ul>
@@ -235,43 +235,51 @@
                                                     </div>
                                                     <input asp-for="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Phone" />
                                                 </div>
-                                                <span class="form-text text-muted">We'll never share your email with anyone else.</span>
+
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
                                             <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
                                             <div class="col-lg-9 col-xl-6">
-                                                <select class="form-control form-control-solid ">
-                                                    <option selected>Seçiniz</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
+                                                <select id="mithat" class="form-control form-control-solid ">
+                                                    <option>Seçiniz</option>
+                                                    @foreach (var item in Model.ContractTypeList)
+                                                    {
+                                                        if (Model.ContractType == item.Description)
+                                                        {
+                                                            <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                        }
+
+                                                    }
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-xl-3 col-lg-3 col-form-label">Çalışma Takvimi</label>
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
                                             <div class="col-lg-9 col-xl-6">
-                                                <select class="form-control form-control-solid ">
-                                                    <option selected>Seçiniz</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
-                                                </select>
+                                                <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                    <input asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                    <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                        <span class="input-group-text">
+                                                            <i class="ki ki-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <label class="col-xl-3 col-lg-3 col-form-label">İşe Başlama Tarihi</label>
                                             <div class="col-lg-9 col-xl-6">
                                                 <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                                    <input asp-for="JobJoinDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Select date & time" data-target="#kt_datetimepicker_2" />
+                                                    <input asp-for="JobJoinDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
                                                     <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
                                                         <span class="input-group-text">
                                                             <i class="ki ki-calendar"></i>
@@ -307,21 +315,7 @@
                                                     </div>
                                                     <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" />
                                                 </div>
-                                                <span class="form-text text-muted">We'll never share your email with anyone else.</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
-                                            <div class="col-lg-9 col-xl-6">
-                                                <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                    <input asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input" placeholder="Select date & time" data-target="#kt_datetimepicker_3" />
-                                                    <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
-                                                        <span class="input-group-text">
-                                                            <i class="ki ki-calendar"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                         </div>
 
@@ -330,11 +324,14 @@
                                             <div class="col-lg-9 col-xl-6">
                                                 <select class="form-control form-control-solid ">
                                                     <option selected>Seçiniz</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
+                                                    @foreach (var item in Model.Roles)
+                                                    {
+                                                   
+                                                            <option >@item.Name</option>
+
+                                                    }
+
+
                                                 </select>
                                             </div>
                                         </div>

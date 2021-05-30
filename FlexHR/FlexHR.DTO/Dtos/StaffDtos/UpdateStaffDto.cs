@@ -18,6 +18,10 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public bool IsActive { get; set; }
         public string DepartmantName { get; set; }
         public string Superscription { get; set; }
+        public string ContractType { get; set; }
+        public string StaffRole { get; set; }
+        public List<GeneralSubType> ContractTypeList { get; set; } // bu dropdown için
+        public List<Role> Roles { get; set; } // bu dropdown için
         public virtual ICollection<StaffGeneralSubType> StaffGeneralSubType { get; set; }
     }
 }

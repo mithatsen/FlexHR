@@ -15,11 +15,16 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffService _staffService;
         private readonly IStaffGeneralSubTypeService _staffGeneralSubTypeService;
         private readonly IMapper _mapper;
-        public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService)
+        private readonly IGeneralSubTypeService _generalSubType;
+        private readonly IRoleService _roleService;
+
+        public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService, IGeneralSubTypeService generalSubType, IRoleService roleService)
         {
             _staffService = staffService;
             _mapper = mapper;
             _staffGeneralSubTypeService = staffGeneralSubTypeService;
+            _generalSubType = generalSubType;
+            _roleService = roleService;
         }
 
         public IActionResult Index()
@@ -33,6 +38,7 @@ namespace FlexHR.Web.Controllers
             var temp = _staffGeneralSubTypeService.GetByStaffId(id);
             var  departmentName ="";
             var superscription = "";
+            var contractType = "";
             foreach (var item in temp)
             {
                 if (item.GeneralSubType.GeneralTypeId == 3)
@@ -42,7 +48,15 @@ namespace FlexHR.Web.Controllers
                 {
                     superscription = item.GeneralSubType.Description;
                 }
+                else if (item.GeneralSubType.GeneralTypeId == 1)
+                {
+                    contractType = item.GeneralSubType.Description;
+                }
             }
+            var contractTypeList =_generalSubType.GetGeneralSubTypeByGeneralTypeId(1);
+            var roleList = _roleService.GetAll();
+
+
 
             var model = new UpdateStaffDto
             {
@@ -56,7 +70,10 @@ namespace FlexHR.Web.Controllers
                 StaffId = result.StaffId,
                 IsActive = result.IsActive,
                 DepartmantName=departmentName,
-                Superscription=superscription
+                Superscription=superscription,
+                ContractTypeList= contractTypeList,
+                ContractType=contractType,
+                Roles=roleList
             };
             return View(model);
         }
