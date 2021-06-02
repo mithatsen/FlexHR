@@ -1,0 +1,178 @@
+﻿@model UpdateStaffDto
+
+
+<!--begin::Content-->
+<div class="flex-row-fluid ml-lg-8">
+    <!--begin::Card-->
+    <div class="card card-custom card-stretch">
+        <!--begin::Header-->
+        <div class="card-header py-3">
+            <div class="card-title align-items-start flex-column">
+                <h3 class="card-label font-weight-bolder text-dark">Kişisel Bilgiler</h3>
+                <span class="text-muted font-weight-bold font-size-sm mt-1">Kişisel bilgilerinizi düzenleyin</span>
+            </div>
+            <div class="card-toolbar">
+                <button type="reset" class="btn btn-primary mr-2">Kaydet</button>
+                <button type="reset" class="btn btn-secondary">Geri</button>
+            </div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Form-->
+        <form class="form">
+            <div class="container">
+                <!--begin::Body-->
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group row ">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <input asp-for="NameSurname" class="form-control form-control-lg form-control-solid" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (İş)</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <div class="input-group input-group-lg input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="la la-at"></i>
+                                            </span>
+                                        </div>
+                                        <input asp-for="EmailJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Email" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Telefon (İş)</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <div class="input-group input-group-lg input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="la la-phone"></i>
+                                            </span>
+                                        </div>
+                                        <input asp-for="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Phone" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <select id="mithat" class="form-control form-control-solid ">
+                                        <option>Seçiniz</option>
+                                        @foreach (var item in Model.ContractTypeList)
+                                        {
+                                            if (Model.ContractType == item.Description)
+                                            {
+                                                <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                        <input asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                        <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                            <span class="input-group-text">
+                                                <i class="ki ki-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">İşe Başlama Tarihi</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
+                                        <input asp-for="JobJoinDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                        <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
+                                            <span class="input-group-text">
+                                                <i class="ki ki-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (Kişisel)</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <div class="input-group input-group-lg input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="la la-at"></i>
+                                            </span>
+                                        </div>
+                                        <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Telefon (Kişisel)</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <div class="input-group input-group-lg input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="la la-phone"></i>
+                                            </span>
+                                        </div>
+                                        <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <select class="form-control form-control-solid ">
+                                        <option selected>Seçiniz</option>
+                                        @foreach (var item in Model.Roles)
+                                        {
+
+                                            <option>@item.Name</option>
+
+                                        }
+
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Body-->
+            </div>
+
+        </form>
+        <!--end::Form-->
+    </div>
+</div>
+<!--end::Content-->
+
+
+
+@section Scripts{
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
+    <!--end::Page Scripts-->
+}

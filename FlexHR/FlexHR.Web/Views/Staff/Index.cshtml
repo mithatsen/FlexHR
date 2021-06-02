@@ -4,49 +4,52 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!--begin::Row-->
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <!--begin::Col-->
-        <div class="col-md-2">
-            <a asp-controller="Staff" asp-action="UpdateStaff" asp-route-id="@item.StaffId">
-                <!--begin::Card-->
-                <div class="card card-custom gutter-b">
-                    <!--begin::Body-->
-                    <div class="card-body text-center" style="padding: 0.5rem;">
+<!--begin::Card-->
+<div class="card card-custom">
+    <!--begin::Row-->
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <!--begin::Col-->
+            <div class="col-md-2">
+                <a asp-controller="Staff" asp-action="UpdateStaff" asp-route-id="@item.StaffId">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b shadow p-0 mb-1 justify-content-center">
+                        <!--begin::Body-->
+                        <div class="card-body text-center" style="padding: 0rem;">
 
-                        <!--begin::User-->
-                        <div class="mt-7">
-                            <div class="symbol symbol-circle symbol-lg-100">
-                                <img src="assets/media/users/300_5.jpg" alt="image" />
+                            <!--begin::User-->
+                            <div class="mt-7">
+                                <div class="symbol symbol-circle symbol-lg-100">
+                                    <img src="assets/media/users/300_5.jpg" alt="image" />
+                                </div>
+                                <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
+                                    <span class="font-size-h3 font-weight-boldest">JB</span>
+                                </div>
                             </div>
-                            <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
-                                <span class="font-size-h3 font-weight-boldest">JB</span>
+                            <!--end::User-->
+                            <!--begin::Name-->
+                            <div class="my-1">
+                                <a href="#" class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</a>
                             </div>
+                            <!--end::Name-->
+                            <!--begin::Label-->
+                            <span class="mt-3 label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-envelope mr-2 text-danger"></i> @item.EmailPersonal</span>
+                            <!--end::Label-->
+                            <!--begin::Buttons-->
+                            <div class="mt-2 mb-6">
+                                <span class="label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-phone-alt mr-2 text-success"></i> @item.PhoneJob</span>
+                            </div>
+                            <!--end::Buttons-->
                         </div>
-                        <!--end::User-->
-                        <!--begin::Name-->
-                        <div class="my-1">
-                            <a href="#" class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</a>
-                        </div>
-                        <!--end::Name-->
-                        <!--begin::Label-->
-                        <span class="mt-3 label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-envelope mr-2 text-danger"></i> @item.EmailPersonal</span>
-                        <!--end::Label-->
-                        <!--begin::Buttons-->
-                        <div class="mt-2 mb-6">
-                            <span class="label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-phone-alt mr-2 text-success"></i> @item.PhoneJob</span>
-                        </div>
-                        <!--end::Buttons-->
+                        <!--end::Body-->
                     </div>
-                    <!--end::Body-->
-                </div>
-                <!--end::Card-->
-            </a>
-            
-        </div>
-        <!--end::Col-->
-    }
+                    <!--end::Card-->
+                </a>
+
+            </div>
+            <!--end::Col-->
+        }
+    </div>
+    <!--end::Row-->
 </div>
-<!--end::Row-->
