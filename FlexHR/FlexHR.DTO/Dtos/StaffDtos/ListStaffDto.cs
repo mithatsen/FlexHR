@@ -16,5 +16,6 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public DateTime? JobFinishDate { get; set; }
         public bool IsActive { get; set; }
 
+
     }
 }

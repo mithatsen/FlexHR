@@ -7,5 +7,6 @@ namespace FlexHR.Business.Interface
 {
     public interface IStaffCareerService : IGenericService<StaffCareer>
     {
+        List<StaffCareer> GetAllTableByStaffId(int id);
     }
 }

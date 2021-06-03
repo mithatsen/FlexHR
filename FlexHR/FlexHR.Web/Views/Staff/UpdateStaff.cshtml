@@ -3,6 +3,11 @@
     ViewData["Title"] = "UpdateStaff";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
 <!--begin::Card-->
 <div class="card card-custom">
     <!--Begin::Header-->
@@ -182,7 +187,25 @@
                     @await Component.InvokeAsync("StaffComponent", Model.StaffId)
                 </div>
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_2">
-                    @await Component.InvokeAsync("StaffCareer")
+                    @await Component.InvokeAsync("StaffCareer", Model.StaffId)
+                </div>
+                <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_3">
+                    @await Component.InvokeAsync("PersonalInfo")
+                </div>
+                <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_4">
+                    @await Component.InvokeAsync("OtherInfo")
+                </div>
+                <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_5">
+                    @await Component.InvokeAsync("Leave")
+                </div>
+                <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_6">
+                    @await Component.InvokeAsync("StaffPayment")
+                </div>
+                <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_7">
+                    @await Component.InvokeAsync("StaffShift")
+                </div>
+                <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_8">
+                    @await Component.InvokeAsync("Document")
                 </div>
             </div>
         </div>
@@ -191,13 +214,26 @@
 <!--end::Card-->
 
 @section Scripts{
-    @*<script>
-            function
-        </script>*@
+
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
     <!--end::Page Scripts-->
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
+    <!--end::Page Scripts-->
+    <script type="text/javascript"
+            src="https://jquery-blog-js.googlecode.com/files/SetCase.js">
+    </script>
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/assets/js/pages/crud/datatables/basic/scrollable.js"></script>
+    <!--end::Page Scripts-->
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
     <!--end::Page Scripts-->
 }

@@ -19,5 +19,10 @@ namespace FlexHR.Business.Concrete
         {
             return _generalSubTypeDal.GetByStaffId(id);
         }
+
+        public string GetGeneralSubTypeByGeneralTypeId(int generalTypeId, List<StaffGeneralSubType> subTypes)
+        {
+            return _generalSubTypeDal.GetGeneralSubTypeByGeneralTypeId(generalTypeId,subTypes);
+        }
     }
 }

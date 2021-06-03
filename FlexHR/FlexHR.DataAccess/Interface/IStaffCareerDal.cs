@@ -7,5 +7,6 @@ namespace FlexHR.DataAccess.Interface
 {
     public interface IStaffCareerDal : IGenericDal<StaffCareer>
     {
+        List<StaffCareer> GetAllTableByStaffId(int id);
     }
 }

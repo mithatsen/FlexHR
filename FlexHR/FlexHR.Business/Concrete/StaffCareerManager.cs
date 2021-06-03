@@ -9,9 +9,15 @@ namespace FlexHR.Business.Concrete
 {
     public class StaffCareerManager : GenericManager<StaffCareer>, IStaffCareerService
     {
+        private readonly IStaffCareerDal _staffCareerDal;
         public StaffCareerManager(IStaffCareerDal staffCareerDal) : base(staffCareerDal)
         {
+            _staffCareerDal = staffCareerDal;
+        }
 
+        public List<StaffCareer> GetAllTableByStaffId(int id)
+        {
+            return _staffCareerDal.GetAllTableByStaffId(id);
         }
     }
 }
