@@ -38,24 +38,7 @@ namespace FlexHR.Web.Controllers
             var temp = _staffGeneralSubTypeService.GetByStaffId(id);
             var departmentName = "";
             var superscription = "";
-            //var contractType = "";
-            //foreach (var item in temp)
-            //{
-            //    if (item.GeneralSubType.GeneralTypeId == 3)
-            //    {
-            //        departmentName = item.GeneralSubType.Description;
-            //    }else if (item.GeneralSubType.GeneralTypeId == 5)
-            //    {
-            //        superscription = item.GeneralSubType.Description;
-            //    }
-            //    else if (item.GeneralSubType.GeneralTypeId == 1)
-            //    {
-            //        contractType = item.GeneralSubType.Description;
-            //    }
-            //}
 
-
-            //var contractTypeList = _generalSubType.GetGeneralSubTypeByGeneralTypeId(1);
             var staffInfo = _staffGeneralSubTypeService.GetGeneralSubTypeByStaffGeneralSubTypeList(temp);
             for (int i = 0; i < staffInfo.Count; i++)
             {
@@ -67,11 +50,7 @@ namespace FlexHR.Web.Controllers
                 {
                     superscription = staffInfo[i];
                 }
-                //else if (Convert.ToInt32(temp5[i, 0]) == (int)GeneralTypeEnum.ContractType)
-                //{
-                //    contractType = temp5[i, 1];
-                //}
-
+        
             }
             var model = new UpdateStaffDto
             {

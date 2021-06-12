@@ -7,7 +7,7 @@ namespace FlexHR.Entity.Enums
 {
     public enum GeneralTypeEnum
     {
-        ContractType= 1 ,
+        ContractType=  1 ,
         FileType = 2 ,
         Department = 3 ,
         ModeOfOperation =4  ,

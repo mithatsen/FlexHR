@@ -1,6 +1,7 @@
 ﻿using FlexHR.Entity.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Text;
 
 namespace FlexHR.DataAccess.Interface
@@ -9,6 +10,6 @@ namespace FlexHR.DataAccess.Interface
     {
         List<StaffGeneralSubType> GetByStaffId(int id);
 
-        System.Collections.Specialized.NameValueCollection GetGeneralSubTypeByStaffGeneralSubTypeList(List<StaffGeneralSubType> subTypes);
+        NameValueCollection GetGeneralSubTypeByStaffGeneralSubTypeList(List<StaffGeneralSubType> subTypes);
     }
 }

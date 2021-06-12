@@ -1,9 +1,9 @@
 ﻿using FlexHR.Business.Interface;
 using FlexHR.DataAccess.Interface;
 using FlexHR.Entity.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.Specialized;
+
 
 namespace FlexHR.Business.Concrete
 {
@@ -20,7 +20,9 @@ namespace FlexHR.Business.Concrete
             return _generalSubTypeDal.GetByStaffId(id);
         }
 
-        public System.Collections.Specialized.NameValueCollection GetGeneralSubTypeByStaffGeneralSubTypeList(List<StaffGeneralSubType> subTypes)
+
+       
+        public NameValueCollection GetGeneralSubTypeByStaffGeneralSubTypeList(List<StaffGeneralSubType> subTypes)
         {
             return _generalSubTypeDal.GetGeneralSubTypeByStaffGeneralSubTypeList(subTypes);
         }

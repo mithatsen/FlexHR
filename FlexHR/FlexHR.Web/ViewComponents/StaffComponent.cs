@@ -41,15 +41,17 @@ namespace FlexHR.Web.ViewComponents
             var staffInfo = _staffGeneralSubTypeService.GetGeneralSubTypeByStaffGeneralSubTypeList(temp);
             for (int i = 0; i < staffInfo.Count; i++)
             {
-                if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.Department)
+                int generalTypeId= Convert.ToInt32(staffInfo.GetKey(i));
+
+                if (generalTypeId == (int)GeneralTypeEnum.Department)
                 {
                     departmentName = staffInfo[i];
                 }
-                else if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.Title)
+                else if (generalTypeId == (int)GeneralTypeEnum.Title)
                 {
                     superscription = staffInfo[i];
                 }
-                else if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.ContractType)
+                else if (generalTypeId == (int)GeneralTypeEnum.ContractType)
                 {
                     contractType = staffInfo[i];
                 }
