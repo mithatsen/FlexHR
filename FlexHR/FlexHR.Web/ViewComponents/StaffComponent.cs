@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffDtos;
+using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.ViewComponents
 {
-    public class StaffComponent:ViewComponent
+    public class StaffComponent : ViewComponent
     {
         private readonly IStaffService _staffService;
         private readonly IStaffGeneralSubTypeService _staffGeneralSubTypeService;
-        private readonly IMapper _mapper;
+       
         private readonly IGeneralSubTypeService _generalSubType;
         private readonly IRoleService _roleService;
 
-        public StaffComponent(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService, IGeneralSubTypeService generalSubType, IRoleService roleService)
+        public StaffComponent(IStaffService staffService, IStaffGeneralSubTypeService staffGeneralSubTypeService, IGeneralSubTypeService generalSubType, IRoleService roleService)
         {
             _staffService = staffService;
-            _mapper = mapper;
+   
             _staffGeneralSubTypeService = staffGeneralSubTypeService;
             _generalSubType = generalSubType;
             _roleService = roleService;
@@ -33,24 +34,30 @@ namespace FlexHR.Web.ViewComponents
             var departmentName = "";
             var superscription = "";
             var contractType = "";
-            foreach (var item in temp)
-            {
-                if (item.GeneralSubType.GeneralTypeId == 3)
-                {
-                    departmentName = item.GeneralSubType.Description;
-                }
-                else if (item.GeneralSubType.GeneralTypeId == 5)
-                {
-                    superscription = item.GeneralSubType.Description;
-                }
-                else if (item.GeneralSubType.GeneralTypeId == 1)
-                {
-                    contractType = item.GeneralSubType.Description;
-                }
-            }
-            var contractTypeList = _generalSubType.GetGeneralSubTypeByGeneralTypeId(1);
-            var roleList = _roleService.GetAll();
 
+
+           
+
+            var staffInfo = _staffGeneralSubTypeService.GetGeneralSubTypeByStaffGeneralSubTypeList(temp);
+            for (int i = 0; i < staffInfo.Count; i++)
+            {
+                if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.Department)
+                {
+                    departmentName = staffInfo[i];
+                }
+                else if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.Title)
+                {
+                    superscription = staffInfo[i];
+                }
+                else if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.ContractType)
+                {
+                    contractType = staffInfo[i];
+                }
+         
+            }
+        
+            var roleList = _roleService.GetAll();
+            var contractTypeList = _generalSubType.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType);
 
 
             var model = new UpdateStaffDto

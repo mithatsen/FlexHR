@@ -22,59 +22,93 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             return _context.StaffGeneralSubType.Where(x => x.StaffId == id).ToList();
         }
 
-        public string GetGeneralSubTypeByGeneralTypeId(int generalTypeId, List<StaffGeneralSubType> subTypes)
+        public System.Collections.Specialized.NameValueCollection GetGeneralSubTypeByStaffGeneralSubTypeList(List<StaffGeneralSubType> subTypes)
         {
-            foreach (var item in subTypes)
+            System.Collections.Specialized.NameValueCollection generalTypeArray = new System.Collections.Specialized.NameValueCollection();
+
+            //System.Collections.Specialized.NameValueCollection k = new System.Collections.Specialized.NameValueCollection();
+            //k.Add("B", "Brown");
+            //k.Add("G", "Green");
+            //var x = k[0];
+
+
+            for (int i = 0; i < subTypes.Count; i++)
             {
+                var generalTypeId = subTypes[i].GeneralSubType.GeneralTypeId;
+                var generalSubTypeDesc = subTypes[i].GeneralSubType.Description;
                 switch (generalTypeId)
                 {
                     case (int)GeneralTypeEnum.ContractType:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
+
                     case (int)GeneralTypeEnum.FileType:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
+                 
                     case (int)GeneralTypeEnum.Department:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.ModeOfOperation:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.Title:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.MaritalStatus:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.Gender:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.DegreeOfDisability:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.BloodGroup:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.EducationStatus:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.EducationLevel:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.AccountType:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.LeaveType:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.GeneralStatus:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.PaymentType:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.FeeType:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.Currency:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.Period:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.Debit:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        break;
                     case (int)GeneralTypeEnum.EmailState:
-                        return item.GeneralSubType.Description;
+                        generalTypeArray.Add(generalTypeId.ToString(), generalSubTypeDesc);
+                        //generalTypeArray[i, 0] = generalTypeId.ToString();
+                        //generalTypeArray[i, 1] = generalSubTypeDesc;
+                        break;
 
                     default:
-                        return "";
+                        break;
                 }
-
             }
-            return "";
+
+            return generalTypeArray;
 
         }
     }

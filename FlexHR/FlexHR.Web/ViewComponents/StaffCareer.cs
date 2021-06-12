@@ -46,11 +46,11 @@ namespace FlexHR.Web.ViewComponents
 
                     JobStartDate = item.JobStartDate,
                     JobFinishDate = item.JobFinishDate,
-                    ModeOfOperation = _staffGeneralSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation,temp),
+                   // ModeOfOperation = _staffGeneralSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation,temp),
                     CompanyName = item.CompanyBranch.Company.CompanyName,
                     BranchName = item.CompanyBranch.BranchName,
-                    DepartmantName = _staffGeneralSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department, temp),
-                    Title = _staffGeneralSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title, temp),
+                 //   DepartmantName = _staffGeneralSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department, temp),
+                 //   Title = _staffGeneralSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title, temp),
                     IsActive = item.IsActive
 
                 };

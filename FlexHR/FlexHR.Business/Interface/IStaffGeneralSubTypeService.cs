@@ -8,6 +8,6 @@ namespace FlexHR.Business.Interface
     public interface IStaffGeneralSubTypeService : IGenericService<StaffGeneralSubType>
     {
         List<StaffGeneralSubType> GetByStaffId(int id);
-        string GetGeneralSubTypeByGeneralTypeId(int generalTypeId, List<StaffGeneralSubType> subTypes);
+        System.Collections.Specialized.NameValueCollection GetGeneralSubTypeByStaffGeneralSubTypeList(List<StaffGeneralSubType> subTypes);
     }
 }
