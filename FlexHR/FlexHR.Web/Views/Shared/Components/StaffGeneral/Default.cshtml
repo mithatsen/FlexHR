@@ -1,23 +1,25 @@
 ﻿@model UpdateStaffDto
-
 <!--begin::Content-->
 <div class="flex-row-fluid ml-lg-8">
-    <!--begin::Card-->
-    <div class="card card-custom card-stretch">
-        <!--begin::Header-->
-        <div class="card-header py-3">
-            <div class="card-title align-items-start flex-column">
-                <h3 class="card-label font-weight-bolder text-dark">Genel Bilgiler</h3>
-                <span class="text-muted font-weight-bold font-size-sm mt-1">Genel bilgilerini düzenleyin</span>
+    <!--begin::Form-->
+    <form class="form" asp-action="UpdateStaffGeneral" asp-controller="Staff" asp-route-id="@Model.StaffId" method="post">
+        <!--begin::Card-->
+        <div class="card card-custom card-stretch">
+            <!--begin::Header-->
+            <div class="card-header py-3">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-house-user text-dark mr-2"></i>Genel Bilgiler
+                    </h3>
+                    <span class="text-muted font-weight-bold font-size-sm mt-1">Genel bilgilerini düzenleyin</span>
+                </div>
+                <div class="card-toolbar">
+                    <button class="btn btn-primary mr-2">Kaydet</button>
+                    <a class="btn btn-secondary">Geri</a>
+                </div>
             </div>
-            <div class="card-toolbar">
-                <button type="reset" class="btn btn-primary mr-2">Kaydet</button>
-                <button type="reset" class="btn btn-secondary">Geri</button>
-            </div>
-        </div>
-        <!--end::Header-->
-        <!--begin::Form-->
-        <form class="form">
+            <!--end::Header-->
+
             <div class="container">
                 <!--begin::Body-->
                 <div class="card-body">
@@ -63,7 +65,7 @@
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <select id="ContractTypeSelect" class="form-control form-control-solid " onchange="ContractTypeChange()">
+                                    <select id="ContractTypeSelect" class="form-control form-control-solid ">
                                         <option selected>Seçiniz</option>
                                         @foreach (var item in Model.ContractTypeList)
                                         {
@@ -80,11 +82,11 @@
                                     </select>
                                 </div>
                             </div>
-                            <div id="ContractFinishDate" class="form-group row" disabled>
+                            <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
                                 <div class="col-lg-9 col-xl-6">
                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                        <input asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                        <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                         <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
                                             <span class="input-group-text">
                                                 <i class="ki ki-calendar"></i>
@@ -162,28 +164,16 @@
                 <!--end::Body-->
             </div>
 
-        </form>
-        <!--end::Form-->
-    </div>
+
+        </div>
+    </form>
+    <!--end::Form-->
 </div>
 <!--end::Content-->
+@section Scripts{
+
+    <script src="~/lib/jqueryUnob/jquery.unobtrusive-ajax.min.js"></script>
+
+}
 
 
-
-
- 
-
-
-    @*<script type="text/javascript">
-        $('ContractTypeSelect').on('change', function () {
-            var id = document.getElementById("ContractTypeSelect").value;
-            if (id = = 1) {
-                function () {
-                    $("#ContractFinishDate").attr("disabled", false);
-                }
-            }
-            else {
-                $("#ContractFinishDate").attr("disabled", true);
-            }
-        });
-    </script>*@

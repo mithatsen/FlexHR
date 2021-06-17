@@ -14,19 +14,18 @@ namespace FlexHR.Web.ViewComponents
     {
         private readonly IStaffService _staffService;
         private readonly IStaffGeneralSubTypeService _staffGeneralSubTypeService;
-       
+
         private readonly IGeneralSubTypeService _generalSubType;
         private readonly IRoleService _roleService;
 
         public StaffGeneral(IStaffService staffService, IStaffGeneralSubTypeService staffGeneralSubTypeService, IGeneralSubTypeService generalSubType, IRoleService roleService)
         {
             _staffService = staffService;
-   
+
             _staffGeneralSubTypeService = staffGeneralSubTypeService;
             _generalSubType = generalSubType;
             _roleService = roleService;
         }
-
         public IViewComponentResult Invoke(int id)
         {
             var result = _staffService.GetAllTables(id);
@@ -35,13 +34,10 @@ namespace FlexHR.Web.ViewComponents
             var superscription = "";
             var contractType = "";
 
-
-           
-
             var staffInfo = _staffGeneralSubTypeService.GetGeneralSubTypeByStaffGeneralSubTypeList(temp);
             for (int i = 0; i < staffInfo.Count; i++)
             {
-                int generalTypeId= Convert.ToInt32(staffInfo.GetKey(i));
+                int generalTypeId = Convert.ToInt32(staffInfo.GetKey(i));
 
                 if (generalTypeId == (int)GeneralTypeEnum.Department)
                 {
@@ -55,9 +51,9 @@ namespace FlexHR.Web.ViewComponents
                 {
                     contractType = staffInfo[i];
                 }
-         
+
             }
-        
+
             var roleList = _roleService.GetAll();
             var contractTypeList = _generalSubType.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType);
 
@@ -81,5 +77,7 @@ namespace FlexHR.Web.ViewComponents
             };
             return View(model);
         }
+      
     }
+
 }

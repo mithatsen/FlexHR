@@ -180,6 +180,12 @@
                     <!--end::Body-->
                 </div>
                 <!--end::Profile Card-->
+                @*<select id="ContractTypeSelect" class="form-control form-control-solid ">
+
+                        <option value="1" selected>abc</option>
+
+                        <option value="2">ription</option>
+                    </select>*@
             </div>
             <!--end::Aside-->
             <div class="tab-content w-100">
@@ -212,54 +218,48 @@
     </div>
 </div>
 <!--end::Card-->
-
 @section Scripts{
-
-
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
-    <!--end::Page Scripts-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
-    <!--end::Page Scripts-->
-    <script type="text/javascript"
-            src="https://jquery-blog-js.googlecode.com/files/SetCase.js">
-    </script>
-
-    <!--begin::Page Vendors(used by this page)-->
-    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <!--end::Page Vendors-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/datatables/basic/scrollable.js"></script>
-    <!--end::Page Scripts-->
-    <!--begin::Page Vendors(used by this page)-->
-    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <!--end::Page Vendors-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
-    <!--end::Page Scripts-->
-
-
-
-
-    <script>
-        var x = 5 + 7;
-        alert(x);
-        console.log("hello");
-        function ContractTypeChange() {
-            var id = document.getElementById("ContractTypeSelect").value;
-            if (id == 1) {
-                function () {
+        
+        <script type="text/javascript">
+            $('#ContractTypeSelect').on('change', function () {
+                var id = document.getElementById("ContractTypeSelect").value;
+                console.log(id);
+                if (id == 1) {
+                    console.log("99999999");
                     $("#ContractFinishDate").attr("disabled", false);
+                    $("#ContractFinishDate").removeClass("text-muted");
                 }
-            }
-            else {
-                $("#ContractFinishDate").attr("disabled", true);
-            }
-        }
+                else {
+                    console.log("122313213");
+                    $("#ContractFinishDate").attr("disabled", true);
+                    $("#ContractFinishDate").addClass("text-muted");
+                }
+            });
+        </script>
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
+        <!--end::Page Scripts-->
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
+        <!--end::Page Scripts-->
+        <script type="text/javascript"
+                src="https://jquery-blog-js.googlecode.com/files/SetCase.js">
+        </script>
+
+        <!--begin::Page Vendors(used by this page)-->
+        <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <!--end::Page Vendors-->
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/crud/datatables/basic/scrollable.js"></script>
+        <!--end::Page Scripts-->
+        <!--begin::Page Vendors(used by this page)-->
+        <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <!--end::Page Vendors-->
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
+        <!--end::Page Scripts-->
 
 
-    </script>
 
 
 }

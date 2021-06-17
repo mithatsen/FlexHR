@@ -66,5 +66,17 @@ namespace FlexHR.Web.Controllers
             };
             return View(model);
         }
+        [HttpPost]
+        public IActionResult UpdateStaffGeneral(UpdateStaffDto model,int id)
+        {
+            model.StaffId = id;
+            if (ModelState.IsValid)
+            {
+                _staffService.Update(_mapper.Map<Staff>(model));
+                return RedirectToAction("UpdateStaff", new { id = id });
+            }
+
+            return View();
+        }
     }
 }
