@@ -1,6 +1,5 @@
 ﻿@model UpdateStaffDto
 
-
 <!--begin::Content-->
 <div class="flex-row-fluid ml-lg-8">
     <!--begin::Card-->
@@ -8,8 +7,8 @@
         <!--begin::Header-->
         <div class="card-header py-3">
             <div class="card-title align-items-start flex-column">
-                <h3 class="card-label font-weight-bolder text-dark">Kişisel Bilgiler</h3>
-                <span class="text-muted font-weight-bold font-size-sm mt-1">Kişisel bilgilerinizi düzenleyin</span>
+                <h3 class="card-label font-weight-bolder text-dark">Genel Bilgiler</h3>
+                <span class="text-muted font-weight-bold font-size-sm mt-1">Genel bilgilerini düzenleyin</span>
             </div>
             <div class="card-toolbar">
                 <button type="reset" class="btn btn-primary mr-2">Kaydet</button>
@@ -64,7 +63,7 @@
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <select id="mithat" class="form-control form-control-solid ">
+                                    <select id="ContractTypeSelect" class="form-control form-control-solid " onchange="ContractTypeChange()">
                                         <option selected>Seçiniz</option>
                                         @foreach (var item in Model.ContractTypeList)
                                         {
@@ -81,7 +80,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div id="ContractFinishDate" class="form-group row" disabled>
                                 <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
                                 <div class="col-lg-9 col-xl-6">
                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
@@ -171,8 +170,20 @@
 
 
 
-@section Scripts{
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
-    <!--end::Page Scripts-->
-}
+
+ 
+
+
+    @*<script type="text/javascript">
+        $('ContractTypeSelect').on('change', function () {
+            var id = document.getElementById("ContractTypeSelect").value;
+            if (id = = 1) {
+                function () {
+                    $("#ContractFinishDate").attr("disabled", false);
+                }
+            }
+            else {
+                $("#ContractFinishDate").attr("disabled", true);
+            }
+        });
+    </script>*@

@@ -19,7 +19,7 @@
     <!--end::Page Vendors Styles-->
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="~/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
-   
+
     <!--end::Page Vendors Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
     <link href="~/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
@@ -36,6 +36,8 @@
     <link rel="shortcut icon" href="~/assets/media/logos/favicon1.ico" />
 
     @RenderSection("Styles", required: false)
+
+   
 </head>
 <!--end::Head-->
 
@@ -330,8 +332,9 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/widgets.js"></script>
 
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jqueryUnob/jquery.unobtrusive-ajax.min.js"></script>*@
+
+    <script src="~/lib/jqueryUnob/jquery.unobtrusive-ajax.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

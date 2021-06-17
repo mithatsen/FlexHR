@@ -184,7 +184,7 @@
             <!--end::Aside-->
             <div class="tab-content w-100">
                 <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_1">
-                    @await Component.InvokeAsync("StaffComponent", Model.StaffId)
+                    @await Component.InvokeAsync("StaffGeneral", Model.StaffId)
                 </div>
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_2">
                     @await Component.InvokeAsync("StaffCareer", Model.StaffId)
@@ -215,6 +215,7 @@
 
 @section Scripts{
 
+
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
     <!--end::Page Scripts-->
@@ -224,6 +225,7 @@
     <script type="text/javascript"
             src="https://jquery-blog-js.googlecode.com/files/SetCase.js">
     </script>
+
     <!--begin::Page Vendors(used by this page)-->
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Page Vendors-->
@@ -236,4 +238,28 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
     <!--end::Page Scripts-->
+
+
+
+
+    <script>
+        var x = 5 + 7;
+        alert(x);
+        console.log("hello");
+        function ContractTypeChange() {
+            var id = document.getElementById("ContractTypeSelect").value;
+            if (id == 1) {
+                function () {
+                    $("#ContractFinishDate").attr("disabled", false);
+                }
+            }
+            else {
+                $("#ContractFinishDate").attr("disabled", true);
+            }
+        }
+
+
+    </script>
+
+
 }

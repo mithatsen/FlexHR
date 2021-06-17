@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.ViewComponents
 {
-    public class StaffComponent : ViewComponent
+    public class StaffGeneral : ViewComponent
     {
         private readonly IStaffService _staffService;
         private readonly IStaffGeneralSubTypeService _staffGeneralSubTypeService;
@@ -18,7 +18,7 @@ namespace FlexHR.Web.ViewComponents
         private readonly IGeneralSubTypeService _generalSubType;
         private readonly IRoleService _roleService;
 
-        public StaffComponent(IStaffService staffService, IStaffGeneralSubTypeService staffGeneralSubTypeService, IGeneralSubTypeService generalSubType, IRoleService roleService)
+        public StaffGeneral(IStaffService staffService, IStaffGeneralSubTypeService staffGeneralSubTypeService, IGeneralSubTypeService generalSubType, IRoleService roleService)
         {
             _staffService = staffService;
    

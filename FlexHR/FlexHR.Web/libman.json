@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.5.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [ "jquery.min.js" ]
+    },
+    {
+      "library": "jquery-validate@1.19.2",
+      "destination": "wwwroot/lib/jqueryValidate",
+      "files": [ "jquery.validate.min.js" ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jqueryUnob",
+      "files": [ "jquery.validate.unobtrusive.min.js" ]
+    },
+    {
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jqueryUnob",
+      "files": [ "jquery.unobtrusive-ajax.min.js" ]
+    },
+    {
+      "library": "dropzone@5.8.1",
+      "destination": "wwwroot/lib/dropzone",
+      "files": [ "min/dropzone.min.js", "min/basic.min.css", "min/dropzone.min.css" ]
+    }
+
+  ]
+}
