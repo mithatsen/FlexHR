@@ -8,5 +8,6 @@ namespace FlexHR.DataAccess.Interface
     public interface IGeneralSubTypeDal : IGenericDal<GeneralSubType>
     {
         List<GeneralSubType> GetGeneralSubTypeByGeneralTypeId(int generalTypeId);
+        string GetDescriptionByGeneralSubTypeId(int generalSubTypeId);
     }
 }

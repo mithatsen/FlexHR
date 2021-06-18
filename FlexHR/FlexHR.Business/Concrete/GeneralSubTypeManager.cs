@@ -16,9 +16,16 @@ namespace FlexHR.Business.Concrete
 
         }
 
+        public string GetDescriptionByGeneralSubTypeId(int generalSubTypeId)
+        {
+            return _generalSubTypeDal.GetDescriptionByGeneralSubTypeId(generalSubTypeId);
+        }
+
         public List<GeneralSubType> GetGeneralSubTypeByGeneralTypeId(int generalTypeId)
         {
             return _generalSubTypeDal.GetGeneralSubTypeByGeneralTypeId(generalTypeId);
         }
+
+  
     }
 }

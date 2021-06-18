@@ -15,7 +15,13 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         {
             _context = context;
         }
-    
+
+        public string GetDescriptionByGeneralSubTypeId(int generalSubTypeId)
+        {
+            var temp = _context.GeneralSubType.Where(x => x.GeneralSubTypeId == generalSubTypeId).FirstOrDefault();
+            return temp.Description;
+        }
+
         public List<GeneralSubType> GetGeneralSubTypeByGeneralTypeId(int generalTypeId)
         {
             return _context.GeneralSubType.Where(x => x.GeneralTypeId == generalTypeId).ToList();         

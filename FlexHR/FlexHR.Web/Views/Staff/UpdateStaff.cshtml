@@ -180,23 +180,511 @@
                     <!--end::Body-->
                 </div>
                 <!--end::Profile Card-->
-                @*<select id="ContractTypeSelect" class="form-control form-control-solid ">
 
-                        <option value="1" selected>abc</option>
-
-                        <option value="2">ription</option>
-                    </select>*@
             </div>
             <!--end::Aside-->
             <div class="tab-content w-100">
+                @*Staff General*@
                 <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_1">
-                    @await Component.InvokeAsync("StaffGeneral", Model.StaffId)
+                    <div class="flex-row-fluid ml-lg-8">
+                        <!--begin::Form-->
+                        <form class="form" asp-action="UpdateStaffGeneral" asp-controller="Staff" method="post">
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <div class="card-header py-3">
+                                    <div class="card-title align-items-start flex-column">
+                                        <h3 class="card-label font-weight-bolder text-dark">
+                                            <i class="fas fa-house-user text-dark mr-2"></i>Genel Bilgiler
+                                        </h3>
+                                        <span class="text-muted font-weight-bold font-size-sm mt-1">Genel bilgilerini düzenleyin</span>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <button class="btn btn-primary mr-2">Kaydet</button>
+                                        <a class="btn btn-secondary">Geri</a>
+                                    </div>
+                                </div>
+                                <!--end::Header-->
+
+                                <div class="container">
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row ">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <input asp-for="NameSurname" class="form-control form-control-lg form-control-solid" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (İş)</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-at"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="EmailJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Email" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Telefon (İş)</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-phone"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Phone" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg ">
+                                                            @foreach (var item in Model.ContractTypeList)
+                                                            {
+                                                                if (Model.ContractType == item.Description)
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                @if (Model.ContractTypeId == 1)
+                                                {
+                                                    <div class="form-group row">
+                                                        <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                    <span class="input-group-text">
+                                                                        <i class="ki ki-calendar"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="form-group row">
+                                                        <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label text-muted">Sözleşme Bitiş Tarihi</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                    <span class="input-group-text">
+                                                                        <i class="ki ki-calendar"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">İşe Başlama Tarihi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
+                                                            <input asp-for="JobJoinDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                                            <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (Kişisel)</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-at"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Telefon (Kişisel)</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-phone"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                                            <input type="hidden" asp-for="@Model.StaffId" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select class="form-control form-control-solid form-control-lg" asp-for="RoleId">
+
+                                                            @foreach (var item in Model.Roles)
+                                                            {
+                                                                if (Model.RoleId == item.RoleId)
+                                                                {
+                                                                    <option value="@item.RoleId" selected>@item.Name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.RoleId">@item.Name</option>
+                                                                }
+
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
+
+
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
                 </div>
+                @*Staff Career*@
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_2">
-                    @await Component.InvokeAsync("StaffCareer", Model.StaffId)
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-business-time text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            Pozisyon
+
+                                        </h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <a href="#" class="btn btn-primary font-weight-bolder">
+                                            <span class="svg-icon svg-icon-md">
+                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <circle fill="#000000" cx="9" cy="15" r="6" />
+                                                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                                    </g>
+                                                </svg>
+                                                <!--end::Svg Icon-->
+                                            </span>Pozisyon Ekle
+                                        </a>
+                                        <!--end::Button-->
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Başlangıç</th>
+                                                <th>Bitiş</th>
+                                                <th>Çalışma Şekli</th>
+                                                <th>Şirket</th>
+                                                <th>Şube</th>
+                                                <th>Departman</th>
+                                                <th>Unvan</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ListStaffCareer)
+                                            {
+                                                <tr>
+                                                    <td>@item.IsActive</td>
+                                                    <td>@item.JobStartDate.ToShortDateString()</td>
+                                                    <td>@item.JobFinishDate.Value.ToShortDateString()</td>
+                                                    <td>@item.ModeOfOperation</td>
+                                                    <td>@item.CompanyName</td>
+                                                    <td>@item.BranchName</td>
+                                                    <td>@item.DepartmantName</td>
+                                                    <td>@item.Title</td>
+                                                    <td></td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!--end: Datatable-->
+                                </div>
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Entry-->
                 </div>
+                @*Staff Personal Info*@
                 <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_3">
-                    @await Component.InvokeAsync("PersonalInfo")
+                    <div class="flex-row-fluid ml-lg-8">
+                        <!--begin::Form-->
+                        <form class="form" asp-action="UpdateStaffGeneral" asp-controller="Staff" method="post">
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <div class="card-header py-3">
+                                    <div class="card-title align-items-start flex-column">
+                                        <h3 class="card-label font-weight-bolder text-dark">
+                                            <i class="fas fa-house-user text-dark mr-2"></i>Kişisel Bilgiler
+                                        </h3>
+                                        <span class="text-muted font-weight-bold font-size-sm mt-1">Kişisel bilgileri düzenleyin</span>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <button class="btn btn-primary mr-2">Kaydet</button>
+                                        <a class="btn btn-secondary">Geri</a>
+                                    </div>
+                                </div>
+                                <!--end::Header-->
+
+                                <div class="container">
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Doğum Tarihi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                            <input asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Medeni Hal</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.ContractTypeList)
+                                                            {
+                                                                if (Model.ContractType == item.Description)
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Engel Derecesi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect2" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.ContractTypeList)
+                                                            {
+                                                                if (Model.ContractType == item.Description)
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Çocuk Sayısı</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect2" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                            <option>1</option>
+                                                            <option>1</option>
+                                                            <option>1</option>
+                                                            <option>1</option>
+                                                            <option>1</option>
+                                                            <option>1</option>
+                                                            <option>1</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Eğitim Durumu</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.ContractTypeList)
+                                                            {
+                                                                if (Model.ContractType == item.Description)
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Son Tamamlanan Eğitim Kurumu</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            
+                                                            <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid " />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Kimlik Numarası</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Cinsiyet</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.ContractTypeList)
+                                                            {
+                                                                if (Model.ContractType == item.Description)
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Uyruğu</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.ContractTypeList)
+                                                            {
+                                                                if (Model.ContractType == item.Description)
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Kan Grubu</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.ContractTypeList)
+                                                            {
+                                                                if (Model.ContractType == item.Description)
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Tamamlanan En Yüksek Eğitim Seviyesi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg ">
+                                                            @foreach (var item in Model.ContractTypeList)
+                                                            {
+                                                                if (Model.ContractType == item.Description)
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
+
+
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
                 </div>
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_4">
                     @await Component.InvokeAsync("OtherInfo")
@@ -219,42 +707,40 @@
 </div>
 <!--end::Card-->
 @section Scripts{
-        
-        <script type="text/javascript">
-            $('#ContractTypeSelect').on('change', function () {
-                var id = document.getElementById("ContractTypeSelect").value;
-                if (id == 1) {
-                    $("#ContractFinishDate").attr("disabled", false);
-                    $("#ContractFinishDate").removeClass("text-muted");
-                }
-                else {
-                    $("#ContractFinishDate").attr("disabled", true);
-                    $("#ContractFinishDate").addClass("text-muted");
-                }
-            });
-        </script>
-        <!--begin::Page Scripts(used by this page)-->
-        <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
-        <!--end::Page Scripts-->
-        <!--begin::Page Scripts(used by this page)-->
-        <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
-        <!--end::Page Scripts-->
-        <script type="text/javascript"
-                src="https://jquery-blog-js.googlecode.com/files/SetCase.js">
-        </script>
 
-        <!--begin::Page Vendors(used by this page)-->
-        <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-        <!--end::Page Vendors-->
-        <!--begin::Page Scripts(used by this page)-->
-        <script src="~/assets/js/pages/crud/datatables/basic/scrollable.js"></script>
-        <!--end::Page Scripts-->
-        <!--begin::Page Vendors(used by this page)-->
-        <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-        <!--end::Page Vendors-->
-        <!--begin::Page Scripts(used by this page)-->
-        <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
-        <!--end::Page Scripts-->
+    <script type="text/javascript">
+        $('#ContractTypeSelect').on('change', function () {
+            var id = document.getElementById("ContractTypeSelect").value;
+            if (id == 1) {
+                $("#ContractFinishDate").attr("disabled", false);
+                $("#ContractFinishDate").removeClass("text-muted");
+                $("#jobFinishDateLbl").removeClass("text-muted");
+            }
+            else {
+                $("#ContractFinishDate").attr("disabled", true);
+                $("#ContractFinishDate").addClass("text-muted");
+                $("#jobFinishDateLbl").addClass("text-muted");
+            }
+        });
+    </script>
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
+    <!--end::Page Scripts-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
+    <!--end::Page Scripts-->
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/assets/js/pages/crud/datatables/basic/scrollable.js"></script>
+    <!--end::Page Scripts-->
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
+    <!--end::Page Scripts-->
 
 
 
