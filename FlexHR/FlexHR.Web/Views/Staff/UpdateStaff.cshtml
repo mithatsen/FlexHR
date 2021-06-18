@@ -463,7 +463,7 @@
                 <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_3">
                     <div class="flex-row-fluid ml-lg-8">
                         <!--begin::Form-->
-                        <form class="form" asp-action="UpdateStaffGeneral" asp-controller="Staff" method="post">
+                        <form class="form" asp-action="UpdateStaffPersonalInfo" asp-controller="Staff" method="post">
                             <!--begin::Card-->
                             <div class="card card-custom card-stretch">
                                 <!--begin::Header-->
@@ -491,9 +491,9 @@
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Doğum Tarihi</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                            <input asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
-                                                            <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_4" data-target-input="nearest">
+                                                            <input asp-for="@Model.StaffPersonelInfo.BirthDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_4" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_4" data-toggle="datetimepicker">
                                                                 <span class="input-group-text">
                                                                     <i class="ki ki-calendar"></i>
                                                                 </span>
@@ -504,10 +504,10 @@
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Medeni Hal</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <select id="ContractTypeSelect" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
-                                                            @foreach (var item in Model.ContractTypeList)
+                                                        <select id="ContractTypeSelect" asp-for="@Model.StaffPersonelInfo.MaritalStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in @Model.MaritialStatusList)
                                                             {
-                                                                if (Model.ContractType == item.Description)
+                                                                if (Model.StaffPersonelInfo.MaritalStatusGeneralSubTypeId == item.GeneralSubTypeId )
                                                                 {
                                                                     <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
                                                                 }
@@ -523,10 +523,10 @@
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Engel Derecesi</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <select id="ContractTypeSelect2" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
-                                                            @foreach (var item in Model.ContractTypeList)
+                                                        <select id="ContractTypeSelect2" asp-for="@Model.StaffPersonelInfo.DegreeOfDisabilityGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.DegreeOfDisabilityList)
                                                             {
-                                                                if (Model.ContractType == item.Description)
+                                                                if (Model.StaffPersonelInfo.DegreeOfDisabilityGeneralSubTypeId == item.GeneralSubTypeId)
                                                                 {
                                                                     <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
                                                                 }
@@ -539,11 +539,12 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
+                                                @*<div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Çocuk Sayısı</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect2" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
-                                                            <option>1</option>
+                                                            <option value="0">0</option>
+                                                            <option value="1">1</option>
                                                             <option>2</option>
                                                             <option>1</option>
                                                             <option>1</option>
@@ -554,14 +555,14 @@
                                                             <option>1</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div>*@
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Eğitim Durumu</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
-                                                            @foreach (var item in Model.ContractTypeList)
+                                                        <select id="ContractTypeSelect3" asp-for="@Model.StaffPersonelInfo.EducationStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.EducationStatusList)
                                                             {
-                                                                if (Model.ContractType == item.Description)
+                                                                if (Model.StaffPersonelInfo.EducationStatusGeneralSubTypeId == item.GeneralSubTypeId)
                                                                 {
                                                                     <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
                                                                 }
@@ -574,15 +575,15 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
+                                                @*<div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Son Tamamlanan Eğitim Kurumu</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             
-                                                            <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid " />
+                                                            <input  type="text" class="form-control form-control-lg form-control-solid " />
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>*@
 
                                             </div>
                                             <div class="col-md-6">
@@ -591,7 +592,9 @@
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group input-group-lg input-group-solid">
 
-                                                            <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                                            <input asp-for="StaffPersonelInfo.IdNumber" type="text" class="form-control form-control-lg form-control-solid" />
+                                                            <input type="hidden" asp-for="@Model.StaffPersonelInfo.StaffPersonelInfoId" />
+                                                            <input type="hidden" asp-for="StaffId" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -599,10 +602,10 @@
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Cinsiyet</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
-                                                            @foreach (var item in Model.ContractTypeList)
+                                                        <select id="ContractTypeSelect3" asp-for="@Model.StaffPersonelInfo.GenderGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.GenderList)
                                                             {
-                                                                if (Model.ContractType == item.Description)
+                                                                if (Model.StaffPersonelInfo.GenderGeneralSubTypeId == item.GeneralSubTypeId)
                                                                 {
                                                                     <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
                                                                 }
@@ -616,7 +619,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group row">
+                                                @*<div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Uyruğu</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
@@ -634,15 +637,15 @@
                                                             }
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div>*@
 
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Kan Grubu</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
-                                                            @foreach (var item in Model.ContractTypeList)
+                                                        <select id="ContractTypeSelect3" asp-for="@Model.StaffPersonelInfo.BloodGroupGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            @foreach (var item in Model.BloodGroupList)
                                                             {
-                                                                if (Model.ContractType == item.Description)
+                                                                if (Model.StaffPersonelInfo.BloodGroupGeneralSubTypeId == item.GeneralSubTypeId)
                                                                 {
                                                                     <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
                                                                 }
@@ -658,10 +661,10 @@
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Tamamlanan En Yüksek Eğitim Seviyesi</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg ">
-                                                            @foreach (var item in Model.ContractTypeList)
+                                                        <select id="ContractTypeSelect3" asp-for="@Model.StaffPersonelInfo.EducationLevelGeneralSubTypeId" class="form-control form-control-solid form-control-lg ">
+                                                            @foreach (var item in Model.EducationLevelList)
                                                             {
-                                                                if (Model.ContractType == item.Description)
+                                                                if (Model.StaffPersonelInfo.EducationLevelGeneralSubTypeId == item.GeneralSubTypeId)
                                                                 {
                                                                     <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
                                                                 }

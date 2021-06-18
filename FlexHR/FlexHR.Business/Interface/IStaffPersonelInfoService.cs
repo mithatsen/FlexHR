@@ -7,5 +7,6 @@ namespace FlexHR.Business.Interface
 {
     public interface IStaffPersonelInfoService : IGenericService<StaffPersonelInfo>
     {
+        StaffPersonelInfo GetPersonelInfoByStaffId(int id);
     }
 }

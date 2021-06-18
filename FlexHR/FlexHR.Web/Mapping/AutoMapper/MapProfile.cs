@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
+using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
 using FlexHR.Entity.Concrete;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #region Staff
             CreateMap<ListStaffDto, Staff>().ReverseMap();          
             CreateMap<UpdateStaffDto, Staff>().ReverseMap();
+            CreateMap<UpdateStaffDto, StaffPersonelInfo>().ReverseMap();
+            CreateMap<UpdateStaffPersonalInfoDto, Staff>().ReverseMap();
             #endregion
             #region StaffCareer
             CreateMap<ListStaffCareerDto, StaffCareer>().ReverseMap();

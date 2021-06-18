@@ -26,7 +26,14 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public string Password { get; set; }
         public string UserName { get; set; }
         public string ModeOfOperation { get; set; }
+        public List<GeneralSubType> BloodGroupList { get; set; }
+        public List<GeneralSubType> GenderList { get; set; }
+        public List<GeneralSubType> EducationStatusList { get; set; }
+        public List<GeneralSubType> EducationLevelList { get; set; }
+        public List<GeneralSubType> DegreeOfDisabilityList { get; set; }
+        public List<GeneralSubType> MaritialStatusList { get; set; }
         public List<GeneralSubType> ContractTypeList { get; set; } // bu dropdown için
+        public StaffPersonelInfo StaffPersonelInfo { get; set; } // bu dropdown için
         public List<Role> Roles { get; set; } // bu dropdown için
         public virtual ICollection<StaffGeneralSubType> StaffGeneralSubType { get; set; }
         public List<ListStaffCareerDto> ListStaffCareer { get; set; }

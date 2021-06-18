@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
+using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +22,10 @@ namespace FlexHR.Web.Controllers
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IRoleService _roleService;
         private readonly IStaffCareerService _careerService;
+        private readonly IStaffPersonelInfoService _staffPersonelInfoService;
         public StaffController  (    IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
-                                     IRoleService roleService, IStaffCareerService careerService
+                                     IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService
                                 )
         {
             _staffService = staffService;
@@ -33,6 +35,7 @@ namespace FlexHR.Web.Controllers
             _generalSubTypeService = generalSubTypeService;
             _roleService = roleService;
             _careerService = careerService;
+            _staffPersonelInfoService = staffPersonelInfoService;
         }
 
         public IActionResult Index()
@@ -46,8 +49,15 @@ namespace FlexHR.Web.Controllers
         {
             var result = _staffService.GetAllTables(id);
             var careerResult = _careerService.GetAllTableByStaffId(id);
+            var maritialStatusList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.MaritalStatus);
+            var degreeOfDisabilityList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.DegreeOfDisability);
+            var educationStatusList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.EducationStatus);
+            var genderList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Gender);
+            var bloodGroupList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.BloodGroup);
+            var educationLevelList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.EducationLevel);
             var temp = _staffGeneralSubTypeService.GetByStaffId(id);
             var temp2 = _staffRoleService.GetUserRoleByStaffId(id);
+            var personelInfo=_staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var departmentName = "";
             var superscription = "";
             var contractType = "";
@@ -69,7 +79,11 @@ namespace FlexHR.Web.Controllers
                 {
                     contractType = staffInfo[i];
                 }
-                else if(Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.ModeOfOperation)
+                //else if(Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.ModeOfOperation)
+                //{
+                //    maritialStatusId = Convert.ToInt32(staffInfo.GetKey(i));
+                //}
+                else if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.MaritalStatus)
                 {
                     modeOfOperation = staffInfo[i];
                 }
@@ -112,8 +126,20 @@ namespace FlexHR.Web.Controllers
                 Roles = roleList,
                 RoleId = temp2.RoleId,
                 JobFinishDate = result.JobFinishDate,
-                
-                ListStaffCareer=careerModels
+                //MaritialStatusId=(int)personelInfo.MaritalStatusGeneralSubTypeId,
+                //DegreeOfDisabilityId=(int)personelInfo.DegreeOfDisabilityGeneralSubTypeId,
+                //EducationStatusId=(int)personelInfo.EducationStatusGeneralSubTypeId,
+                //GenderId=(int)personelInfo.GenderGeneralSubTypeId,
+                //BloodGroupId=(int)personelInfo.BloodGroupGeneralSubTypeId,
+                //EducationLevelId=(int)personelInfo.EducationLevelGeneralSubTypeId,
+                BloodGroupList =bloodGroupList,
+                GenderList =genderList,
+                EducationLevelList =educationLevelList,
+                MaritialStatusList =maritialStatusList,
+                EducationStatusList =educationStatusList,
+                DegreeOfDisabilityList =degreeOfDisabilityList,
+                ListStaffCareer =careerModels,
+                StaffPersonelInfo = personelInfo
             };
             return View(model);
         }
@@ -141,6 +167,18 @@ namespace FlexHR.Web.Controllers
                 return RedirectToAction("UpdateStaff", new { id = model.StaffId });
             }
 
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateStaffPersonalInfo(UpdateStaffDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.StaffPersonelInfo.StaffId=model.StaffId;
+                _staffPersonelInfoService.Update(model.StaffPersonelInfo);
+                return RedirectToAction("UpdateStaff", new { id = model.StaffId });
+            }
             return View();
         }
     }
