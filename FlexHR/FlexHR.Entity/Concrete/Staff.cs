@@ -15,6 +15,9 @@ namespace FlexHR.Entity.Concrete
         public string PhonePersonal { get; set; }
         public DateTime JobJoinDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public bool WillUseSystem { get; set; }
         public bool IsActive { get; set; }
 
         public virtual ICollection<StaffCareer> StaffCareer { get; set; }
@@ -27,5 +30,6 @@ namespace FlexHR.Entity.Concrete
         public virtual ICollection<StaffPersonelInfo> StaffPersonelInfo { get; set; }
         public virtual ICollection<StaffSalary> StaffSalary { get; set; }
         public virtual ICollection<StaffShift> StaffShift { get; set; }
+        public virtual ICollection<StaffRole> StaffRole { get; set; }
     }
 }

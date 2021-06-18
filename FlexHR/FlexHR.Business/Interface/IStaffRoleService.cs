@@ -5,7 +5,8 @@ using System.Text;
 
 namespace FlexHR.Business.Interface
 {
-    public interface IUserRoleService : IGenericService<UserRole>
+    public interface IStaffRoleService : IGenericService<StaffRole>
     {
+        StaffRole GetUserRoleByStaffId(int id);
     }
 }

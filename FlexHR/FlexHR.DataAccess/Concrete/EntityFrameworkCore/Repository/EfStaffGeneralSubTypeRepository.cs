@@ -19,7 +19,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
         public List<StaffGeneralSubType> GetByStaffId(int id)
         {
-            return _context.StaffGeneralSubType.Where(x => x.StaffId == id).ToList();
+            return _context.StaffGeneralSubType.Include(x=>x.GeneralSubType).Where(x => x.StaffId == id).ToList();
         }
 
 

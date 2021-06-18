@@ -12,6 +12,6 @@ namespace FlexHR.Entity.Concrete
         public string Description { get; set; }
         public bool IsActive { get; set; }
 
-        public virtual ICollection<UserRole> UserRole { get; set; }
+        public virtual ICollection<StaffRole> StaffRole { get; set; }
     }
 }

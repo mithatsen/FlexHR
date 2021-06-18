@@ -16,15 +16,13 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffService _staffService;
         private readonly IStaffGeneralSubTypeService _staffGeneralSubTypeService;
         private readonly IMapper _mapper;
-     
-       
-
-        public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService)
+        private readonly IStaffRoleService _staffRoleService;
+        public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService, IStaffRoleService staffRoleService)
         {
             _staffService = staffService;
             _mapper = mapper;
             _staffGeneralSubTypeService = staffGeneralSubTypeService;
-     
+            _staffRoleService = staffRoleService;
         }
 
         public IActionResult Index()
@@ -67,13 +65,26 @@ namespace FlexHR.Web.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult UpdateStaffGeneral(UpdateStaffDto model,int id)
+        public IActionResult UpdateStaffGeneral(UpdateStaffDto model)
         {
-            model.StaffId = id;
             if (ModelState.IsValid)
             {
+                var temp = _staffGeneralSubTypeService.GetByStaffId(model.StaffId);
+                var temp2 = _staffRoleService.GetUserRoleByStaffId(model.StaffId);
+
+                foreach (var item in temp)
+                {
+                    if (item.GeneralSubType.GeneralTypeId== (int)GeneralTypeEnum.ContractType)
+                    {
+                        item.GeneralSubTypeId = model.ContractTypeId;
+                    }
+                }
+                temp2.RoleId = model.RoleId;
+                _staffRoleService.Update(temp2);
+                model.Password = "abc";
+                model.UserName = "abc";
                 _staffService.Update(_mapper.Map<Staff>(model));
-                return RedirectToAction("UpdateStaff", new { id = id });
+                return RedirectToAction("UpdateStaff", new { id = model.StaffId });
             }
 
             return View();

@@ -47,8 +47,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<StaffSalary> StaffSalary { get; set; }
         public virtual DbSet<StaffShift> StaffShift { get; set; }
         public virtual DbSet<Town> Town { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserRole> UserRole { get; set; }
+        public virtual DbSet<StaffRole> StaffRole { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,8 +73,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
             modelBuilder.ApplyConfiguration(new StaffPersonelInfoMap());
             modelBuilder.ApplyConfiguration(new StaffSalaryMap());
             modelBuilder.ApplyConfiguration(new StaffShiftMap());
-            modelBuilder.ApplyConfiguration(new UserMap());
-            modelBuilder.ApplyConfiguration(new UserRoleMap());
+            modelBuilder.ApplyConfiguration(new StaffRoleMap());
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -2,7 +2,7 @@
 <!--begin::Content-->
 <div class="flex-row-fluid ml-lg-8">
     <!--begin::Form-->
-    <form class="form" asp-action="UpdateStaffGeneral" asp-controller="Staff" asp-route-id="@Model.StaffId" method="post">
+    <form class="form" asp-action="UpdateStaffGeneral" asp-controller="Staff" method="post">
         <!--begin::Card-->
         <div class="card card-custom card-stretch">
             <!--begin::Header-->
@@ -65,7 +65,7 @@
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <select id="ContractTypeSelect" class="form-control form-control-solid ">
+                                    <select id="ContractTypeSelect" asp-for="ContractTypeId" class="form-control form-control-solid ">
                                         <option selected>Seçiniz</option>
                                         @foreach (var item in Model.ContractTypeList)
                                         {
@@ -137,6 +137,7 @@
                                             </span>
                                         </div>
                                         <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                        <input type="hidden" asp-for="@Model.StaffId" />
                                     </div>
 
                                 </div>
@@ -145,16 +146,21 @@
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <select class="form-control form-control-solid ">
+                                    <select class="form-control form-control-solid " asp-for="RoleId">
                                         <option selected>Seçiniz</option>
                                         @foreach (var item in Model.Roles)
                                         {
+                                            if (Model.RoleId == item.RoleId)
+                                            {
+                                                <option value="@item.RoleId" selected>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.RoleId">@item.Name</option>
+                                            }
 
-                                            <option>@item.Name</option>
 
                                         }
-
-
                                     </select>
                                 </div>
                             </div>

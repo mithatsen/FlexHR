@@ -8,23 +8,23 @@ using System.Text;
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
 {
    
-    public class UserRoleMap : IEntityTypeConfiguration<UserRole>
+    public class StaffRoleMap : IEntityTypeConfiguration<StaffRole>
     {
-        public void Configure(EntityTypeBuilder<UserRole> builder)
+        public void Configure(EntityTypeBuilder<StaffRole> builder)
         {
-            builder.ToTable("User_Role");
+            builder.ToTable("Staff_Role");
 
             builder.HasOne(d => d.Role)
-                .WithMany(p => p.UserRole)
+                .WithMany(p => p.StaffRole)
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_User_Role_Role");
+                .HasConstraintName("FK_Staff_Role_Role");
 
-            builder.HasOne(d => d.User)
-                .WithMany(p => p.UserRole)
-                .HasForeignKey(d => d.UserId)
+            builder.HasOne(d => d.Staff)
+                .WithMany(p => p.StaffRole)
+                .HasForeignKey(d => d.StaffId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_User_Role_User");
+                .HasConstraintName("FK_Staff_Role_Staff");
 
 
         }

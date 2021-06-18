@@ -26,6 +26,14 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
             entity.Property(e => e.PhoneJob).HasMaxLength(15);
 
             entity.Property(e => e.PhonePersonal).HasMaxLength(15);
+       
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.UserName)
+                .IsRequired()
+                .HasMaxLength(50);
         }
     }
 }

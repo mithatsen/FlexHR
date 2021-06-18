@@ -223,14 +223,11 @@
         <script type="text/javascript">
             $('#ContractTypeSelect').on('change', function () {
                 var id = document.getElementById("ContractTypeSelect").value;
-                console.log(id);
                 if (id == 1) {
-                    console.log("99999999");
                     $("#ContractFinishDate").attr("disabled", false);
                     $("#ContractFinishDate").removeClass("text-muted");
                 }
                 else {
-                    console.log("122313213");
                     $("#ContractFinishDate").attr("disabled", true);
                     $("#ContractFinishDate").addClass("text-muted");
                 }

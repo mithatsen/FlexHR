@@ -17,11 +17,12 @@ namespace FlexHR.Web.ViewComponents
 
         private readonly IGeneralSubTypeService _generalSubType;
         private readonly IRoleService _roleService;
+        private readonly IStaffRoleService _staffRoleService;
 
-        public StaffGeneral(IStaffService staffService, IStaffGeneralSubTypeService staffGeneralSubTypeService, IGeneralSubTypeService generalSubType, IRoleService roleService)
+        public StaffGeneral(IStaffService staffService, IStaffGeneralSubTypeService staffGeneralSubTypeService, IGeneralSubTypeService generalSubType, IRoleService roleService, IStaffRoleService staffRoleService)
         {
             _staffService = staffService;
-
+            _staffRoleService = staffRoleService;
             _staffGeneralSubTypeService = staffGeneralSubTypeService;
             _generalSubType = generalSubType;
             _roleService = roleService;
@@ -30,6 +31,7 @@ namespace FlexHR.Web.ViewComponents
         {
             var result = _staffService.GetAllTables(id);
             var temp = _staffGeneralSubTypeService.GetByStaffId(id);
+            var temp2 = _staffRoleService.GetUserRoleByStaffId(id);
             var departmentName = "";
             var superscription = "";
             var contractType = "";
@@ -73,7 +75,9 @@ namespace FlexHR.Web.ViewComponents
                 Superscription = superscription,
                 ContractTypeList = contractTypeList,
                 ContractType = contractType,
-                Roles = roleList
+                Roles = roleList,
+                RoleId=temp2.RoleId
+
             };
             return View(model);
         }
