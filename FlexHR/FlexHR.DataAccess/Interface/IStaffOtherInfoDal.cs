@@ -7,5 +7,6 @@ namespace FlexHR.DataAccess.Interface
 {
     public interface IStaffOtherInfoDal : IGenericDal<StaffOtherInfo>
     {
+        StaffOtherInfo GetOtherInfoByStaffId(int id);
     }
 }

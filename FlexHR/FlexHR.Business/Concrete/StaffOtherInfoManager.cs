@@ -9,9 +9,16 @@ namespace FlexHR.Business.Concrete
 {
     public class StaffOtherInfoManager : GenericManager<StaffOtherInfo>, IStaffOtherInfoService
     {
+        private readonly IStaffOtherInfoDal _staffOtherInfoDal;
+
         public StaffOtherInfoManager(IStaffOtherInfoDal staffOtherInfoDal) : base(staffOtherInfoDal)
         {
+            _staffOtherInfoDal = staffOtherInfoDal;
+        }
 
+        public StaffOtherInfo GetOtherInfoByStaffId(int id)
+        {
+            return _staffOtherInfoDal.GetOtherInfoByStaffId(id);
         }
     }
 }

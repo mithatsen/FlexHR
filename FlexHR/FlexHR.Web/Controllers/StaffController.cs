@@ -6,6 +6,8 @@ using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +25,14 @@ namespace FlexHR.Web.Controllers
         private readonly IRoleService _roleService;
         private readonly IStaffCareerService _careerService;
         private readonly IStaffPersonelInfoService _staffPersonelInfoService;
+        private readonly IStaffOtherInfoService _staffOtherInfoService;
+        private readonly ITownService _townService;
+        private readonly ICityService _cityService;
+        private readonly ICountryService _countryService;
         public StaffController  (    IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
-                                     IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService
+                                     IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService,
+                                     IStaffOtherInfoService staffOtherInfoService,ITownService townService,ICityService cityService, ICountryService countryService
                                 )
         {
             _staffService = staffService;
@@ -36,6 +43,10 @@ namespace FlexHR.Web.Controllers
             _roleService = roleService;
             _careerService = careerService;
             _staffPersonelInfoService = staffPersonelInfoService;
+            _staffOtherInfoService = staffOtherInfoService;
+            _townService = townService;
+            _cityService = cityService;
+            _countryService = countryService;
         }
 
         public IActionResult Index()
@@ -53,15 +64,21 @@ namespace FlexHR.Web.Controllers
             var degreeOfDisabilityList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.DegreeOfDisability);
             var educationStatusList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.EducationStatus);
             var genderList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Gender);
+            var accountTypeList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.AccountType);
             var bloodGroupList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.BloodGroup);
             var educationLevelList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.EducationLevel);
             var temp = _staffGeneralSubTypeService.GetByStaffId(id);
             var temp2 = _staffRoleService.GetUserRoleByStaffId(id);
             var personelInfo=_staffPersonelInfoService.GetPersonelInfoByStaffId(id);
+            var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
             var departmentName = "";
             var superscription = "";
             var contractType = "";
             var modeOfOperation = "";
+
+            ViewBag.Countries = new SelectList(_countryService.GetAll(), "CountryId", "Name");
+            ViewBag.Cities = new SelectList(_cityService.GetAll(), "CityId", "Name");
+            ViewBag.Towns = new SelectList(_townService.GetAll(), "TownId", "Name");
 
             var staffInfo = _staffGeneralSubTypeService.GetGeneralSubTypeByStaffGeneralSubTypeList(temp);
             for (int i = 0; i < staffInfo.Count; i++)
@@ -126,12 +143,6 @@ namespace FlexHR.Web.Controllers
                 Roles = roleList,
                 RoleId = temp2.RoleId,
                 JobFinishDate = result.JobFinishDate,
-                //MaritialStatusId=(int)personelInfo.MaritalStatusGeneralSubTypeId,
-                //DegreeOfDisabilityId=(int)personelInfo.DegreeOfDisabilityGeneralSubTypeId,
-                //EducationStatusId=(int)personelInfo.EducationStatusGeneralSubTypeId,
-                //GenderId=(int)personelInfo.GenderGeneralSubTypeId,
-                //BloodGroupId=(int)personelInfo.BloodGroupGeneralSubTypeId,
-                //EducationLevelId=(int)personelInfo.EducationLevelGeneralSubTypeId,
                 BloodGroupList =bloodGroupList,
                 GenderList =genderList,
                 EducationLevelList =educationLevelList,
@@ -139,7 +150,9 @@ namespace FlexHR.Web.Controllers
                 EducationStatusList =educationStatusList,
                 DegreeOfDisabilityList =degreeOfDisabilityList,
                 ListStaffCareer =careerModels,
-                StaffPersonelInfo = personelInfo
+                StaffPersonelInfo = personelInfo,
+                StaffOtherInfo=staffOtherInfo,
+                AccountTypeList=accountTypeList
             };
             return View(model);
         }
@@ -180,6 +193,16 @@ namespace FlexHR.Web.Controllers
                 return RedirectToAction("UpdateStaff", new { id = model.StaffId });
             }
             return View();
+        }
+        public JsonResult TownList(int id)
+        {
+            var jsonString = JsonConvert.SerializeObject(_townService.GetTownListByCityId(id));
+            return Json(jsonString);
+        }
+        public JsonResult CityList(int id)
+        {
+            var jsonString = JsonConvert.SerializeObject(_cityService.GetCityListByCountryId(id));
+            return Json(jsonString);
         }
     }
 }

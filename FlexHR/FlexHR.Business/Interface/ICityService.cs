@@ -7,5 +7,6 @@ namespace FlexHR.Business.Interface
 {
     public interface ICityService:IGenericService<City>
     {
+        public List<City> GetCityListByCountryId(int id);
     }
 }
