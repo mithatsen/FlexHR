@@ -2,8 +2,16 @@
 var KTSelect2 = function() {
     // Private functions
     var demos = function() {
-        // basic
+        // country
         $('#kt_select2_1, #kt_select2_1_validate').select2({
+            placeholder: 'Select a state'
+        });
+        // city
+        $('#kt_select2_city, #kt_select2_1_validate').select2({
+            placeholder: 'Select a state'
+        });
+        // town
+        $('#kt_select2_town, #kt_select2_1_validate').select2({
             placeholder: 'Select a state'
         });
         // nested
@@ -148,11 +156,18 @@ var KTSelect2 = function() {
 
     var modalDemos = function() {
         $('#kt_select2_modal').on('shown.bs.modal', function () {
-            // basic
+            // country
             $('#kt_select2_1_modal').select2({
                 placeholder: "Select a state"
             });
-
+            // city
+            $('#kt_select2_city_modal').select2({
+                placeholder: "Select a state"
+            });
+            // town
+            $('#kt_select2_town_modal').select2({
+                placeholder: "Select a state"
+            });
             // nested
             $('#kt_select2_2_modal').select2({
                 placeholder: "Select a state"

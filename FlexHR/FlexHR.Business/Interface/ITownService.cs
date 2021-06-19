@@ -8,5 +8,6 @@ namespace FlexHR.Business.Interface
     public interface ITownService : IGenericService<Town>
     {
         public List<Town> GetTownListByCityId(int id);
+        public TownHelper GetCityIdAndCountryIdByTownId(int id);
     }
 }

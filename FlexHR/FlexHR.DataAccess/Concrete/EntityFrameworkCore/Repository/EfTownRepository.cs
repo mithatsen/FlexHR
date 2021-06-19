@@ -1,6 +1,7 @@
 ﻿using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context;
 using FlexHR.DataAccess.Interface;
 using FlexHR.Entity.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,15 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         {
             _context = context;
         }
-     
+
+        public TownHelper GetCityIdAndCountryIdByTownId(int id)
+        {
+            return _context.StaffOtherInfo.Include(x => x.Town).ThenInclude(x => x.City).Where(x => x.TownId == id).Select(I => new TownHelper
+            {
+                CityId = I.Town.CityId,
+                CountryId = I.Town.City.CountryId
+            }).FirstOrDefault();
+        }
 
         public List<Town> GetTownListByCityId(int id)
         {

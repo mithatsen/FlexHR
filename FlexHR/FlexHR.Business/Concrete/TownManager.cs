@@ -14,6 +14,11 @@ namespace FlexHR.Business.Concrete
             _townDal = townDal;
         }
 
+        public TownHelper GetCityIdAndCountryIdByTownId(int id)
+        {
+            return _townDal.GetCityIdAndCountryIdByTownId(id);
+        }
+
         public List<Town> GetTownListByCityId(int id)
         {
             return _townDal.GetTownListByCityId(id);

@@ -3056,9 +3056,12 @@ select.selectpicker {
   white-space: nowrap !important; }
 
 .select2-container--default .select2-selection--single {
-  background-color: #fff;
-  border: 1px solid #aaa;
-  border-radius: 4px; }
+    background-color: #F3F6F9;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 0.20rem 1rem;
+    
+}
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
   color: #444;

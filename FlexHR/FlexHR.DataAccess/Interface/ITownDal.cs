@@ -8,5 +8,6 @@ namespace FlexHR.DataAccess.Interface
     public interface ITownDal : IGenericDal<Town>
     {
         public List<Town> GetTownListByCityId(int id);
+        public TownHelper GetCityIdAndCountryIdByTownId(int id);
     }
 }

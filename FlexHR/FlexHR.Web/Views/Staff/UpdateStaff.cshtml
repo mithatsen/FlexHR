@@ -6,7 +6,6 @@
 @section Styles{
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-
     <!--end::Page Vendors Styles-->
 }
 <!--begin::Card-->
@@ -270,10 +269,10 @@
                                                 @if (Model.ContractTypeId == 1)
                                                 {
                                                     <div class="form-group row">
-                                                        <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
+                                                        <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label text-muted">Sözleşme Bitiş Tarihi</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input form-control-lg text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
                                                                     <span class="input-group-text">
                                                                         <i class="ki ki-calendar"></i>
@@ -286,10 +285,10 @@
                                                 else
                                                 {
                                                     <div class="form-group row">
-                                                        <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label text-muted">Sözleşme Bitiş Tarihi</label>
+                                                        <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label ">Sözleşme Bitiş Tarihi</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  "  placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
                                                                     <span class="input-group-text">
                                                                         <i class="ki ki-calendar"></i>
@@ -694,7 +693,7 @@
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_4">
                     <div class="flex-row-fluid ml-lg-8">
                         <!--begin::Form-->
-                        <form class="form" asp-action="UpdateStaffPersonalInfo" asp-controller="Staff" method="post">
+                        <form class="form" asp-action="UpdateStaffOtherInfo" asp-controller="Staff" method="post">
                             <!--begin::Card-->
                             <div class="card card-custom card-stretch">
                                 <!--begin::Header-->
@@ -741,6 +740,8 @@
                                                                 </span>
                                                             </div>
                                                             <input asp-for="StaffOtherInfo.HomePhoneNumber" type="text" class="form-control form-control-lg form-control-solid" placeholder="Ev Telefonu" />
+                                                            <input type="hidden" asp-for="@Model.StaffOtherInfo.StaffOtherInfoId" />
+                                                            <input type="hidden" asp-for="StaffId" />
                                                         </div>
 
                                                     </div>
@@ -759,33 +760,65 @@
 
                                             </div>
                                             <div class="col-md-6">
-
-                                                <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
-                                                    <div class="col-lg-9 col-xl-6">
-                                                        <select id="kt_select2_1" onchange="countryChange()" style="width:230px;"  class="form-control form-control-solid form-control-lg" asp-for="CountryId" asp-items="ViewBag.Countries">
-                                                            <option hidden value="-1">Seçiniz</option>
-                                                        </select>
+                                                @if (Model.TownId != null)
+                                                {
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-lg" asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
+                                                                <option hidden value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
 
 
-                                                <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
-                                                    <div class="col-lg-9 col-xl-6">
-                                                        <select id="CitySelect" disabled onchange="cityChange()" asp-for="CityId" class="form-control form-control-solid form-control-lg text-muted">
-                                                            <option hidden value="-1">Seçiniz</option>
-                                                        </select>
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_city"  onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Cities">
+                                                                <option hidden value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
-                                                    <div class="col-lg-9 col-xl-6">
-                                                        <select id="TownSelect" disabled asp-for="TownId" class="form-control form-control-solid form-control-lg text-muted">
-                                                            <option hidden value="-1">Seçiniz</option>
-                                                        </select>
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_town"  asp-for="StaffOtherInfo.TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Towns">
+                                                                <option hidden value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-lg" asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
+                                                                <option hidden value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_city" disabled onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted">
+                                                                <option hidden value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_town" disabled asp-for="StaffOtherInfo.TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted">
+                                                                <option hidden value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
@@ -977,51 +1010,51 @@
                     method: "GET",
                     url: "/Staff/CityList/" + id,
                 }).done(function (content) {
-                    $("#CitySelect").attr("disabled", false);
-                    $("#CitySelect").removeClass("text-muted");
-                    $("#CitySelect").empty();
-                    $("#CitySelect").append('<option value="-1">İl seçiniz</option>');
+                    $("#kt_select2_city").attr("disabled", false);
+                    $("#kt_select2_city").removeClass("text-muted");
+                    $("#kt_select2_city").empty();
+                    $("#kt_select2_city").append('<option value="-1">İl seçiniz</option>');
                     let cities = JSON.parse(content);
                     for (var i = 0; i < cities.length; i++) {
                         var opt = '<option value="' + cities[i].CityId + '">' + cities[i].Name + '</option>';
-                        $("#CitySelect").append(opt);
+                        $("#kt_select2_city").append(opt);
                     }
                 }).fail(function (error) {
 
                 });
             } else {
-                $("#CitySelect").empty();
-                $("#CitySelect").append('<option value="-1">İl seçiniz</option>');
-                $("#CitySelect").attr("disabled", true);
-                $("#CitySelect").addClass("text-muted");
+                $("#kt_select2_city").empty();
+                $("#kt_select2_city").append('<option value="-1">İl seçiniz</option>');
+                $("#kt_select2_city").attr("disabled", true);
+                $("#kt_select2_city").addClass("text-muted");
 
             }
         }
         function cityChange() {
-            var id = document.getElementById("CitySelect").value;
+            var id = document.getElementById("kt_select2_city").value;
             if (id > 0) {
                 $.ajax({
                     method: "GET",
                     url: "/Staff/TownList/" + id,
                 }).done(function (content) {
-                    $("#TownSelect").attr("disabled", false);
-                    $("#TownSelect").removeClass("text-muted");
-                    $("#TownSelect").empty();
-                    $("#TownSelect").append('<option value="-1">İlçe seçiniz</option>');
+                    $("#kt_select2_town").attr("disabled", false);
+                    $("#kt_select2_town").removeClass("text-muted");
+                    $("#kt_select2_town").empty();
+                    $("#kt_select2_town").append('<option value="-1">İlçe seçiniz</option>');
 
                     let town = JSON.parse(content);
                     for (var i = 0; i < town.length; i++) {
                         var opt = '<option value="' + town[i].TownId + '">' + town[i].Name + '</option>';
-                        $("#TownSelect").append(opt);
+                        $("#kt_select2_town").append(opt);
                     }
                 }).fail(function (error) {
 
                 });
             } else {
-                $("#TownSelect").empty();
-                $("#TownSelect").append('<option value="-1">İlçe seçiniz</option>');
-                $("#TownSelect").attr("disabled", true);
-                $("#TownSelect").addClass("text-muted");
+                $("#kt_select2_town").empty();
+                $("#kt_select2_town").append('<option value="-1">İlçe seçiniz</option>');
+                $("#kt_select2_town").attr("disabled", true);
+                $("#kt_select2_town").addClass("text-muted");
             }
         }
 

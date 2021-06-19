@@ -71,14 +71,21 @@ namespace FlexHR.Web.Controllers
             var temp2 = _staffRoleService.GetUserRoleByStaffId(id);
             var personelInfo=_staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
+            TownHelper cityIdAndCountryId = new TownHelper() ;
+            if (staffOtherInfo.TownId!=null)
+            {
+                cityIdAndCountryId = _townService.GetCityIdAndCountryIdByTownId((int)staffOtherInfo.TownId);
+
+                ViewBag.Cities = new SelectList(_cityService.GetCityListByCountryId(cityIdAndCountryId.CountryId), "CityId", "Name");
+                ViewBag.Towns = new SelectList(_townService.GetTownListByCityId(cityIdAndCountryId.CityId), "TownId", "Name");
+            }
+            
             var departmentName = "";
             var superscription = "";
             var contractType = "";
             var modeOfOperation = "";
 
             ViewBag.Countries = new SelectList(_countryService.GetAll(), "CountryId", "Name");
-            ViewBag.Cities = new SelectList(_cityService.GetAll(), "CityId", "Name");
-            ViewBag.Towns = new SelectList(_townService.GetAll(), "TownId", "Name");
 
             var staffInfo = _staffGeneralSubTypeService.GetGeneralSubTypeByStaffGeneralSubTypeList(temp);
             for (int i = 0; i < staffInfo.Count; i++)
@@ -152,7 +159,8 @@ namespace FlexHR.Web.Controllers
                 ListStaffCareer =careerModels,
                 StaffPersonelInfo = personelInfo,
                 StaffOtherInfo=staffOtherInfo,
-                AccountTypeList=accountTypeList
+                AccountTypeList=accountTypeList,
+                TownHelper= cityIdAndCountryId
             };
             return View(model);
         }
@@ -164,13 +172,22 @@ namespace FlexHR.Web.Controllers
             {
                 var temp = _staffGeneralSubTypeService.GetByStaffId(model.StaffId);
                 var temp2 = _staffRoleService.GetUserRoleByStaffId(model.StaffId);
-
+                var counter = 0;
                 foreach (var item in temp)
                 {
                     if (item.GeneralSubType.GeneralTypeId== (int)GeneralTypeEnum.ContractType)
                     {
+                        counter++;
                         item.GeneralSubTypeId = model.ContractTypeId;
                     }
+                }
+                if (counter==0)
+                {
+                    _staffGeneralSubTypeService.Add(new StaffGeneralSubType
+                    {
+                        GeneralSubTypeId=model.ContractTypeId,
+                        StaffId=model.StaffId
+                    });
                 }
                 temp2.RoleId = model.RoleId;
                 _staffRoleService.Update(temp2);
@@ -190,6 +207,17 @@ namespace FlexHR.Web.Controllers
             {
                 model.StaffPersonelInfo.StaffId=model.StaffId;
                 _staffPersonelInfoService.Update(model.StaffPersonelInfo);
+                return RedirectToAction("UpdateStaff", new { id = model.StaffId });
+            }
+            return View();
+        }
+        [HttpPost]
+        public IActionResult UpdateStaffOtherInfo(UpdateStaffDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.StaffOtherInfo.StaffId = model.StaffId;
+                _staffOtherInfoService.Update(model.StaffOtherInfo);
                 return RedirectToAction("UpdateStaff", new { id = model.StaffId });
             }
             return View();
