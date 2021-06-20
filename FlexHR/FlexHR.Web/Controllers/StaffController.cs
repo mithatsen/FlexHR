@@ -29,10 +29,10 @@ namespace FlexHR.Web.Controllers
         private readonly ITownService _townService;
         private readonly ICityService _cityService;
         private readonly ICountryService _countryService;
-        public StaffController  (    IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
+        public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
                                      IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService,
-                                     IStaffOtherInfoService staffOtherInfoService,ITownService townService,ICityService cityService, ICountryService countryService
+                                     IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService
                                 )
         {
             _staffService = staffService;
@@ -69,21 +69,27 @@ namespace FlexHR.Web.Controllers
             var educationLevelList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.EducationLevel);
             var temp = _staffGeneralSubTypeService.GetByStaffId(id);
             var temp2 = _staffRoleService.GetUserRoleByStaffId(id);
-            var personelInfo=_staffPersonelInfoService.GetPersonelInfoByStaffId(id);
+            var personelInfo = _staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
-            TownHelper cityIdAndCountryId = new TownHelper() ;
-            if (staffOtherInfo.TownId!=null)
+           
+       
+            TownHelper cityIdAndCountryId = new TownHelper();
+
+            if (staffOtherInfo.TownId != null)
             {
                 cityIdAndCountryId = _townService.GetCityIdAndCountryIdByTownId((int)staffOtherInfo.TownId);
 
                 ViewBag.Cities = new SelectList(_cityService.GetCityListByCountryId(cityIdAndCountryId.CountryId), "CityId", "Name");
                 ViewBag.Towns = new SelectList(_townService.GetTownListByCityId(cityIdAndCountryId.CityId), "TownId", "Name");
             }
-            
+
+
+
             var departmentName = "";
             var superscription = "";
             var contractType = "";
             var modeOfOperation = "";
+            int contractTypeId = -1;
 
             ViewBag.Countries = new SelectList(_countryService.GetAll(), "CountryId", "Name");
 
@@ -102,6 +108,7 @@ namespace FlexHR.Web.Controllers
                 else if (generalTypeId == (int)GeneralTypeEnum.ContractType)
                 {
                     contractType = staffInfo[i];
+
                 }
                 //else if(Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.ModeOfOperation)
                 //{
@@ -113,18 +120,29 @@ namespace FlexHR.Web.Controllers
                 }
 
             }
-            var careerModels= new List<ListStaffCareerDto>();
+
+
+            foreach (var item in temp)
+            {
+                if (item.GeneralSubType.GeneralTypeId == (int)GeneralTypeEnum.ContractType)
+                {
+                    contractTypeId = item.GeneralSubTypeId;
+                }
+            }
+
+
+            var careerModels = new List<ListStaffCareerDto>();
             foreach (var item in careerResult)
             {
                 var careerModel = new ListStaffCareerDto
                 {
-                  
+
                     JobStartDate = item.JobStartDate,
-                    JobFinishDate = item.JobFinishDate,                   
+                    JobFinishDate = item.JobFinishDate,
                     CompanyName = item.CompanyBranch.Company.CompanyName,
                     BranchName = item.CompanyBranch.BranchName,
-                    IsActive = item.IsActive,               
-                    ModeOfOperation = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.ModeOfOperationGeneralSubTypeId),                  
+                    IsActive = item.IsActive,
+                    ModeOfOperation = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.ModeOfOperationGeneralSubTypeId),
                     DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DepartmantGeneralSubTypeId),
                     Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.TitleGeneralSubTypeId)
 
@@ -141,7 +159,7 @@ namespace FlexHR.Web.Controllers
                 JobJoinDate = result.JobJoinDate,
                 NameSurname = result.NameSurname,
                 PhoneJob = result.PhoneJob,
-                PhonePersonal = result.PhonePersonal,                             
+                PhonePersonal = result.PhonePersonal,
                 DepartmantName = departmentName,
                 Superscription = superscription,
                 ContractTypeList = contractTypeList,
@@ -150,18 +168,21 @@ namespace FlexHR.Web.Controllers
                 Roles = roleList,
                 RoleId = temp2.RoleId,
                 JobFinishDate = result.JobFinishDate,
-                BloodGroupList =bloodGroupList,
-                GenderList =genderList,
-                EducationLevelList =educationLevelList,
-                MaritialStatusList =maritialStatusList,
-                EducationStatusList =educationStatusList,
-                DegreeOfDisabilityList =degreeOfDisabilityList,
-                ListStaffCareer =careerModels,
+                BloodGroupList = bloodGroupList,
+                GenderList = genderList,
+                EducationLevelList = educationLevelList,
+                MaritialStatusList = maritialStatusList,
+                EducationStatusList = educationStatusList,
+                DegreeOfDisabilityList = degreeOfDisabilityList,
+                ListStaffCareer = careerModels,
                 StaffPersonelInfo = personelInfo,
-                StaffOtherInfo=staffOtherInfo,
-                AccountTypeList=accountTypeList,
-                TownHelper= cityIdAndCountryId
-            };
+                StaffOtherInfo = staffOtherInfo,
+                AccountTypeList = accountTypeList,
+                TownHelper = cityIdAndCountryId,
+                ContractTypeId = contractTypeId,
+                TownId= staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId
+
+        };
             return View(model);
         }
 
@@ -175,18 +196,18 @@ namespace FlexHR.Web.Controllers
                 var counter = 0;
                 foreach (var item in temp)
                 {
-                    if (item.GeneralSubType.GeneralTypeId== (int)GeneralTypeEnum.ContractType)
+                    if (item.GeneralSubType.GeneralTypeId == (int)GeneralTypeEnum.ContractType)
                     {
                         counter++;
                         item.GeneralSubTypeId = model.ContractTypeId;
                     }
                 }
-                if (counter==0)
+                if (counter == 0)
                 {
                     _staffGeneralSubTypeService.Add(new StaffGeneralSubType
                     {
-                        GeneralSubTypeId=model.ContractTypeId,
-                        StaffId=model.StaffId
+                        GeneralSubTypeId = model.ContractTypeId,
+                        StaffId = model.StaffId
                     });
                 }
                 temp2.RoleId = model.RoleId;
@@ -205,7 +226,7 @@ namespace FlexHR.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.StaffPersonelInfo.StaffId=model.StaffId;
+                model.StaffPersonelInfo.StaffId = model.StaffId;
                 _staffPersonelInfoService.Update(model.StaffPersonelInfo);
                 return RedirectToAction("UpdateStaff", new { id = model.StaffId });
             }
