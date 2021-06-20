@@ -20,10 +20,11 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }
             base.OnConfiguring(optionsBuilder);
         }
+      
 
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Company> Company { get; set; }

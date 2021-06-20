@@ -8,11 +8,11 @@ var KTSelect2 = function() {
         });
         // city
         $('#kt_select2_city, #kt_select2_1_validate').select2({
-            placeholder: 'Select a state'
+            placeholder: 'Sehir Seciniz'
         });
         // town
         $('#kt_select2_town, #kt_select2_1_validate').select2({
-            placeholder: 'Select a state'
+            placeholder: 'Ilce Seciniz'
         });
         // nested
         $('#kt_select2_2, #kt_select2_2_validate').select2({

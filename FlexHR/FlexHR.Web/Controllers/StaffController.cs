@@ -5,6 +5,7 @@ using FlexHR.DTO.Dtos.StaffDtos;
 using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -52,6 +53,8 @@ namespace FlexHR.Web.Controllers
         public IActionResult Index()
         {
             var result = _staffService.GetAll();
+            ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
+            ViewBag.Roles = new SelectList(_roleService.GetAll(), "RoleId", "Name");
             return View(_mapper.Map<List<ListStaffDto>>(result));
         }
 
@@ -252,6 +255,36 @@ namespace FlexHR.Web.Controllers
         {
             var jsonString = JsonConvert.SerializeObject(_cityService.GetCityListByCountryId(id));
             return Json(jsonString);
+        }
+
+        [HttpPost]
+        public IActionResult AddStaffWithAjax(AddStaffDto  modal)
+        {
+            var tempUserName = "temp";
+            _staffService.Add(new Staff
+            {
+                NameSurname=modal.NameSurname,
+                JobJoinDate=modal.JobJoinDate,
+                IsActive=true,
+                UserName=tempUserName,
+                Password="1",
+                WillUseSystem=true,         
+                EmailJob = modal.EmailJob,
+                EmailPersonal = modal.EmailPersonal,            
+                JobFinishDate = modal.JobFinishDate,             
+                PhoneJob = modal.PhoneJob,
+                PhonePersonal = modal.PhonePersonal,           
+            });
+            var staffId=_staffService.GetStaffIdByUserName(tempUserName);
+            if (modal.ContractTypeId != -1)
+            {
+                _staffGeneralSubTypeService.Add(new StaffGeneralSubType { StaffId = staffId, GeneralSubTypeId = modal.ContractTypeId });
+            }
+            _staffRoleService.Add(new StaffRole { StaffId = staffId, RoleId = modal.RoleId });
+            _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
+            _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });
+          
+            return RedirectToAction("Staff");
         }
     }
 }

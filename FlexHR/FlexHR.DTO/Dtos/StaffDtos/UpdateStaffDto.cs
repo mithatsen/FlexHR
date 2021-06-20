@@ -26,9 +26,9 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public string Password { get; set; }
         public string UserName { get; set; }
         public string ModeOfOperation { get; set; }
-        public int CountryId { get; set; }
-        public int CityId { get; set; }
-        public int TownId { get; set; }
+        public int CountryId { get; set; } = -1;
+        public int CityId { get; set; } = -1;
+        public int TownId { get; set; } = -1;
         public TownHelper TownHelper { get; set; }
 
         public StaffPersonelInfo StaffPersonelInfo { get; set; } 

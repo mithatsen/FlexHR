@@ -8,5 +8,6 @@ namespace FlexHR.Business.Interface
     public interface IStaffService : IGenericService<Staff>
     {
         Staff GetAllTables(int id);
+        int GetStaffIdByUserName(string userName);
     }
 }

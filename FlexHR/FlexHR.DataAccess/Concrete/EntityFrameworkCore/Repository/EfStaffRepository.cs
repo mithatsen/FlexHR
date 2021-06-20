@@ -21,5 +21,10 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         {
             return _context.Staff.Include(x => x.StaffGeneralSubType).ThenInclude(x => x.GeneralSubType).ThenInclude(x => x.GeneralType).Where(p=>p.StaffId==id).FirstOrDefault();
         }
+
+        public int GetStaffIdByUserName(string userName)
+        {
+            return _context.Staff.Where(p => p.UserName == userName).FirstOrDefault().StaffId;
+        }
     }
 }

@@ -352,7 +352,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select class="form-control form-control-solid form-control-lg" asp-for="RoleId">
-
+                                                            <option disabled value="-1">Seçiniz</option>
                                                             @foreach (var item in Model.Roles)
                                                             {
                                                                 if (Model.RoleId == item.RoleId)
@@ -506,6 +506,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Medeni Hal</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect" asp-for="@Model.StaffPersonelInfo.MaritalStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            <option disabled value="-1">Seçiniz</option>
                                                             @foreach (var item in @Model.MaritialStatusList)
                                                             {
                                                                 if (Model.StaffPersonelInfo.MaritalStatusGeneralSubTypeId == item.GeneralSubTypeId)
@@ -525,6 +526,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Engel Derecesi</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect2" asp-for="@Model.StaffPersonelInfo.DegreeOfDisabilityGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            <option disabled value="-1">Seçiniz</option>
                                                             @foreach (var item in Model.DegreeOfDisabilityList)
                                                             {
                                                                 if (Model.StaffPersonelInfo.DegreeOfDisabilityGeneralSubTypeId == item.GeneralSubTypeId)
@@ -561,6 +563,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Eğitim Durumu</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="@Model.StaffPersonelInfo.EducationStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            <option disabled value="-1">Seçiniz</option>
                                                             @foreach (var item in Model.EducationStatusList)
                                                             {
                                                                 if (Model.StaffPersonelInfo.EducationStatusGeneralSubTypeId == item.GeneralSubTypeId)
@@ -575,17 +578,7 @@
                                                             }
                                                         </select>
                                                     </div>
-                                                </div>
-                                                @*<div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">Son Tamamlanan Eğitim Kurumu</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <div class="input-group input-group-lg input-group-solid">
-
-                                                                <input  type="text" class="form-control form-control-lg form-control-solid " />
-                                                            </div>
-                                                        </div>
-                                                    </div>*@
-
+                                                </div>                                        
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
@@ -604,6 +597,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Cinsiyet</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="@Model.StaffPersonelInfo.GenderGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            <option disabled value="-1">Seçiniz</option>
                                                             @foreach (var item in Model.GenderList)
                                                             {
                                                                 if (Model.StaffPersonelInfo.GenderGeneralSubTypeId == item.GeneralSubTypeId)
@@ -644,6 +638,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Kan Grubu</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="@Model.StaffPersonelInfo.BloodGroupGeneralSubTypeId" class="form-control form-control-solid form-control-lg">
+                                                            <option disabled value="-1">Seçiniz</option>
                                                             @foreach (var item in Model.BloodGroupList)
                                                             {
                                                                 if (Model.StaffPersonelInfo.BloodGroupGeneralSubTypeId == item.GeneralSubTypeId)
@@ -663,6 +658,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Tamamlanan En Yüksek Eğitim Seviyesi</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="@Model.StaffPersonelInfo.EducationLevelGeneralSubTypeId" class="form-control form-control-solid form-control-lg ">
+                                                            <option disabled value="-1">Seçiniz</option>
                                                             @foreach (var item in Model.EducationLevelList)
                                                             {
                                                                 if (Model.StaffPersonelInfo.EducationLevelGeneralSubTypeId == item.GeneralSubTypeId)
@@ -767,7 +763,7 @@
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
-                                                                <option hidden value="-1">Seçiniz</option>
+                                                                <option disabled value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -776,8 +772,8 @@
                                                     <div class="form-group row">
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <select id="kt_select2_city"  onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Cities">
-                                                                <option hidden value="-1">Seçiniz</option>
+                                                            <select id="kt_select2_city"  onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Cities" placeholder="deneme">
+                                                                <option disabled selected value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -785,7 +781,7 @@
                                                         <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select id="kt_select2_town"  asp-for="StaffOtherInfo.TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Towns">
-                                                                <option hidden value="-1">Seçiniz</option>
+                                                                <option disabled selected value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -796,7 +792,7 @@
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-lg "  asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
-                                                                <option hidden value="-1">Seçiniz</option>
+                                                                <option  value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -806,7 +802,7 @@
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select id="kt_select2_city"  onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" disabled class="form-control form-control-solid form-control-lg text-muted">
-                                                                <option hidden value="-1">Seçiniz</option>
+                                                                <option disabled value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -814,7 +810,7 @@
                                                         <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select id="kt_select2_town" disabled asp-for="StaffOtherInfo.TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted">
-                                                                <option hidden value="-1">Seçiniz</option>
+                                                                <option disabled value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>

@@ -19,5 +19,10 @@ namespace FlexHR.Business.Concrete
         {
             return _staffDal.GetAllTables(id);
         }
+
+        public int GetStaffIdByUserName(string userName)
+        {
+            return _staffDal.GetStaffIdByUserName(userName);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context;
 using FlexHR.DataAccess.Interface;
 using FlexHR.Entity.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
