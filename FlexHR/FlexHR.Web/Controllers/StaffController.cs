@@ -30,10 +30,13 @@ namespace FlexHR.Web.Controllers
         private readonly ITownService _townService;
         private readonly ICityService _cityService;
         private readonly ICountryService _countryService;
+        private readonly ICompanyService _companyService;
+        private readonly ICompanyBranchService _companyBranchService;
         public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
                                      IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService,
-                                     IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService
+                                     IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService,
+                                     ICompanyService companyService, ICompanyBranchService companyBranchService
                                 )
         {
             _staffService = staffService;
@@ -48,6 +51,8 @@ namespace FlexHR.Web.Controllers
             _townService = townService;
             _cityService = cityService;
             _countryService = countryService;
+            _companyService = companyService;
+            _companyBranchService = companyBranchService;
         }
 
         public IActionResult Index()
@@ -95,6 +100,11 @@ namespace FlexHR.Web.Controllers
             int contractTypeId = -1;
 
             ViewBag.Countries = new SelectList(_countryService.GetAll(), "CountryId", "Name");
+            ViewBag.Companies = new SelectList(_companyService.GetAll(), "CompanyId", "CompanyName");
+            ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
+            ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
+            ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
+
 
             var staffInfo = _staffGeneralSubTypeService.GetGeneralSubTypeByStaffGeneralSubTypeList(temp);
             for (int i = 0; i < staffInfo.Count; i++)
@@ -202,7 +212,7 @@ namespace FlexHR.Web.Controllers
                         item.GeneralSubTypeId = model.ContractTypeId;
                     }
                 }
-                if (counter == 0)
+                if (counter == 0 && model.ContractTypeId!=0)
                 {
                     _staffGeneralSubTypeService.Add(new StaffGeneralSubType
                     {
@@ -253,28 +263,49 @@ namespace FlexHR.Web.Controllers
             var jsonString = JsonConvert.SerializeObject(_cityService.GetCityListByCountryId(id));
             return Json(jsonString);
         }
+        public JsonResult BranchList(int id)
+        {
+            var jsonString = JsonConvert.SerializeObject(_companyBranchService.GetCompanyBranchListByCompanyId(id));
+            return Json(jsonString);
+        }
 
         [HttpPost]
         public IActionResult AddStaffWithAjax(AddStaffDto modal)
         {
-            if (modal.WillUseSystem == 0)
+            var staffResult = new Staff();
+            if (modal.WillUseSystem == false)
             {
-
-            }
-                var staffResult = _staffService.AddResult(new Staff
+                staffResult = _staffService.AddResult(new Staff
                 {
                     NameSurname = modal.NameSurname,
                     JobJoinDate = modal.JobJoinDate,
                     IsActive = true,
-                    UserName = "a",
-                    Password = "1",
-                    WillUseSystem = true,
+                    WillUseSystem = modal.WillUseSystem,
                     EmailJob = modal.EmailJob,
                     EmailPersonal = modal.EmailPersonal,
                     JobFinishDate = modal.JobFinishDate,
                     PhoneJob = modal.PhoneJob,
                     PhonePersonal = modal.PhonePersonal,
                 });
+            }
+            else
+            {
+                staffResult = _staffService.AddResult(new Staff
+                {
+                    NameSurname = modal.NameSurname,
+                    JobJoinDate = modal.JobJoinDate,
+                    IsActive = true,
+                    UserName = modal.UserName,
+                    Password = modal.Password,
+                    WillUseSystem = modal.WillUseSystem,
+                    EmailJob = modal.EmailJob,
+                    EmailPersonal = modal.EmailPersonal,
+                    JobFinishDate = modal.JobFinishDate,
+                    PhoneJob = modal.PhoneJob,
+                    PhonePersonal = modal.PhonePersonal,
+                });
+            }
+                
             var staffId = staffResult.StaffId;
             if (modal.ContractTypeId != -1)
             {

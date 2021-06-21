@@ -273,7 +273,7 @@
                                                         <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input form-control-lg "  placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input form-control-lg " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
                                                                     <span class="input-group-text">
                                                                         <i class="ki ki-calendar"></i>
@@ -401,19 +401,9 @@
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Button-->
-                                        <a href="#" class="btn btn-primary font-weight-bolder">
-                                            <span class="svg-icon svg-icon-md">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                        <rect x="0" y="0" width="24" height="24" />
-                                                        <circle fill="#000000" cx="9" cy="15" r="6" />
-                                                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
-                                                    </g>
-                                                </svg>
-                                                <!--end::Svg Icon-->
-                                            </span>Pozisyon Ekle
-                                        </a>
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staticBackdrop">
+                                            Yeni Kariyer Ekle
+                                        </button>
                                         <!--end::Button-->
                                     </div>
                                 </div>
@@ -459,6 +449,139 @@
                         <!--end::Container-->
                     </div>
                     <!--end::Entry-->
+                </div>
+
+                @* add career modal*@
+                <div class="modal fade" id="staticBackdrop" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="card-title align-items-start flex-column">
+                                    <h3 class="card-label font-weight-bolder text-dark">
+                                        <i class="fas fa-address-book mr-2 text-dark"></i>Yeni Çalışan Ekle
+                                    </h3>
+
+                                </div>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i aria-hidden="true" class="ki ki-close"></i>
+                                </button>
+                            </div>
+                            <form id="modalForm" method="POST">
+                                <div class="modal-body">
+                                    <div class="flex-row-fluid ">
+                                        <!--begin::Form-->
+                                        <!--begin::Card-->
+                                        <div class="card card-custom card-stretch">
+                                            <!--begin::Header-->
+                                            <!--end::Header-->
+
+                                            <div class="container ">
+                                                <!--begin::Body-->
+                                                <div class="card-body mx-auto">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6 ">
+                                                            <div class="form-group row justify-content-center">
+                                                                <label class="col-xl-4 col-lg-3 col-form-label">Şirket</label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
+                                                                        <option value="-1">Seçiniz</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row justify-content-center">
+                                                                <label class="col-xl-4 col-lg-3 col-form-label">Departman</label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <select class="form-control form-control-solid form-control-lg" name="RoleId" asp-items="ViewBag.Departments">
+                                                                        <option value="-1">Seçiniz</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row justify-content-center">
+                                                                <label class="col-xl-4 col-lg-3 col-form-label">Çalışma Şekli</label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <select class="form-control form-control-solid form-control-lg" name="RoleId" asp-items="ViewBag.ModeOfOperations">
+                                                                        <option value="-1">Seçiniz</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group row justify-content-center">
+                                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Başlangıç Tarihi</label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                                        <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                        <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                            <span class="input-group-text">
+                                                                                <i class="ki ki-calendar"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group row justify-content-center">
+                                                                <label class="col-xl-4 col-lg-3 col-form-label">Şube</label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="RoleId" asp-items="ViewBag.Roles">
+                                                                        <option value="-1">Seçiniz</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group row justify-content-center">
+                                                                <label class="col-xl-4 col-lg-3 col-form-label">Unvan</label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <select class="form-control form-control-solid form-control-lg" name="RoleId" asp-items="ViewBag.Titles">
+                                                                        <option value="-1">Seçiniz</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row justify-content-center">
+                                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Bitiş Tarihi</label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                                        <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                        <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                            <span class="input-group-text">
+                                                                                <i class="ki ki-calendar"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Body-->
+                                            </div>
+
+
+                                        </div>
+
+                                        <!--end::Form-->
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 @*Staff Personal Info*@
                 <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_3">
@@ -542,23 +665,8 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                @*<div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">Çocuk Sayısı</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <select id="ContractTypeSelect2" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
-                                                                <option value="0">0</option>
-                                                                <option value="1">1</option>
-                                                                <option>2</option>
-                                                                <option>1</option>
-                                                                <option>1</option>
-                                                                <option>1</option>
-                                                                <option>1</option>
-                                                                <option>1</option>
-                                                                <option>1</option>
-                                                                <option>1</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>*@
+                                       
+
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Eğitim Durumu</label>
                                                     <div class="col-lg-9 col-xl-6">
@@ -578,7 +686,7 @@
                                                             }
                                                         </select>
                                                     </div>
-                                                </div>                                        
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
@@ -757,7 +865,7 @@
 
                                             </div>
                                             <div class="col-md-6">
-                                                @if (Model.TownId >0)
+                                                @if (Model.TownId > 0)
                                                 {
                                                     <div class="form-group row">
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
@@ -772,7 +880,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <select id="kt_select2_city"  onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Cities" placeholder="deneme">
+                                                            <select id="kt_select2_city" onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Cities" placeholder="deneme">
                                                                 <option disabled selected value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
@@ -780,7 +888,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <select id="kt_select2_town"  asp-for="StaffOtherInfo.TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Towns">
+                                                            <select id="kt_select2_town" asp-for="StaffOtherInfo.TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Towns">
                                                                 <option disabled selected value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
@@ -791,7 +899,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-lg "  asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
+                                                            <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-lg " asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
                                                                 <option value="-1">Ülke Seçiniz</option>
                                                             </select>
                                                         </div>
@@ -801,7 +909,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <select id="kt_select2_city"  onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" disabled class="form-control form-control-solid form-control-lg text-muted">
+                                                            <select id="kt_select2_city" onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" disabled class="form-control form-control-solid form-control-lg text-muted">
                                                                 <option disabled value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
@@ -848,7 +956,7 @@
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group input-group-lg input-group-solid">
 
-                                                            <input asp-for="StaffOtherInfo.AccountNo" type="text" class="form-control form-control-lg form-control-solid" placeholder="Hesap No"/>
+                                                            <input asp-for="StaffOtherInfo.AccountNo" type="text" class="form-control form-control-lg form-control-solid" placeholder="Hesap No" />
 
                                                         </div>
                                                     </div>
@@ -916,7 +1024,7 @@
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group input-group-lg input-group-solid">
 
-                                                            <input asp-for="StaffOtherInfo.CallPersonNameSurname" type="text" class="form-control form-control-lg form-control-solid" placeholder="Ad Soyad"/>
+                                                            <input asp-for="StaffOtherInfo.CallPersonNameSurname" type="text" class="form-control form-control-lg form-control-solid" placeholder="Ad Soyad" />
 
                                                         </div>
                                                     </div>
@@ -946,7 +1054,7 @@
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group input-group-lg input-group-solid">
 
-                                                            <input asp-for="StaffOtherInfo.CallPersonProximityDegree" type="text" class="form-control form-control-lg form-control-solid" placeholder="Yakınlık Derecesi"/>
+                                                            <input asp-for="StaffOtherInfo.CallPersonProximityDegree" type="text" class="form-control form-control-lg form-control-solid" placeholder="Yakınlık Derecesi" />
 
                                                         </div>
                                                     </div>
@@ -1062,6 +1170,38 @@
         }
 
 
+    </script>
+
+    <script>
+        function CompanyChange() {
+            var id = document.getElementById("c_companySelect").value;
+            console.log(id);
+            if (id > 0) {
+    
+                $.ajax({
+                    method: "GET",
+                    url: "/Staff/BranchList/" + id,
+                }).done(function (content) {
+                    $("#c_companyBranchSelect").attr("disabled", false);
+                    $("#c_companyBranchSelect").removeClass("text-muted");
+                    $("#c_companyBranchSelect").empty();
+                    $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
+
+                    let companyBranch = JSON.parse(content);
+                    for (var i = 0; i < companyBranch.length; i++) {
+                        var opt = '<option value="' + companyBranch[i].CompanyBranchId + '">' + companyBranch[i].BranchName + '</option>';
+                        $("#c_companyBranchSelect").append(opt);
+                    }
+                }).fail(function (error) {
+
+                });
+            } else {
+                $("#c_companyBranchSelect").empty();
+                $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
+                $("#c_companyBranchSelect").attr("disabled", true);
+                $("#c_companyBranchSelect").addClass("text-muted");
+            }
+        }
     </script>
 
     <!--begin::Page Scripts(used by this page)-->

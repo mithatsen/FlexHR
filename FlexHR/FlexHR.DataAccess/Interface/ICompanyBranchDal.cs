@@ -7,6 +7,6 @@ namespace FlexHR.DataAccess.Interface
 {
     public interface ICompanyBranchDal : IGenericDal<CompanyBranch>
     {
-        
+        public List<CompanyBranch> GetCompanyBranchListByCompanyId(int id);
     }
 }
