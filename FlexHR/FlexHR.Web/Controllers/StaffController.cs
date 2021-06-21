@@ -32,11 +32,12 @@ namespace FlexHR.Web.Controllers
         private readonly ICountryService _countryService;
         private readonly ICompanyService _companyService;
         private readonly ICompanyBranchService _companyBranchService;
+        private readonly IStaffCareerService _staffCareerService;
         public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
                                      IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService,
                                      IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService,
-                                     ICompanyService companyService, ICompanyBranchService companyBranchService
+                                     ICompanyService companyService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService
                                 )
         {
             _staffService = staffService;
@@ -53,6 +54,7 @@ namespace FlexHR.Web.Controllers
             _countryService = countryService;
             _companyService = companyService;
             _companyBranchService = companyBranchService;
+            _staffCareerService = staffCareerService;
         }
 
         public IActionResult Index()
@@ -150,7 +152,7 @@ namespace FlexHR.Web.Controllers
                     JobStartDate = item.JobStartDate,
                     JobFinishDate = item.JobFinishDate,
                     CompanyName = item.CompanyBranch.Company.CompanyName,
-                    BranchName = item.CompanyBranch.BranchName,
+                    //BranchName = item.CompanyBranch.BranchName,
                     IsActive = item.IsActive,
                     ModeOfOperation = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.ModeOfOperationGeneralSubTypeId),
                     DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DepartmantGeneralSubTypeId),
@@ -212,7 +214,7 @@ namespace FlexHR.Web.Controllers
                         item.GeneralSubTypeId = model.ContractTypeId;
                     }
                 }
-                if (counter == 0 && model.ContractTypeId!=0)
+                if (counter == 0 && model.ContractTypeId != 0)
                 {
                     _staffGeneralSubTypeService.Add(new StaffGeneralSubType
                     {
@@ -305,7 +307,7 @@ namespace FlexHR.Web.Controllers
                     PhonePersonal = modal.PhonePersonal,
                 });
             }
-                
+
             var staffId = staffResult.StaffId;
             if (modal.ContractTypeId != -1)
             {
@@ -316,6 +318,19 @@ namespace FlexHR.Web.Controllers
             _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });
 
             return Json("");
+        }
+
+        [HttpPost]
+        public IActionResult AddStaffCareerWithAjax(AddStaffCareerDto model)
+        {
+            if (model.CompanyBranchId == -1) 
+            {
+                model.CompanyBranchId = null;
+            }
+            _staffCareerService.Add(_mapper.Map<StaffCareer>(model));
+
+
+            return RedirectToAction("UpdateStaff", new { id = model.StaffId });
         }
     }
 }

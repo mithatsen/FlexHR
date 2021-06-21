@@ -23,19 +23,16 @@ var KTBootstrapDatetimepicker = function () {
             locale: 'tr',
             format: 'DD.MM.YYYY'
         });
-
-        // Demo 5
-        $('#kt_datetimepicker_5').datetimepicker();
-
-        // Demo 6
-        $('#kt_datetimepicker_6').datetimepicker({
-            defaultDate: '11/1/2020',
-            disabledDates: [
-                moment('12/25/2020'),
-                new Date(2020, 11 - 1, 21),
-                '11/22/2022 00:53'
-            ]
+        $('#kt_datetimepicker_5').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY'
         });
+        $('#kt_datetimepicker_6').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY'
+        });
+
+       
 
         // Demo 7
         $('#kt_datetimepicker_7_1').datetimepicker();

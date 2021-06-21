@@ -426,17 +426,25 @@
                                         <tbody>
                                             @foreach (var item in Model.ListStaffCareer)
                                             {
-                                                <tr>
-                                                    <td>@item.IsActive</td>
-                                                    <td>@item.JobStartDate.ToShortDateString()</td>
+                                            <tr>
+                                                <td>@item.IsActive</td>
+                                                <td>@item.JobStartDate.ToShortDateString()</td>
+                                                @if (item.JobFinishDate != null)
+                                                {
                                                     <td>@item.JobFinishDate.Value.ToShortDateString()</td>
-                                                    <td>@item.ModeOfOperation</td>
-                                                    <td>@item.CompanyName</td>
-                                                    <td>@item.BranchName</td>
-                                                    <td>@item.DepartmantName</td>
-                                                    <td>@item.Title</td>
-                                                    <td></td>
-                                                </tr>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-success badge-pill">Devam ediyor</span> </td>
+                                                }
+
+                                                <td>@item.ModeOfOperation</td>
+                                                <td>@item.CompanyName</td>
+                                                <td>@item.BranchName</td>
+                                                <td>@item.DepartmantName</td>
+                                                <td>@item.Title</td>
+                                                <td></td>
+                                            </tr>
 
                                             }
                                         </tbody>
@@ -458,7 +466,7 @@
                             <div class="modal-header">
                                 <div class="card-title align-items-start flex-column">
                                     <h3 class="card-label font-weight-bolder text-dark">
-                                        <i class="fas fa-address-book mr-2 text-dark"></i>Yeni Çalışan Ekle
+                                        <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
                                     </h3>
 
                                 </div>
@@ -466,7 +474,7 @@
                                     <i aria-hidden="true" class="ki ki-close"></i>
                                 </button>
                             </div>
-                            <form id="modalForm" method="POST">
+                            <form id="modalAddCareer" method="POST">
                                 <div class="modal-body">
                                     <div class="flex-row-fluid ">
                                         <!--begin::Form-->
@@ -494,7 +502,7 @@
                                                             <div class="form-group row justify-content-center">
                                                                 <label class="col-xl-4 col-lg-3 col-form-label">Departman</label>
                                                                 <div class="col-lg-9 col-xl-6">
-                                                                    <select class="form-control form-control-solid form-control-lg" name="RoleId" asp-items="ViewBag.Departments">
+                                                                    <select class="form-control form-control-solid form-control-lg" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
                                                                         <option value="-1">Seçiniz</option>
 
                                                                     </select>
@@ -504,7 +512,7 @@
                                                             <div class="form-group row justify-content-center">
                                                                 <label class="col-xl-4 col-lg-3 col-form-label">Çalışma Şekli</label>
                                                                 <div class="col-lg-9 col-xl-6">
-                                                                    <select class="form-control form-control-solid form-control-lg" name="RoleId" asp-items="ViewBag.ModeOfOperations">
+                                                                    <select class="form-control form-control-solid form-control-lg" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
                                                                         <option value="-1">Seçiniz</option>
 
                                                                     </select>
@@ -513,11 +521,11 @@
 
 
                                                             <div class="form-group row justify-content-center">
-                                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Başlangıç Tarihi</label>
+                                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label">Başlangıç Tarihi</label>
                                                                 <div class="col-lg-9 col-xl-6">
-                                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                        <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
-                                                                        <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
+                                                                        <input id="ContractFinishDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                                        <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
                                                                             <span class="input-group-text">
                                                                                 <i class="ki ki-calendar"></i>
                                                                             </span>
@@ -531,7 +539,7 @@
                                                             <div class="form-group row justify-content-center">
                                                                 <label class="col-xl-4 col-lg-3 col-form-label">Şube</label>
                                                                 <div class="col-lg-9 col-xl-6">
-                                                                    <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="RoleId" asp-items="ViewBag.Roles">
+                                                                    <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="CompanyBranchId">
                                                                         <option value="-1">Seçiniz</option>
 
                                                                     </select>
@@ -542,23 +550,25 @@
                                                             <div class="form-group row justify-content-center">
                                                                 <label class="col-xl-4 col-lg-3 col-form-label">Unvan</label>
                                                                 <div class="col-lg-9 col-xl-6">
-                                                                    <select class="form-control form-control-solid form-control-lg" name="RoleId" asp-items="ViewBag.Titles">
+                                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
                                                                         <option value="-1">Seçiniz</option>
 
                                                                     </select>
+                                                                    <input type="hidden" asp-for="@Model.StaffId" />
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group row justify-content-center">
-                                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Bitiş Tarihi</label>
+                                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label ">Bitiş Tarihi</label>
                                                                 <div class="col-lg-9 col-xl-6">
-                                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                        <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
-                                                                        <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_6" data-target-input="nearest">
+                                                                        <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
+                                                                        <div class="input-group-append" data-target="#kt_datetimepicker_6" data-toggle="datetimepicker">
                                                                             <span class="input-group-text">
                                                                                 <i class="ki ki-calendar"></i>
                                                                             </span>
                                                                         </div>
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -665,7 +675,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                       
+
 
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Eğitim Durumu</label>
@@ -1177,7 +1187,7 @@
             var id = document.getElementById("c_companySelect").value;
             console.log(id);
             if (id > 0) {
-    
+
                 $.ajax({
                     method: "GET",
                     url: "/Staff/BranchList/" + id,
@@ -1203,6 +1213,28 @@
             }
         }
     </script>
+    <script>
+
+        $(document).on("submit", "#modalAddCareer", function (event) { //infoForm id li form post edildiğinde
+
+
+            event.preventDefault();
+
+            $.ajax({
+                url: "/Staff/AddStaffCareerWithAjax",
+                type: "POST",
+                data: new FormData(this),
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    
+                }
+            });
+        });
+    </script>
+    
 
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>

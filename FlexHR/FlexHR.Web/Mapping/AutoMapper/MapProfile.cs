@@ -22,7 +22,10 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #endregion
             #region StaffCareer
             CreateMap<ListStaffCareerDto, StaffCareer>().ReverseMap();
+            CreateMap<AddStaffCareerDto, StaffCareer>().ReverseMap();
             #endregion
+           
+
         }
     }
 }
