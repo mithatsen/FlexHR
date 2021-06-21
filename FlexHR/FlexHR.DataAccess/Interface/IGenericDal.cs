@@ -12,6 +12,7 @@ namespace FlexHR.DataAccess.Interface
         void Update(T table);
         T GetById(int id);
         List<T> GetAll();
+        T AddResult(T table);
 
 
     }

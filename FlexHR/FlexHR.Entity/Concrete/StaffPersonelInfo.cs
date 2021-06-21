@@ -11,12 +11,12 @@ namespace FlexHR.Entity.Concrete
         public int StaffId { get; set; }
         public DateTime? BirthDate { get; set; }
         public string IdNumber { get; set; }
-        public int? MaritalStatusGeneralSubTypeId { get; set; }
-        public int? GenderGeneralSubTypeId { get; set; }
-        public int? DegreeOfDisabilityGeneralSubTypeId { get; set; }
-        public int? BloodGroupGeneralSubTypeId { get; set; }
-        public int? EducationStatusGeneralSubTypeId { get; set; }
-        public int? EducationLevelGeneralSubTypeId { get; set; }
+        public int? MaritalStatusGeneralSubTypeId { get; set; } = 1;
+        public int? GenderGeneralSubTypeId { get; set; } = 1;
+        public int? DegreeOfDisabilityGeneralSubTypeId { get; set; } = 1;
+        public int? BloodGroupGeneralSubTypeId { get; set; } = 1;
+        public int? EducationStatusGeneralSubTypeId { get; set; } = 1;
+        public int? EducationLevelGeneralSubTypeId { get; set; } = 1;
         public bool IsActive { get; set; }
 
         public virtual Staff Staff { get; set; }

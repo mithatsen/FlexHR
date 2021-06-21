@@ -8,7 +8,7 @@ var KTSelect2 = function() {
         });
         // city
         $('#kt_select2_city, #kt_select2_1_validate').select2({
-            placeholder: 'Sehir Seciniz'
+            placeholder: 'Il Seciniz'
         });
         // town
         $('#kt_select2_town, #kt_select2_1_validate').select2({

@@ -11,6 +11,7 @@ namespace FlexHR.Business.Interface
         void Update(T table);
         T GetById(int id);
         List<T> GetAll();
+        T AddResult(T table);
 
     }
 }

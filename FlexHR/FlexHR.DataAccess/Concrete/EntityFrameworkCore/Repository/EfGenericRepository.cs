@@ -40,6 +40,16 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _context.Set<T>().Add(table);
             _context.SaveChanges();
 
+
+        }
+        public T AddResult(T table)
+        {
+
+            _context.Set<T>().Add(table);
+            _context.SaveChanges();
+            return table;
+
+
         }
 
         public void Update(T table)

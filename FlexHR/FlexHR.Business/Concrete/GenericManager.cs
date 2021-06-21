@@ -21,6 +21,11 @@ namespace FlexHR.Business.Concrete
             _genericDal.Add(table);
         }
 
+        public T AddResult(T table)
+        {
+            return _genericDal.AddResult(table);
+        }
+
         public void Delete(int id)
         {
             _genericDal.Delete(id);

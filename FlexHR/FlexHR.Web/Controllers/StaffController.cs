@@ -74,8 +74,8 @@ namespace FlexHR.Web.Controllers
             var temp2 = _staffRoleService.GetUserRoleByStaffId(id);
             var personelInfo = _staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
-           
-       
+
+
             TownHelper cityIdAndCountryId = new TownHelper();
 
             if (staffOtherInfo.TownId != null)
@@ -113,10 +113,7 @@ namespace FlexHR.Web.Controllers
                     contractType = staffInfo[i];
 
                 }
-                //else if(Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.ModeOfOperation)
-                //{
-                //    maritialStatusId = Convert.ToInt32(staffInfo.GetKey(i));
-                //}
+
                 else if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.MaritalStatus)
                 {
                     modeOfOperation = staffInfo[i];
@@ -183,9 +180,9 @@ namespace FlexHR.Web.Controllers
                 AccountTypeList = accountTypeList,
                 TownHelper = cityIdAndCountryId,
                 ContractTypeId = contractTypeId,
-                TownId= staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId
+                TownId = staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId
 
-        };
+            };
             return View(model);
         }
 
@@ -258,24 +255,27 @@ namespace FlexHR.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddStaffWithAjax(AddStaffDto  modal)
+        public IActionResult AddStaffWithAjax(AddStaffDto modal)
         {
-            var tempUserName = "temp";
-            _staffService.Add(new Staff
+            if (modal.WillUseSystem == 0)
             {
-                NameSurname=modal.NameSurname,
-                JobJoinDate=modal.JobJoinDate,
-                IsActive=true,
-                UserName=tempUserName,
-                Password="1",
-                WillUseSystem=true,         
-                EmailJob = modal.EmailJob,
-                EmailPersonal = modal.EmailPersonal,            
-                JobFinishDate = modal.JobFinishDate,             
-                PhoneJob = modal.PhoneJob,
-                PhonePersonal = modal.PhonePersonal,           
-            });
-            var staffId=_staffService.GetStaffIdByUserName(tempUserName);
+
+            }
+                var staffResult = _staffService.AddResult(new Staff
+                {
+                    NameSurname = modal.NameSurname,
+                    JobJoinDate = modal.JobJoinDate,
+                    IsActive = true,
+                    UserName = "a",
+                    Password = "1",
+                    WillUseSystem = true,
+                    EmailJob = modal.EmailJob,
+                    EmailPersonal = modal.EmailPersonal,
+                    JobFinishDate = modal.JobFinishDate,
+                    PhoneJob = modal.PhoneJob,
+                    PhonePersonal = modal.PhonePersonal,
+                });
+            var staffId = staffResult.StaffId;
             if (modal.ContractTypeId != -1)
             {
                 _staffGeneralSubTypeService.Add(new StaffGeneralSubType { StaffId = staffId, GeneralSubTypeId = modal.ContractTypeId });
@@ -283,8 +283,8 @@ namespace FlexHR.Web.Controllers
             _staffRoleService.Add(new StaffRole { StaffId = staffId, RoleId = modal.RoleId });
             _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
             _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });
-          
-            return RedirectToAction("Staff");
+
+            return Json("");
         }
     }
 }
