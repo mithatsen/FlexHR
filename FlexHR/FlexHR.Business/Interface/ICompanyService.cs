@@ -7,5 +7,6 @@ namespace FlexHR.Business.Interface
 {
     public interface ICompanyService : IGenericService<Company>
     {
+        string GetCompanyNameByCompanyId(int id);
     }
 }

@@ -151,8 +151,8 @@ namespace FlexHR.Web.Controllers
 
                     JobStartDate = item.JobStartDate,
                     JobFinishDate = item.JobFinishDate,
-                    CompanyName = item.CompanyBranch.Company.CompanyName,
-                    //BranchName = item.CompanyBranch.BranchName,
+                    CompanyName = _companyService.GetCompanyNameByCompanyId(item.CompanyId),
+                    BranchName = item.CompanyBranch!=null? item.CompanyBranch.BranchName:"-",
                     IsActive = item.IsActive,
                     ModeOfOperation = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.ModeOfOperationGeneralSubTypeId),
                     DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DepartmantGeneralSubTypeId),
@@ -330,7 +330,7 @@ namespace FlexHR.Web.Controllers
             _staffCareerService.Add(_mapper.Map<StaffCareer>(model));
 
 
-            return RedirectToAction("UpdateStaff", new { id = model.StaffId });
+            return Json("");
         }
     }
 }

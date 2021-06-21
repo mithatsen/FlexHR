@@ -7,5 +7,6 @@ namespace FlexHR.DataAccess.Interface
 {
     public interface ICompanyDal : IGenericDal<Company>
     {
+        string GetCompanyNameByCompanyId(int id);
     }
 }
