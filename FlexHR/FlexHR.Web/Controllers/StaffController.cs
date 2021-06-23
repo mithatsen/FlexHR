@@ -83,22 +83,44 @@ namespace FlexHR.Web.Controllers
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
 
 
+
+            ListStaffCareerDto activeCareerDto;
+
+            if (careerResult.Count > 0)
+            {
+                var activeCareer = careerResult.First();
+                activeCareerDto = new ListStaffCareerDto
+                {
+                    DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(activeCareer.DepartmantGeneralSubTypeId),
+                    BranchName = activeCareer.CompanyBranch != null ? activeCareer.CompanyBranch.BranchName : "-",
+                    CompanyName = _companyService.GetCompanyNameByCompanyId(activeCareer.CompanyId),
+                    Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(activeCareer.TitleGeneralSubTypeId),
+     
+                };
+            }
+            else
+            {
+                activeCareerDto = new ListStaffCareerDto
+                {
+                    DepartmantName = "-",
+                    BranchName = "-",
+                    CompanyName = "-",
+                    Title = "-"
+                };
+            }
+
+
+
+
             TownHelper cityIdAndCountryId = new TownHelper();
 
             if (staffOtherInfo.TownId != null)
             {
                 cityIdAndCountryId = _townService.GetCityIdAndCountryIdByTownId((int)staffOtherInfo.TownId);
-
                 ViewBag.Cities = new SelectList(_cityService.GetCityListByCountryId(cityIdAndCountryId.CountryId), "CityId", "Name");
                 ViewBag.Towns = new SelectList(_townService.GetTownListByCityId(cityIdAndCountryId.CityId), "TownId", "Name");
             }
 
-
-
-            var departmentName = "";
-            var superscription = "";
-            var contractType = "";
-            var modeOfOperation = "";
             int contractTypeId = -1;
 
             ViewBag.Countries = new SelectList(_countryService.GetAll(), "CountryId", "Name");
@@ -107,31 +129,6 @@ namespace FlexHR.Web.Controllers
             ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
             ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
 
-
-            var staffInfo = _staffGeneralSubTypeService.GetGeneralSubTypeByStaffGeneralSubTypeList(temp);
-            for (int i = 0; i < staffInfo.Count; i++)
-            {
-                int generalTypeId = Convert.ToInt32(staffInfo.GetKey(i));
-                if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.Department)
-                {
-                    departmentName = staffInfo[i];
-                }
-                else if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.Title)
-                {
-                    superscription = staffInfo[i];
-                }
-                else if (generalTypeId == (int)GeneralTypeEnum.ContractType)
-                {
-                    contractType = staffInfo[i];
-
-                }
-
-                else if (Convert.ToInt32(staffInfo.GetKey(i)) == (int)GeneralTypeEnum.MaritalStatus)
-                {
-                    modeOfOperation = staffInfo[i];
-                }
-
-            }
 
 
             foreach (var item in temp)
@@ -148,11 +145,11 @@ namespace FlexHR.Web.Controllers
             {
                 var careerModel = new ListStaffCareerDto
                 {
-
+                    StaffCareerId=item.StaffCareerId,
                     JobStartDate = item.JobStartDate,
                     JobFinishDate = item.JobFinishDate,
                     CompanyName = _companyService.GetCompanyNameByCompanyId(item.CompanyId),
-                    BranchName = item.CompanyBranch!=null? item.CompanyBranch.BranchName:"-",
+                    BranchName = item.CompanyBranch != null ? item.CompanyBranch.BranchName : "-",
                     IsActive = item.IsActive,
                     ModeOfOperation = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.ModeOfOperationGeneralSubTypeId),
                     DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DepartmantGeneralSubTypeId),
@@ -172,11 +169,9 @@ namespace FlexHR.Web.Controllers
                 NameSurname = result.NameSurname,
                 PhoneJob = result.PhoneJob,
                 PhonePersonal = result.PhonePersonal,
-                DepartmantName = departmentName,
-                Superscription = superscription,
                 ContractTypeList = contractTypeList,
                 IsActive = result.IsActive,
-                ContractType = contractType,
+                ActiveCareer = activeCareerDto,
                 Roles = roleList,
                 RoleId = temp2.RoleId,
                 JobFinishDate = result.JobFinishDate,
@@ -192,7 +187,8 @@ namespace FlexHR.Web.Controllers
                 AccountTypeList = accountTypeList,
                 TownHelper = cityIdAndCountryId,
                 ContractTypeId = contractTypeId,
-                TownId = staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId
+                TownId = staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId,
+
 
             };
             return View(model);
@@ -323,14 +319,57 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult AddStaffCareerWithAjax(AddStaffCareerDto model)
         {
-            if (model.CompanyBranchId == -1) 
+            if (model.CompanyBranchId == -1)
             {
                 model.CompanyBranchId = null;
             }
+            if (model.JobFinishDate == null || model.JobFinishDate > DateTime.Now)
+            {
+                model.IsActive = true;
+            }
+            else
+            {
+                model.IsActive = false;
+            }
+
             _staffCareerService.Add(_mapper.Map<StaffCareer>(model));
 
 
             return Json("");
         }
+        [HttpGet]
+        public IActionResult GetUpdateStaffCareerModal(int id)
+        {
+            var result = _staffCareerService.GetById(id);
+            ViewBag.Companies = new SelectList(_companyService.GetAll(), "CompanyId", "CompanyName");
+            ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
+            ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
+            ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
+            var careerModel = new ListStaffCareerDto
+            {
+
+                JobStartDate = result.JobStartDate,
+                JobFinishDate = result.JobFinishDate,
+                CompanyBranchId=result.CompanyBranchId,
+                TitleGeneralSubTypeId=result.TitleGeneralSubTypeId,
+                DepartmantGeneralSubTypeId=result.DepartmantGeneralSubTypeId,
+                CompanyId=result.CompanyId,
+                ModeOfOperationGeneralSubTypeId = result.ModeOfOperationGeneralSubTypeId,
+                StaffCareerId=result.StaffCareerId,
+                StaffId=result.StaffId
+            };
+
+            return PartialView("GetUpdateStaffCareerModal", careerModel);
+
+        }
+        [HttpPost]
+        public IActionResult UpdateStaffCareer(ListStaffCareerDto model)
+        {
+
+            _staffCareerService.Update(_mapper.Map<StaffCareer>(model));
+            return RedirectToAction("Index");
+
+        }
+
     }
 }

@@ -14,7 +14,7 @@ namespace FlexHR.DTO.Dtos.StaffCareerDtos
         public int ModeOfOperationGeneralSubTypeId { get; set; }
         public DateTime JobStartDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
       
     
 

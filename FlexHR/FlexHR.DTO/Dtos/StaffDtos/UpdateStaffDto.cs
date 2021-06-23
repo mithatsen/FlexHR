@@ -19,18 +19,13 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public DateTime JobJoinDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
         public bool IsActive { get; set; }
-        public string DepartmantName { get; set; }
-        public string Superscription { get; set; }
-        public string ContractType { get; set; }
-        public string StaffRole { get; set; }
         public string Password { get; set; }
         public string UserName { get; set; }
-        public string ModeOfOperation { get; set; }
         public int CountryId { get; set; } = -1;
         public int CityId { get; set; } = -1;
         public int TownId { get; set; } = -1;
         public TownHelper TownHelper { get; set; }
-
+        public ListStaffCareerDto ActiveCareer { get; set; }
         public StaffPersonelInfo StaffPersonelInfo { get; set; } 
         public StaffOtherInfo StaffOtherInfo { get; set; } 
 

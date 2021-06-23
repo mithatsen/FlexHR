@@ -21,7 +21,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         {
             return _context.StaffCareer.Include(x=>x.CompanyBranch).ThenInclude(y=>y.Company)
                 .Include(x=>x.Staff).ThenInclude(x => x.StaffGeneralSubType).ThenInclude(x => x.GeneralSubType)
-                .ThenInclude(x => x.GeneralType).Where(p => p.StaffId == id).ToList();
+                .ThenInclude(x => x.GeneralType).Where(p => p.StaffId == id).OrderByDescending(p=>p.JobStartDate).ToList();
         }
     }
 }
