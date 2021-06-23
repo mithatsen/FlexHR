@@ -9,7 +9,7 @@ var KTBootstrapDatetimepicker = function () {
         // Demo 2
         $('#kt_datetimepicker_2').datetimepicker({
             locale: 'tr',
-            format:'DD.MM.YYYY'
+            format: 'DD.MM.YYYY'
         });
 
         // Demo 3
@@ -31,26 +31,17 @@ var KTBootstrapDatetimepicker = function () {
             locale: 'tr',
             format: 'DD.MM.YYYY'
         });
-
-       
-
-        // Demo 7
-        $('#kt_datetimepicker_7_1').datetimepicker();
-        $('#kt_datetimepicker_7_2').datetimepicker({
-            useCurrent: false
+        $('#kt_datetimepicker_29').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY'
+        });
+        $('#kt_datetimepicker_45').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY'
         });
 
-        $('#kt_datetimepicker_7_1').on('change.datetimepicker', function (e) {
-            $('#kt_datetimepicker_7_2').datetimepicker('minDate', e.date);
-        });
-        $('#kt_datetimepicker_7_2').on('change.datetimepicker', function (e) {
-            $('#kt_datetimepicker_7_1').datetimepicker('maxDate', e.date);
-        });
 
-        // Demo 8
-        $('#kt_datetimepicker_8').datetimepicker({
-            inline: true,
-        });
+
     }
 
     var modalDemos = function () {

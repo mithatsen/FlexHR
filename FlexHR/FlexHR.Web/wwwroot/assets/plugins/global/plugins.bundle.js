@@ -15734,7 +15734,7 @@ var DateTimePicker = function ($, moment) {
 
     var Default = {
         timeZone: '',
-        format: false,
+        format: 'DD.MM.YYYY',
         dayViewHeaderFormat: 'MMMM YYYY',
         extraFormats: false,
         stepping: 1,
@@ -15742,7 +15742,7 @@ var DateTimePicker = function ($, moment) {
         maxDate: false,
         useCurrent: true,
         collapse: true,
-        locale: moment.locale(),
+        locale: "tr",
         defaultDate: false,
         disabledDates: false,
         enabledDates: false,
@@ -19795,7 +19795,7 @@ $.fn.timepicker.defaults = $.extend(true, {}, $.fn.timepicker.defaults, {
             var i = 0;
             for (var range in this.ranges) {
               if (this.timePicker) {
-                    var format = this.timePickerSeconds ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD HH:mm";
+                    var format = this.timePickerSeconds ? "YYYY-MM-DD" : "YYYY-MM-DD ";
                     //ignore times when comparing dates if time picker seconds is not enabled
                     if (this.startDate.format(format) == this.ranges[range][0].format(format) && this.endDate.format(format) == this.ranges[range][1].format(format)) {
                         customRange = false;

@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
+using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
@@ -33,11 +34,13 @@ namespace FlexHR.Web.Controllers
         private readonly ICompanyService _companyService;
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IStaffCareerService _staffCareerService;
+        private readonly IStaffLeaveService _staffLeaveService;
         public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
                                      IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService,
                                      IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService,
-                                     ICompanyService companyService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService
+                                     ICompanyService companyService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService,
+                                     IStaffLeaveService staffLeaveService
                                 )
         {
             _staffService = staffService;
@@ -55,6 +58,7 @@ namespace FlexHR.Web.Controllers
             _companyService = companyService;
             _companyBranchService = companyBranchService;
             _staffCareerService = staffCareerService;
+            _staffLeaveService = staffLeaveService;
         }
 
         public IActionResult Index()
@@ -81,7 +85,7 @@ namespace FlexHR.Web.Controllers
             var temp2 = _staffRoleService.GetUserRoleByStaffId(id);
             var personelInfo = _staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
-
+            var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id);
 
 
             ListStaffCareerDto activeCareerDto;
@@ -158,6 +162,26 @@ namespace FlexHR.Web.Controllers
                 };
                 careerModels.Add(careerModel);
             }
+
+            var leaveModels = new List<ListStaffLeaveDto>();
+            foreach (var item in staffLeaveList)
+            {
+                var leaveModel = new ListStaffLeaveDto
+                {
+                    LeaveStartDate = item.LeaveStartDate,
+                    LeaveEndDate = item.LeaveEndDate,
+                    LeaveType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.LeaveTypeGeneralSubTypeId),
+                    LeaveTypeGeneralSubTypeId = item.LeaveTypeGeneralSubTypeId,
+                    Description = item.Description,
+                    GeneralStatusGeneralSubTypeId = item.GeneralStatusGeneralSubTypeId,
+                    StatusType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.GeneralStatusGeneralSubTypeId),
+                    IsMailSentToStaff = item.IsMailSentToStaff,
+                    IsSentForApproval = item.IsSentForApproval,
+                    StaffLeaveId = item.StaffLeaveId
+                };
+                leaveModels.Add(leaveModel);
+            }
+
             var roleList = _roleService.GetAll();
             var contractTypeList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType);
             var model = new UpdateStaffDto
@@ -188,8 +212,7 @@ namespace FlexHR.Web.Controllers
                 TownHelper = cityIdAndCountryId,
                 ContractTypeId = contractTypeId,
                 TownId = staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId,
-
-
+                ListStaffLeave = leaveModels
             };
             return View(model);
         }
@@ -223,7 +246,7 @@ namespace FlexHR.Web.Controllers
                 model.Password = "abc";
                 model.UserName = "abc";
                 _staffService.Update(_mapper.Map<Staff>(model));
-                return RedirectToAction("UpdateStaff", new { id = model.StaffId });
+                return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_1");
             }
 
             return View();
@@ -236,7 +259,7 @@ namespace FlexHR.Web.Controllers
             {
                 model.StaffPersonelInfo.StaffId = model.StaffId;
                 _staffPersonelInfoService.Update(model.StaffPersonelInfo);
-                return RedirectToAction("UpdateStaff", new { id = model.StaffId });
+                return RedirectToAction("UpdateStaff","Staff",new { id = model.StaffId },"tab_3");
             }
             return View();
         }
@@ -247,7 +270,7 @@ namespace FlexHR.Web.Controllers
             {
                 model.StaffOtherInfo.StaffId = model.StaffId;
                 _staffOtherInfoService.Update(model.StaffOtherInfo);
-                return RedirectToAction("UpdateStaff", new { id = model.StaffId });
+                return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_4");
             }
             return View();
         }
@@ -333,9 +356,9 @@ namespace FlexHR.Web.Controllers
             }
 
             _staffCareerService.Add(_mapper.Map<StaffCareer>(model));
+       
 
-
-            return Json("");
+            return Json("tab_2");
         }
         [HttpGet]
         public IActionResult GetUpdateStaffCareerModal(int id)
@@ -365,9 +388,12 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStaffCareer(ListStaffCareerDto model)
         {
-
+            if (model.CompanyBranchId == -1)
+            {
+                model.CompanyBranchId = null;
+            }
             _staffCareerService.Update(_mapper.Map<StaffCareer>(model));
-            return RedirectToAction("Index");
+            return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_2");
 
         }
 

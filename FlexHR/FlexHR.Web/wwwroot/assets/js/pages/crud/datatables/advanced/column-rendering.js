@@ -35,6 +35,43 @@ var KTDatatablesAdvancedColumnRendering = function () {
 
             ],
         });
+        var table = $('#kt_datatable_2');
+
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+            columnDefs: [
+
+                {
+                    targets: -2,
+                    title: 'Durum',
+                    width: '75px',
+                    language: "tr",
+                    render: function (data, type, full, meta) {
+                        var status = {
+                            '96': {
+                                'title': 'Onaylandý',
+                                'state': 'success'
+                            },
+                            '98': {
+                                'title': 'Reddedildi',
+                                'state': 'danger'
+                            },
+                            '97': {
+                                'title': 'Onay Bekliyor',
+                                'state': 'primary'
+                            }
+                        };
+                        if (typeof status[data] === 'undefined') {
+                            return data;
+                        }
+                        return '<span class="font-weight-bold badge badge-' + status[data].state+'">' + status[data].title + '</span>';
+                    },
+                },
+
+            ],
+        });
 
         $('#kt_datatable_search_status').on('change', function () {
             datatable.search($(this).val().toLowerCase(), 'Status');

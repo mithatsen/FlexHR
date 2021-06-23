@@ -3,6 +3,8 @@ using FlexHR.DataAccess.Interface;
 using FlexHR.Entity.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace FlexHR.Business.Concrete
@@ -29,6 +31,11 @@ namespace FlexHR.Business.Concrete
         public void Delete(int id)
         {
             _genericDal.Delete(id);
+        }
+
+        public IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
+        {
+           return  _genericDal.Get(filter,orderBy,includeProperties);
         }
 
         public List<T> GetAll()

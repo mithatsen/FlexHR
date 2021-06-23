@@ -15,7 +15,7 @@
         <div class="card-toolbar">
             <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
                 <li class="nav-item mr-3">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_1">
+                    <a class="nav-link active" data-toggle="tab" id="tab_1" href="#kt_apps_contacts_view_tab_1">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-address-book"></i>
@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                    <a class="nav-link" data-toggle="tab" id="tab_2" href="#kt_apps_contacts_view_tab_2">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-business-time"></i>
@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                    <a class="nav-link" data-toggle="tab" id="tab_3" href="#kt_apps_contacts_view_tab_3">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-user-edit"></i>
@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
+                    <a class="nav-link" data-toggle="tab" id="tab_4" href="#kt_apps_contacts_view_tab_4">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-house-user"></i>
@@ -55,7 +55,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_5">
+                    <a class="nav-link" data-toggle="tab" id="tab_5" href="#kt_apps_contacts_view_tab_5">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-plane-departure"></i>
@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_6">
+                    <a class="nav-link" data-toggle="tab" id="tab_6" href="#kt_apps_contacts_view_tab_6">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-wallet"></i>
@@ -75,7 +75,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_7">
+                    <a class="nav-link" data-toggle="tab" id="tab_7" href="#kt_apps_contacts_view_tab_7">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-user-clock"></i>
@@ -85,7 +85,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_8">
+                    <a class="nav-link" data-toggle="tab" id="tab_8" href="#kt_apps_contacts_view_tab_8">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-folder"></i>
@@ -382,7 +382,7 @@
                     </div>
                 </div>
                 @*Staff Career*@
-                <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_2">
+                <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_2">
                     <!--begin::Entry-->
                     <div class="d-flex flex-column-fluid">
                         <!--begin::Container-->
@@ -1093,9 +1093,88 @@
                         <!--end::Form-->
                     </div>
                 </div>
-
+                @*Staff Leave Info*@
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_5">
-                    @await Component.InvokeAsync("Leave")
+                    <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+                        <!--begin::Entry-->
+                        <div class="d-flex flex-column-fluid">
+                            <!--begin::Container-->
+                            <div class="container">
+                                <!--begin::Notice-->
+                                <!--end::Notice-->
+                                <!--begin::Card-->
+                                <div class="card card-custom">
+                                    <div class="card-header flex-wrap py-5">
+                                        <div class="card-title">
+                                            <i class="fas fa-business-time text-dark mr-2"></i>
+                                            <h3 class="card-label">
+                                                Kariyer
+
+                                            </h3>
+                                        </div>
+                                        <div class="card-toolbar">
+                                            <!--begin::Button-->
+                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffCareerAddModal">
+                                                Yeni Kariyer Ekle
+                                            </button>
+                                            <!--end::Button-->
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <!--begin: Datatable-->
+                                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
+                                            <thead>
+                                                <tr>                                              
+                                                    <th>Başlangıç</th>
+                                                    <th>Bitiş</th>
+                                                    <th>Süre</th>
+                                                    <th>İzin Türü</th>
+                                                    <th>Açıklama</th>
+                                                    <th>Durum</th>
+                                                    <th>İşlemler</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ListStaffLeave)
+                                                {
+                                                    <tr>
+                                                        
+                                                        <td>@item.LeaveStartDate.ToString("d")</td>                                                  
+                                                        
+                                                        <td>@item.LeaveEndDate.ToString("d")</td>
+                                                        @{
+                                                            DateTime bTarih = Convert.ToDateTime(item.LeaveEndDate);
+                                                            DateTime kTarih = Convert.ToDateTime(@item.LeaveStartDate);
+                                                            TimeSpan Sonuc = bTarih - kTarih;
+                                                            var Day = Sonuc.TotalDays;
+                                                        }
+                                                        <td>@Day Gün</td>
+                                                        <td>@item.LeaveType</td>
+                                                        <td>@item.Description</td>
+                                                        <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                        <td>
+                                                            <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffCareerUpdateModal">
+                                                                <i class="la la-edit text-warning"></i>
+                                                            </a>
+                                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+
+                                                                <i class="la la-trash text-danger"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <!--end: Datatable-->
+                                    </div>
+                                </div>
+                                <!--end::Card-->
+                            </div>
+                            <!--end::Container-->
+                        </div>
+                        <!--end::Entry-->
+                    </div>
                 </div>
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_6">
                     @await Component.InvokeAsync("StaffPayment")
@@ -1112,15 +1191,40 @@
 </div>
 <!--end::Card-->
 @section Scripts{
-<script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    $(document).ready(function () {
-        var active = $("#kt_apps_contacts_view_tab_1").tabs("option", "active");
-        console.log(active);
-                    // Setter
-        $(".kt_apps_contacts_view_tab_1").tabs("option", "active", 1);
-    });
-</script>
+    @*Sayfa post edildiğinde tab değişikliğini engeller.*@
+    <script>
+
+        $(document).ready(function () {
+
+            var url = $(location).attr('href');
+            if (url.includes("#")) {
+                var dizi = url.split("#");
+                let item = dizi[1];
+                let tabId = $(".nav-item .active").first().attr("id");
+                let paneId = $(this).find('#' + tabId).attr('href');
+
+
+                let itemHref = $(this).find('#' + item).attr('href');
+
+
+                $("#" + tabId).removeClass("active");
+                $(paneId).removeClass("active");
+
+                $("#" + item).addClass("active");
+                $(itemHref).addClass("active");
+            }
+            else {
+                let item = "tab_1";
+                let itemHref = $(this).find('#' + item).attr('href');
+                $("#" + item).addClass("active");
+                $(itemHref).addClass("active");
+            }
+       
+
+        });
+    </script>
 
     @*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı*@
     <script type="text/javascript">
@@ -1139,6 +1243,8 @@
             }
         });
     </script>
+
+    @*Şirket değişikliği , şube  drop downına yansır*@
     <script type="text/javascript">
 
         function countryChange() {
@@ -1203,8 +1309,9 @@
 
 
     </script>
-
+    @*Ülke ve şehir değişiklikleri drop doena yansır*@
     <script>
+        // kariyer ekleme sayfasındaki şirket şube listeleme
         function CompanyChange() {
             var id = document.getElementById("c_companySelect").value;
             console.log(id);
@@ -1234,6 +1341,7 @@
                 $("#c_companyBranchSelect").addClass("text-muted");
             }
         }
+        // kariyer güncelleme sayfasındaki şirket şube listeleme
         function CompanyChangeUpdate() {
 
             var id = document.getElementById("c_companySelectUpdate").value;
@@ -1265,6 +1373,7 @@
             }
         }
     </script>
+    @*Modal Add Career*@
     <script>
 
         $(document).on("submit", "#modalAddCareer", function (event) { //infoForm id li form post edildiğinde
@@ -1281,13 +1390,17 @@
                 cache: false,
                 processData: false,
                 success: function (data) {
+                    var url = $(location).attr('href');
+                    var dizi = url.split("#");
+                    let item = dizi[0];
+                    item += "#"+data;
+                    console.log(url);
+                    window.location.href = item;
                     window.location.reload();
                 }
             });
         });
     </script>
-
-
     @*//update staff career*@
     <script>
         function CareerUpdate(id) {
@@ -1305,6 +1418,7 @@
                     modelContent.html(content);
                 }
                 $("#staffCareerUpdateModal").modal("show");
+
                 CompanyChangeUpdate();
 
             }).fail(function (error) {
@@ -1344,7 +1458,7 @@
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Page Vendors-->
     <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"  charset="windows-1254"></script>
     <!--end::Page Scripts-->
 
 

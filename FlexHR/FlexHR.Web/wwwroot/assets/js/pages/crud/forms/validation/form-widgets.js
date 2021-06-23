@@ -23,7 +23,8 @@ var KTFormWidgetsValidation = function () {
             pickerPosition: 'bottom-left',
             todayHighlight: true,
             autoclose: true,
-            format: 'yyyy.mm.dd hh:ii'
+            locale: 'tr',
+            format: 'DD.MM.YYYY'
         });
 
         $('#kt_datetimepicker').change(function() {

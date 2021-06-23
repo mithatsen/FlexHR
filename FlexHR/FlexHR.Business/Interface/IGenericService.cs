@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace FlexHR.Business.Interface
@@ -12,6 +14,7 @@ namespace FlexHR.Business.Interface
         T GetById(int id);
         List<T> GetAll();
         T AddResult(T table);
-
+        IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
+        
     }
 }

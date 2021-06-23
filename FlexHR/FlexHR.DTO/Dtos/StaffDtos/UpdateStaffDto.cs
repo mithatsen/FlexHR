@@ -1,4 +1,5 @@
 ﻿using FlexHR.DTO.Dtos.StaffCareerDtos;
+using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.Entity.Concrete;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public ListStaffCareerDto ActiveCareer { get; set; }
         public StaffPersonelInfo StaffPersonelInfo { get; set; } 
         public StaffOtherInfo StaffOtherInfo { get; set; } 
+ 
 
         public List<GeneralSubType> BloodGroupList { get; set; }
         public List<GeneralSubType> GenderList { get; set; }
@@ -41,5 +43,6 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public List<Role> Roles { get; set; } // bu dropdown için
         public virtual ICollection<StaffGeneralSubType> StaffGeneralSubType { get; set; }
         public List<ListStaffCareerDto> ListStaffCareer { get; set; }
+        public List<ListStaffLeaveDto> ListStaffLeave { get; set; }
     }
 }
