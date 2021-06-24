@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
+using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
@@ -36,13 +37,21 @@ namespace FlexHR.Web.Controllers
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IStaffCareerService _staffCareerService;
         private readonly IStaffLeaveService _staffLeaveService;
+<<<<<<< HEAD
         private readonly IStaffShiftService _staffShiftService;
+=======
+        private readonly IStaffPaymentService _staffPaymentService;
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
         public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
                                      IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService,
                                      IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService,
                                      ICompanyService companyService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService,
+<<<<<<< HEAD
                                      IStaffLeaveService staffLeaveService, IStaffShiftService staffShiftService
+=======
+                                     IStaffLeaveService staffLeaveService,IStaffPaymentService staffPaymentService
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
                                 )
         {
             _staffService = staffService;
@@ -61,7 +70,11 @@ namespace FlexHR.Web.Controllers
             _companyBranchService = companyBranchService;
             _staffCareerService = staffCareerService;
             _staffLeaveService = staffLeaveService;
+<<<<<<< HEAD
             _staffShiftService = staffShiftService;
+=======
+            _staffPaymentService = staffPaymentService;
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
         }
 
         public IActionResult Index()
@@ -89,7 +102,11 @@ namespace FlexHR.Web.Controllers
             var personelInfo = _staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
             var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
+<<<<<<< HEAD
             var staffShiftList = _staffShiftService.Get(p => p.StaffId == id && p.IsActive == true);
+=======
+            var staffPaymentList = _staffPaymentService.Get(p => p.StaffId == id);
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
 
 
             ListStaffCareerDto activeCareerDto;
@@ -187,6 +204,24 @@ namespace FlexHR.Web.Controllers
                 };
                 leaveModels.Add(leaveModel);
             }
+            var paymentModels = new List<ListStaffPaymentDto>();
+            foreach (var item in staffPaymentList)
+            {
+                var paymentModel = new ListStaffPaymentDto
+                {
+                    Amount = item.Amount,
+                    CreationDate = item.CreationDate,
+                    Description = item.Description,
+                    GeneralStatusGeneralSubTypeId = item.GeneralStatusGeneralSubTypeId,
+                    IsMailSentToStaff = item.IsMailSentToStaff,
+                    IsSentForApproval = item.IsSentForApproval,
+                    StaffPaymentId = item.StaffPaymentId,
+                    IsPaid = item.IsPaid,
+                    PaymentDate=item.PaymentDate,
+                    PaymentTypeGeneralSubTypeId=item.PaymentTypeGeneralSubTypeId,                    
+                };
+                paymentModels.Add(paymentModel);
+            }
 
             var shiftModels = new List<ListStaffShiftDto>();
             foreach (var item in staffShiftList)
@@ -233,7 +268,11 @@ namespace FlexHR.Web.Controllers
                 ContractTypeId = contractTypeId,
                 TownId = staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId,
                 ListStaffLeave = leaveModels,
+<<<<<<< HEAD
                 ListStaffShift= shiftModels
+=======
+                ListStaffPayment=paymentModels                
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
             };
             return View(model);
         }

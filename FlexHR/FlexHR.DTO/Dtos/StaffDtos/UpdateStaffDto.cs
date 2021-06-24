@@ -1,6 +1,10 @@
 ﻿using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
+<<<<<<< HEAD
 using FlexHR.DTO.Dtos.StaffShiftDtos;
+=======
+using FlexHR.DTO.Dtos.StaffPaymentDtos;
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
 using FlexHR.Entity.Concrete;
 using System;
 using System.Collections.Generic;
@@ -46,7 +50,11 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public virtual ICollection<StaffGeneralSubType> StaffGeneralSubType { get; set; }
         public List<ListStaffCareerDto> ListStaffCareer { get; set; }
         public List<ListStaffLeaveDto> ListStaffLeave { get; set; }
+<<<<<<< HEAD
         public List<ListStaffShiftDto> ListStaffShift { get; set; }
         
+=======
+        public List<ListStaffPaymentDto> ListStaffPayment { get; set; }
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
     }
 }

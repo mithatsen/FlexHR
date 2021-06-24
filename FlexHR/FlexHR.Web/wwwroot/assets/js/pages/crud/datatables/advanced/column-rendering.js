@@ -73,7 +73,11 @@ var KTDatatablesAdvancedColumnRendering = function () {
 
             ],
         });
+<<<<<<< HEAD
         var table = $('#kt_datatable_4');
+=======
+        var table = $('#kt_datatable_3');
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
 
         // begin first table
         table.DataTable({
@@ -81,6 +85,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
             paging: true,
             columnDefs: [
 
+<<<<<<< HEAD
                 //{
                 //    targets: -2,
                 //    title: 'Durum',
@@ -108,6 +113,35 @@ var KTDatatablesAdvancedColumnRendering = function () {
                 //        return '<span class="text-light font-weight-bold badge badge-' + status[data].state + '">' + status[data].title + '</span>';
                 //    },
                 //},
+=======
+                {
+                    targets: -4,
+                    title: 'Durum',
+                    width: '75px',
+                    language: "tr",
+                    render: function (data, type, full, meta) {
+                        var status = {
+                            '96': {
+                                'title': 'Onay Bekliyor',
+                                'state': 'warning'
+
+                            },
+                            '98': {
+                                'title': 'Reddedildi',
+                                'state': 'danger'
+                            },
+                            '97': {
+                                'title': 'Onaylandý',
+                                'state': 'success'
+                            }
+                        };
+                        if (typeof status[data] === 'undefined') {
+                            return data;
+                        }
+                        return '<span class="text-light font-weight-bold badge badge-' + status[data].state + '">' + status[data].title + '</span>';
+                    },
+                },
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
 
             ],
         });

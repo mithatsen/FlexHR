@@ -608,24 +608,24 @@
                                                 </div>
 
                                                 @*<div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">Uyruğu</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
-                                                                @foreach (var item in Model.ContractTypeList)
-                                                                {
-                                                                    if (Model.ContractType == item.Description)
-                                                                    {
-                                                                        <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <option value="@item.GeneralSubTypeId">@item.Description</option>
-                                                                    }
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Uyruğu</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <select id="ContractTypeSelect3" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg">
+                                                    @foreach (var item in Model.ContractTypeList)
+                                                    {
+                                                        if (Model.ContractType == item.Description)
+                                                        {
+                                                            <option value="@item.GeneralSubTypeId" selected>@item.Description</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.GeneralSubTypeId">@item.Description</option>
+                                                        }
 
-                                                                }
-                                                            </select>
-                                                        </div>
-                                                    </div>*@
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>*@
 
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Kan Grubu</label>
@@ -1006,7 +1006,7 @@
                                                         <td>@item.LeaveStartDate.ToString("d")</td>
 
                                                         <td>@item.LeaveEndDate.ToString("d")</td>
-                                                       
+
                                                         <td>@item.TotalDay Gün</td>
                                                         <td>@item.LeaveType</td>
                                                         <td>@item.Description</td>
@@ -1034,9 +1034,91 @@
                         </div>
                         <!--end::Entry-->
                     </div>
+<<<<<<< HEAD
               
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_6">
                     @await Component.InvokeAsync("StaffPayment")
+=======
+                </div>
+                @*Staff Payment*@
+                <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_6">
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-plane-departure text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            Ödemeler
+
+                                        </h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
+                                            Ödeme Ekle
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_3">
+                                        <thead>
+                                            <tr>
+                                                <th>Tarih</th>
+                                                <th>Ödeme Türü</th>
+                                                <th>Açıklama</th>
+                                                <th>Tutar</th>
+                                                <th>Durum</th>
+                                                <th>Oluştrulma Tarihi</th>
+                                                <th>Ödendi</th>
+                                                <th>İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ListStaffPayment)
+                                            {
+                                            <tr>
+
+                                                <td>@item.PaymentDate.ToString("d")</td>
+
+                                                <td>@item.PaymentTypeGeneralSubTypeId</td>
+
+                                                <td>@item.Description Gün</td>
+                                                <td>@item.Amount</td>
+                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                <td>@item.CreationDate</td>
+                                                <td>@item.IsPaid</td>
+                                                <td>
+                                                    <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
+                                                        <i class="la la-edit text-warning"></i>
+                                                    </a>
+                                                    <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+
+                                                        <i class="la la-trash text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!--end: Datatable-->
+                                </div>
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Entry-->
+>>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
                 </div>
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_7">
                    
