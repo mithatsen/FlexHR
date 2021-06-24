@@ -85,7 +85,7 @@ namespace FlexHR.Web.Controllers
             var temp2 = _staffRoleService.GetUserRoleByStaffId(id);
             var personelInfo = _staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
-            var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id);
+            var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
 
 
             ListStaffCareerDto activeCareerDto;
@@ -99,7 +99,7 @@ namespace FlexHR.Web.Controllers
                     BranchName = activeCareer.CompanyBranch != null ? activeCareer.CompanyBranch.BranchName : "-",
                     CompanyName = _companyService.GetCompanyNameByCompanyId(activeCareer.CompanyId),
                     Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(activeCareer.TitleGeneralSubTypeId),
-     
+
                 };
             }
             else
@@ -150,7 +150,7 @@ namespace FlexHR.Web.Controllers
             {
                 var careerModel = new ListStaffCareerDto
                 {
-                    StaffCareerId=item.StaffCareerId,
+                    StaffCareerId = item.StaffCareerId,
                     JobStartDate = item.JobStartDate,
                     JobFinishDate = item.JobFinishDate,
                     CompanyName = _companyService.GetCompanyNameByCompanyId(item.CompanyId),
@@ -178,7 +178,8 @@ namespace FlexHR.Web.Controllers
                     StatusType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.GeneralStatusGeneralSubTypeId),
                     IsMailSentToStaff = item.IsMailSentToStaff,
                     IsSentForApproval = item.IsSentForApproval,
-                    StaffLeaveId = item.StaffLeaveId
+                    StaffLeaveId = item.StaffLeaveId,
+                    TotalDay=item.TotalDay
                 };
                 leaveModels.Add(leaveModel);
             }
@@ -260,7 +261,7 @@ namespace FlexHR.Web.Controllers
             {
                 model.StaffPersonelInfo.StaffId = model.StaffId;
                 _staffPersonelInfoService.Update(model.StaffPersonelInfo);
-                return RedirectToAction("UpdateStaff","Staff",new { id = model.StaffId },"tab_3");
+                return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_3");
             }
             return View();
         }
@@ -357,7 +358,7 @@ namespace FlexHR.Web.Controllers
             }
 
             _staffCareerService.Add(_mapper.Map<StaffCareer>(model));
-       
+
 
             return Json("tab_2");
         }
@@ -374,16 +375,47 @@ namespace FlexHR.Web.Controllers
 
                 JobStartDate = result.JobStartDate,
                 JobFinishDate = result.JobFinishDate,
-                CompanyBranchId=result.CompanyBranchId,
-                TitleGeneralSubTypeId=result.TitleGeneralSubTypeId,
-                DepartmantGeneralSubTypeId=result.DepartmantGeneralSubTypeId,
-                CompanyId=result.CompanyId,
+                CompanyBranchId = result.CompanyBranchId,
+                TitleGeneralSubTypeId = result.TitleGeneralSubTypeId,
+                DepartmantGeneralSubTypeId = result.DepartmantGeneralSubTypeId,
+                CompanyId = result.CompanyId,
                 ModeOfOperationGeneralSubTypeId = result.ModeOfOperationGeneralSubTypeId,
-                StaffCareerId=result.StaffCareerId,
-                StaffId=result.StaffId
+                StaffCareerId = result.StaffCareerId,
+                StaffId = result.StaffId
             };
 
             return PartialView("GetUpdateStaffCareerModal", careerModel);
+
+        }
+        [HttpGet]
+        public IActionResult GetUpdateStaffLeaveModal(int id)
+        {
+            var result = _staffLeaveService.GetById(id);
+            ViewBag.LeaveTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.LeaveType), "GeneralSubTypeId", "Description");
+            var leaveModel = new ListStaffLeaveDto
+            {
+                Description = result.Description,
+                LeaveStartDate = result.LeaveStartDate,
+                LeaveEndDate = result.LeaveEndDate,
+                LeaveTypeGeneralSubTypeId = result.LeaveTypeGeneralSubTypeId,
+                TotalDay = result.TotalDay,
+                StaffId = result.StaffId,
+                StaffLeaveId=result.StaffLeaveId,
+                GeneralStatusGeneralSubTypeId=result.GeneralStatusGeneralSubTypeId,
+                IsActive=result.IsActive
+
+            };
+
+            return PartialView("GetUpdateStaffLeaveModal", leaveModel);
+
+        }
+
+        [HttpPost]
+        public IActionResult UpdateStaffLeave(ListStaffLeaveDto model)
+        {
+           
+            _staffLeaveService.Update(_mapper.Map<StaffLeave>(model));
+            return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_5");
 
         }
         [HttpPost]
@@ -393,9 +425,26 @@ namespace FlexHR.Web.Controllers
             {
                 model.CompanyBranchId = null;
             }
+            if (model.JobFinishDate == null || model.JobFinishDate > DateTime.Now)
+            {
+                model.IsActive = true;
+            }
+            else
+            {
+                model.IsActive = false;
+            }
+
             _staffCareerService.Update(_mapper.Map<StaffCareer>(model));
             return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_2");
 
+        }
+        [HttpPost]
+        public IActionResult AddStaffLeaveWithAjax(AddStaffLeaveDto model)
+        {
+
+            _staffLeaveService.Add(_mapper.Map<StaffLeave>(model));
+
+            return Json(null);
         }
 
     }

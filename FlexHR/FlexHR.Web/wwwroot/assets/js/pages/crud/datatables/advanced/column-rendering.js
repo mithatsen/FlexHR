@@ -51,22 +51,23 @@ var KTDatatablesAdvancedColumnRendering = function () {
                     render: function (data, type, full, meta) {
                         var status = {
                             '96': {
-                                'title': 'Onaylandı',
-                                'state': 'success'
+                                'title': 'Onay Bekliyor',
+                                'state': 'warning'
+                               
                             },
                             '98': {
                                 'title': 'Reddedildi',
                                 'state': 'danger'
                             },
                             '97': {
-                                'title': 'Onay Bekliyor',
-                                'state': 'primary'
+                                'title': 'Onaylandı',
+                                'state': 'success'
                             }
                         };
                         if (typeof status[data] === 'undefined') {
                             return data;
                         }
-                        return '<span class="font-weight-bold badge badge-' + status[data].state+'">' + status[data].title + '</span>';
+                        return '<span class="text-light font-weight-bold badge badge-' + status[data].state+'">' + status[data].title + '</span>';
                     },
                 },
 

@@ -27,6 +27,7 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public int TownId { get; set; } = -1;
         public TownHelper TownHelper { get; set; }
         public ListStaffCareerDto ActiveCareer { get; set; }
+        public ListStaffLeaveDto ActiveLeave { get; set; }
         public StaffPersonelInfo StaffPersonelInfo { get; set; } 
         public StaffOtherInfo StaffOtherInfo { get; set; } 
  

@@ -13,9 +13,13 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
         {
             entity.Property(e => e.Description).HasMaxLength(1000);
 
-            entity.Property(e => e.LeaveEndDate).HasColumnType("datetime");
+            entity.Property(e => e.LeaveEndDate).HasColumnType("datetime").IsRequired();
 
-            entity.Property(e => e.LeaveStartDate).HasColumnType("datetime");
+            entity.Property(e => e.LeaveStartDate).HasColumnType("datetime").IsRequired();
+
+            entity.Property(e => e.TotalDay)
+               .IsRequired();
+            
 
             entity.HasOne(d => d.Staff)
                 .WithMany(p => p.StaffLeave)

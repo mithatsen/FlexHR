@@ -16,6 +16,7 @@ var KTKBootstrapTouchspin = function() {
             boostat: 5,
             maxboostedstep: 10,
         });
+      
 
         // with prefix
         $('#kt_touchspin_2, #kt_touchspin_2_2').TouchSpin({

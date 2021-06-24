@@ -1006,18 +1006,13 @@
                                                         <td>@item.LeaveStartDate.ToString("d")</td>
 
                                                         <td>@item.LeaveEndDate.ToString("d")</td>
-                                                        @{
-                                                            DateTime bTarih = Convert.ToDateTime(item.LeaveEndDate);
-                                                            DateTime kTarih = Convert.ToDateTime(@item.LeaveStartDate);
-                                                            TimeSpan Sonuc = bTarih - kTarih;
-                                                            var Day = Sonuc.TotalDays;
-                                                        }
-                                                        <td>@Day Gün</td>
+                                                       
+                                                        <td>@item.TotalDay Gün</td>
                                                         <td>@item.LeaveType</td>
                                                         <td>@item.Description</td>
                                                         <td>@item.GeneralStatusGeneralSubTypeId</td>
                                                         <td>
-                                                            <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffCareerUpdateModal">
+                                                            <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
                                                                 <i class="la la-edit text-warning"></i>
                                                             </a>
                                                             <a class="btn btn-sm btn-clean btn-icon" title="Delete">
@@ -1210,6 +1205,7 @@
                 </button>
             </div>
             <form id="modalAddLeave" method="POST">
+                <input type="hidden" asp-for="StaffId" />
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -1227,7 +1223,7 @@
                                             <div class="form-group row">
                                                 <label class="col-xl-5 col-lg-3 col-form-label">İzin Türü</label>
                                                 <div class="col-lg-9 col-xl-7">
-                                                    <select class="form-control form-control-solid form-control-lg" id="c_companySelect" name="GeneralStatusGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
+                                                    <select class="form-control form-control-solid form-control-lg" name="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
                                                         <option value="-1">Seçiniz</option>
 
                                                     </select>
@@ -1239,7 +1235,7 @@
                                             <div class="form-group row ">
                                                 <label class="col-form-label col-xl-5 col-lg-3 ">Toplam Gün</label>
                                                 <div class="col-lg-9 col-xl-7">
-                                                    <input id="kt_touchspin_1" type="text" class="form-control text-center" value="0" name="demo0" placeholder="Toplam" />
+                                                    <input id="kt_touchspin_1" type="text" class="form-control text-center" value="0" name="TotalDay" placeholder="Toplam" />
                                                 </div>
                                             </div>
 
@@ -1247,10 +1243,10 @@
                                         <div class="col-md-6">
 
                                             <div class="form-group row ">
-                                                <label id="jobFinishDateLbl" class="col-xl-5 col-lg-3 col-form-label">Başlangıç Tarihi</label>
+                                                <label class="col-xl-5 col-lg-3 col-form-label">Başlangıç Tarihi</label>
                                                 <div class="col-lg-9 col-xl-7">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_14" data-target-input="nearest">
-                                                        <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
+                                                        <input name="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_14" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -1263,10 +1259,10 @@
                                         <div class="col-md-6">
 
                                             <div class="form-group row ">
-                                                <label id="jobFinishDateLbl" class="col-xl-5 col-lg-3 col-form-label">Bitiş Tarihi</label>
+                                                <label class="col-xl-5 col-lg-3 col-form-label">Bitiş Tarihi</label>
                                                 <div class="col-lg-9 col-xl-7">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_15" data-target-input="nearest">
-                                                        <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
+                                                        <input name="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_15" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -1283,14 +1279,14 @@
                                                 <div class="col-lg-9 col-xl-9">
                                                     <div class="input-group  pl-0  input-group-lg input-group-solid">
 
-                                                        <textarea asp-for="StaffOtherInfo.Adress" type="text" class="form-control form-control-lg form-control-solid" placeholder="Açıklama"></textarea>
+                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    </div>
+                                </div>
                             </div>
                             <!--end::Body-->
                         </div>
@@ -1312,6 +1308,8 @@
 
 @* update career modal*@
 <div id="abc"></div>
+@* update leave modal*@
+<div id="UpdateStaffLeaveModal"></div>
 <!--end::Card-->
 @section Scripts{
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -1563,6 +1561,61 @@
             }
         });
     </script>
+    @*//update staff leave*@
+    <script>
+        function LeaveUpdate(id) {
+
+            var modelContent = $("#UpdateStaffLeaveModal")
+            $("#UpdateStaffLeaveModal").empty();
+
+            $.ajax({
+                method: "GET",
+                url: "/Staff/GetUpdateStaffLeaveModal/" + id,
+                dataType: "html",
+                cache: false,
+            }).done(function (content) {
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#staffLeaveUpdate").modal("show");
+
+                //CompanyChangeUpdate();
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+    </script>
+    @*Modal Add StaffLeave*@
+    <script>
+
+        $(document).on("submit", "#modalAddLeave", function (event) { //infoForm id li form post edildiğinde
+
+
+            event.preventDefault();
+
+            $.ajax({
+                url: "/Staff/AddStaffLeaveWithAjax",
+                type: "POST",
+                data: new FormData(this),
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    $("#staffLeaveAddModal").modal('hide');
+
+                    //var url = $(location).attr('href');
+                    //var dizi = url.split("#");
+                    //let item = dizi[0];
+                    //item += "#" + data;
+                    //console.log(url);
+                    //window.location.href = item;
+                    //window.location.reload();
+                }
+            });
+        });
+    </script>
 
 
     <!--begin::Page Scripts(used by this page)-->
@@ -1588,7 +1641,7 @@
     <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>
-    <!--end::Page Scripts-->ss
+    <!--end::Page Scripts-->
 
 }
 
