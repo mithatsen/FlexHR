@@ -4,6 +4,7 @@ using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
+using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Http;
@@ -35,12 +36,13 @@ namespace FlexHR.Web.Controllers
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IStaffCareerService _staffCareerService;
         private readonly IStaffLeaveService _staffLeaveService;
+        private readonly IStaffShiftService _staffShiftService;
         public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
                                      IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService,
                                      IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService,
                                      ICompanyService companyService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService,
-                                     IStaffLeaveService staffLeaveService
+                                     IStaffLeaveService staffLeaveService, IStaffShiftService staffShiftService
                                 )
         {
             _staffService = staffService;
@@ -59,6 +61,7 @@ namespace FlexHR.Web.Controllers
             _companyBranchService = companyBranchService;
             _staffCareerService = staffCareerService;
             _staffLeaveService = staffLeaveService;
+            _staffShiftService = staffShiftService;
         }
 
         public IActionResult Index()
@@ -86,6 +89,7 @@ namespace FlexHR.Web.Controllers
             var personelInfo = _staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
             var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
+            var staffShiftList = _staffShiftService.Get(p => p.StaffId == id && p.IsActive == true);
 
 
             ListStaffCareerDto activeCareerDto;
@@ -184,7 +188,21 @@ namespace FlexHR.Web.Controllers
                 leaveModels.Add(leaveModel);
             }
 
-            var roleList = _roleService.GetAll();
+            var shiftModels = new List<ListStaffShiftDto>();
+            foreach (var item in staffShiftList)
+            {
+                var shiftModel = new ListStaffShiftDto
+                {
+                    StaffShiftId = item.StaffShiftId,
+                    Description = item.Description,
+                    Duration = item.Duration,
+                    IsActive = item.IsActive,
+                    StaffId = item.StaffId,
+                    StartDate = item.StartDate
+                };
+                shiftModels.Add(shiftModel);
+            }
+                var roleList = _roleService.GetAll();
             var contractTypeList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType);
             var model = new UpdateStaffDto
             {
@@ -214,7 +232,8 @@ namespace FlexHR.Web.Controllers
                 TownHelper = cityIdAndCountryId,
                 ContractTypeId = contractTypeId,
                 TownId = staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId,
-                ListStaffLeave = leaveModels
+                ListStaffLeave = leaveModels,
+                ListStaffShift= shiftModels
             };
             return View(model);
         }

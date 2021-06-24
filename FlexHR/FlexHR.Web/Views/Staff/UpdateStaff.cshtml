@@ -958,7 +958,7 @@
                 </div>
                 @*Staff Leave Info*@
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_5">
-                    <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+                 
                         <!--begin::Entry-->
                         <div class="d-flex flex-column-fluid">
                             <!--begin::Container-->
@@ -1034,12 +1034,86 @@
                         </div>
                         <!--end::Entry-->
                     </div>
-                </div>
+              
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_6">
                     @await Component.InvokeAsync("StaffPayment")
                 </div>
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_7">
-                    @await Component.InvokeAsync("StaffShift")
+                   
+                        <!--begin::Entry-->
+                        <div class="d-flex flex-column-fluid">
+                            <!--begin::Container-->
+                            <div class="container">
+                                <!--begin::Notice-->
+                                <!--end::Notice-->
+                                <!--begin::Card-->
+                                <div class="card card-custom">
+                                    <div class="card-header flex-wrap py-5">
+                                        <div class="card-title">
+                                            <i class="fas fa-plane-departure text-dark mr-2"></i>
+                                            <h3 class="card-label">
+                                                Mesailer
+                                            </h3>
+                                        </div>
+                                        <div class="card-toolbar">
+                                            <!--begin::Button-->
+                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
+                                                Mesai Kaydı Ekle
+                                            </button>
+                                            <!--end::Button-->
+                                        </div>
+
+                                    </div>
+                                    <div class="card-body">
+                                        <!--begin: Datatable-->
+                                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_4">
+                                            <thead>
+                                                <tr>
+                                                    <th>Başlangıç</th>
+                                                    <th>Süre(saat)</th>
+                                                    <th>Açıklama</th>                                                                                                                                               
+                                                    <th>İşlemler</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ListStaffShift)
+                                                {
+                                                    <tr>
+
+                                                        <td>@item.StartDate.ToString("d")</td>
+
+                                                        <td>@item.Duration Saat</td>
+
+                                                        <td>@item.Description</td>
+                                                        
+                                                      
+                                                        <td>
+                                                            <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
+                                                                <i class="la la-edit text-warning"></i>
+                                                            </a>
+                                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+
+                                                                <i class="la la-trash text-danger"></i>
+                                                            </a>
+                                                            <a class="btn btn-sm btn-clean btn-icon" title="Onay">
+
+                                                                <i class="la la-check" text-success"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <!--end: Datatable-->
+                                    </div>
+                                </div>
+                                <!--end::Card-->
+                            </div>
+                            <!--end::Container-->
+                        </div>
+                        <!--end::Entry-->
+                  
                 </div>
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_8">
                     @await Component.InvokeAsync("Document")
@@ -1048,7 +1122,7 @@
             </div>
         </div>
     </div>
-</div>
+
 
 
 @* add career modal*@

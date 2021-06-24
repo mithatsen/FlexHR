@@ -1,5 +1,6 @@
 ﻿using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
+using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
 using System;
 using System.Collections.Generic;
@@ -45,5 +46,7 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public virtual ICollection<StaffGeneralSubType> StaffGeneralSubType { get; set; }
         public List<ListStaffCareerDto> ListStaffCareer { get; set; }
         public List<ListStaffLeaveDto> ListStaffLeave { get; set; }
+        public List<ListStaffShiftDto> ListStaffShift { get; set; }
+        
     }
 }
