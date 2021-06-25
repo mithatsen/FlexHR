@@ -958,88 +958,83 @@
                 </div>
                 @*Staff Leave Info*@
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_5">
-                 
-                        <!--begin::Entry-->
-                        <div class="d-flex flex-column-fluid">
-                            <!--begin::Container-->
-                            <div class="container">
-                                <!--begin::Notice-->
-                                <!--end::Notice-->
-                                <!--begin::Card-->
-                                <div class="card card-custom">
-                                    <div class="card-header flex-wrap py-5">
-                                        <div class="card-title">
-                                            <i class="fas fa-plane-departure text-dark mr-2"></i>
-                                            <h3 class="card-label">
-                                                İzinler
 
-                                            </h3>
-                                        </div>
-                                        <div class="card-toolbar">
-                                            <!--begin::Button-->
-                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
-                                                İzin Ekle
-                                            </button>
-                                            <!--end::Button-->
-                                        </div>
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-plane-departure text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            İzinler
 
+                                        </h3>
                                     </div>
-                                    <div class="card-body">
-                                        <!--begin: Datatable-->
-                                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
-                                            <thead>
-                                                <tr>
-                                                    <th>Başlangıç</th>
-                                                    <th>Bitiş</th>
-                                                    <th>Süre</th>
-                                                    <th>İzin Türü</th>
-                                                    <th>Açıklama</th>
-                                                    <th>Durum</th>
-                                                    <th>İşlemler</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var item in Model.ListStaffLeave)
-                                                {
-                                                    <tr>
-
-                                                        <td>@item.LeaveStartDate.ToString("d")</td>
-
-                                                        <td>@item.LeaveEndDate.ToString("d")</td>
-
-                                                        <td>@item.TotalDay Gün</td>
-                                                        <td>@item.LeaveType</td>
-                                                        <td>@item.Description</td>
-                                                        <td>@item.GeneralStatusGeneralSubTypeId</td>
-                                                        <td>
-                                                            <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
-                                                                <i class="la la-edit text-warning"></i>
-                                                            </a>
-                                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete">
-
-                                                                <i class="la la-trash text-danger"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                }
-                                            </tbody>
-                                        </table>
-                                        <!--end: Datatable-->
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
+                                            İzin Ekle
+                                        </button>
+                                        <!--end::Button-->
                                     </div>
+
                                 </div>
-                                <!--end::Card-->
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
+                                        <thead>
+                                            <tr>
+                                                <th>Başlangıç</th>
+                                                <th>Bitiş</th>
+                                                <th>Süre</th>
+                                                <th>İzin Türü</th>
+                                                <th>Açıklama</th>
+                                                <th>Durum</th>
+                                                <th>İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ListStaffLeave)
+                                            {
+                                                <tr>
+
+                                                    <td>@item.LeaveStartDate.ToString("d")</td>
+
+                                                    <td>@item.LeaveEndDate.ToString("d")</td>
+
+                                                    <td>@item.TotalDay Gün</td>
+                                                    <td>@item.LeaveType</td>
+                                                    <td>@item.Description</td>
+                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!--end: Datatable-->
+                                </div>
                             </div>
-                            <!--end::Container-->
+                            <!--end::Card-->
                         </div>
-                        <!--end::Entry-->
+                        <!--end::Container-->
                     </div>
-<<<<<<< HEAD
-              
-                <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_6">
-                    @await Component.InvokeAsync("StaffPayment")
-=======
+                    <!--end::Entry-->
                 </div>
+
                 @*Staff Payment*@
                 <div class="tab-pane " role="tabpanel" id="kt_apps_contacts_view_tab_6">
                     <!--begin::Entry-->
@@ -1085,27 +1080,27 @@
                                         <tbody>
                                             @foreach (var item in Model.ListStaffPayment)
                                             {
-                                            <tr>
+                                                <tr>
 
-                                                <td>@item.PaymentDate.ToString("d")</td>
+                                                    <td>@item.PaymentDate.ToString("d")</td>
 
-                                                <td>@item.PaymentTypeGeneralSubTypeId</td>
+                                                    <td>@item.PaymentType</td>
 
-                                                <td>@item.Description Gün</td>
-                                                <td>@item.Amount</td>
-                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
-                                                <td>@item.CreationDate</td>
-                                                <td>@item.IsPaid</td>
-                                                <td>
-                                                    <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
-                                                        <i class="la la-edit text-warning"></i>
-                                                    </a>
-                                                    <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+                                                    <td>@item.Description Gün</td>
+                                                    <td>@item.Amount ₺</td>
+                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                    <td>@item.CreationDate.ToShortDateString()</td>
+                                                    <td>@item.IsPaid</td>
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
 
-                                                        <i class="la la-trash text-danger"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
 
                                             }
                                         </tbody>
@@ -1118,85 +1113,88 @@
                         <!--end::Container-->
                     </div>
                     <!--end::Entry-->
->>>>>>> 06cd49799e1b2442e414f4466d6949c23b4090be
+
                 </div>
+                @*Staff Shift*@
+
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_7">
-                   
-                        <!--begin::Entry-->
-                        <div class="d-flex flex-column-fluid">
-                            <!--begin::Container-->
-                            <div class="container">
-                                <!--begin::Notice-->
-                                <!--end::Notice-->
-                                <!--begin::Card-->
-                                <div class="card card-custom">
-                                    <div class="card-header flex-wrap py-5">
-                                        <div class="card-title">
-                                            <i class="fas fa-plane-departure text-dark mr-2"></i>
-                                            <h3 class="card-label">
-                                                Mesailer
-                                            </h3>
-                                        </div>
-                                        <div class="card-toolbar">
-                                            <!--begin::Button-->
-                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
-                                                Mesai Kaydı Ekle
-                                            </button>
-                                            <!--end::Button-->
-                                        </div>
 
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-plane-departure text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            Mesailer
+                                        </h3>
                                     </div>
-                                    <div class="card-body">
-                                        <!--begin: Datatable-->
-                                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_4">
-                                            <thead>
-                                                <tr>
-                                                    <th>Başlangıç</th>
-                                                    <th>Süre(saat)</th>
-                                                    <th>Açıklama</th>                                                                                                                                               
-                                                    <th>İşlemler</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var item in Model.ListStaffShift)
-                                                {
-                                                    <tr>
-
-                                                        <td>@item.StartDate.ToString("d")</td>
-
-                                                        <td>@item.Duration Saat</td>
-
-                                                        <td>@item.Description</td>
-                                                        
-                                                      
-                                                        <td>
-                                                            <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
-                                                                <i class="la la-edit text-warning"></i>
-                                                            </a>
-                                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete">
-
-                                                                <i class="la la-trash text-danger"></i>
-                                                            </a>
-                                                            <a class="btn btn-sm btn-clean btn-icon" title="Onay">
-
-                                                                <i class="la la-check" text-success"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                }
-                                            </tbody>
-                                        </table>
-                                        <!--end: Datatable-->
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
+                                            Mesai Kaydı Ekle
+                                        </button>
+                                        <!--end::Button-->
                                     </div>
+
                                 </div>
-                                <!--end::Card-->
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_4">
+                                        <thead>
+                                            <tr>
+                                                <th>Başlangıç</th>
+                                                <th>Süre(saat)</th>
+                                                <th>Açıklama</th>
+                                                <th>İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ListStaffShift)
+                                            {
+                                                <tr>
+
+                                                    <td>@item.StartDate.ToString("d")</td>
+
+                                                    <td>@item.Duration Saat</td>
+
+                                                    <td>@item.Description</td>
+
+
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Onay">
+
+                                                            <i class="la la-check" text-success"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!--end: Datatable-->
+                                </div>
                             </div>
-                            <!--end::Container-->
+                            <!--end::Card-->
                         </div>
-                        <!--end::Entry-->
-                  
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Entry-->
+
                 </div>
+
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_8">
                     @await Component.InvokeAsync("Document")
                 </div>
@@ -1205,124 +1203,241 @@
         </div>
     </div>
 
+</div>
 
+    @* add career modal*@
+    <div class="modal fade" id="staffCareerAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="card-title align-items-start flex-column">
+                        <h3 class="card-label font-weight-bolder text-dark">
+                            <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
+                        </h3>
 
-@* add career modal*@
-<div class="modal fade" id="staffCareerAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
-                    </h3>
-
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
                 </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i aria-hidden="true" class="ki ki-close"></i>
-                </button>
-            </div>
-            <form id="modalAddCareer" method="POST">
-                <div class="modal-body">
-                    <div class="flex-row-fluid ">
-                        <!--begin::Form-->
-                        <!--begin::Card-->
-                        <div class="card card-custom card-stretch">
-                            <!--begin::Header-->
-                            <!--end::Header-->
+                <form id="modalAddCareer" method="POST">
+                    <div class="modal-body">
+                        <div class="flex-row-fluid ">
+                            <!--begin::Form-->
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <!--end::Header-->
 
-                            <div class="container ">
-                                <!--begin::Body-->
-                                <div class="card-body mx-auto">
+                                <div class="container ">
+                                    <!--begin::Body-->
+                                    <div class="card-body mx-auto">
 
-                                    <div class="row">
+                                        <div class="row">
 
-                                        <div class="col-md-6 ">
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Şirket</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
-                                                        <option value="-1">Seçiniz</option>
+                                            <div class="col-md-6 ">
+                                                <div class="form-group row justify-content-center">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Şirket</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
+                                                            <option value="-1">Seçiniz</option>
 
-                                                    </select>
+                                                        </select>
+
+                                                    </div>
 
                                                 </div>
+                                                <div class="form-group row justify-content-center">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Departman</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select class="form-control form-control-solid form-control-lg" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
+                                                            <option value="-1">Seçiniz</option>
 
-                                            </div>
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Departman</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <select class="form-control form-control-solid form-control-lg" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
-                                                        <option value="-1">Seçiniz</option>
-
-                                                    </select>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Çalışma Şekli</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <select class="form-control form-control-solid form-control-lg" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
-                                                        <option value="-1">Seçiniz</option>
+                                                <div class="form-group row justify-content-center">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Çalışma Şekli</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select class="form-control form-control-solid form-control-lg" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
+                                                            <option value="-1">Seçiniz</option>
 
-                                                    </select>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
 
 
-                                            <div class="form-group row justify-content-center">
-                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label">Başlangıç Tarihi</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
+                                                <div class="form-group row justify-content-center">
+                                                    <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label">Başlangıç Tarihi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
+                                                            <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row justify-content-center">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Şube</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="CompanyBranchId">
+                                                            <option value="-1">Seçiniz</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group row justify-content-center">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Unvan</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
+                                                            <option value="-1">Seçiniz</option>
+
+                                                        </select>
+                                                        <input type="hidden" asp-for="@Model.StaffId" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row justify-content-center">
+                                                    <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label ">Bitiş Tarihi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_6" data-target-input="nearest">
+                                                            <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_6" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Şube</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="CompanyBranchId">
-                                                        <option value="-1">Seçiniz</option>
-
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
 
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Unvan</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
-                                                        <option value="-1">Seçiniz</option>
+                            </div>
 
-                                                    </select>
-                                                    <input type="hidden" asp-for="@Model.StaffId" />
-                                                </div>
-                                            </div>
+                            <!--end::Form-->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label ">Bitiş Tarihi</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_6" data-target-input="nearest">
-                                                        <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_6" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
+    @*add leave modal*@
+    <div class="modal fade" id="staffLeaveAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="card-title align-items-start flex-column">
+                        <h3 class="card-label font-weight-bolder text-dark">
+                            <i class="fas fa-address-book mr-2 text-dark"></i>İzin Ekle
+                        </h3>
+
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <form id="modalAddLeave" method="POST">
+                    <input type="hidden" asp-for="StaffId" />
+                    <div class="modal-body">
+                        <div class="flex-row-fluid ">
+                            <!--begin::Form-->
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <!--end::Header-->
+
+                                <div class="container ">
+                                    <!--begin::Body-->
+                                    <div class="card-body mx-auto">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-5 col-lg-3 col-form-label">İzin Türü</label>
+                                                    <div class="col-lg-9 col-xl-7">
+                                                        <select class="form-control form-control-solid form-control-lg" name="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
+                                                            <option value="-1">Seçiniz</option>
+
+                                                        </select>
 
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-6 ">
+                                                <div class="form-group row ">
+                                                    <label class="col-form-label col-xl-5 col-lg-3 ">Toplam Gün</label>
+                                                    <div class="col-lg-9 col-xl-7">
+                                                        <input id="kt_touchspin_1" type="text" class="form-control text-center" value="0" name="TotalDay" placeholder="Toplam" />
+                                                    </div>
+                                                </div>
 
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group row ">
+                                                    <label class="col-xl-5 col-lg-3 col-form-label">Başlangıç Tarihi</label>
+                                                    <div class="col-lg-9 col-xl-7">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_14" data-target-input="nearest">
+                                                            <input name="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_14" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group row ">
+                                                    <label class="col-xl-5 col-lg-3 col-form-label">Bitiş Tarihi</label>
+                                                    <div class="col-lg-9 col-xl-7">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_15" data-target-input="nearest">
+                                                            <input name="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_15" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 pr-0 col-lg-3 col-form-label">Açıklama</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <div class="input-group  pl-0  input-group-lg input-group-solid">
+
+                                                            <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1334,472 +1449,354 @@
 
                         <!--end::Form-->
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
-@*add leave modal*@
-
-<div class="modal fade" id="staffLeaveAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>İzin Ekle
-                    </h3>
-
-                </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i aria-hidden="true" class="ki ki-close"></i>
-                </button>
-            </div>
-            <form id="modalAddLeave" method="POST">
-                <input type="hidden" asp-for="StaffId" />
-                <div class="modal-body">
-                    <div class="flex-row-fluid ">
-                        <!--begin::Form-->
-                        <!--begin::Card-->
-                        <div class="card card-custom card-stretch">
-                            <!--begin::Header-->
-                            <!--end::Header-->
-
-                            <div class="container ">
-                                <!--begin::Body-->
-                                <div class="card-body mx-auto">
-                                    <div class="row">
-
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-xl-5 col-lg-3 col-form-label">İzin Türü</label>
-                                                <div class="col-lg-9 col-xl-7">
-                                                    <select class="form-control form-control-solid form-control-lg" name="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
-                                                        <option value="-1">Seçiniz</option>
-
-                                                    </select>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 ">
-                                            <div class="form-group row ">
-                                                <label class="col-form-label col-xl-5 col-lg-3 ">Toplam Gün</label>
-                                                <div class="col-lg-9 col-xl-7">
-                                                    <input id="kt_touchspin_1" type="text" class="form-control text-center" value="0" name="TotalDay" placeholder="Toplam" />
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-6">
-
-                                            <div class="form-group row ">
-                                                <label class="col-xl-5 col-lg-3 col-form-label">Başlangıç Tarihi</label>
-                                                <div class="col-lg-9 col-xl-7">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_14" data-target-input="nearest">
-                                                        <input name="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_14" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-
-                                            <div class="form-group row ">
-                                                <label class="col-xl-5 col-lg-3 col-form-label">Bitiş Tarihi</label>
-                                                <div class="col-lg-9 col-xl-7">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_15" data-target-input="nearest">
-                                                        <input name="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_15" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-xl-3 pr-0 col-lg-3 col-form-label">Açıklama</label>
-                                                <div class="col-lg-9 col-xl-9">
-                                                    <div class="input-group  pl-0  input-group-lg input-group-solid">
-
-                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end::Body-->
-                        </div>
-
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
                     </div>
-
-                    <!--end::Form-->
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-@* update career modal*@
-<div id="abc"></div>
-@* update leave modal*@
-<div id="UpdateStaffLeaveModal"></div>
-<!--end::Card-->
-@section Scripts{
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    @* update career modal*@
+    <div id="abc"></div>
+    @* update leave modal*@
+    <div id="UpdateStaffLeaveModal"></div>
+    <!--end::Card-->
+    @section Scripts{
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    @*Sayfa post edildiğinde tab değişikliğini engeller.*@
-    <script>
+        @*Sayfa post edildiğinde tab değişikliğini engeller.*@
+        <script>
 
-        $(document).ready(function () {
+            $(document).ready(function () {
 
-            var url = $(location).attr('href');
-            if (url.includes("#")) {
-                var dizi = url.split("#");
-                let item = dizi[1];
-                let tabId = $(".nav-item .active").first().attr("id");
-                let paneId = $(this).find('#' + tabId).attr('href');
-
-
-                let itemHref = $(this).find('#' + item).attr('href');
+                var url = $(location).attr('href');
+                if (url.includes("#")) {
+                    var dizi = url.split("#");
+                    let item = dizi[1];
+                    let tabId = $(".nav-item .active").first().attr("id");
+                    let paneId = $(this).find('#' + tabId).attr('href');
 
 
-                $("#" + tabId).removeClass("active");
-                $(paneId).removeClass("active");
-
-                $("#" + item).addClass("active");
-                $(itemHref).addClass("active");
-            }
-            else {
-                let item = "tab_1";
-                let itemHref = $(this).find('#' + item).attr('href');
-                $("#" + item).addClass("active");
-                $(itemHref).addClass("active");
-            }
+                    let itemHref = $(this).find('#' + item).attr('href');
 
 
-        });
-    </script>
+                    $("#" + tabId).removeClass("active");
+                    $(paneId).removeClass("active");
 
-    @*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı*@
-    <script type="text/javascript">
+                    $("#" + item).addClass("active");
+                    $(itemHref).addClass("active");
+                }
+                else {
+                    let item = "tab_1";
+                    let itemHref = $(this).find('#' + item).attr('href');
+                    $("#" + item).addClass("active");
+                    $(itemHref).addClass("active");
+                }
 
-        $('#ContractTypeSelect').on('change', function () {
-            var id = document.getElementById("ContractTypeSelect").value;
-            if (id == 1) {
-                $("#ContractFinishDate").attr("disabled", false);
-                $("#ContractFinishDate").removeClass("text-muted");
-                $("#jobFinishDateLbl").removeClass("text-muted");
-            }
-            else {
-                $("#ContractFinishDate").attr("disabled", true);
-                $("#ContractFinishDate").addClass("text-muted");
-                $("#jobFinishDateLbl").addClass("text-muted");
-            }
-        });
-    </script>
 
-    @*Şirket değişikliği , şube  drop downına yansır*@
-    <script type="text/javascript">
+            });
+        </script>
 
-        function countryChange() {
-            var id = document.getElementById("kt_select2_1").value;
-            if (id > 0) {
-                $.ajax({
-                    method: "GET",
-                    url: "/Staff/CityList/" + id,
-                }).done(function (content) {
-                    $("#kt_select2_city").attr("disabled", false);
-                    $("#kt_select2_city").removeClass("text-muted");
+        @*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı*@
+        <script type="text/javascript">
+
+            $('#ContractTypeSelect').on('change', function () {
+                var id = document.getElementById("ContractTypeSelect").value;
+                if (id == 1) {
+                    $("#ContractFinishDate").attr("disabled", false);
+                    $("#ContractFinishDate").removeClass("text-muted");
+                    $("#jobFinishDateLbl").removeClass("text-muted");
+                }
+                else {
+                    $("#ContractFinishDate").attr("disabled", true);
+                    $("#ContractFinishDate").addClass("text-muted");
+                    $("#jobFinishDateLbl").addClass("text-muted");
+                }
+            });
+        </script>
+
+        @*Şirket değişikliği , şube  drop downına yansır*@
+        <script type="text/javascript">
+
+            function countryChange() {
+                var id = document.getElementById("kt_select2_1").value;
+                if (id > 0) {
+                    $.ajax({
+                        method: "GET",
+                        url: "/Staff/CityList/" + id,
+                    }).done(function (content) {
+                        $("#kt_select2_city").attr("disabled", false);
+                        $("#kt_select2_city").removeClass("text-muted");
+                        $("#kt_select2_city").empty();
+                        $("#kt_select2_city").append('<option value="-1">İl seçiniz</option>');
+                        let cities = JSON.parse(content);
+                        for (var i = 0; i < cities.length; i++) {
+                            var opt = '<option value="' + cities[i].CityId + '">' + cities[i].Name + '</option>';
+                            $("#kt_select2_city").append(opt);
+                        }
+                    }).fail(function (error) {
+
+                    });
+                } else {
                     $("#kt_select2_city").empty();
-                    $("#kt_select2_city").append('<option value="-1">İl seçiniz</option>');
-                    let cities = JSON.parse(content);
-                    for (var i = 0; i < cities.length; i++) {
-                        var opt = '<option value="' + cities[i].CityId + '">' + cities[i].Name + '</option>';
-                        $("#kt_select2_city").append(opt);
-                    }
-                }).fail(function (error) {
+                    $("#kt_select2_city").append('<option value="-1">İl Seçiniz</option>');
+                    $("#kt_select2_city").attr("disabled", true);
+                    $("#kt_select2_city").addClass("text-muted");
 
-                });
-            } else {
-                $("#kt_select2_city").empty();
-                $("#kt_select2_city").append('<option value="-1">İl Seçiniz</option>');
-                $("#kt_select2_city").attr("disabled", true);
-                $("#kt_select2_city").addClass("text-muted");
+                    $("#kt_select2_town").empty();
+                    $("#kt_select2_town").append('<option value="-1">İlçe Seçiniz</option>');
+                    $("#kt_select2_town").attr("disabled", true);
+                    $("#kt_select2_town").addClass("text-muted");
 
-                $("#kt_select2_town").empty();
-                $("#kt_select2_town").append('<option value="-1">İlçe Seçiniz</option>');
-                $("#kt_select2_town").attr("disabled", true);
-                $("#kt_select2_town").addClass("text-muted");
-
+                }
             }
-        }
-        function cityChange() {
-            var id = document.getElementById("kt_select2_city").value;
-            if (id > 0) {
-                $.ajax({
-                    method: "GET",
-                    url: "/Staff/TownList/" + id,
-                }).done(function (content) {
-                    $("#kt_select2_town").attr("disabled", false);
-                    $("#kt_select2_town").removeClass("text-muted");
+            function cityChange() {
+                var id = document.getElementById("kt_select2_city").value;
+                if (id > 0) {
+                    $.ajax({
+                        method: "GET",
+                        url: "/Staff/TownList/" + id,
+                    }).done(function (content) {
+                        $("#kt_select2_town").attr("disabled", false);
+                        $("#kt_select2_town").removeClass("text-muted");
+                        $("#kt_select2_town").empty();
+                        $("#kt_select2_town").append('<option value="-1">İlçe seçiniz</option>');
+
+                        let town = JSON.parse(content);
+                        for (var i = 0; i < town.length; i++) {
+                            var opt = '<option value="' + town[i].TownId + '">' + town[i].Name + '</option>';
+                            $("#kt_select2_town").append(opt);
+                        }
+                    }).fail(function (error) {
+
+                    });
+                } else {
                     $("#kt_select2_town").empty();
                     $("#kt_select2_town").append('<option value="-1">İlçe seçiniz</option>');
-
-                    let town = JSON.parse(content);
-                    for (var i = 0; i < town.length; i++) {
-                        var opt = '<option value="' + town[i].TownId + '">' + town[i].Name + '</option>';
-                        $("#kt_select2_town").append(opt);
-                    }
-                }).fail(function (error) {
-
-                });
-            } else {
-                $("#kt_select2_town").empty();
-                $("#kt_select2_town").append('<option value="-1">İlçe seçiniz</option>');
-                $("#kt_select2_town").attr("disabled", true);
-                $("#kt_select2_town").addClass("text-muted");
+                    $("#kt_select2_town").attr("disabled", true);
+                    $("#kt_select2_town").addClass("text-muted");
+                }
             }
-        }
 
 
-    </script>
-    @*Ülke ve şehir değişiklikleri drop doena yansır*@
-    <script>
-        // kariyer ekleme sayfasındaki şirket şube listeleme
-        function CompanyChange() {
-            var id = document.getElementById("c_companySelect").value;
-            console.log(id);
-            if (id > 0) {
+        </script>
+        @*Ülke ve şehir değişiklikleri drop doena yansır*@
+        <script>
+            // kariyer ekleme sayfasındaki şirket şube listeleme
+            function CompanyChange() {
+                var id = document.getElementById("c_companySelect").value;
+                console.log(id);
+                if (id > 0) {
 
-                $.ajax({
-                    method: "GET",
-                    url: "/Staff/BranchList/" + id,
-                }).done(function (content) {
-                    $("#c_companyBranchSelect").attr("disabled", false);
-                    $("#c_companyBranchSelect").removeClass("text-muted");
+                    $.ajax({
+                        method: "GET",
+                        url: "/Staff/BranchList/" + id,
+                    }).done(function (content) {
+                        $("#c_companyBranchSelect").attr("disabled", false);
+                        $("#c_companyBranchSelect").removeClass("text-muted");
+                        $("#c_companyBranchSelect").empty();
+                        $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
+
+                        let companyBranch = JSON.parse(content);
+                        for (var i = 0; i < companyBranch.length; i++) {
+                            var opt = '<option value="' + companyBranch[i].CompanyBranchId + '">' + companyBranch[i].BranchName + '</option>';
+                            $("#c_companyBranchSelect").append(opt);
+                        }
+                    }).fail(function (error) {
+
+                    });
+                } else {
                     $("#c_companyBranchSelect").empty();
                     $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
-
-                    let companyBranch = JSON.parse(content);
-                    for (var i = 0; i < companyBranch.length; i++) {
-                        var opt = '<option value="' + companyBranch[i].CompanyBranchId + '">' + companyBranch[i].BranchName + '</option>';
-                        $("#c_companyBranchSelect").append(opt);
-                    }
-                }).fail(function (error) {
-
-                });
-            } else {
-                $("#c_companyBranchSelect").empty();
-                $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
-                $("#c_companyBranchSelect").attr("disabled", true);
-                $("#c_companyBranchSelect").addClass("text-muted");
+                    $("#c_companyBranchSelect").attr("disabled", true);
+                    $("#c_companyBranchSelect").addClass("text-muted");
+                }
             }
-        }
-        // kariyer güncelleme sayfasındaki şirket şube listeleme
-        function CompanyChangeUpdate() {
+            // kariyer güncelleme sayfasındaki şirket şube listeleme
+            function CompanyChangeUpdate() {
 
-            var id = document.getElementById("c_companySelectUpdate").value;
-            console.log(id);
-            if (id > 0) {
+                var id = document.getElementById("c_companySelectUpdate").value;
+                console.log(id);
+                if (id > 0) {
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/Staff/BranchList/" + id,
+                    }).done(function (content) {
+                        $("#c_companyBranchSelectUpdate").attr("disabled", false);
+                        $("#c_companyBranchSelectUpdate").removeClass("text-muted");
+                        $("#c_companyBranchSelectUpdate").empty();
+                        $("#c_companyBranchSelectUpdate").append('<option  value="-1">Şube Seçiniz</option>');
+
+                        let companyBranch = JSON.parse(content);
+                        for (var i = 0; i < companyBranch.length; i++) {
+                            var opt = '<option value="' + companyBranch[i].CompanyBranchId + '">' + companyBranch[i].BranchName + '</option>';
+                            $("#c_companyBranchSelectUpdate").append(opt);
+                        }
+                    }).fail(function (error) {
+
+                    });
+                } else {
+                    $("#c_companyBranchSelect").empty();
+                    $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
+                    $("#c_companyBranchSelect").attr("disabled", true);
+                    $("#c_companyBranchSelect").addClass("text-muted");
+                }
+            }
+        </script>
+        @*Modal Add Career*@
+        <script>
+
+            $(document).on("submit", "#modalAddCareer", function (event) { //infoForm id li form post edildiğinde
+
+
+                event.preventDefault();
+
+                $.ajax({
+                    url: "/Staff/AddStaffCareerWithAjax",
+                    type: "POST",
+                    data: new FormData(this),
+                    dataType: "json",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        var url = $(location).attr('href');
+                        var dizi = url.split("#");
+                        let item = dizi[0];
+                        item += "#" + data;
+                        console.log(url);
+                        window.location.href = item;
+                        window.location.reload();
+                    }
+                });
+            });
+        </script>
+        @*//update staff career*@
+        <script>
+            function CareerUpdate(id) {
+                console.log("asafhnasf");
+                var modelContent = $("#abc")
+                $("#abc").empty();
 
                 $.ajax({
                     method: "GET",
-                    url: "/Staff/BranchList/" + id,
+                    url: "/Staff/GetUpdateStaffCareerModal/" + id,
+                    dataType: "html",
+                    cache: false,
                 }).done(function (content) {
-                    $("#c_companyBranchSelectUpdate").attr("disabled", false);
-                    $("#c_companyBranchSelectUpdate").removeClass("text-muted");
-                    $("#c_companyBranchSelectUpdate").empty();
-                    $("#c_companyBranchSelectUpdate").append('<option  value="-1">Şube Seçiniz</option>');
-
-                    let companyBranch = JSON.parse(content);
-                    for (var i = 0; i < companyBranch.length; i++) {
-                        var opt = '<option value="' + companyBranch[i].CompanyBranchId + '">' + companyBranch[i].BranchName + '</option>';
-                        $("#c_companyBranchSelectUpdate").append(opt);
+                    if (content != null) {
+                        modelContent.html(content);
                     }
+                    $("#staffCareerUpdateModal").modal("show");
+
+                    CompanyChangeUpdate();
+
                 }).fail(function (error) {
-
+                    alert(error);
                 });
-            } else {
-                $("#c_companyBranchSelect").empty();
-                $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
-                $("#c_companyBranchSelect").attr("disabled", true);
-                $("#c_companyBranchSelect").addClass("text-muted");
             }
-        }
-    </script>
-    @*Modal Add Career*@
-    <script>
 
-        $(document).on("submit", "#modalAddCareer", function (event) { //infoForm id li form post edildiğinde
-
-
-            event.preventDefault();
-
-            $.ajax({
-                url: "/Staff/AddStaffCareerWithAjax",
-                type: "POST",
-                data: new FormData(this),
-                dataType: "json",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function (data) {
-                    var url = $(location).attr('href');
-                    var dizi = url.split("#");
-                    let item = dizi[0];
-                    item += "#" + data;
-                    console.log(url);
-                    window.location.href = item;
-                    window.location.reload();
+            $('#ContractTypeSelect').on('change', function () {
+                var id = document.getElementById("ContractTypeSelect").value;
+                if (id == 1) {
+                    $("#ContractFinishDate").attr("disabled", false);
+                    $("#ContractFinishDate").removeClass("text-muted");
+                    $("#jobFinishDateLbl").removeClass("text-muted");
+                }
+                else {
+                    $("#ContractFinishDate").attr("disabled", true);
+                    $("#ContractFinishDate").addClass("text-muted");
+                    $("#jobFinishDateLbl").addClass("text-muted");
                 }
             });
-        });
-    </script>
-    @*//update staff career*@
-    <script>
-        function CareerUpdate(id) {
-            console.log("asafhnasf");
-            var modelContent = $("#abc")
-            $("#abc").empty();
+        </script>
+        @*//update staff leave*@
+        <script>
+            function LeaveUpdate(id) {
 
-            $.ajax({
-                method: "GET",
-                url: "/Staff/GetUpdateStaffCareerModal/" + id,
-                dataType: "html",
-                cache: false,
-            }).done(function (content) {
-                if (content != null) {
-                    modelContent.html(content);
-                }
-                $("#staffCareerUpdateModal").modal("show");
+                var modelContent = $("#UpdateStaffLeaveModal")
+                $("#UpdateStaffLeaveModal").empty();
 
-                CompanyChangeUpdate();
+                $.ajax({
+                    method: "GET",
+                    url: "/Staff/GetUpdateStaffLeaveModal/" + id,
+                    dataType: "html",
+                    cache: false,
+                }).done(function (content) {
+                    if (content != null) {
+                        modelContent.html(content);
+                    }
+                    $("#staffLeaveUpdate").modal("show");
 
-            }).fail(function (error) {
-                alert(error);
-            });
-        }
+                    //CompanyChangeUpdate();
 
-        $('#ContractTypeSelect').on('change', function () {
-            var id = document.getElementById("ContractTypeSelect").value;
-            if (id == 1) {
-                $("#ContractFinishDate").attr("disabled", false);
-                $("#ContractFinishDate").removeClass("text-muted");
-                $("#jobFinishDateLbl").removeClass("text-muted");
+                }).fail(function (error) {
+                    alert(error);
+                });
             }
-            else {
-                $("#ContractFinishDate").attr("disabled", true);
-                $("#ContractFinishDate").addClass("text-muted");
-                $("#jobFinishDateLbl").addClass("text-muted");
-            }
-        });
-    </script>
-    @*//update staff leave*@
-    <script>
-        function LeaveUpdate(id) {
+        </script>
+        @*Modal Add StaffLeave*@
+        <script>
 
-            var modelContent = $("#UpdateStaffLeaveModal")
-            $("#UpdateStaffLeaveModal").empty();
+            $(document).on("submit", "#modalAddLeave", function (event) { //infoForm id li form post edildiğinde
 
-            $.ajax({
-                method: "GET",
-                url: "/Staff/GetUpdateStaffLeaveModal/" + id,
-                dataType: "html",
-                cache: false,
-            }).done(function (content) {
-                if (content != null) {
-                    modelContent.html(content);
-                }
-                $("#staffLeaveUpdate").modal("show");
 
-                //CompanyChangeUpdate();
+                event.preventDefault();
 
-            }).fail(function (error) {
-                alert(error);
+                $.ajax({
+                    url: "/Staff/AddStaffLeaveWithAjax",
+                    type: "POST",
+                    data: new FormData(this),
+                    dataType: "json",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        $("#staffLeaveAddModal").modal('hide');
+
+                        //var url = $(location).attr('href');
+                        //var dizi = url.split("#");
+                        //let item = dizi[0];
+                        //item += "#" + data;
+                        //console.log(url);
+                        //window.location.href = item;
+                        //window.location.reload();
+                    }
+                });
             });
-        }
-    </script>
-    @*Modal Add StaffLeave*@
-    <script>
-
-        $(document).on("submit", "#modalAddLeave", function (event) { //infoForm id li form post edildiğinde
+        </script>
 
 
-            event.preventDefault();
-
-            $.ajax({
-                url: "/Staff/AddStaffLeaveWithAjax",
-                type: "POST",
-                data: new FormData(this),
-                dataType: "json",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function (data) {
-                    $("#staffLeaveAddModal").modal('hide');
-
-                    //var url = $(location).attr('href');
-                    //var dizi = url.split("#");
-                    //let item = dizi[0];
-                    //item += "#" + data;
-                    //console.log(url);
-                    //window.location.href = item;
-                    //window.location.reload();
-                }
-            });
-        });
-    </script>
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
+        <!--end::Page Scripts-->
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
+        <!--end::Page Scripts-->
+        <!--begin::Page Vendors(used by this page)-->
+        <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <!--end::Page Vendors-->
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/crud/datatables/basic/scrollable.js"></script>
+        <!--end::Page Scripts-->
+        <!--begin::Page Vendors(used by this page)-->
+        <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <!--end::Page Vendors-->
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+        <!--end::Page Scripts-->
 
 
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
-    <!--end::Page Scripts-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
-    <!--end::Page Scripts-->
-    <!--begin::Page Vendors(used by this page)-->
-    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <!--end::Page Vendors-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/datatables/basic/scrollable.js"></script>
-    <!--end::Page Scripts-->
-    <!--begin::Page Vendors(used by this page)-->
-    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <!--end::Page Vendors-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
-    <!--end::Page Scripts-->
+        <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>
+        <!--end::Page Scripts-->
 
-
-    <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>
-    <!--end::Page Scripts-->
-
-}
+    }
 
 
 

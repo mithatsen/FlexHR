@@ -10,6 +10,7 @@ namespace FlexHR.DTO.Dtos.StaffPaymentDtos
         public int StaffId { get; set; }
         public int GeneralStatusGeneralSubTypeId { get; set; }
         public int PaymentTypeGeneralSubTypeId { get; set; }
+        public string PaymentType { get; set; }
         public DateTime PaymentDate { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
