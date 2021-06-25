@@ -1,4 +1,5 @@
 ﻿using FlexHR.DTO.Dtos.StaffCareerDtos;
+using FlexHR.DTO.Dtos.StaffFileDtos;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 
@@ -33,9 +34,11 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public TownHelper TownHelper { get; set; }
         public ListStaffCareerDto ActiveCareer { get; set; }
         public ListStaffLeaveDto ActiveLeave { get; set; }
+        public ListStaffShiftDto ActiveShift { get; set; }
         public StaffPersonelInfo StaffPersonelInfo { get; set; } 
         public StaffOtherInfo StaffOtherInfo { get; set; } 
- 
+        public ListStaffFileDto StaffFile { get; set; }
+
 
         public List<GeneralSubType> BloodGroupList { get; set; }
         public List<GeneralSubType> GenderList { get; set; }
@@ -52,6 +55,7 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public List<ListStaffLeaveDto> ListStaffLeave { get; set; }
 
         public List<ListStaffShiftDto> ListStaffShift { get; set; }
+        public List<ListStaffFileDto> ListStaffFile { get; set; }
 
         public List<ListStaffPaymentDto> ListStaffPayment { get; set; }
 

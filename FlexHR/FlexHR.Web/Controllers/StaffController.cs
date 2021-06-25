@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
+using FlexHR.DTO.Dtos.StaffFileDtos;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
@@ -37,9 +38,8 @@ namespace FlexHR.Web.Controllers
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IStaffCareerService _staffCareerService;
         private readonly IStaffLeaveService _staffLeaveService;
-
         private readonly IStaffShiftService _staffShiftService;
-
+        private readonly IStaffFileService _staffFileService;
         private readonly IStaffPaymentService _staffPaymentService;
 
         public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
@@ -48,7 +48,7 @@ namespace FlexHR.Web.Controllers
                                      IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService,
                                      ICompanyService companyService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService,
                                      IStaffLeaveService staffLeaveService, IStaffShiftService staffShiftService,
-                                     IStaffPaymentService staffPaymentService
+                                     IStaffPaymentService staffPaymentService, IStaffFileService staffFileService
 
                                 )
         {
@@ -70,7 +70,7 @@ namespace FlexHR.Web.Controllers
             _staffLeaveService = staffLeaveService;
 
             _staffShiftService = staffShiftService;
-
+            _staffFileService = staffFileService;
             _staffPaymentService = staffPaymentService;
 
         }
@@ -100,10 +100,9 @@ namespace FlexHR.Web.Controllers
             var personelInfo = _staffPersonelInfoService.GetPersonelInfoByStaffId(id);
             var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
             var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
-
             var staffShiftList = _staffShiftService.Get(p => p.StaffId == id && p.IsActive == true);
-
             var staffPaymentList = _staffPaymentService.Get(p => p.StaffId == id);
+            var staffFileList = _staffFileService.Get(p => p.StaffId == id);
 
 
 
@@ -152,6 +151,7 @@ namespace FlexHR.Web.Controllers
             ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
             ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
             ViewBag.LeaveTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.LeaveType), "GeneralSubTypeId", "Description");
+            ViewBag.FileTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType), "GeneralSubTypeId", "Description");
 
 
 
@@ -236,7 +236,21 @@ namespace FlexHR.Web.Controllers
                 };
                 shiftModels.Add(shiftModel);
             }
-                var roleList = _roleService.GetAll();
+            var fileModels = new List<ListStaffFileDto>();
+            foreach (var item in staffFileList)
+            {
+                var fileModel = new ListStaffFileDto
+                {
+                    FileGeneralSubTypeId = item.FileGeneralSubTypeId,
+                    FileName = item.FileName,
+                    FileFullPath = item.FileFullPath,
+                    IsActive = item.IsActive,
+                    StaffId = item.StaffId,
+                    StaffFileId = item.StaffFileId
+                };
+                fileModels.Add(fileModel);
+            }
+            var roleList = _roleService.GetAll();
             var contractTypeList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType);
             var model = new UpdateStaffDto
             {
@@ -267,7 +281,7 @@ namespace FlexHR.Web.Controllers
                 ContractTypeId = contractTypeId,
                 TownId = staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId,
                 ListStaffLeave = leaveModels,
-
+                ListStaffFile=fileModels,
                 ListStaffShift= shiftModels,
 
                 ListStaffPayment=paymentModels                
@@ -466,6 +480,24 @@ namespace FlexHR.Web.Controllers
             return PartialView("GetUpdateStaffLeaveModal", leaveModel);
 
         }
+        [HttpGet]
+        public IActionResult GetUpdateStaffShiftModal(int id)
+        {
+            var result = _staffShiftService.GetById(id);
+           
+            var shiftModel = new ListStaffShiftDto
+            {
+                Description = result.Description,
+                StartDate = result.StartDate,
+                Duration = result.Duration,
+                StaffId = result.StaffId,
+                StaffShiftId = result.StaffShiftId,
+                IsActive = result.IsActive
+            };
+
+            return PartialView("GetUpdateStaffShiftModal", shiftModel);
+
+        }
 
         [HttpPost]
         public IActionResult UpdateStaffLeave(ListStaffLeaveDto model)
@@ -473,6 +505,14 @@ namespace FlexHR.Web.Controllers
            
             _staffLeaveService.Update(_mapper.Map<StaffLeave>(model));
             return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_5");
+
+        }
+        [HttpPost]
+        public IActionResult UpdateStaffShift(ListStaffShiftDto model)
+        {
+
+            _staffShiftService.Update(_mapper.Map<StaffShift>(model));
+            return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_7");
 
         }
         [HttpPost]
@@ -500,6 +540,14 @@ namespace FlexHR.Web.Controllers
         {
 
             _staffLeaveService.Add(_mapper.Map<StaffLeave>(model));
+
+            return Json(null);
+        }
+        [HttpPost]
+        public IActionResult AddStaffShiftWithAjax(AddStaffShiftDto model)
+        {
+
+            _staffShiftService.Add(_mapper.Map<StaffShift>(model));
 
             return Json(null);
         }
