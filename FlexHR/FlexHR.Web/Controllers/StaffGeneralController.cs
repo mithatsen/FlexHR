@@ -76,6 +76,8 @@ namespace FlexHR.Web.Controllers
                     {
                         counter++;
                         item.GeneralSubTypeId = model.ContractTypeId;
+                        item.GeneralSubType = null;
+                        _staffGeneralSubTypeService.Update(item);
                     }
                 }
                 if (counter == 0 && model.ContractTypeId != 0)
@@ -90,8 +92,10 @@ namespace FlexHR.Web.Controllers
                 _staffRoleService.Update(staffRole);
                 model.Password = "abc";
                 model.UserName = "abc";
+
+
                 _staffService.Update(_mapper.Map<Staff>(model));
-                return RedirectToAction("Index", "StaffGeneral");
+                return RedirectToAction("Index", new {id=model.StaffId });
             }
 
             return View();

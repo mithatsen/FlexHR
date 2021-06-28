@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlexHR.Entity.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,7 +19,7 @@ namespace FlexHR.DTO.Dtos.StaffGeneralDtos
         public int RoleId { get; set; }
         public string Password { get; set; }
         public string UserName { get; set; }
-        
+
 
 
     }
