@@ -1,0 +1,373 @@
+﻿@model List<ListStaffCareerDto>
+@{
+    ViewData["Title"] = "Kariyer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+}
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+<div class="card card-custom">
+    @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
+    <div class="card-body">
+        <!--begin::Profile Personal Information-->
+        <div class="d-flex flex-row">
+            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId})
+            <div class="tab-content w-100">
+                <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-business-time text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            Kariyer
+
+                                        </h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffCareerAddModal">
+                                            Pozisyon Ekle
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Başlangıç</th>
+                                                <th>Bitiş</th>
+                                                <th>Çalışma Şekli</th>
+                                                <th>Şirket</th>
+                                                <th>Şube</th>
+                                                <th>Departman</th>
+                                                <th>Unvan</th>
+                                                <th>İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.IsActive</td>
+                                                    <td>@item.JobStartDate.ToShortDateString()</td>
+                                                    @if (item.JobFinishDate != null)
+                                                    {
+                                                        <td>@item.JobFinishDate.Value.ToShortDateString()</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><span class="badge badge-success badge-pill">Devam ediyor</span> </td>
+                                                    }
+
+                                                    <td>@item.ModeOfOperation</td>
+                                                    <td>@item.CompanyName</td>
+                                                    <td>@item.BranchName</td>
+                                                    <td>@item.DepartmantName</td>
+                                                    <td>@item.Title</td>
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="CareerUpdate(@item.StaffCareerId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!--end: Datatable-->
+                                </div>
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Entry-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* add career modal*@
+<div class="modal fade" id="staffCareerAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <form id="modalAddCareerForm" method="POST">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+
+                                        <div class="col-md-6 ">
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Şirket</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
+                                                        <option value="-1">Seçiniz</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Departman</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <select class="form-control form-control-solid form-control-lg" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
+                                                        <option value="-1">Seçiniz</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Çalışma Şekli</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <select class="form-control form-control-solid form-control-lg" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
+                                                        <option value="-1">Seçiniz</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group row justify-content-center">
+                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label">Başlangıç Tarihi</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
+                                                        <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Şube</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="CompanyBranchId">
+                                                        <option value="-1">Seçiniz</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Unvan</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
+                                                        <option value="-1">Seçiniz</option>
+
+                                                    </select>
+                                                    <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row justify-content-center">
+                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label ">Bitiş Tarihi</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_6" data-target-input="nearest">
+                                                        <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_6" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* update career modal*@
+<div id="staffCareerUpdateDiv"></div>
+
+@section Scripts{
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#tab_2").addClass("active");
+        });
+    </script>
+    @*Modal Add Career*@
+    <script>
+
+        $(document).on("submit", "#modalAddCareerForm", function (event) { //infoForm id li form post edildiğinde
+
+
+            event.preventDefault();
+
+            $.ajax({
+                url: "/StaffCareer/AddStaffCareerWithAjax",
+                type: "POST",
+                data: new FormData(this),
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+    @*//update staff career*@
+    <script>
+        function CareerUpdate(id) {
+            console.log(id);
+            var modelContent = $("#staffCareerUpdateDiv")
+            $("#staffCareerUpdateDiv").empty();
+
+            $.ajax({
+                method: "GET",
+                url: "/StaffCareer/GetUpdateStaffCareerModal/" + id,
+                dataType: "html",
+                cache: false,
+            }).done(function (content) {
+
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#staffCareerUpdateModal").modal("show");
+
+                CompanyChangeUpdate();
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+
+
+    </script>
+    @*Şirket değişikliği , şube  drop downına yansır*@
+    <script>
+        // kariyer ekleme sayfasındaki şirket şube listeleme
+        function CompanyChange() {
+            var id = document.getElementById("c_companySelect").value;
+            console.log(id);
+            if (id > 0) {
+
+                $.ajax({
+                    method: "GET",
+                    url: "/Staff/BranchList/" + id,
+                }).done(function (content) {
+                    $("#c_companyBranchSelect").attr("disabled", false);
+                    $("#c_companyBranchSelect").removeClass("text-muted");
+                    $("#c_companyBranchSelect").empty();
+                    $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
+
+                    let companyBranch = JSON.parse(content);
+                    for (var i = 0; i < companyBranch.length; i++) {
+                        var opt = '<option value="' + companyBranch[i].CompanyBranchId + '">' + companyBranch[i].BranchName + '</option>';
+                        $("#c_companyBranchSelect").append(opt);
+                    }
+                }).fail(function (error) {
+
+                });
+            } else {
+                $("#c_companyBranchSelect").empty();
+                $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
+                $("#c_companyBranchSelect").attr("disabled", true);
+                $("#c_companyBranchSelect").addClass("text-muted");
+            }
+        }
+        // kariyer güncelleme sayfasındaki şirket şube listeleme
+        function CompanyChangeUpdate() {
+
+            var id = document.getElementById("c_companySelectUpdate").value;
+            console.log(id);
+            if (id > 0) {
+
+                $.ajax({
+                    method: "GET",
+                    url: "/Staff/BranchList/" + id,
+                }).done(function (content) {
+                    $("#c_companyBranchSelectUpdate").attr("disabled", false);
+                    $("#c_companyBranchSelectUpdate").removeClass("text-muted");
+                    $("#c_companyBranchSelectUpdate").empty();
+                    $("#c_companyBranchSelectUpdate").append('<option  value="-1">Şube Seçiniz</option>');
+
+                    let companyBranch = JSON.parse(content);
+                    for (var i = 0; i < companyBranch.length; i++) {
+                        var opt = '<option value="' + companyBranch[i].CompanyBranchId + '">' + companyBranch[i].BranchName + '</option>';
+                        $("#c_companyBranchSelectUpdate").append(opt);
+                    }
+                }).fail(function (error) {
+
+                });
+            } else {
+                $("#c_companyBranchSelect").empty();
+                $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
+                $("#c_companyBranchSelect").attr("disabled", true);
+                $("#c_companyBranchSelect").addClass("text-muted");
+            }
+        }
+    </script>
+}

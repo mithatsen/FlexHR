@@ -1,0 +1,225 @@
+﻿@model ListStaffGeneralDto
+@{
+    ViewData["Title"] = "Genel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+<div class="card card-custom">
+    @await Component.InvokeAsync("StaffNavbar", new { id = @Model.StaffId })
+    <div class="card-body">
+        <!--begin::Profile Personal Information-->
+        <div class="d-flex flex-row">
+            @await Component.InvokeAsync("StaffCard", new { id = @Model.StaffId })
+            <div class="tab-content w-100">
+                @*Staff General*@
+                <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_1">
+                    <div class="flex-row-fluid ml-lg-8">
+                        <!--begin::Form-->
+                        <form class="form" asp-action="UpdateStaffGeneral" asp-controller="Staff" method="post">
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <div class="card-header py-3">
+                                    <div class="card-title align-items-start flex-column">
+                                        <h3 class="card-label font-weight-bolder text-dark">
+                                            <i class="fas fa-address-book mr-2 text-dark"></i>Genel Bilgiler
+                                        </h3>
+                                        <span class="text-muted font-weight-bold font-size-sm mt-1">Genel bilgilerini düzenleyin</span>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <button class="btn btn-primary mr-2">Kaydet</button>
+                                        <a class="btn btn-secondary">Geri</a>
+                                    </div>
+                                </div>
+                                <!--end::Header-->
+
+                                <div class="container">
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row ">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <input asp-for="NameSurname" class="form-control form-control-lg form-control-solid" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (İş)</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-at"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="EmailJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Email" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Telefon (İş)</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-phone"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Phone" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
+                                                            <option disabled value="-1">Seçiniz</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                @if (Model.ContractTypeId == 1)
+                                                {
+                                                    <div class="form-group row">
+                                                        <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control datetimepicker-input form-control-lg " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                    <span class="input-group-text">
+                                                                        <i class="ki ki-calendar"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="form-group row">
+                                                        <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label text-muted">Sözleşme Bitiş Tarihi</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                    <span class="input-group-text">
+                                                                        <i class="ki ki-calendar"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">İşe Başlama Tarihi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
+                                                            <input asp-for="JobJoinDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                                            <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (Kişisel)</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-at"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="EmailPersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Telefon (Kişisel)</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-phone"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" />
+                                                            <input type="hidden" asp-for="@Model.StaffId" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select class="form-control form-control-solid form-control-lg" asp-for="RoleId" asp-items="ViewBag.Roles">
+                                                            <option disabled value="-1">Seçiniz</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
+
+
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+            $("#tab_1").addClass("active");
+        });
+    </script>
+    @*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı*@
+    <script type="text/javascript">
+
+        $('#ContractTypeSelect').on('change', function () {
+            var id = document.getElementById("ContractTypeSelect").value;
+            if (id == 1) {
+                $("#ContractFinishDate").attr("disabled", false);
+                $("#ContractFinishDate").removeClass("text-muted");
+                $("#jobFinishDateLbl").removeClass("text-muted");
+            }
+            else {
+                $("#ContractFinishDate").attr("disabled", true);
+                $("#ContractFinishDate").addClass("text-muted");
+                $("#jobFinishDateLbl").addClass("text-muted");
+            }
+        });
+    </script>
+
+}

@@ -1115,7 +1115,6 @@
 
                 </div>
                 @*Staff Shift*@
-
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_7">
 
                     <!--begin::Entry-->
@@ -1193,7 +1192,7 @@
                     <!--end::Entry-->
 
                 </div>
-
+                @*Staff Files*@
                 <div class="tab-pane" role="tabpanel" id="kt_apps_contacts_view_tab_8">
                     <div class="flex-row-fluid ml-lg-8">
                         <!--begin::Form-->
@@ -1209,7 +1208,7 @@
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Kişisel bilgileri düzenleyin</span>
                                     </div>
                                     <div class="card-toolbar">
-                                        <button id="uploadButton"  class="btn btn-primary mr-2">Kaydet</button>
+                                        <button id="uploadButton" class="btn btn-primary mr-2">Kaydet</button>
                                         <a asp-action="Index" class="btn btn-secondary">Geri</a>
                                     </div>
                                 </div>
@@ -1225,14 +1224,14 @@
                                                     <select id="categorySelect" asp-for="StaffFile.FileGeneralSubTypeId" onchange="categoryChange()" class="form-control form-control-solid form-control-lg" asp-items="@ViewBag.FileTypes">
                                                         <option hidden value="-1">Önce kategori seçiniz</option>
                                                     </select>
-                                                   
+
                                                 </div>
 
                                                 <input type="hidden" id="customerProductId" />
                                                 <div class="form-group row ml-8">
                                                     <div class="col-md-11  ml-3">
                                                         <div class="dropzone dropzone-default dropzone-primary" id="myAwesomeDropzone">
-                                                          
+
 
                                                         </div>
                                                     </div>
@@ -1250,7 +1249,7 @@
                         </form>
                         <!--end::Form-->
                     </div>
-                                       
+
                 </div>
 
             </div>
@@ -1663,21 +1662,33 @@
         });
     </script>
 
-    @*Şirket değişikliği , şube  drop downına yansır*@
+    @*Ülke ve şehir değişiklikleri drop doena yansı*@
     <script type="text/javascript">
 
         function countryChange() {
             var id = document.getElementById("kt_select2_1").value;
+          
             if (id > 0) {
+           
                 $.ajax({
                     method: "GET",
                     url: "/Staff/CityList/" + id,
                 }).done(function (content) {
+
+                   
+                    $("#kt_select2_town").empty();
+                    $("#kt_select2_town").append('<option value="-1">İlçe Seçiniz</option>');
+                    $("#kt_select2_town").attr("disabled", true);
+                    $("#kt_select2_town").addClass("text-muted");
+
                     $("#kt_select2_city").attr("disabled", false);
                     $("#kt_select2_city").removeClass("text-muted");
                     $("#kt_select2_city").empty();
                     $("#kt_select2_city").append('<option value="-1">İl seçiniz</option>');
+
+
                     let cities = JSON.parse(content);
+                    
                     for (var i = 0; i < cities.length; i++) {
                         var opt = '<option value="' + cities[i].CityId + '">' + cities[i].Name + '</option>';
                         $("#kt_select2_city").append(opt);
@@ -1728,7 +1739,7 @@
 
 
     </script>
-    @*Ülke ve şehir değişiklikleri drop doena yansır*@
+    @*Şirket değişikliği , şube  drop downına yansır*@
     <script>
         // kariyer ekleme sayfasındaki şirket şube listeleme
         function CompanyChange() {
@@ -1740,7 +1751,7 @@
                     method: "GET",
                     url: "/Staff/BranchList/" + id,
                 }).done(function (content) {
-                    $("#c_companyBranchSelect").attr("disabled", false);
+                    $("#ContractTypeSelect").attr("disabled", false);
                     $("#c_companyBranchSelect").removeClass("text-muted");
                     $("#c_companyBranchSelect").empty();
                     $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
@@ -1969,14 +1980,15 @@
             });
         }
     </script>
+    @*//add staff file dropzone*@
     <script>
 
         var id = document.getElementById("customerProductId").value;
 
         function categoryChange() {
-            
-           
-            document.getElementById("myAwesomeDropzone").innerHTML = "Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/>";
+
+
+            document.getElementById("myAwesomeDropzone").innerHTML = "<span class='nav-icon mr-2'><span class='svg-icon mr-3'><i class='fas fa-file-import'></i></span> </span> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/> <br/> <br/>";
             Dropzone.autoDiscover = false;
             var catId = document.getElementById("categorySelect").value;
             $('#myAwesomeDropzone').dropzone({
@@ -2027,43 +2039,43 @@
             });
         }
 
-            //Dropzone.options.kt_dropzone_2 = {
-            //    autoProcessQueue: false,
-            //    maxFilesize: 500,//mb cinsinden
-            //    addRemoveLinks: true,
-            //    maxFiles: 10,
-            //    parallelUploads: 10,
-            //    init: function () {
-            //        var dz = this;
-            //        $('#uploadButton').click(function () {
-            //            console.log(dz);
-            //            debugger;
-            //            //var myDropzone = Dropzone.forElement(".dropzone");
-            //            dz.processQueue();
+                        //Dropzone.options.kt_dropzone_2 = {
+                        //    autoProcessQueue: false,
+                        //    maxFilesize: 500,//mb cinsinden
+                        //    addRemoveLinks: true,
+                        //    maxFiles: 10,
+                        //    parallelUploads: 10,
+                        //    init: function () {
+                        //        var dz = this;
+                        //        $('#uploadButton').click(function () {
+                        //            console.log(dz);
+                        //            debugger;
+                        //            //var myDropzone = Dropzone.forElement(".dropzone");
+                        //            dz.processQueue();
 
-            //        });
-            //    },
-            //    success: function (file) {
-            //        if (file.accepted == true) {
-            //            Swal.fire({
-            //                icon: 'success',
-            //                title: 'İşlem Başarılı',
-            //            }).then(function () {
-            //                dz.removeAllFiles(file);
-            //            });
-            //        } else {
-            //            Swal.fire({
-            //                icon: 'error',
-            //                title: 'İşlem Başarısız!',
-            //            }).then(function () {
-            //                window.location.reload();
-            //            });
-            //        }
-            //    },
-            //    dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
-            //    dictRemoveFile: "Dosyayı Sil",
-            //    dictCancelUpload: "İptal Et"
-            //};
+                        //        });
+                        //    },
+                        //    success: function (file) {
+                        //        if (file.accepted == true) {
+                        //            Swal.fire({
+                        //                icon: 'success',
+                        //                title: 'İşlem Başarılı',
+                        //            }).then(function () {
+                        //                dz.removeAllFiles(file);
+                        //            });
+                        //        } else {
+                        //            Swal.fire({
+                        //                icon: 'error',
+                        //                title: 'İşlem Başarısız!',
+                        //            }).then(function () {
+                        //                window.location.reload();
+                        //            });
+                        //        }
+                        //    },
+                        //    dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
+                        //    dictRemoveFile: "Dosyayı Sil",
+                        //    dictCancelUpload: "İptal Et"
+                        //};
 
     </script>
     <!--end::Page Scripts-->

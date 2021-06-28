@@ -1,0 +1,116 @@
+﻿@model List<ListStaffPaymentDto>
+@{
+    ViewData["Title"] = "Ödeme Bilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+}
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+<div class="card card-custom">
+    @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
+    <div class="card-body">
+        <div class="d-flex flex-row">
+            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
+            @*staffLeave*@
+            <div class="tab-content w-100">
+                <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_6">
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-wallet text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            Ödemeler
+
+                                        </h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
+                                            Ödeme Ekle
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_3">
+                                        <thead>
+                                            <tr>
+                                                <th>Tarih</th>
+                                                <th>Ödeme Türü</th>
+                                                <th>Açıklama</th>
+                                                <th>Tutar</th>
+                                                <th>Durum</th>
+                                                <th>Oluştrulma Tarihi</th>
+                                                <th>Ödendi</th>
+                                                <th>İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+
+                                                    <td>@item.PaymentDate.ToString("d")</td>
+
+                                                    <td>@item.PaymentType</td>
+
+                                                    <td>@item.Description Gün</td>
+                                                    <td>@item.Amount ₺</td>
+                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                    <td>@item.CreationDate.ToShortDateString()</td>
+                                                    <td>@item.IsPaid</td>
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!--end: Datatable-->
+                                </div>
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Entry-->
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+            $("#tab_6").addClass("active");
+        });
+    </script>
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+}

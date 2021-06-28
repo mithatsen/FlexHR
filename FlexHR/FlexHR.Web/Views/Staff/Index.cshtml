@@ -227,7 +227,7 @@
                 {
                     <!--begin::Col-->
                     <div class="col-md-2 my-4">
-                        <a asp-controller="Staff" asp-action="UpdateStaff" asp-route-id="@item.StaffId">
+                        <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b shadow p-0 mb-1 justify-content-center">
                                 <!--begin::Body-->
@@ -245,7 +245,7 @@
                                     <!--end::User-->
                                     <!--begin::Name-->
                                     <div class="my-1">
-                                        <a href="#" class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</a>
+                                        <a  class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</a>
                                     </div>
                                     <!--end::Name-->
                                     <!--begin::Label-->

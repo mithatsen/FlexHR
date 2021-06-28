@@ -1,0 +1,370 @@
+﻿@model ListStaffOtherInfoDto
+@{
+    ViewData["Title"] = "Diğer Bilgiler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+}
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+<div class="card card-custom">
+    @await Component.InvokeAsync("StaffNavbar", new { id = Model.StaffId })
+    <div class="card-body">
+        <div class="d-flex flex-row">
+            @await Component.InvokeAsync("StaffCard", new { id = Model.StaffId })
+            <div class="tab-content w-100">
+                <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_4">
+                    <div class="flex-row-fluid ml-lg-8">
+                        <!--begin::Form-->
+                        <form class="form" asp-action="UpdateStaffOtherInfo" asp-controller="StaffOtherInfo" method="post">
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <div class="card-header py-3">
+                                    <div class="card-title align-items-start flex-column">
+                                        <h3 class="card-label font-weight-bolder text-dark">
+                                            <i class="fas fa-house-user text-dark mr-2"></i>Diğer Bilgiler
+                                        </h3>
+                                        <span class="text-muted font-weight-bold font-size-sm mt-1">Diğer bilgileri düzenleyin</span>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <button class="btn btn-primary mr-2">Kaydet</button>
+                                        <a class="btn btn-secondary">Geri</a>
+                                    </div>
+                                </div>
+                                <!--end::Header-->
+                                <div><h6 class="mt-4 ml-5 mb-0 px-4"> Adres Bilgileri</h6></div>
+
+                                <hr />
+                                <div class="container">
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Adres</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <textarea asp-for="Adress" type="text" class="form-control form-control-lg form-control-solid" placeholder="Adres"></textarea>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ev Telefonu</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-phone"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="HomePhoneNumber" type="text" class="form-control form-control-lg form-control-solid" placeholder="Ev Telefonu" />
+                                                            <input type="hidden" asp-for="StaffOtherInfoId" />
+                                                            <input type="hidden" asp-for="StaffId" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Posta Kodu</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <input asp-for="PostalCode" type="text" class="form-control form-control-lg form-control-solid" placeholder="Posta Kodu" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                @if (Model.TownId > 0)
+                                                {
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
+                                                                <option disabled value="-1">Ülke Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_city" onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Cities" placeholder="deneme">
+                                                                <option disabled selected value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_town" asp-for="TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Towns">
+                                                                <option disabled selected value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-lg " asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
+                                                                <option value="-1">Ülke Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_city" onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" disabled class="form-control form-control-solid form-control-lg text-muted">
+                                                                <option disabled value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select id="kt_select2_town" disabled asp-for="TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted">
+                                                                <option disabled value="-1">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
+
+                                @*Banka Bilgileri*@
+                                <div><h6 class="ml-5 mb-0 px-4"> Banka Bilgileri</h6></div>
+
+                                <hr />
+                                <div class="container">
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Banka Adı</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <input asp-for="BankName" type="text" class="form-control form-control-lg form-control-solid" placeholder="Banka Adı" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Hesap No</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <input asp-for="AccountNo" type="text" class="form-control form-control-lg form-control-solid" placeholder="Hesap No" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Hesap Tipi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <select id="ContractTypeSelect3" asp-for="AccountTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.AccountTypeList">
+                                                            <option disabled selected value="-1">Seçiniz</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">IBAN</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <input asp-for="Iban" type="text" class="form-control form-control-lg form-control-solid" placeholder="IBAN" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                                @*Acil Durum Bilgileri*@
+                                <div>
+                                    <h6 class="ml-5 mb-0 px-4">Acil Durum Bilgileri</h6>
+                                    <span class="ml-5 px-4 text-muted font-weight-bold font-size-sm mt-1">Acil durumda aranacak kişi bilgileri</span>
+                                </div>
+
+                                <hr />
+                                <div class="container">
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <input asp-for="CallPersonNameSurname" type="text" class="form-control form-control-lg form-control-solid" placeholder="Ad Soyad" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Telefonu</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-phone"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input asp-for="CallPersonPhoneNumber" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Yakınlık Dererecesi</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <input asp-for="CallPersonProximityDegree" type="text" class="form-control form-control-lg form-control-solid" placeholder="Yakınlık Derecesi" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+
+    <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("#tab_4").addClass("active");
+        });
+    </script>
+
+    @*Ülke ve şehir değişiklikleri drop doena yansı*@
+    <script type="text/javascript">
+
+        function countryChange() {
+            var id = document.getElementById("kt_select2_1").value;
+            if (id > 0) {
+                $.ajax({
+                    method: "GET",
+                    url: "/StaffOtherInfo/CityList/" + id,
+                }).done(function (content) {
+                    $("#kt_select2_town").empty();
+                    $("#kt_select2_town").append('<option value="-1">İlçe Seçiniz</option>');
+                    $("#kt_select2_town").attr("disabled", true);
+                    $("#kt_select2_town").addClass("text-muted");
+
+                    $("#kt_select2_city").attr("disabled", false);
+                    $("#kt_select2_city").removeClass("text-muted");
+                    $("#kt_select2_city").empty();
+                    $("#kt_select2_city").append('<option value="-1">İl seçiniz</option>');
+                    let cities = JSON.parse(content);
+                    for (var i = 0; i < cities.length; i++) {
+                        var opt = '<option value="' + cities[i].CityId + '">' + cities[i].Name + '</option>';
+                        $("#kt_select2_city").append(opt);
+                    }
+                }).fail(function (error) {
+
+                });
+            } else {
+                $("#kt_select2_city").empty();
+                $("#kt_select2_city").append('<option value="-1">İl Seçiniz</option>');
+                $("#kt_select2_city").attr("disabled", true);
+                $("#kt_select2_city").addClass("text-muted");
+
+                $("#kt_select2_town").empty();
+                $("#kt_select2_town").append('<option value="-1">İlçe Seçiniz</option>');
+                $("#kt_select2_town").attr("disabled", true);
+                $("#kt_select2_town").addClass("text-muted");
+
+            }
+        }
+        function cityChange() {
+            var id = document.getElementById("kt_select2_city").value;
+            if (id > 0) {
+                $.ajax({
+                    method: "GET",
+                    url: "/StaffOtherInfo/TownList/" + id,
+                }).done(function (content) {
+                    $("#kt_select2_town").attr("disabled", false);
+                    $("#kt_select2_town").removeClass("text-muted");
+                    $("#kt_select2_town").empty();
+                    $("#kt_select2_town").append('<option value="-1">İlçe seçiniz</option>');
+
+                    let town = JSON.parse(content);
+                    for (var i = 0; i < town.length; i++) {
+                        var opt = '<option value="' + town[i].TownId + '">' + town[i].Name + '</option>';
+                        $("#kt_select2_town").append(opt);
+                    }
+                }).fail(function (error) {
+
+                });
+            } else {
+                $("#kt_select2_town").empty();
+                $("#kt_select2_town").append('<option value="-1">İlçe seçiniz</option>');
+                $("#kt_select2_town").attr("disabled", true);
+                $("#kt_select2_town").addClass("text-muted");
+            }
+        }
+
+
+    </script>
+}

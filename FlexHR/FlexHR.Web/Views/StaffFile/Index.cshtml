@@ -1,0 +1,193 @@
+﻿@model ListStaffFileDto
+@{
+    ViewData["Title"] = "dosya Bilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+}
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+<div class="card card-custom">
+    @await Component.InvokeAsync("StaffNavbar")
+    <div class="card-body">
+        <div class="d-flex flex-row">
+            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
+            @*staffLeave*@
+            <div class="tab-content w-100">
+                <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_8">
+                    <div class="flex-row-fluid ml-lg-8">
+                        <!--begin::Form-->
+                        <form class="form" asp-action="UpdateStaffPersonalInfo" asp-controller="Staff" method="post">
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <div class="card-header py-3">
+                                    <div class="card-title align-items-start flex-column">
+                                        <h3 class="card-label font-weight-bolder text-dark">
+                                            <i class="fas fa-user-edit text-dark mr-2"></i>Belgeler
+                                        </h3>
+                                        <span class="text-muted font-weight-bold font-size-sm mt-1">Kişisel bilgileri düzenleyin</span>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <button id="uploadButton" class="btn btn-primary mr-2">Kaydet</button>
+                                        <a asp-action="Index" class="btn btn-secondary">Geri</a>
+                                    </div>
+                                </div>
+                                <!--end::Header-->
+
+                                <div class="container">
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="card-body">
+                                                <div class="col-md-11 mb-2 ml-10">
+                                                    <select id="categorySelect" asp-for="FileGeneralSubTypeId" onchange="categoryChange()" class="form-control form-control-solid form-control-lg" asp-items="@ViewBag.FileTypes">
+                                                        <option hidden value="-1">Önce kategori seçiniz</option>
+                                                    </select>
+
+                                                </div>
+
+                                                <input type="hidden" id="customerProductId" />
+                                                <div class="form-group row ml-8">
+                                                    <div class="col-md-11  ml-3">
+                                                        <div class="dropzone dropzone-default dropzone-primary" id="myAwesomeDropzone">
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
+
+
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+            $("#tab_8").addClass("active");
+        });
+    </script>
+
+    @*//add staff file dropzone*@
+    <script>
+
+        var id = document.getElementById("customerProductId").value;
+
+        function categoryChange() {
+
+
+            document.getElementById("myAwesomeDropzone").innerHTML = "<span class='nav-icon mr-2'><span class='svg-icon mr-3'><i class='fas fa-file-import'></i></span> </span> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/> <br/> <br/>";
+            Dropzone.autoDiscover = false;
+            var catId = document.getElementById("categorySelect").value;
+            $('#myAwesomeDropzone').dropzone({
+                autoProcessQueue: false,
+                url: "/CustomerProductFile/AddCustomerProductFile/" + id, // Set the url for your upload script location
+                paramName: "file", // The name that will be used to transfer the file
+                maxFiles: 10,
+                maxFilesize: 500, // MB
+                parallelUploads: 10,
+                addRemoveLinks: true,
+                params: { categoryId: catId },
+                init: function () {
+                    var dz = this;
+                    this.removeAllFiles(true);
+                    $('#uploadButton').click(function () {
+                        dz.processQueue();
+                    });
+                    dz.on('addedfile', function (file) {
+                        file.previewElement.classList.add('dz-preview');
+                        file.previewElement.classList.add('dz-success');
+                        file.previewElement.classList.add('dz-complete');
+                        file.previewElement.classList.add('dz-image-preview');
+                    });
+                    dz.on("complete", function (file) {
+                        dz.removeFile(file);
+                    });
+                },
+                success: function (file) {
+                    if (file.accepted == true) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Dosyalarınız Yüklendi',
+                        }).then(function () {
+                            dz.removeFile(file);
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'İşlem Başarısız!',
+                        }).then(function () {
+                            window.location.reload();
+                        });
+                    }
+                },
+                dictDefaultMessage: "",
+                dictRemoveFile: "Dosyayı Sil",
+                dictCancelUpload: "İptal Et",
+            });
+        }
+
+                                    //Dropzone.options.kt_dropzone_2 = {
+                                    //    autoProcessQueue: false,
+                                    //    maxFilesize: 500,//mb cinsinden
+                                    //    addRemoveLinks: true,
+                                    //    maxFiles: 10,
+                                    //    parallelUploads: 10,
+                                    //    init: function () {
+                                    //        var dz = this;
+                                    //        $('#uploadButton').click(function () {
+                                    //            console.log(dz);
+                                    //            debugger;
+                                    //            //var myDropzone = Dropzone.forElement(".dropzone");
+                                    //            dz.processQueue();
+
+                                    //        });
+                                    //    },
+                                    //    success: function (file) {
+                                    //        if (file.accepted == true) {
+                                    //            Swal.fire({
+                                    //                icon: 'success',
+                                    //                title: 'İşlem Başarılı',
+                                    //            }).then(function () {
+                                    //                dz.removeAllFiles(file);
+                                    //            });
+                                    //        } else {
+                                    //            Swal.fire({
+                                    //                icon: 'error',
+                                    //                title: 'İşlem Başarısız!',
+                                    //            }).then(function () {
+                                    //                window.location.reload();
+                                    //            });
+                                    //        }
+                                    //    },
+                                    //    dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
+                                    //    dictRemoveFile: "Dosyayı Sil",
+                                    //    dictCancelUpload: "İptal Et"
+                                    //};
+
+    </script>
+    <script src="~/assets/js/pages/crud/file-upload/dropzonejs.js"></script>
+}

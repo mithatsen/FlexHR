@@ -22,7 +22,7 @@ namespace FlexHR.DTO.Dtos.StaffCareerDtos
         public string ModeOfOperation { get; set; }
         public string CompanyName { get; set; }
         public string  BranchName { get; set; }
-        public virtual CompanyBranch CompanyBranch { get; set; }
-        public virtual Staff Staff { get; set; }
+   
     }
 }
+

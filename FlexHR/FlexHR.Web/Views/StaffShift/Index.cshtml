@@ -1,0 +1,258 @@
+﻿@model List<ListStaffShiftDto>
+@{
+    ViewData["Title"] = "Mesai Bilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+}
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+<div class="card card-custom">
+    @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
+    <div class="card-body">
+        <div class="d-flex flex-row">
+            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
+            @*staffLeave*@
+            <div class="tab-content w-100">
+                <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_7">
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-user-clock text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            Mesailer
+                                        </h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
+                                            Mesai Kaydı Ekle
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_4">
+                                        <thead>
+                                            <tr>
+                                                <th>Başlangıç</th>
+                                                <th>Süre(saat)</th>
+                                                <th>Açıklama</th>
+                                                <th>İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+
+                                                    <td>@item.StartDate.ToString("g")</td>
+
+                                                    <td>@item.Duration Saat</td>
+
+                                                    <td>@item.Description</td>
+
+
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Onay">
+
+                                                            <i class="la la-check" text-success"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!--end: Datatable-->
+                                </div>
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Entry-->
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+@*add shift modal*@
+<div class="modal fade" id="staffShiftAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Mesai Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <form id="modalAddShift" method="POST">
+                <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+                                        <div class="col-md-7">
+
+                                            <div class="form-group row ">
+                                                <label class="col-xl-5 col-lg-3 col-form-label">Başlangıç Tarihi</label>
+                                                <div class="col-lg-9 col-xl-7">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_18" data-target-input="nearest">
+                                                        <input name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_18" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_18" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row ">
+                                                <label class="col-form-label col-xl-5 col-lg-3 ">Süre (Saat)</label>
+                                                <div class="col-lg-9 col-xl-7">
+                                                    <input id="kt_touchspin_1" type="text" class="form-control text-center" value="0" name="Duration" placeholder="Toplam" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-xl-3 pr-0 col-lg-3 col-form-label">Açıklama</label>
+                                                <div class="col-lg-9 col-xl-9">
+                                                    <div class="input-group  pl-0  input-group-lg input-group-solid">
+
+                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+
+
+                    </div>
+
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* update shift modal*@
+<div id="UpdateStaffShiftModalDiv"></div>
+
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+            $("#tab_7").addClass("active");
+        });
+    </script>
+
+    @*//add staff shift*@
+    <script>
+
+        $(document).on("submit", "#modalAddShift", function (event) { //infoForm id li form post edildiğinde
+
+
+            event.preventDefault();
+
+            $.ajax({
+                url: "/StaffShift/AddStaffShiftWithAjax",
+                type: "POST",
+                data: new FormData(this),
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    $("#staffShiftAddModal").modal('hide');
+
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+    @*//update staff shift*@
+    <script>
+        function ShiftUpdate(id) {
+
+            var modelContent = $("#UpdateStaffShiftModalDiv")
+            $("#UpdateStaffShiftModalDiv").empty();
+
+            $.ajax({
+                method: "GET",
+                url: "/StaffShift/GetUpdateStaffShiftModal/" + id,
+                dataType: "html",
+                cache: false,
+            }).done(function (content) {
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#staffShiftUpdateModal").modal("show");
+
+                //CompanyChangeUpdate();
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+    </script>
+    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+}
