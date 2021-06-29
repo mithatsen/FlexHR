@@ -13,7 +13,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
                 {
                     targets: 0,
                     title: '#',
-                    width: '75px',
+                    width: '20px',
                     render: function (data, type, full, meta) {
                         var status = {
                             'True': {

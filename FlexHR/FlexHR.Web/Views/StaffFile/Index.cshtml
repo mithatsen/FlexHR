@@ -21,7 +21,7 @@
                 <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_8">
                     <div class="flex-row-fluid ml-lg-8">
                         <!--begin::Form-->
-                        <form class="form" asp-action="UpdateStaffPersonalInfo" asp-controller="Staff" method="post">
+                        <form class="form" method="post" enctype="multipart/form-data">
                             <!--begin::Card-->
                             <div class="card card-custom card-stretch">
                                 <!--begin::Header-->
@@ -33,8 +33,6 @@
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Kişisel bilgileri düzenleyin</span>
                                     </div>
                                     <div class="card-toolbar">
-                                        <button id="uploadButton" class="btn btn-primary mr-2">Kaydet</button>
-                                        <a asp-action="Index" class="btn btn-secondary">Geri</a>
                                     </div>
                                 </div>
                                 <!--end::Header-->
@@ -45,14 +43,17 @@
 
                                         <div class="row">
                                             <div class="card-body">
-                                                <div class="col-md-11 mb-2 ml-10">
-                                                    <select id="categorySelect" asp-for="FileGeneralSubTypeId" onchange="categoryChange()" class="form-control form-control-solid form-control-lg" asp-items="@ViewBag.FileTypes">
-                                                        <option hidden value="-1">Önce kategori seçiniz</option>
-                                                    </select>
-
+                                                <div class="col-md-11 mb-2 ml-7 row ">
+                                                    <div class="col-md-10 justify-content-center">
+                                                        <select id="categorySelect" asp-for="FileGeneralSubTypeId" onchange="categoryChange()" class="form-control form-control-solid d-block  form-control-lg" asp-items="@ViewBag.FileTypes">
+                                                            <option hidden value="-1">Önce kategori seçiniz</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2 justify-content-center">
+                                                        <button id="uploadButton" class="btn btn-primary btn-block btn-lg ml-4 ">Kaydet </button>
+                                                    </div>
                                                 </div>
-
-                                                <input type="hidden" id="customerProductId" />
+                                                <input type="hidden" id="staffId" value="@ViewBag.StaffId" />
                                                 <div class="form-group row ml-8">
                                                     <div class="col-md-11  ml-3">
                                                         <div class="dropzone dropzone-default dropzone-primary" id="myAwesomeDropzone">
@@ -82,7 +83,7 @@
     </div>
 
 </div>
-
+<div id="def">hrhrgtgrgrgrg</div>
 @section Scripts{
     <script>
 
@@ -93,101 +94,235 @@
 
     @*//add staff file dropzone*@
     <script>
-
-        var id = document.getElementById("customerProductId").value;
+        var id = document.getElementById("staffId").value;
 
         function categoryChange() {
 
+            var catId2 = document.getElementById("categorySelect").value;
+            if (".dz-preview") {
+                $("#myAwesomeDropzone").empty();
+                document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> ";
+            }
+            $.ajax({
+                method: "GET",
+                url: "/StaffFile/GetStaffFile/" + id,
+                data: { categoryId2: catId2 },
+            }).done(function (content) {
+                let serverFiles = JSON.parse(content);
 
-            document.getElementById("myAwesomeDropzone").innerHTML = "<span class='nav-icon mr-2'><span class='svg-icon mr-3'><i class='fas fa-file-import'></i></span> </span> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/> <br/> <br/>";
-            Dropzone.autoDiscover = false;
-            var catId = document.getElementById("categorySelect").value;
-            $('#myAwesomeDropzone').dropzone({
-                autoProcessQueue: false,
-                url: "/CustomerProductFile/AddCustomerProductFile/" + id, // Set the url for your upload script location
-                paramName: "file", // The name that will be used to transfer the file
-                maxFiles: 10,
-                maxFilesize: 500, // MB
-                parallelUploads: 10,
-                addRemoveLinks: true,
-                params: { categoryId: catId },
-                init: function () {
-                    var dz = this;
-                    this.removeAllFiles(true);
-                    $('#uploadButton').click(function () {
-                        dz.processQueue();
-                    });
-                    dz.on('addedfile', function (file) {
-                        file.previewElement.classList.add('dz-preview');
-                        file.previewElement.classList.add('dz-success');
-                        file.previewElement.classList.add('dz-complete');
-                        file.previewElement.classList.add('dz-image-preview');
-                    });
-                    dz.on("complete", function (file) {
-                        dz.removeFile(file);
-                    });
-                },
-                success: function (file) {
-                    if (file.accepted == true) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Dosyalarınız Yüklendi',
-                        }).then(function () {
+                Dropzone.autoDiscover = false;
+                var catId = document.getElementById("categorySelect").value;
+                $('#myAwesomeDropzone').dropzone({
+                    autoProcessQueue: false,
+                    url: "/StaffFile/AddStaffFile/" + id, // Set the url for your upload script location
+                    paramName: "file", // The name that will be used to transfer the file
+                    maxFiles: 10,
+                    maxFilesize: 500, // MB
+                    parallelUploads: 10,
+                    addRemoveLinks: true,
+                    params: { categoryId: catId },
+                    init: function () {
+                        document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> ";
+
+                        var dz = this;
+                        this.removeAllFiles(true);
+                        $('#uploadButton').click(function () {
+                            dz.processQueue();
+                        });
+                        dz.on('addedfile', function (file) {
+                            $("#message").fadeOut(0);
+                            file.previewElement.classList.add('dz-preview');
+                            file.previewElement.classList.add('dz-success');
+                            file.previewElement.classList.add('dz-complete');
+                            file.previewElement.classList.add('dz-image-preview');
+                        });
+                        dz.on("complete", function (file) {
                             dz.removeFile(file);
                         });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'İşlem Başarısız!',
-                        }).then(function () {
-                            window.location.reload();
-                        });
-                    }
-                },
-                dictDefaultMessage: "",
-                dictRemoveFile: "Dosyayı Sil",
-                dictCancelUpload: "İptal Et",
+                        // Server Files
+                        for (var i = 0; i < serverFiles.length; i++) {
+                            var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType };
+                            this.options.addedfile.call(this, mockFile);
+                            this.options.thumbnail.call(this, mockFile, serverFiles[i].FileFullPath + serverFiles[i].FileName);
+                            mockFile.previewElement.classList.add('dz-success');
+                            mockFile.previewElement.classList.add('dz-complete');
+                            // Icons
+                            var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
+                            if (mockFileExt == "pdf") {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+                            } else if (mockFileExt.indexOf("doc") != -1) {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+                            } else if (mockFileExt.indexOf("xls") != -1) {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+                            } else if (mockFileExt.indexOf("xlsx") != -1) {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+                            } else if (mockFileExt.indexOf("txt") != -1) {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+                            } else if (mockFileExt.indexOf("zip") != -1 || mockFileExt.indexOf("rar") != -1) {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
+                            } else if (mockFileExt.indexOf("tif") != -1 || mockFileExt.indexOf("tiff") != -1) {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
+                            } else {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+                            }
+                            $("#def").append( '<img src="' + serverFiles[i].FileFullPath + serverFiles[i].FileName + '"/>')
+                        }
+                    },
+                    success: function (file) {
+                        if (file.accepted == true) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Dosyalarınız Yüklendi',
+                            }).then(function () {
+                                dz.removeFile(file);
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'İşlem Başarısız!',
+                            }).then(function () {
+                                window.location.reload();
+                            });
+                        }
+                    },
+                    dictDefaultMessage: "",
+                    dictRemoveFile: "Dosyayı Sil",
+                    dictCancelUpload: "İptal Et",
+                });
+
+            }).fail(function (error) {
+
             });
+
+
+
         }
 
-                                    //Dropzone.options.kt_dropzone_2 = {
-                                    //    autoProcessQueue: false,
-                                    //    maxFilesize: 500,//mb cinsinden
-                                    //    addRemoveLinks: true,
-                                    //    maxFiles: 10,
-                                    //    parallelUploads: 10,
-                                    //    init: function () {
-                                    //        var dz = this;
-                                    //        $('#uploadButton').click(function () {
-                                    //            console.log(dz);
-                                    //            debugger;
-                                    //            //var myDropzone = Dropzone.forElement(".dropzone");
-                                    //            dz.processQueue();
+            //// Work Update
+            //ProductionFileUpload = () => {
+            //    var urlWorkId = parseInt(window.location.pathname.split("/")[3]);
+            //    var fileUploadTypeID = 1;
+            //    Dropzone.autoDiscover = false;
 
-                                    //        });
-                                    //    },
-                                    //    success: function (file) {
-                                    //        if (file.accepted == true) {
-                                    //            Swal.fire({
-                                    //                icon: 'success',
-                                    //                title: 'İşlem Başarılı',
-                                    //            }).then(function () {
-                                    //                dz.removeAllFiles(file);
-                                    //            });
-                                    //        } else {
-                                    //            Swal.fire({
-                                    //                icon: 'error',
-                                    //                title: 'İşlem Başarısız!',
-                                    //            }).then(function () {
-                                    //                window.location.reload();
-                                    //            });
-                                    //        }
-                                    //    },
-                                    //    dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
-                                    //    dictRemoveFile: "Dosyayı Sil",
-                                    //    dictCancelUpload: "İptal Et"
-                                    //};
+            //    $('#cover-spin').show();
+            //    $.ajax({
+            //        method: "GET",
+            //        url: "/Work/GetUploadedWorkFiles",
+            //        data: { id: urlWorkId, fileUploadTypeID: fileUploadTypeID },
+            //        contentType: "application/json; charset=utf-8",
+            //        dataType: "json"
+            //    }).done(function (serverFiles) {
+            //        $('#cover-spin').hide();
 
+            //        var id = urlWorkId + "~" + fileUploadTypeID;
+            //        $('#dropzone_production').dropzone({
+            //            autoProcessQueue: false,
+            //            url: "/Work/WorkFileUpload/" + id,
+            //            paramName: "files",
+            //            maxFiles: 100,
+            //            maxFilesize: 4000,
+            //            parallelUploads: 100,
+            //            timeout: 3600000,
+            //            uploadMultiple: true,
+            //            dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
+            //            dictRemoveFile: "Dosyayı Sil",
+            //            addRemoveLinks: true,
+            //            init: function () {
+            //                var dz = this;
+
+            //                dz.on('addedfile', function (file) {
+
+            //                    // Icons
+            //                    var ext = file.name.split('.').pop().toLowerCase();
+            //                    if (ext == "pdf") {
+            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+            //                    } else if (ext.indexOf("doc") != -1) {
+            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+            //                    } else if (ext.indexOf("xls") != -1) {
+            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+            //                    } else if (ext.indexOf("xlsx") != -1) {
+            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+            //                    } else if (ext.indexOf("txt") != -1) {
+            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+            //                    } else if (ext.indexOf("zip") != -1 || ext.indexOf("rar") != -1) {
+            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
+            //                    } else if (ext.indexOf("tif") != -1 || ext.indexOf("tiff") != -1) {
+            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
+            //                    } else {
+            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+            //                    }
+
+            //                    file.previewElement.classList.add('dz-success');
+            //                    file.previewElement.classList.add('dz-complete');
+            //                    file.previewElement.classList.add('dz-image-preview');
+            //                    file.previewElement.classList.remove('dz-file-preview');
+            //                });
+
+            //                $("#productionFileUpload").click(function () {
+            //                    dz.processQueue();
+            //                });
+            //                $("#productionFileUploadRemove").click(function () {
+            //                    dz.removeAllFiles();
+            //                });
+
+
+
+            //                // Server Files
+            //                for (var i = 0; i < serverFiles.length; i++) {
+            //                    var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType };
+            //                    this.options.addedfile.call(this, mockFile);
+            //                    this.options.thumbnail.call(this, mockFile, serverFiles[i].FilePath);
+            //                    mockFile.previewElement.classList.add('dz-success');
+            //                    mockFile.previewElement.classList.add('dz-complete');
+            //                    // Icons
+            //                    var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
+
+            //                    if (mockFileExt == "pdf") {
+            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+            //                    } else if (mockFileExt.indexOf("doc") != -1) {
+            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+            //                    } else if (mockFileExt.indexOf("xls") != -1) {
+            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+            //                    } else if (mockFileExt.indexOf("xlsx") != -1) {
+            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+            //                    } else if (mockFileExt.indexOf("txt") != -1) {
+            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+            //                    } else if (mockFileExt.indexOf("zip") != -1 || mockFileExt.indexOf("rar") != -1) {
+            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
+            //                    } else if (mockFileExt.indexOf("tif") != -1 || mockFileExt.indexOf("tiff") != -1) {
+            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
+            //                    } else {
+            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+            //                    }
+            //                }
+            //            },
+            //            removedfile: function (file) {
+            //                //Server File
+            //                if (file.accepted == undefined) {
+            //                    $.ajax({
+            //                        method: "GET",
+            //                        url: "/Work/WorkUploadedFileRemove",
+            //                        data: { workId: urlWorkId, fileUploadTypeID: fileUploadTypeID, fileName: file.name },
+            //                    }).done(function (result) {
+            //                        if (result == "True") {
+            //                            file.previewElement.remove();
+            //                        }
+            //                    }).fail(function (error) {
+
+            //                        console.log(error);
+            //                    });
+            //                } else {
+            //                    file.previewElement.remove();
+            //                }
+            //            }
+            //        });
+
+            //    }).fail(function (error) {
+            //        $('#cover-spin').hide();
+            //        console.log(error);
+            //    });
+
+            //}
     </script>
     <script src="~/assets/js/pages/crud/file-upload/dropzonejs.js"></script>
 }

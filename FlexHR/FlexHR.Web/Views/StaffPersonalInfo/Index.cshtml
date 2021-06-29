@@ -49,7 +49,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Doğum Tarihi</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_4" data-target-input="nearest">
-                                                            <input asp-for="BirthDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_4" />
+                                                            <input asp-for="BirthDate" value="@Model.BirthDate.Value.ToShortDateString()" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_4" />
                                                             <div class="input-group-append" data-target="#kt_datetimepicker_4" data-toggle="datetimepicker">
                                                                 <span class="input-group-text">
                                                                     <i class="ki ki-calendar"></i>
