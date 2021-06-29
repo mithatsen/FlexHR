@@ -55,7 +55,7 @@
                                                 </div>
                                                 <input type="hidden" id="staffId" value="@ViewBag.StaffId" />
                                                 <div class="form-group row ml-8">
-                                                    <div class="col-md-11  ml-3">
+                                                    <div id="deleteDropzone" class="col-md-11  ml-3">
                                                         <div class="dropzone dropzone-default dropzone-primary" id="myAwesomeDropzone">
 
 
@@ -83,7 +83,7 @@
     </div>
 
 </div>
-<div id="def">hrhrgtgrgrgrg</div>
+<div id="def"></div>
 @section Scripts{
     <script>
 
@@ -97,7 +97,8 @@
         var id = document.getElementById("staffId").value;
 
         function categoryChange() {
-
+            $("#myAwesomeDropzone").remove();
+            $("#deleteDropzone").append("<div class='dropzone dropzone-default dropzone-primary' id='myAwesomeDropzone'> </div >");
             var catId2 = document.getElementById("categorySelect").value;
             if (".dz-preview") {
                 $("#myAwesomeDropzone").empty();
@@ -109,10 +110,13 @@
                 data: { categoryId2: catId2 },
             }).done(function (content) {
                 let serverFiles = JSON.parse(content);
-
+                console.log(serverFiles);
+               
                 Dropzone.autoDiscover = false;
                 var catId = document.getElementById("categorySelect").value;
+                var catControl = 0;
                 $('#myAwesomeDropzone').dropzone({
+                    
                     autoProcessQueue: false,
                     url: "/StaffFile/AddStaffFile/" + id, // Set the url for your upload script location
                     paramName: "file", // The name that will be used to transfer the file
@@ -121,13 +125,19 @@
                     parallelUploads: 10,
                     addRemoveLinks: true,
                     params: { categoryId: catId },
-                    init: function () {
-                        document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> ";
-
+                    init :function () {
+                        catControl = catId2;
                         var dz = this;
+                        serverFiles.length == 0 ? document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> " : document.getElementById("myAwesomeDropzone").innerHTML =" ";
+               
+                        
                         this.removeAllFiles(true);
                         $('#uploadButton').click(function () {
                             dz.processQueue();
+                        });
+                        
+                        dz.on("complete", function (file) {
+                            dz.removeAllFiles(file);
                         });
                         dz.on('addedfile', function (file) {
                             $("#message").fadeOut(0);
@@ -136,10 +146,11 @@
                             file.previewElement.classList.add('dz-complete');
                             file.previewElement.classList.add('dz-image-preview');
                         });
-                        dz.on("complete", function (file) {
-                            dz.removeFile(file);
+                        dz.on("success", function (file) {
+                            dz.destroy(file);
                         });
                         // Server Files
+                        
                         for (var i = 0; i < serverFiles.length; i++) {
                             var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType };
                             this.options.addedfile.call(this, mockFile);
@@ -163,13 +174,15 @@
                             } else if (mockFileExt.indexOf("tif") != -1 || mockFileExt.indexOf("tiff") != -1) {
                                 $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
                             } else {
-                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", '/img/' + serverFiles[i].FileFullPath + serverFiles[i].FileName + '');
                             }
-                            $("#def").append( '<img src="' + serverFiles[i].FileFullPath + serverFiles[i].FileName + '"/>')
+                           // $("#def").append('<img src="/img/'+serverFiles[i].FileFullPath + serverFiles[i].FileName + '"/>')
                         }
                     },
-                    success: function (file) {
-                        if (file.accepted == true) {
+                    success: function (data) {
+                        debugger;
+                        console.log(data);
+                        if (data == true) {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Dosyalarınız Yüklendi',
@@ -179,9 +192,7 @@
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'İşlem Başarısız!',
-                            }).then(function () {
-                                window.location.reload();
+                                title: 'İşlem mmmm!',
                             });
                         }
                     },

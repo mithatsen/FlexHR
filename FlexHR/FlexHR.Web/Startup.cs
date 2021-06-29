@@ -50,6 +50,12 @@ namespace FlexHR.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Configuration.GetValue<string>("FullPath:DefaultPath")),
+                RequestPath="/img"
+            });
             app.UseRouting();
 
             app.UseAuthorization();

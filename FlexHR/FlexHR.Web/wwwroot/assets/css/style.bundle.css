@@ -56579,7 +56579,7 @@ code {
     border-radius: 0.42rem; }
   .dropzone.dropzone-default .dz-remove {
     color: #7E8299;
-    font-size: 1px;
+    font-size: 15px;
     font-weight: 500;
     -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
     transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
@@ -56590,7 +56590,7 @@ code {
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
-      color: #3699FF; }
+      color: red; }
   .dropzone.dropzone-default.dropzone-primary {
     border-color: #3699FF; }
   .dropzone.dropzone-default.dropzone-secondary {

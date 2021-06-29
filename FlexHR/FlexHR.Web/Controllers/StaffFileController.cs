@@ -83,7 +83,7 @@ namespace FlexHR.Web.Controllers
                             }
                             _staffFileService.Add(new StaffFile()
                             {
-                                FileFullPath= filePath,
+                                FileFullPath= Path.Combine(staffName, categoryNameFolder + "/"),
                                 FileName=ite.FileName,
                                 FileGeneralSubTypeId=categoryId,
                                 IsActive=true,
@@ -94,9 +94,9 @@ namespace FlexHR.Web.Controllers
                     }
                 }
              
-                return RedirectToAction("AddCustomerProductFile", new { Id = id });
+                return Json(true);
             }
-            return View();
+            return Json(true);
 
         }
         public JsonResult GetStaffFile(int id, int categoryId2)
