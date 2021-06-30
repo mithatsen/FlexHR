@@ -1,5 +1,6 @@
 ﻿using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffCardDtos;
+using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,19 +16,23 @@ namespace FlexHR.Web.ViewComponents
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly ICompanyService _companyService;
         private readonly IStaffService _staffService;
+        private readonly IStaffFileService _staffFileService;
 
-        public StaffCard(IStaffCareerService staffCareerService, IGeneralSubTypeService generalSubTypeService, ICompanyService companyService, IStaffService staffService)
+        public StaffCard(IStaffCareerService staffCareerService, IGeneralSubTypeService generalSubTypeService, ICompanyService companyService, IStaffService staffService, IStaffFileService staffFileService)
         {
             _staffCareerService = staffCareerService;
             _generalSubTypeService = generalSubTypeService;
             _companyService = companyService;
             _staffService = staffService;
+            _staffFileService = staffFileService;
 
         }
         public IViewComponentResult Invoke(int id)
         {
             var careerResult = _staffCareerService.GetAllTableByStaffId(id);
             var staff = _staffService.GetAllTables(id);
+            var picture = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x=>x.StaffFileId).FirstOrDefault();
+          
             StaffCardDto staffCardDto;
 
             if (careerResult.Count>0)
@@ -39,6 +44,7 @@ namespace FlexHR.Web.ViewComponents
                     BranchName = activeCareer.CompanyBranch != null ? activeCareer.CompanyBranch.BranchName : "-",
                     CompanyName = _companyService.GetCompanyNameByCompanyId(activeCareer.CompanyId),
                     Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(activeCareer.TitleGeneralSubTypeId),
+                    PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null
 
                 };
             }
@@ -49,7 +55,8 @@ namespace FlexHR.Web.ViewComponents
                     DepartmantName = "-",
                     BranchName = "-",
                     CompanyName = "-",
-                    Title = "-"
+                    Title = "-",
+                    PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null
                 };
             }
             staffCardDto.JobJoinDate = staff.JobJoinDate;

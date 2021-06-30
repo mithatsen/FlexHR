@@ -1,6 +1,5 @@
 ﻿@model StaffCardDto
-
-  <!--begin::Aside-->
+<!--begin::Aside-->
 <div class="flex-row-auto offcanvas-mobile w-300px w-xxl-400px h-75" id="kt_profile_aside">
     <!--begin::Profile Card-->
     <div class="card card-custom card-stretch">
@@ -31,18 +30,45 @@
             <!--end::Toolbar-->
             <!--begin::User-->
             <div class="d-flex align-items-center">
-                <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
-                    <div class="symbol symbol-label symbol-lg-100">
-                        <img src="~/assets/media/users/300_5.jpg" alt="image" />
+                <!--begin::Card-->
+
+                <form>
+                    <div class="card-body">
+                        <div class="form-group row">
+
+                            <div class="col-lg-9 col-xl-6">
+                                <div class="image-input image-input-outline" id="kt_image_4">
+                                    <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center position-relative">
+                                        <div class="symbol symbol-label symbol-lg-100">
+                                            @if (Model.PictureUrl != null)
+                                            {
+                                                var pp = "/img/" + @Model.PictureUrl;
+                                                <img src="@pp" alt="image" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/assets/media/users/default.jpg" />
+                                            }
+
+                                        </div>
+                                        <i class="symbol-badge bg-success"></i>
+                                        <a class="btn btn-xs btn-icon btn-circle btn-hover-warning btn-shadow position-absolute btn-white" data-toggle="modal" data-target="#staffPpChangeModal" style="bottom:-6px;right:-6px;">
+                                            <i class="  fa fa-pen icon-sm "></i>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <i class="symbol-badge bg-success"></i>
-                </div>
+                </form>
                 <div>
                     <a href="#" class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">@Model.NameSurname</a>
                     <div class="text-muted"></div>
 
                 </div>
             </div>
+
             <!--end::User-->
             <!--begin::Contact-->
             <div class="py-9">
@@ -79,6 +105,34 @@
         <!--end::Body-->
     </div>
     <!--end::Profile Card-->
-
 </div>
 <!--end::Aside-->
+<div class="modal fade" id="staffPpChangeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <form id="modalAddCareerForm" method="POST">
+                <div class="modal-body ">
+                    <div class="demo">
+                        <img id="my-image" src="~/assets/media/bg/bg-1.jpg" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

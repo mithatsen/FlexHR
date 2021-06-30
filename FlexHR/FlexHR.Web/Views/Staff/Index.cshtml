@@ -236,7 +236,19 @@
                                     <!--begin::User-->
                                     <div class="mt-7">
                                         <div class="symbol symbol-circle symbol-lg-100">
-                                            <img src="assets/media/users/300_5.jpg" alt="image" />
+                                            @if (item.PictureUrl != null)
+                                            {
+                                                var ppPath = item.PictureUrl;
+
+                                                var pp = "/img/" + ppPath;
+
+                                                <img src="@pp" alt="image" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/assets/media/users/default.jpg" />
+                                            }
+
                                         </div>
                                         <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
                                             <span class="font-size-h3 font-weight-boldest">JB</span>

@@ -35,6 +35,10 @@
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="~/assets/media/logos/favicon1.ico" />
 
+    <link href="~/Croppie-2.6.4/croppie.css" rel="stylesheet" />
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/cropper/cropper.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
     @RenderSection("Styles", required: false)
 
 
@@ -95,7 +99,7 @@
                 <div class="brand flex-column-auto" id="kt_brand">
                     <!--begin::Logo-->
                     <a asp-action="Index" asp-controller="Home" class="brand-logo">
-                        <img alt="Logo" style="max-width:170px; padding-left:0px; margin-left:0px;!importtantr " src="~/assets/media/bg/flexHR.png" />
+                        <img alt="Logo" style="max-width:170px; padding-left:0px; margin-left:0px; " src="~/assets/media/bg/flexHR.png" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->
@@ -336,6 +340,25 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/features/miscellaneous/sweetalert2.js"></script>
     <!--end::Page Scripts-->
+    <script src="~/assets/js/pages/crud/file-upload/image-input.js"></script>
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/assets/plugins/custom/cropper/cropper.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/assets/js/pages/features/miscellaneous/cropper.js"></script>
+    <!--end::Page Scripts-->
+    <script>
+        $('.demo').croppie({
+            url: '~/assets/media/bg/bg-1.jpg',
+        });
+        $('#my-image').croppie(opts);
+    </script>
+    <!-- or even simpler -->
+    @*<img class="my-image" src="~/assets/media/bg/bg-1.jpg" />
+        <script>
+            $('.my-image').croppie();
+        </script>*@
+    <script src="~/Croppie-2.6.4/croppie.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

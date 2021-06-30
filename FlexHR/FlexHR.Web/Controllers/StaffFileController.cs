@@ -43,57 +43,77 @@ namespace FlexHR.Web.Controllers
             ViewBag.StaffId = id;
             ViewBag.FileTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType), "GeneralSubTypeId", "Description");
             return View();
-        }       
+        }
 
         [HttpPost]
-        public async Task<IActionResult> AddStaffFile(List<IFormFile> file, int id, int categoryId)
+        public async Task<IActionResult> AddStaffFile(IFormFile file, int id, int categoryId)
         {
 
             if (file != null)
             {
-                var staffName= "Staff_" + id;
+                //int count = 0;
+                var staffName = "Staff_" + id;
                 string categoryNameFolder;
                 var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
                 var fileTypeList = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType);
                 foreach (var item in fileTypeList)
                 {
-                    if (item.GeneralSubTypeId==categoryId)
+                    if (item.GeneralSubTypeId == categoryId)
                     {
-                        foreach (var ite in file)
-                        {
-                            //string uzanti = Path.GetExtension(item.FileName);
-                            //string imageName = Guid.NewGuid() + uzanti;
-                            //Dosyamızın kaydedileceği Klasörün yolunu belirliyoruz.
-                            categoryNameFolder = ClearTurkishCharacter(item.Description);
-                            var folderPath = Path.Combine(fullPath, staffName);
-                            if (!Directory.Exists(folderPath))
-                                Directory.CreateDirectory(folderPath);
 
-                            var filePath = Path.Combine( folderPath ,categoryNameFolder + "/");
-                            if (!Directory.Exists(filePath))
-                                Directory.CreateDirectory(filePath);
-                            var imagePath = Path.Combine(filePath + ite.FileName);
-                            if (ite.Length > 0)
+                        //string uzanti = Path.GetExtension(item.FileName);
+                        //string imageName = Guid.NewGuid() + uzanti;
+                        //Dosyamızın kaydedileceği Klasörün yolunu belirliyoruz.
+                        categoryNameFolder = ClearTurkishCharacter(item.Description);
+
+
+                        //var userFileList = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true);
+                        //foreach (var userFile in userFileList)
+                        //{
+                        //    var x = userFile.FileFullPath + userFile.FileName;
+                        //    var img = staffName + "\\" + categoryNameFolder + "/" + file.FileName;
+                        //    if (img == x)
+                        //    {
+                        //        count++;
+                        //    }
+
+                        //}
+                        //if (count == 0)
+                        //{
+                        var stafFileResult = _staffFileService.AddResult(new StaffFile()
+                        {
+                            FileFullPath = Path.Combine(staffName, categoryNameFolder + "/"),
+                            FileName = file.FileName,
+                            FileGeneralSubTypeId = categoryId,
+                            IsActive = true,
+                            StaffId = id
+                        });
+                        stafFileResult.FileName = stafFileResult.StaffFileId + stafFileResult.FileName;
+                        _staffFileService.Update(stafFileResult);
+                        var folderPath = Path.Combine(fullPath, staffName);
+                        if (!Directory.Exists(folderPath))
+                            Directory.CreateDirectory(folderPath);
+
+                        var filePath = Path.Combine(folderPath, categoryNameFolder + "/");
+                        if (!Directory.Exists(filePath))
+                            Directory.CreateDirectory(filePath);
+                        var imagePath = Path.Combine(filePath + stafFileResult.StaffFileId + file.FileName);
+                        if (file.Length > 0)
+                        {
+                            //dosyamızı kaydediyoruz.
+                           
+                            using (var stream = new FileStream(imagePath, FileMode.Create))
                             {
-                                //dosyamızı kaydediyoruz.
-                                using (var stream = new FileStream(imagePath, FileMode.Create))
-                                {
-                                    await ite.CopyToAsync(stream);
-                                }
+                                await file.CopyToAsync(stream);
                             }
-                            _staffFileService.Add(new StaffFile()
-                            {
-                                FileFullPath= Path.Combine(staffName, categoryNameFolder + "/"),
-                                FileName=ite.FileName,
-                                FileGeneralSubTypeId=categoryId,
-                                IsActive=true,
-                                StaffId=id
-                            });
                         }
-                        
+
+                        //}
+                        //count = 0;
+
                     }
                 }
-             
+
                 return Json(true);
             }
             return Json(true);
@@ -101,9 +121,21 @@ namespace FlexHR.Web.Controllers
         }
         public JsonResult GetStaffFile(int id, int categoryId2)
         {
-            var fileList= JsonConvert.SerializeObject(_staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == categoryId2));
-            
+            var fileList = JsonConvert.SerializeObject(_staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == categoryId2 && x.IsActive == true));
+
             return Json(fileList);
+        }
+        [HttpPost]
+        public JsonResult StaffFileRemove(IFormFile file, int fileId)
+        {
+            if (fileId > 0)
+            {
+                var result = _staffFileService.Get(x => x.StaffFileId == fileId).FirstOrDefault();
+                result.IsActive = false;
+                _staffFileService.Update(result);
+                return Json("True");
+            }
+            return Json("False");
         }
     }
 }

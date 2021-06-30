@@ -23,6 +23,14 @@
     <ProjectReference Include="..\FlexHR.DataAccess\FlexHR.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TagHelpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Croppie-2.6.4\.github\ISSUE_TEMPLATE.md" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json-schema.org/draft/2019-09/schema" /></VisualStudio></ProjectExtensions>
 
 </Project>

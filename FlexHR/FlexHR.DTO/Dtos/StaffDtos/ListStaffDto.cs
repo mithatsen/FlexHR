@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlexHR.DTO.Dtos.StaffFileDtos;
+using FlexHR.Entity.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,6 +17,9 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public DateTime JobJoinDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
         public bool IsActive { get; set; }
+        public string PictureUrl { get; set; }
+        public List<StaffFile> StaffFile { get; set; }
+       
 
 
     }

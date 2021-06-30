@@ -77,10 +77,22 @@ namespace FlexHR.Web.Controllers
 
         public IActionResult Index()
         {
-            var result = _staffService.GetAll();
+            var result = _staffService.Get(x => !x.IsActive, null, "StaffFile");
+
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
             ViewBag.Roles = new SelectList(_roleService.GetAll(), "RoleId", "Name");
-            return View(_mapper.Map<List<ListStaffDto>>(result));
+
+            
+            var models = _mapper.Map<List<ListStaffDto>>(result);
+            foreach (var item in models)
+            {
+                var picture = _staffFileService.Get(x => x.StaffId ==item.StaffId  && x.IsActive == true && x.FileGeneralSubTypeId == 3).FirstOrDefault();
+            
+                item.PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null;
+            }
+
+            return View(models);
+
         }
 
         [HttpGet]
@@ -198,7 +210,7 @@ namespace FlexHR.Web.Controllers
                     IsMailSentToStaff = item.IsMailSentToStaff,
                     IsSentForApproval = item.IsSentForApproval,
                     StaffLeaveId = item.StaffLeaveId,
-                    TotalDay=item.TotalDay
+                    TotalDay = item.TotalDay
                 };
                 leaveModels.Add(leaveModel);
             }
@@ -215,9 +227,9 @@ namespace FlexHR.Web.Controllers
                     IsSentForApproval = item.IsSentForApproval,
                     StaffPaymentId = item.StaffPaymentId,
                     IsPaid = item.IsPaid,
-                    PaymentDate=item.PaymentDate,
-                    PaymentTypeGeneralSubTypeId=item.PaymentTypeGeneralSubTypeId,   
-                    PaymentType= _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId)
+                    PaymentDate = item.PaymentDate,
+                    PaymentTypeGeneralSubTypeId = item.PaymentTypeGeneralSubTypeId,
+                    PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId)
                 };
                 paymentModels.Add(paymentModel);
             }
@@ -281,10 +293,10 @@ namespace FlexHR.Web.Controllers
                 ContractTypeId = contractTypeId,
                 TownId = staffOtherInfo.TownId == null ? 0 : (int)staffOtherInfo.TownId,
                 ListStaffLeave = leaveModels,
-                ListStaffFile=fileModels,
-                ListStaffShift= shiftModels,
+                ListStaffFile = fileModels,
+                ListStaffShift = shiftModels,
 
-                ListStaffPayment=paymentModels                
+                ListStaffPayment = paymentModels
 
             };
             return View(model);
@@ -471,9 +483,9 @@ namespace FlexHR.Web.Controllers
                 LeaveTypeGeneralSubTypeId = result.LeaveTypeGeneralSubTypeId,
                 TotalDay = result.TotalDay,
                 StaffId = result.StaffId,
-                StaffLeaveId=result.StaffLeaveId,
-                GeneralStatusGeneralSubTypeId=result.GeneralStatusGeneralSubTypeId,
-                IsActive=result.IsActive
+                StaffLeaveId = result.StaffLeaveId,
+                GeneralStatusGeneralSubTypeId = result.GeneralStatusGeneralSubTypeId,
+                IsActive = result.IsActive
 
             };
 
@@ -484,7 +496,7 @@ namespace FlexHR.Web.Controllers
         public IActionResult GetUpdateStaffShiftModal(int id)
         {
             var result = _staffShiftService.GetById(id);
-           
+
             var shiftModel = new ListStaffShiftDto
             {
                 Description = result.Description,
@@ -502,7 +514,7 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStaffLeave(ListStaffLeaveDto model)
         {
-           
+
             _staffLeaveService.Update(_mapper.Map<StaffLeave>(model));
             return RedirectToAction("UpdateStaff", "Staff", new { id = model.StaffId }, "tab_5");
 

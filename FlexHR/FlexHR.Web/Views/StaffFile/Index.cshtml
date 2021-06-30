@@ -12,7 +12,7 @@
     <!--end::Page Vendors Styles-->
 }
 <div class="card card-custom">
-    @await Component.InvokeAsync("StaffNavbar")
+    @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
         <div class="d-flex flex-row">
             @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
@@ -50,7 +50,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-2 justify-content-center">
-                                                        <button id="uploadButton" class="btn btn-primary btn-block btn-lg ml-4 ">Kaydet </button>
+                                                        <button id="uploadButton" type="button" class="btn btn-primary btn-block btn-lg ml-4 ">Kaydet </button>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" id="staffId" value="@ViewBag.StaffId" />
@@ -84,6 +84,7 @@
 
 </div>
 <div id="def"></div>
+
 @section Scripts{
     <script>
 
@@ -110,34 +111,54 @@
                 data: { categoryId2: catId2 },
             }).done(function (content) {
                 let serverFiles = JSON.parse(content);
-                console.log(serverFiles);
-               
+                console.log(content.length);
+
                 Dropzone.autoDiscover = false;
                 var catId = document.getElementById("categorySelect").value;
                 var catControl = 0;
                 $('#myAwesomeDropzone').dropzone({
-                    
+
                     autoProcessQueue: false,
                     url: "/StaffFile/AddStaffFile/" + id, // Set the url for your upload script location
                     paramName: "file", // The name that will be used to transfer the file
                     maxFiles: 10,
                     maxFilesize: 500, // MB
                     parallelUploads: 10,
+                    timeout: 3600000,
                     addRemoveLinks: true,
                     params: { categoryId: catId },
-                    init :function () {
+                    init: function () {
                         catControl = catId2;
                         var dz = this;
-                        serverFiles.length == 0 ? document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> " : document.getElementById("myAwesomeDropzone").innerHTML =" ";
-               
-                        
+                        serverFiles.length == 0 ? document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> " : document.getElementById("myAwesomeDropzone").innerHTML = " ";
+
+
                         this.removeAllFiles(true);
                         $('#uploadButton').click(function () {
                             dz.processQueue();
                         });
-                        
+
                         dz.on("complete", function (file) {
                             dz.removeAllFiles(file);
+                            console.log(file.upload);
+                            if (file.upload) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    //timer: 3600000,
+                                    title: 'Dosyalarınız Yüklendi',
+                                }).then(function () {
+                                    dz.removeFile(file);
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    timeout: 3600000,
+                                    title: 'İşlem mmmm!',
+                                }).then(function () {
+                                    window.location.reload();
+                                });
+                            }
                         });
                         dz.on('addedfile', function (file) {
                             $("#message").fadeOut(0);
@@ -148,11 +169,12 @@
                         });
                         dz.on("success", function (file) {
                             dz.destroy(file);
+
                         });
                         // Server Files
-                        
+
                         for (var i = 0; i < serverFiles.length; i++) {
-                            var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType };
+                            var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType, value: serverFiles[i].StaffFileId };
                             this.options.addedfile.call(this, mockFile);
                             this.options.thumbnail.call(this, mockFile, serverFiles[i].FileFullPath + serverFiles[i].FileName);
                             mockFile.previewElement.classList.add('dz-success');
@@ -160,42 +182,43 @@
                             // Icons
                             var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
                             if (mockFileExt == "pdf") {
-                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf_icon.png");
                             } else if (mockFileExt.indexOf("doc") != -1) {
-                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/doc_icon.png");
                             } else if (mockFileExt.indexOf("xls") != -1) {
-                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/xls_icon.png");
                             } else if (mockFileExt.indexOf("xlsx") != -1) {
-                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/xlsx_icon.png");
                             } else if (mockFileExt.indexOf("txt") != -1) {
-                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt_icon.png");
                             } else if (mockFileExt.indexOf("zip") != -1 || mockFileExt.indexOf("rar") != -1) {
-                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
-                            } else if (mockFileExt.indexOf("tif") != -1 || mockFileExt.indexOf("tiff") != -1) {
-                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
-                            } else {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip_icon.png");
+                            } else if (mockFileExt.indexOf("jpg") != -1 || mockFileExt.indexOf("png") != -1 || mockFileExt.indexOf("jfif") != -1 || mockFileExt.indexOf("svg") != -1 || mockFileExt.indexOf("jpeg") != -1) {
                                 $(mockFile.previewElement).find(".dz-image img").attr("src", '/img/' + serverFiles[i].FileFullPath + serverFiles[i].FileName + '');
+
+                            } else {
+                                $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default_icon.png.png");
                             }
-                           // $("#def").append('<img src="/img/'+serverFiles[i].FileFullPath + serverFiles[i].FileName + '"/>')
+                            // $("#def").append('<img src="/img/'+serverFiles[i].FileFullPath + serverFiles[i].FileName + '"/>')
                         }
                     },
-                    success: function (data) {
-                        debugger;
-                        console.log(data);
-                        if (data == true) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Dosyalarınız Yüklendi',
-                            }).then(function () {
-                                dz.removeFile(file);
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'İşlem mmmm!',
-                            });
-                        }
+                    removedfile: function (file) {
+                        //Server File
+                        $.ajax({
+                            method: "POST",
+                            url: "/StaffFile/StaffFileRemove",
+                            data: { fileId: file.value },
+                        }).done(function (result) {
+                            if (result == "True") {
+                                file.previewElement.remove();
+                                $('#uploadButton').trigger("click");
+                            }
+                        }).fail(function (error) {
+
+                            console.log(error);
+                        });
                     },
+
                     dictDefaultMessage: "",
                     dictRemoveFile: "Dosyayı Sil",
                     dictCancelUpload: "İptal Et",
@@ -209,131 +232,131 @@
 
         }
 
-            //// Work Update
-            //ProductionFileUpload = () => {
-            //    var urlWorkId = parseInt(window.location.pathname.split("/")[3]);
-            //    var fileUploadTypeID = 1;
-            //    Dropzone.autoDiscover = false;
+                                //// Work Update
+                                //ProductionFileUpload = () => {
+                                //    var urlWorkId = parseInt(window.location.pathname.split("/")[3]);
+                                //    var fileUploadTypeID = 1;
+                                //    Dropzone.autoDiscover = false;
 
-            //    $('#cover-spin').show();
-            //    $.ajax({
-            //        method: "GET",
-            //        url: "/Work/GetUploadedWorkFiles",
-            //        data: { id: urlWorkId, fileUploadTypeID: fileUploadTypeID },
-            //        contentType: "application/json; charset=utf-8",
-            //        dataType: "json"
-            //    }).done(function (serverFiles) {
-            //        $('#cover-spin').hide();
+                                //    $('#cover-spin').show();
+                                //    $.ajax({
+                                //        method: "GET",
+                                //        url: "/Work/GetUploadedWorkFiles",
+                                //        data: { id: urlWorkId, fileUploadTypeID: fileUploadTypeID },
+                                //        contentType: "application/json; charset=utf-8",
+                                //        dataType: "json"
+                                //    }).done(function (serverFiles) {
+                                //        $('#cover-spin').hide();
 
-            //        var id = urlWorkId + "~" + fileUploadTypeID;
-            //        $('#dropzone_production').dropzone({
-            //            autoProcessQueue: false,
-            //            url: "/Work/WorkFileUpload/" + id,
-            //            paramName: "files",
-            //            maxFiles: 100,
-            //            maxFilesize: 4000,
-            //            parallelUploads: 100,
-            //            timeout: 3600000,
-            //            uploadMultiple: true,
-            //            dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
-            //            dictRemoveFile: "Dosyayı Sil",
-            //            addRemoveLinks: true,
-            //            init: function () {
-            //                var dz = this;
+                                //        var id = urlWorkId + "~" + fileUploadTypeID;
+                                //        $('#dropzone_production').dropzone({
+                                //            autoProcessQueue: false,
+                                //            url: "/Work/WorkFileUpload/" + id,
+                                //            paramName: "files",
+                                //            maxFiles: 100,
+                                //            maxFilesize: 4000,
+                                //            parallelUploads: 100,
+                                //            timeout: 3600000,
+                                //            uploadMultiple: true,
+                                //            dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
+                                //            dictRemoveFile: "Dosyayı Sil",
+                                //            addRemoveLinks: true,
+                                //            init: function () {
+                                //                var dz = this;
 
-            //                dz.on('addedfile', function (file) {
+                                //                dz.on('addedfile', function (file) {
 
-            //                    // Icons
-            //                    var ext = file.name.split('.').pop().toLowerCase();
-            //                    if (ext == "pdf") {
-            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
-            //                    } else if (ext.indexOf("doc") != -1) {
-            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
-            //                    } else if (ext.indexOf("xls") != -1) {
-            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
-            //                    } else if (ext.indexOf("xlsx") != -1) {
-            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
-            //                    } else if (ext.indexOf("txt") != -1) {
-            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
-            //                    } else if (ext.indexOf("zip") != -1 || ext.indexOf("rar") != -1) {
-            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
-            //                    } else if (ext.indexOf("tif") != -1 || ext.indexOf("tiff") != -1) {
-            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
-            //                    } else {
-            //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
-            //                    }
+                                //                    // Icons
+                                //                    var ext = file.name.split('.').pop().toLowerCase();
+                                //                    if (ext == "pdf") {
+                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+                                //                    } else if (ext.indexOf("doc") != -1) {
+                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+                                //                    } else if (ext.indexOf("xls") != -1) {
+                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+                                //                    } else if (ext.indexOf("xlsx") != -1) {
+                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+                                //                    } else if (ext.indexOf("txt") != -1) {
+                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+                                //                    } else if (ext.indexOf("zip") != -1 || ext.indexOf("rar") != -1) {
+                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
+                                //                    } else if (ext.indexOf("tif") != -1 || ext.indexOf("tiff") != -1) {
+                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
+                                //                    } else {
+                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+                                //                    }
 
-            //                    file.previewElement.classList.add('dz-success');
-            //                    file.previewElement.classList.add('dz-complete');
-            //                    file.previewElement.classList.add('dz-image-preview');
-            //                    file.previewElement.classList.remove('dz-file-preview');
-            //                });
+                                //                    file.previewElement.classList.add('dz-success');
+                                //                    file.previewElement.classList.add('dz-complete');
+                                //                    file.previewElement.classList.add('dz-image-preview');
+                                //                    file.previewElement.classList.remove('dz-file-preview');
+                                //                });
 
-            //                $("#productionFileUpload").click(function () {
-            //                    dz.processQueue();
-            //                });
-            //                $("#productionFileUploadRemove").click(function () {
-            //                    dz.removeAllFiles();
-            //                });
+                                //                $("#productionFileUpload").click(function () {
+                                //                    dz.processQueue();
+                                //                });
+                                //                $("#productionFileUploadRemove").click(function () {
+                                //                    dz.removeAllFiles();
+                                //                });
 
 
 
-            //                // Server Files
-            //                for (var i = 0; i < serverFiles.length; i++) {
-            //                    var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType };
-            //                    this.options.addedfile.call(this, mockFile);
-            //                    this.options.thumbnail.call(this, mockFile, serverFiles[i].FilePath);
-            //                    mockFile.previewElement.classList.add('dz-success');
-            //                    mockFile.previewElement.classList.add('dz-complete');
-            //                    // Icons
-            //                    var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
+                                //                // Server Files
+                                //                for (var i = 0; i < serverFiles.length; i++) {
+                                //                    var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType };
+                                //                    this.options.addedfile.call(this, mockFile);
+                                //                    this.options.thumbnail.call(this, mockFile, serverFiles[i].FilePath);
+                                //                    mockFile.previewElement.classList.add('dz-success');
+                                //                    mockFile.previewElement.classList.add('dz-complete');
+                                //                    // Icons
+                                //                    var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
 
-            //                    if (mockFileExt == "pdf") {
-            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
-            //                    } else if (mockFileExt.indexOf("doc") != -1) {
-            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
-            //                    } else if (mockFileExt.indexOf("xls") != -1) {
-            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
-            //                    } else if (mockFileExt.indexOf("xlsx") != -1) {
-            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
-            //                    } else if (mockFileExt.indexOf("txt") != -1) {
-            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
-            //                    } else if (mockFileExt.indexOf("zip") != -1 || mockFileExt.indexOf("rar") != -1) {
-            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
-            //                    } else if (mockFileExt.indexOf("tif") != -1 || mockFileExt.indexOf("tiff") != -1) {
-            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
-            //                    } else {
-            //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
-            //                    }
-            //                }
-            //            },
-            //            removedfile: function (file) {
-            //                //Server File
-            //                if (file.accepted == undefined) {
-            //                    $.ajax({
-            //                        method: "GET",
-            //                        url: "/Work/WorkUploadedFileRemove",
-            //                        data: { workId: urlWorkId, fileUploadTypeID: fileUploadTypeID, fileName: file.name },
-            //                    }).done(function (result) {
-            //                        if (result == "True") {
-            //                            file.previewElement.remove();
-            //                        }
-            //                    }).fail(function (error) {
+                                //                    if (mockFileExt == "pdf") {
+                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+                                //                    } else if (mockFileExt.indexOf("doc") != -1) {
+                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+                                //                    } else if (mockFileExt.indexOf("xls") != -1) {
+                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+                                //                    } else if (mockFileExt.indexOf("xlsx") != -1) {
+                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+                                //                    } else if (mockFileExt.indexOf("txt") != -1) {
+                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+                                //                    } else if (mockFileExt.indexOf("zip") != -1 || mockFileExt.indexOf("rar") != -1) {
+                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
+                                //                    } else if (mockFileExt.indexOf("tif") != -1 || mockFileExt.indexOf("tiff") != -1) {
+                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
+                                //                    } else {
+                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+                                //                    }
+                                //                }
+                                //            },
+                                //            removedfile: function (file) {
+                                //                //Server File
+                                //                if (file.accepted == undefined) {
+                                //                    $.ajax({
+                                //                        method: "GET",
+                                //                        url: "/Work/WorkUploadedFileRemove",
+                                //                        data: { workId: urlWorkId, fileUploadTypeID: fileUploadTypeID, fileName: file.name },
+                                //                    }).done(function (result) {
+                                //                        if (result == "True") {
+                                //                            file.previewElement.remove();
+                                //                        }
+                                //                    }).fail(function (error) {
 
-            //                        console.log(error);
-            //                    });
-            //                } else {
-            //                    file.previewElement.remove();
-            //                }
-            //            }
-            //        });
+                                //                        console.log(error);
+                                //                    });
+                                //                } else {
+                                //                    file.previewElement.remove();
+                                //                }
+                                //            }
+                                //        });
 
-            //    }).fail(function (error) {
-            //        $('#cover-spin').hide();
-            //        console.log(error);
-            //    });
+                                //    }).fail(function (error) {
+                                //        $('#cover-spin').hide();
+                                //        console.log(error);
+                                //    });
 
-            //}
+                                //}
     </script>
     <script src="~/assets/js/pages/crud/file-upload/dropzonejs.js"></script>
 }
