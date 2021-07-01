@@ -60,6 +60,7 @@ namespace FlexHR.Web.Controllers
                 JobFinishDate = staff.JobFinishDate
 
             };
+            ViewBag.StaffGeneralUpdateStatus = TempData["StaffGeneralUpdateStatus"];
             return View(listStaffGeneralDto);
         }
         [HttpPost]
@@ -95,6 +96,8 @@ namespace FlexHR.Web.Controllers
 
 
                 _staffService.Update(_mapper.Map<Staff>(model));
+                TempData["StaffGeneralUpdateStatus"] = "true";
+                
                 return RedirectToAction("Index", new {id=model.StaffId });
             }
 

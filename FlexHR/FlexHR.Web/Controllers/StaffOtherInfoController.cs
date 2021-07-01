@@ -46,6 +46,8 @@ namespace FlexHR.Web.Controllers
             ViewBag.Countries = new SelectList(_countryService.GetAll(), "CountryId", "Name");
             var staffOtherInfoDto = _mapper.Map<ListStaffOtherInfoDto>(staffOtherInfo);
             staffOtherInfoDto.TownHelper = cityIdAndCountryId;
+
+            ViewBag.StaffOtherInfoUpdateStatus= TempData["StaffOtherInfoUpdateStatus"];
             return View(staffOtherInfoDto);
         }
         [HttpPost]
@@ -53,11 +55,19 @@ namespace FlexHR.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                try
+                {
+                    var staffOtherInfo = _mapper.Map<StaffOtherInfo>(model);
+                    _staffOtherInfoService.Update(staffOtherInfo);
+                    TempData["StaffOtherInfoUpdateStatus"] = "true";
+                    return RedirectToAction("Index", new { id = model.StaffId });
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("Index", new { id = model.StaffId });
+                }
            
-           
-                var staffOtherInfo= _mapper.Map<StaffOtherInfo>(model);
-                _staffOtherInfoService.Update(staffOtherInfo);
-                return RedirectToAction("Index",new {id=model.StaffId });
+                
             }
             return View();
         }

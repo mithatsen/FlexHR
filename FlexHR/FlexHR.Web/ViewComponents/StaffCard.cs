@@ -11,7 +11,7 @@ namespace FlexHR.Web.ViewComponents
 {
     public class StaffCard : ViewComponent
     {
-     
+
         private readonly IStaffCareerService _staffCareerService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly ICompanyService _companyService;
@@ -29,13 +29,14 @@ namespace FlexHR.Web.ViewComponents
         }
         public IViewComponentResult Invoke(int id)
         {
-            var careerResult = _staffCareerService.GetAllTableByStaffId(id);
+            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p=>p.JobStartDate).ToList();
+
             var staff = _staffService.GetAllTables(id);
-            var picture = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x=>x.StaffFileId).FirstOrDefault();
-          
+            var picture = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x => x.StaffFileId).FirstOrDefault();
+
             StaffCardDto staffCardDto;
 
-            if (careerResult.Count>0)
+            if (careerResult.Count > 0)
             {
                 var activeCareer = careerResult.First();
                 staffCardDto = new StaffCardDto
@@ -63,7 +64,7 @@ namespace FlexHR.Web.ViewComponents
             staffCardDto.NameSurname = staff.NameSurname;
             staffCardDto.EmailJob = staff.EmailJob;
             staffCardDto.PhoneJob = staff.PhoneJob;
-            
+
             return View(staffCardDto);
         }
     }

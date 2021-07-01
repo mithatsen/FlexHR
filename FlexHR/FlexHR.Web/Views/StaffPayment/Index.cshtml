@@ -77,7 +77,7 @@
                                                         <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
                                                             <i class="la la-edit text-warning"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+                                                        <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffPayment(@item.StaffPaymentId)" title="Sil">
 
                                                             <i class="la la-trash text-danger"></i>
                                                         </a>
@@ -110,6 +110,59 @@
         $(document).ready(function () {
             $("#tab_6").addClass("active");
         });
+    </script>
+
+    @*Delete Staff Payment*@
+    <script>
+        function DeleteStaffPayment(id) {
+            Swal.fire({
+                title: "Silmek istediğinize emin misiniz ?",
+                text: "Bunu geri alamazsınız!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Evet, sil!",
+                cancelButtonText: "Hayır, iptal et!",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/StaffPayment/DeleteStaffPayment/" + id,
+                    }).done(function (result) {
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Silindi!",
+                                text: "Kaydınız silindi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "Kaydınız silinemedi",
+                                "hata"
+                            )
+                        }
+
+                    })
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire({
+                        title: "İptal Edildi",
+                        text: "Kaydınız silinmedi",
+                        icon: "error",
+                        showCancelButton: false
+                    })
+                }
+            });
+
+
+        }
+
+
     </script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>

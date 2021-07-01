@@ -13,7 +13,7 @@
 }
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = Model.StaffId })
-    <div class="card-body">      
+    <div class="card-body">
         <div class="d-flex flex-row">
             @await Component.InvokeAsync("StaffCard", new { id = Model.StaffId })
             <div class="tab-content w-100">
@@ -153,4 +153,16 @@
             $("#tab_3").addClass("active");
         });
     </script>
+
+    @*Kişisel bilgiler Güncellendiği için sweet alert*@
+    <script>
+        $(document).ready(function () {
+
+            if (@ViewBag.StaffPersonalInfoUpdateStatus == true) {
+                
+                Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+            }
+        });
+    </script>
+    
 }

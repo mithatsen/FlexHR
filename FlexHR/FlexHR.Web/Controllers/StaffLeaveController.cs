@@ -38,7 +38,7 @@ namespace FlexHR.Web.Controllers
                 leaveModel.StatusType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.GeneralStatusGeneralSubTypeId);
                 leaveModels.Add(leaveModel);
             };
-           
+            ViewBag.StaffLeaveUpdateStatus = TempData["StaffLeaveUpdateStatus"];
             return View(leaveModels);
     }
     [HttpGet]
@@ -70,15 +70,33 @@ namespace FlexHR.Web.Controllers
 
             _staffLeaveService.Add(_mapper.Map<StaffLeave>(model));
 
-            return Json(null);
+            return Json("true");
         }
         [HttpPost]
         public IActionResult UpdateStaffLeave(ListStaffLeaveDto model)
         {
 
             _staffLeaveService.Update(_mapper.Map<StaffLeave>(model));
+            TempData["StaffLeaveUpdateStatus"] = "true";
             return RedirectToAction("Index",new { id = model.StaffId });
 
+        }
+        [HttpPost]
+        public bool DeleteStaffLeave(int id)
+        {
+
+
+            try
+            {
+                var leave = _staffLeaveService.GetById(id);
+                leave.IsActive = false;
+                _staffLeaveService.Update(leave);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

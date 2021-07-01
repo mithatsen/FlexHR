@@ -211,7 +211,9 @@
                         }).done(function (result) {
                             if (result == "True") {
                                 file.previewElement.remove();
-                                $('#uploadButton').trigger("click");
+                                //$('#uploadButton').trigger("click");
+                                Swal.fire("Silindi!", "Silme işlemi başarılı!", "success").then(function () { window.location.reload();});
+                            
                             }
                         }).fail(function (error) {
 

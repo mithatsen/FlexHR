@@ -367,4 +367,15 @@
 
 
     </script>
+
+    @*Diğer bilgiler Güncellendiği için sweet alert*@
+    <script>
+        $(document).ready(function () {
+
+            if (@ViewBag.StaffOtherInfoUpdateStatus == true) {
+
+                Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+            }
+        });
+    </script>
 }

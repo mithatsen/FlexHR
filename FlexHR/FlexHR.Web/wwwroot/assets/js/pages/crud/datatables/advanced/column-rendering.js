@@ -5,6 +5,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
         var table = $('#kt_datatable');
 
         // begin first table
+    
         table.DataTable({
             responsive: true,
             paging: true,
@@ -14,6 +15,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
                     targets: 0,
                     title: '#',
                     width: '20px',
+                   
                     render: function (data, type, full, meta) {
                         var status = {
                             'True': {

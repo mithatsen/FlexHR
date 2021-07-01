@@ -24,7 +24,7 @@ namespace FlexHR.Web.Controllers
         {
           
             ViewBag.StaffId = id;
-            var staffPaymentList = _staffPaymentService.Get(p => p.StaffId == id);
+            var staffPaymentList = _staffPaymentService.Get(p => p.StaffId == id && p.IsActive==true);
             var paymentModels = new List<ListStaffPaymentDto>();
             foreach (var item in staffPaymentList)
             {
@@ -33,6 +33,21 @@ namespace FlexHR.Web.Controllers
                 paymentModels.Add(paymentModel);
             }
             return View(paymentModels);
+        }
+        [HttpPost]
+        public bool DeleteStaffPayment(int id)
+        {
+            try
+            {
+                var model = _staffPaymentService.GetById(id);
+                model.IsActive = false;
+                _staffPaymentService.Update(model);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

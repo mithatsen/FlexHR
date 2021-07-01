@@ -347,18 +347,14 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/features/miscellaneous/cropper.js"></script>
     <!--end::Page Scripts-->
-    <script>
-        $('.demo').croppie({
-            url: '~/assets/media/bg/bg-1.jpg',
-        });
-        $('#my-image').croppie(opts);
-    </script>
+
     <!-- or even simpler -->
     @*<img class="my-image" src="~/assets/media/bg/bg-1.jpg" />
         <script>
             $('.my-image').croppie();
         </script>*@
     <script src="~/Croppie-2.6.4/croppie.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

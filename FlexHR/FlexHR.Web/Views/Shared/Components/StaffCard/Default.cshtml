@@ -43,11 +43,11 @@
                                             @if (Model.PictureUrl != null)
                                             {
                                                 var pp = "/img/" + @Model.PictureUrl;
-                                                <img src="@pp" alt="image" />
+                                                <img id="photo45" value="@pp" src ="@pp" alt="image" />
                                             }
                                             else
                                             {
-                                                <img src="~/assets/media/users/default.jpg" />
+                                                <img id="photo45"  src="~/assets/media/users/default.jpg" />
                                             }
 
                                         </div>
@@ -113,7 +113,7 @@
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Profil Resmi Değiştir
                     </h3>
 
                 </div>
@@ -123,9 +123,26 @@
             </div>
             <form id="modalAddCareerForm" method="POST">
                 <div class="modal-body ">
-                    <div class="demo">
-                        <img id="my-image" src="~/assets/media/bg/bg-1.jpg" />
+                    <div>
+                        <div>
+                            <div id="main-cropper"></div>
+                            <a class="button actionSelect">
+                                <input class="actionUpload dropzone-select btn btn-light-primary font-weight-bold btn-lg" type="file" id="select" value="Choose Image" accept="image/*">
+                            </a>
+                            
+                        </div>
                     </div>
+                      
+                                @*@if (Model.PictureUrl != null)
+                                {
+                                    var pp = "/img/" + @Model.PictureUrl;
+                                    <img src="@pp" alt="image" />
+                                }
+                                else
+                                {
+                                    <img id="deneme45" src="~/assets/media/users/default.jpg" />
+                                }*@
+                           
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>

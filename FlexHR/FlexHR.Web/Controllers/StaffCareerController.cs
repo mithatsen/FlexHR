@@ -28,10 +28,10 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult Index(int id)
         {
-            
-            ViewBag.StaffId= id;
+
+            ViewBag.StaffId = id;
             var careerModels = new List<ListStaffCareerDto>();
-            var careerResult = _staffCareerService.GetAllTableByStaffId(id);
+            var careerResult = _staffCareerService.Get(p => p.IsActive == true && p.StaffId == id);
 
 
             ViewBag.Companies = new SelectList(_companyService.GetAll(), "CompanyId", "CompanyName");
@@ -52,9 +52,12 @@ namespace FlexHR.Web.Controllers
                     ModeOfOperation = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.ModeOfOperationGeneralSubTypeId),
                     DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DepartmantGeneralSubTypeId),
                     Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.TitleGeneralSubTypeId),
+                    IsCareerContinue = item.JobFinishDate > DateTime.Now || item.JobFinishDate == null
                 };
                 careerModels.Add(careerModel);
             }
+
+            ViewBag.StaffCareerUpdateStatus = TempData["StaffCareerUpdateStatus"];
             return View(careerModels);
         }
         [HttpPost]
@@ -67,17 +70,18 @@ namespace FlexHR.Web.Controllers
             }
             if (model.JobFinishDate == null || model.JobFinishDate > DateTime.Now)
             {
-                model.IsActive = true;
+                model.IsCareerContinue = true;
             }
             else
             {
-                model.IsActive = false;
+                model.IsCareerContinue = false;
             }
+
 
             _staffCareerService.Add(_mapper.Map<StaffCareer>(model));
 
 
-            return Json("");
+            return Json("true");
         }
         [HttpGet]
         public IActionResult GetUpdateStaffCareerModal(int id)
@@ -87,30 +91,50 @@ namespace FlexHR.Web.Controllers
             ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
             ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
             ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
-            var x = _mapper.Map<ListStaffCareerDto>(staffCareer);
+            
             return PartialView("GetUpdateStaffCareerModal", _mapper.Map<ListStaffCareerDto>(staffCareer));
 
         }
         [HttpPost]
         public IActionResult UpdateStaffCareer(ListStaffCareerDto model)
         {
-            
+
             if (model.CompanyBranchId == -1)
             {
                 model.CompanyBranchId = null;
             }
             if (model.JobFinishDate == null || model.JobFinishDate > DateTime.Now)
             {
-                model.IsActive = true;
+                model.IsCareerContinue = true;
             }
             else
             {
-                model.IsActive = false;
+                model.IsCareerContinue = false;
             }
 
             _staffCareerService.Update(_mapper.Map<StaffCareer>(model));
-            return RedirectToAction("Index",new {id=model.StaffId });
+            TempData["StaffCareerUpdateStatus"] = "true";
+
+            return RedirectToAction("Index", new { id = model.StaffId });
 
         }
+        [HttpPost]
+        public bool DeleteCareer(int id)
+        {
+
+
+            try
+            {
+                var career = _staffCareerService.GetById(id);
+                career.IsActive = false;
+                _staffCareerService.Update(career);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
 }

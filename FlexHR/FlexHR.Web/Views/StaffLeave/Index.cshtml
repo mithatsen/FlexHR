@@ -76,7 +76,7 @@
                                                         <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
                                                             <i class="la la-edit text-warning"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+                                                        <a class="btn btn-sm btn-clean btn-icon" onclick=" DeleteStaffLeave(@item.StaffLeaveId)" title="Sil">
 
                                                             <i class="la la-trash text-danger"></i>
                                                         </a>
@@ -273,15 +273,83 @@
                 cache: false,
                 processData: false,
                 success: function (data) {
-                    $("#staffLeaveAddModal").modal('hide');
-                    window.location.reload();
-
+                    if (data == "true") {
+                        Swal.fire({
+                            title: "Eklendi!",
+                            text: "Kaydınız eklendi.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })
+                    }               
                 }
             });
         });
     </script>
 
+    @*Delete Staff Leave*@
+    <script>
+        function DeleteStaffLeave(id) {
+            Swal.fire({
+                title: "Silmek istediğinize emin misiniz ?",
+                text: "Bunu geri alamazsınız!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Evet, sil!",
+                cancelButtonText: "Hayır, iptal et!",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
 
+                    $.ajax({
+                        method: "POST",
+                        url: "/StaffLeave/DeleteStaffLeave/" + id,
+                    }).done(function (result) {
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Silindi!",
+                                text: "Kaydınız silindi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "Kaydınız silinemedi",
+                                "hata"
+                            )
+                        }
+
+                    })
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire({
+                        title: "İptal Edildi",
+                        text: "Kaydınız silinmedi",
+                        icon: "error",
+                        showCancelButton: false
+                    })
+                }
+            });
+
+
+        }
+
+
+    </script>
+
+    @*Staff leave Güncellendi için sweet alert*@
+    <script>
+        $(document).ready(function () {
+
+            if (@ViewBag.StaffLeaveUpdateStatus == true) {
+                Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+            }
+        });
+    </script>
 
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>

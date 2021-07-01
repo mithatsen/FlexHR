@@ -34,6 +34,7 @@ namespace FlexHR.Web.Controllers
             ViewBag.BloodGroupList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.BloodGroup), "GeneralSubTypeId", "Description");
             ViewBag.EducationLevelList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.EducationLevel), "GeneralSubTypeId", "Description");
 
+            ViewBag.StaffPersonalInfoUpdateStatus = TempData["StaffPersonalInfoUpdateStatus"];
             return View(_mapper.Map<UpdateStaffPersonalInfoDto>(personelInfo));
         }
         [HttpPost]
@@ -43,6 +44,7 @@ namespace FlexHR.Web.Controllers
             {
 
                 _staffPersonelInfoService.Update(_mapper.Map<StaffPersonelInfo>(model));
+                TempData["StaffPersonalInfoUpdateStatus"] = "true";
                 return RedirectToAction("Index",new {id= model.StaffId });
             }
             return View();

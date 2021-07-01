@@ -6,6 +6,7 @@
 @section Styles{
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+
     <!--end::Page Vendors Styles-->
 }
 <div class="card card-custom">
@@ -109,7 +110,7 @@
                                                         <label id="jobFinishDateLbl" class="col-xl-3 col-lg-3 col-form-label text-muted">Sözleşme Bitiş Tarihi</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="ContractFinishDate" asp-for="JobFinishDate"   type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
                                                                     <span class="input-group-text">
                                                                         <i class="ki ki-calendar"></i>
@@ -127,7 +128,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">İşe Başlama Tarihi</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                                            <input asp-for="JobJoinDate"  value="@Model.JobJoinDate.ToShortDateString()" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                                            <input asp-for="JobJoinDate" value="@Model.JobJoinDate.ToShortDateString()" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
                                                             <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
                                                                 <span class="input-group-text">
                                                                     <i class="ki ki-calendar"></i>
@@ -197,7 +198,7 @@
 </div>
 
 @section Scripts{
-
+    <script src="~/Croppie-2.6.4/demo/demo.js"></script>
     <script>
 
         $(document).ready(function () {
@@ -219,6 +220,57 @@
                 $("#ContractFinishDate").addClass("text-muted");
                 $("#jobFinishDateLbl").addClass("text-muted");
             }
+        });
+    </script>
+    @*Staff Güncellendi için sweet alert*@
+    <script>
+        $(document).ready(function () {
+
+            if (@ViewBag.StaffGeneralUpdateStatus == true) {
+                Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+            }
+        });
+    </script>
+  
+    <script>
+        var srcc = $("#photo45").attr("src");
+        alert(srcc);
+       var basic = $('#main-cropper').croppie({
+            viewport: { width: 200, height: 200 },
+           boundary: { width: 400, height: 400 },
+           url:srcc,
+           showZoomer: true,
+           enableOrientation: true
+        });
+
+        function readFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#main-cropper').croppie('bind', {
+                        url: e.target.result
+                    });
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('.actionSelect input').on('change', function () { readFile(this); });
+        $('.actionUpload').on('click', function() {
+            basic.croppie('result','blob').then(function(blob) {
+                var formData = new FormData();
+                formData.append('filename', 'testFileName.png');
+                formData.append('blob', blob);
+                var MyAppUrlSettings = {
+                    MyUsefulUrl: '@Url.Action("GetImage","Create")'
+                }
+
+                var request = new XMLHttpRequest();
+                request.open('POST', MyAppUrlSettings.MyUsefulUrl);
+                request.send(formData);
+            });
         });
     </script>
 

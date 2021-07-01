@@ -31,15 +31,13 @@ namespace FlexHR.Web.Controllers
             {                        
                 shiftModels.Add(_mapper.Map<ListStaffShiftDto>(item));
             }
+            ViewBag.StaffShiftUpdateStatus=TempData["StaffShiftUpdateStatus"];
             return View(shiftModels);
         }
         [HttpGet]
         public IActionResult GetUpdateStaffShiftModal(int id)
         {
-            var staffShift = _staffShiftService.GetById(id);
-           
-          
-
+            var staffShift = _staffShiftService.GetById(id);                 
             return PartialView("GetUpdateStaffShiftModal", _mapper.Map<ListStaffShiftDto>(staffShift));
 
         }
@@ -49,15 +47,31 @@ namespace FlexHR.Web.Controllers
             model.IsActive = true;
             _staffShiftService.Add(_mapper.Map<StaffShift>(model));
 
-            return Json(null);
+            return Json("true");
         }
         [HttpPost]
         public IActionResult UpdateStaffShift(ListStaffShiftDto model)
         {
             model.IsActive = true;
             _staffShiftService.Update(_mapper.Map<StaffShift>(model));
+            TempData["StaffShiftUpdateStatus"] = "true";
             return RedirectToAction("Index",new {id=model.StaffId });
 
+        }
+        [HttpPost]
+        public bool DeleteStaffShift(int id)
+        {
+            try
+            {
+                var model = _staffShiftService.GetById(id);
+                model.IsActive = false;
+                _staffShiftService.Update(model);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

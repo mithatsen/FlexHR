@@ -16,7 +16,7 @@
     <div class="card-body">
         <!--begin::Profile Personal Information-->
         <div class="d-flex flex-row">
-            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId})
+            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
             <div class="tab-content w-100">
                 <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
                     <!--begin::Entry-->
@@ -63,7 +63,7 @@
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td>@item.IsActive</td>
+                                                    <td>@item.IsCareerContinue</td>
                                                     <td>@item.JobStartDate.ToShortDateString()</td>
                                                     @if (item.JobFinishDate != null)
                                                     {
@@ -83,7 +83,7 @@
                                                         <a id="CareerUpdateBtn" onclick="CareerUpdate(@item.StaffCareerId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
                                                             <i class="la la-edit text-warning"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete">
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCareer(@item.StaffCareerId)">
 
                                                             <i class="la la-trash text-danger"></i>
                                                         </a>
@@ -259,7 +259,7 @@
     @*Modal Add Career*@
     <script>
 
-        $(document).on("submit", "#modalAddCareerForm", function (event) { //infoForm id li form post edildiğinde
+        $(document).on("submit", "#modalAddCareerForm", function (event) { //modalAddCareerForm id li form post edildiğinde
 
 
             event.preventDefault();
@@ -273,7 +273,17 @@
                 cache: false,
                 processData: false,
                 success: function (data) {
-                    window.location.reload();
+                    if (data == "true") {
+                        Swal.fire({
+                            title: "Eklendi!",
+                            text: "Kaydınız eklendi.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })                
+                    }
+                    
                 }
             });
         });
@@ -369,5 +379,69 @@
                 $("#c_companyBranchSelect").addClass("text-muted");
             }
         }
+    </script>
+
+    @*Delete Career with sweet alert*@
+    <script>
+        function DeleteCareer(id) {
+            Swal.fire({
+                title: "Silmek istediğinize emin misiniz ?",
+                text: "Bunu geri alamazsınız!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Evet, sil!",
+                cancelButtonText: "Hayır, iptal et!",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/StaffCareer/DeleteCareer/" + id,
+                    }).done(function (result) {
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Silindi!",
+                                text: "Kaydınız silindi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "Kaydınız silinemedi",
+                                "hata"
+                            )
+                        }
+
+                    })
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire({
+                        title: "İptal Edildi",
+                        text: "Kaydınız silinmedi",
+                        icon: "error",
+                        showCancelButton: false
+                    })
+
+
+                }
+            });
+
+
+        }
+
+
+    </script>
+    @*Staff Career Güncellendi için sweet alert*@
+    <script>
+        $(document).ready(function () {
+
+            if (@ViewBag.StaffCareerUpdateStatus == true) {             
+                Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+            }
+        });
     </script>
 }
