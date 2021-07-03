@@ -114,8 +114,7 @@
                 console.log(content.length);
 
                 Dropzone.autoDiscover = false;
-                var catId = document.getElementById("categorySelect").value;
-                var catControl = 0;
+                var catId = document.getElementById("categorySelect").value;          
                 $('#myAwesomeDropzone').dropzone({
 
                     autoProcessQueue: false,
@@ -204,12 +203,15 @@
                     },
                     removedfile: function (file) {
                         //Server File
+                        console.log("hee");
                         $.ajax({
                             method: "POST",
                             url: "/StaffFile/StaffFileRemove",
                             data: { fileId: file.value },
                         }).done(function (result) {
+                            console.log("hee");
                             if (result == "True") {
+                           
                                 file.previewElement.remove();
                                 //$('#uploadButton').trigger("click");
                                 Swal.fire("Silindi!", "Silme işlemi başarılı!", "success").then(function () { window.location.reload();});

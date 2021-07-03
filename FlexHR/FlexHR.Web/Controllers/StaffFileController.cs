@@ -126,16 +126,16 @@ namespace FlexHR.Web.Controllers
             return Json(fileList);
         }
         [HttpPost]
-        public JsonResult StaffFileRemove(IFormFile file, int fileId)
+        public string StaffFileRemove(IFormFile file, int fileId)
         {
             if (fileId > 0)
             {
                 var result = _staffFileService.Get(x => x.StaffFileId == fileId).FirstOrDefault();
                 result.IsActive = false;
                 _staffFileService.Update(result);
-                return Json("True");
+                return "True";
             }
-            return Json("False");
+            return "False";
         }
     }
 }

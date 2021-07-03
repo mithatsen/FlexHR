@@ -17,21 +17,22 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffCareerService _staffCareerService;
         private readonly ICompanyService _companyService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
+        private readonly ICompanyBranchService _companyBranchService;
         private readonly IMapper _mapper;
-        public StaffCareerController(IStaffCareerService staffCareerService, ICompanyService companyService, IGeneralSubTypeService generalSubTypeService, IMapper mapper)
+        public StaffCareerController(IStaffCareerService staffCareerService, ICompanyService companyService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ICompanyBranchService companyBranchService)
         {
             _staffCareerService = staffCareerService;
             _companyService = companyService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
-
+            _companyBranchService = companyBranchService;
         }
         public IActionResult Index(int id)
         {
 
             ViewBag.StaffId = id;
             var careerModels = new List<ListStaffCareerDto>();
-            var careerResult = _staffCareerService.Get(p => p.IsActive == true && p.StaffId == id);
+            var careerResult = _staffCareerService.Get(p => p.IsActive == true && p.StaffId == id,null, "CompanyBranch");
 
 
             ViewBag.Companies = new SelectList(_companyService.GetAll(), "CompanyId", "CompanyName");
@@ -92,6 +93,7 @@ namespace FlexHR.Web.Controllers
             ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
             ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
             
+            ViewBag.CompanyBranchs = new SelectList(_companyBranchService.Get(x=>x.CompanyId==staffCareer.CompanyId), "CompanyBranchId", "BranchName");
             return PartialView("GetUpdateStaffCareerModal", _mapper.Map<ListStaffCareerDto>(staffCareer));
 
         }
