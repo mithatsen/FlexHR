@@ -50,6 +50,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<Town> Town { get; set; }
         public virtual DbSet<StaffRole> StaffRole { get; set; }
         public virtual DbSet<LeaveRule> LeaveRules { get; set; }
+        public virtual DbSet<Receipt> Receipt { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -77,6 +78,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
             modelBuilder.ApplyConfiguration(new StaffShiftMap());
             modelBuilder.ApplyConfiguration(new StaffRoleMap());
             modelBuilder.ApplyConfiguration(new LeaveRuleMap());
+            modelBuilder.ApplyConfiguration(new ReceiptRuleMap());
             base.OnModelCreating(modelBuilder);
         }
     }
