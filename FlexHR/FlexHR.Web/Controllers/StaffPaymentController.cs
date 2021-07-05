@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
+using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,9 @@ namespace FlexHR.Web.Controllers
         {
           
             ViewBag.StaffId = id;
+            ViewBag.PaymentTypeList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.PaymentType), "GeneralSubTypeId", "Description");
+            ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
+            ViewBag.FeeTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FeeType), "GeneralSubTypeId", "Description");
             var staffPaymentList = _staffPaymentService.Get(p => p.StaffId == id && p.IsActive==true);
             var paymentModels = new List<ListStaffPaymentDto>();
             foreach (var item in staffPaymentList)
@@ -49,5 +54,6 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
+ 
     }
 }

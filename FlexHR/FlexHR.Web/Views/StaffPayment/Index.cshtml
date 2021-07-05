@@ -37,9 +37,10 @@
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Button-->
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
-                                            Ödeme Ekle
-                                        </button>
+
+                                        <select id="kt_select2_1" onchange="PaymentTypeChange()" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.PaymentTypeList">
+                                            <option value="-1" disabled selected hidden>Ödeme Ekle</option>
+                                        </select>
                                         <!--end::Button-->
                                     </div>
 
@@ -104,6 +105,111 @@
 
 </div>
 
+
+<div class="modal fade" id="AddPaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 id="PaymentAddModalHeader" class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="modalAddCareerForm" method="POST">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row">
+                                                <label>Tutar</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" >
+                                                    <div class="input-group-append">
+                                                        <select class="form-control form-control-solid form-control-lg" asp-items="ViewBag.Currencies">
+                                                            
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+   
+                                            </div>
+                                             
+                                            
+                                            <div class="form-group row  ">
+                                                <label>Ücret Tipi</label>
+                                                <div class="input-group">
+                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
+                                                        <option value="-1">Seçiniz</option>
+
+                                                    </select>
+                                                    <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                                <div class="col-md-2"> </div>
+                                                <div class="col-md-5">
+
+                                                    <div class="form-group row  ">
+                                                        <label id="jobFinishDateLbl">Tarih</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
+                                                                <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                                <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                                    <span class="input-group-text">
+                                                                        <i class="ki ki-calendar"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="form-group row">
+                                                        <label>Açıklama</label>
+                                                        <div class="input-group">
+                                                            <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end::Body-->
+                                    </div>
+
+
+                                </div>
+
+                                <!--end::Form-->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                            <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                        </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
 @section Scripts{
     <script>
 
@@ -162,8 +268,37 @@
 
         }
 
+        div
+
 
     </script>
+
+    <script>
+        function PaymentTypeChange() {
+            var id = document.getElementById("kt_select2_1").value;
+
+            @*for (var i = 0; i < @ViewBag.PaymentTypeList.Count; i++) {
+                if (id == i) {
+                    $("#PaymentAddModalHeader").text("dsdsds");
+                }
+            }*@
+            $("#kt_select2_1 > option").each(function () {
+                if (this.value == id) {
+                    $("#PaymentAddModalHeader").text(this.text);
+                };
+            });
+            $("#AddPaymentModal").modal("show");
+
+
+        }
+
+
+
+
+
+
+    </script>
+    <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
 }
