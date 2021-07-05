@@ -86,7 +86,7 @@ namespace FlexHR.Web.Controllers
             var models = _mapper.Map<List<ListStaffDto>>(result);
             foreach (var item in models)
             {
-                var picture = _staffFileService.Get(x => x.StaffId ==item.StaffId  && x.IsActive == true && x.FileGeneralSubTypeId == 3).FirstOrDefault();
+                var picture = _staffFileService.Get(x => x.StaffId ==item.StaffId  && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x=>x.StaffFileId).FirstOrDefault();
             
                 item.PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null;
             }

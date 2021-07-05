@@ -126,16 +126,22 @@ namespace FlexHR.Web.Controllers
             return Json(fileList);
         }
         [HttpPost]
-        public string StaffFileRemove(IFormFile file, int fileId)
+        public bool StaffFileRemove(IFormFile file, int fileId)
         {
             if (fileId > 0)
             {
                 var result = _staffFileService.Get(x => x.StaffFileId == fileId).FirstOrDefault();
                 result.IsActive = false;
                 _staffFileService.Update(result);
-                return "True";
+                return true;
             }
-            return "False";
+            return true;
+        }
+
+        public string GetStaffActivePhoto(int id)
+        {
+            var picture = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x => x.StaffFileId).FirstOrDefault();
+            return picture != null ? picture.FileFullPath + picture.FileName : null;
         }
     }
 }

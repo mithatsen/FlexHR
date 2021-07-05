@@ -111,12 +111,13 @@
                 data: { categoryId2: catId2 },
             }).done(function (content) {
                 let serverFiles = JSON.parse(content);
-                console.log(content.length);
+                console.log(serverFiles);
+
 
                 Dropzone.autoDiscover = false;
-                var catId = document.getElementById("categorySelect").value;          
-                $('#myAwesomeDropzone').dropzone({
+                var catId = document.getElementById("categorySelect").value;
 
+                $('#myAwesomeDropzone').dropzone({
                     autoProcessQueue: false,
                     url: "/StaffFile/AddStaffFile/" + id, // Set the url for your upload script location
                     paramName: "file", // The name that will be used to transfer the file
@@ -127,57 +128,18 @@
                     addRemoveLinks: true,
                     params: { categoryId: catId },
                     init: function () {
-                        catControl = catId2;
                         var dz = this;
+
                         serverFiles.length == 0 ? document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> " : document.getElementById("myAwesomeDropzone").innerHTML = " ";
-
-
-                        this.removeAllFiles(true);
-                        $('#uploadButton').click(function () {
-                            dz.processQueue();
-                        });
-
-                        dz.on("complete", function (file) {
-                            dz.removeAllFiles(file);
-                            console.log(file.upload);
-                            if (file.upload) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    //timer: 3600000,
-                                    title: 'Dosyalarınız Yüklendi',
-                                }).then(function () {
-                                    dz.removeFile(file);
-                                    window.location.reload();
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    timeout: 3600000,
-                                    title: 'İşlem mmmm!',
-                                }).then(function () {
-                                    window.location.reload();
-                                });
-                            }
-                        });
-                        dz.on('addedfile', function (file) {
-                            $("#message").fadeOut(0);
-                            file.previewElement.classList.add('dz-preview');
-                            file.previewElement.classList.add('dz-success');
-                            file.previewElement.classList.add('dz-complete');
-                            file.previewElement.classList.add('dz-image-preview');
-                        });
-                        dz.on("success", function (file) {
-                            dz.destroy(file);
-
-                        });
                         // Server Files
-
                         for (var i = 0; i < serverFiles.length; i++) {
+                            console.log("girdidjhdh");
                             var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType, value: serverFiles[i].StaffFileId };
                             this.options.addedfile.call(this, mockFile);
                             this.options.thumbnail.call(this, mockFile, serverFiles[i].FileFullPath + serverFiles[i].FileName);
                             mockFile.previewElement.classList.add('dz-success');
                             mockFile.previewElement.classList.add('dz-complete');
+
                             // Icons
                             var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
                             if (mockFileExt == "pdf") {
@@ -200,27 +162,115 @@
                             }
                             // $("#def").append('<img src="/img/'+serverFiles[i].FileFullPath + serverFiles[i].FileName + '"/>')
                         }
+                        // this.removeAllFiles(true);
+                        $('#uploadButton').click(function () {
+                            dz.processQueue();
+                        });
+                        dz.on("complete", function (file) {
+                            /*   dz.removeAllFiles(file);*/
+                            console.log(file.upload);
+                            if (file.upload) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    //timer: 3600000,
+                                    title: 'Dosyalarınız Yüklendi',
+                                }).then(function () {
+                                    $.ajax({
+                                        method: "GET",
+                                        url: "/StaffFile/GetStaffActivePhoto/" + id,
+                                    }).done(function (content) {
+                                        console.log("msmiiii" + content);
+                                        if (content != null) {
+                                            $("#photo45").attr("src", '/img/' + content + '')
+                                        }
+                                        else {
+                                            $("#photo45").attr("src", "/assets/media/users/default.jpg")
+                                        }
+
+
+                                    })
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    timeout: 3600000,
+                                    title: 'İşlem mmmm!',
+                                }).then(function () {
+                                    window.location.reload();
+                                });
+                            }
+                        });
+                        dz.on('addedfile', function (file) {
+                            $("#message").fadeOut(0);
+                            file.previewElement.classList.add('dz-preview');
+                            file.previewElement.classList.add('dz-success');
+                            file.previewElement.classList.add('dz-complete');
+                            file.previewElement.classList.add('dz-image-preview');
+                        });
+                        dz.on("success", function (file) {
+
+                            categoryChange();
+                        });
+
                     },
                     removedfile: function (file) {
                         //Server File
-                        console.log("hee");
-                        $.ajax({
-                            method: "POST",
-                            url: "/StaffFile/StaffFileRemove",
-                            data: { fileId: file.value },
-                        }).done(function (result) {
-                            console.log("hee");
-                            if (result == "True") {
-                           
-                                file.previewElement.remove();
-                                //$('#uploadButton').trigger("click");
-                                Swal.fire("Silindi!", "Silme işlemi başarılı!", "success").then(function () { window.location.reload();});
-                            
-                            }
-                        }).fail(function (error) {
+                        console.log("hee"); Swal.fire({
+                            title: "Silmek istediğinize emin misiniz ?",
+                            text: "Bunu geri alamazsınız!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Evet, sil!",
+                            cancelButtonText: "Hayır, iptal et!",
+                            reverseButtons: true
+                        }).then(function (result) {
+                            if (result.value) {
+                                console.log(file);
+                                console.log(result);
+                                $.ajax({
+                                    method: "POST",
+                                    url: "/StaffFile/StaffFileRemove",
+                                    data: { fileId: file.value },
+                                }).done(function (result) {
+                                    if (result == true) {
+                                        Swal.fire({
+                                            title: "Silindi!",
+                                            text: "Kaydınız silindi.",
+                                            icon: "success",
+                                            showCancelButton: false
+                                        }).then(function () {
+                                            file.previewElement.remove();
+                                            $.ajax({
+                                                method: "GET",
+                                                url: "/StaffFile/GetStaffActivePhoto/" + id,
+                                            }).done(function (content) {
+                                                if (content != null) {
+                                                    $("#photo45").attr("src", '/img/' + content + '')
+                                                }
+                                                else {
+                                                    $("#photo45").attr("src", "/assets/media/users/default.jpg")
+                                                }
+                                            })
+                                        })
 
-                            console.log(error);
-                        });
+                                    } else {
+                                        Swal.fire(
+                                            "Hata",
+                                            "Kaydınız silinemedi",
+                                            "hata"
+                                        )
+                                    }
+
+                                })
+                            } else if (result.dismiss === "cancel") {
+                                Swal.fire({
+                                    title: "İptal Edildi",
+                                    text: "Kaydınız silinmedi",
+                                    icon: "error",
+                                    showCancelButton: false
+                                })
+                            }
+                        })
                     },
 
                     dictDefaultMessage: "",
@@ -236,131 +286,131 @@
 
         }
 
-                                //// Work Update
-                                //ProductionFileUpload = () => {
-                                //    var urlWorkId = parseInt(window.location.pathname.split("/")[3]);
-                                //    var fileUploadTypeID = 1;
-                                //    Dropzone.autoDiscover = false;
+//// Work Update
+//ProductionFileUpload = () => {
+//    var urlWorkId = parseInt(window.location.pathname.split("/")[3]);
+//    var fileUploadTypeID = 1;
+//    Dropzone.autoDiscover = false;
 
-                                //    $('#cover-spin').show();
-                                //    $.ajax({
-                                //        method: "GET",
-                                //        url: "/Work/GetUploadedWorkFiles",
-                                //        data: { id: urlWorkId, fileUploadTypeID: fileUploadTypeID },
-                                //        contentType: "application/json; charset=utf-8",
-                                //        dataType: "json"
-                                //    }).done(function (serverFiles) {
-                                //        $('#cover-spin').hide();
+//    $('#cover-spin').show();
+//    $.ajax({
+//        method: "GET",
+//        url: "/Work/GetUploadedWorkFiles",
+//        data: { id: urlWorkId, fileUploadTypeID: fileUploadTypeID },
+//        contentType: "application/json; charset=utf-8",
+//        dataType: "json"
+//    }).done(function (serverFiles) {
+//        $('#cover-spin').hide();
 
-                                //        var id = urlWorkId + "~" + fileUploadTypeID;
-                                //        $('#dropzone_production').dropzone({
-                                //            autoProcessQueue: false,
-                                //            url: "/Work/WorkFileUpload/" + id,
-                                //            paramName: "files",
-                                //            maxFiles: 100,
-                                //            maxFilesize: 4000,
-                                //            parallelUploads: 100,
-                                //            timeout: 3600000,
-                                //            uploadMultiple: true,
-                                //            dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
-                                //            dictRemoveFile: "Dosyayı Sil",
-                                //            addRemoveLinks: true,
-                                //            init: function () {
-                                //                var dz = this;
+//        var id = urlWorkId + "~" + fileUploadTypeID;
+//        $('#dropzone_production').dropzone({
+//            autoProcessQueue: false,
+//            url: "/Work/WorkFileUpload/" + id,
+//            paramName: "files",
+//            maxFiles: 100,
+//            maxFilesize: 4000,
+//            parallelUploads: 100,
+//            timeout: 3600000,
+//            uploadMultiple: true,
+//            dictDefaultMessage: "Buraya görsellerinizi sürükle bırak yapabilirsiniz.",
+//            dictRemoveFile: "Dosyayı Sil",
+//            addRemoveLinks: true,
+//            init: function () {
+//                var dz = this;
 
-                                //                dz.on('addedfile', function (file) {
+//                dz.on('addedfile', function (file) {
 
-                                //                    // Icons
-                                //                    var ext = file.name.split('.').pop().toLowerCase();
-                                //                    if (ext == "pdf") {
-                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
-                                //                    } else if (ext.indexOf("doc") != -1) {
-                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
-                                //                    } else if (ext.indexOf("xls") != -1) {
-                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
-                                //                    } else if (ext.indexOf("xlsx") != -1) {
-                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
-                                //                    } else if (ext.indexOf("txt") != -1) {
-                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
-                                //                    } else if (ext.indexOf("zip") != -1 || ext.indexOf("rar") != -1) {
-                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
-                                //                    } else if (ext.indexOf("tif") != -1 || ext.indexOf("tiff") != -1) {
-                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
-                                //                    } else {
-                                //                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
-                                //                    }
+//                    // Icons
+//                    var ext = file.name.split('.').pop().toLowerCase();
+//                    if (ext == "pdf") {
+//                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+//                    } else if (ext.indexOf("doc") != -1) {
+//                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+//                    } else if (ext.indexOf("xls") != -1) {
+//                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+//                    } else if (ext.indexOf("xlsx") != -1) {
+//                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+//                    } else if (ext.indexOf("txt") != -1) {
+//                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+//                    } else if (ext.indexOf("zip") != -1 || ext.indexOf("rar") != -1) {
+//                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
+//                    } else if (ext.indexOf("tif") != -1 || ext.indexOf("tiff") != -1) {
+//                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
+//                    } else {
+//                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+//                    }
 
-                                //                    file.previewElement.classList.add('dz-success');
-                                //                    file.previewElement.classList.add('dz-complete');
-                                //                    file.previewElement.classList.add('dz-image-preview');
-                                //                    file.previewElement.classList.remove('dz-file-preview');
-                                //                });
+//                    file.previewElement.classList.add('dz-success');
+//                    file.previewElement.classList.add('dz-complete');
+//                    file.previewElement.classList.add('dz-image-preview');
+//                    file.previewElement.classList.remove('dz-file-preview');
+//                });
 
-                                //                $("#productionFileUpload").click(function () {
-                                //                    dz.processQueue();
-                                //                });
-                                //                $("#productionFileUploadRemove").click(function () {
-                                //                    dz.removeAllFiles();
-                                //                });
+//                $("#productionFileUpload").click(function () {
+//                    dz.processQueue();
+//                });
+//                $("#productionFileUploadRemove").click(function () {
+//                    dz.removeAllFiles();
+//                });
 
 
 
-                                //                // Server Files
-                                //                for (var i = 0; i < serverFiles.length; i++) {
-                                //                    var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType };
-                                //                    this.options.addedfile.call(this, mockFile);
-                                //                    this.options.thumbnail.call(this, mockFile, serverFiles[i].FilePath);
-                                //                    mockFile.previewElement.classList.add('dz-success');
-                                //                    mockFile.previewElement.classList.add('dz-complete');
-                                //                    // Icons
-                                //                    var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
+//                // Server Files
+//                for (var i = 0; i < serverFiles.length; i++) {
+//                    var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType };
+//                    this.options.addedfile.call(this, mockFile);
+//                    this.options.thumbnail.call(this, mockFile, serverFiles[i].FilePath);
+//                    mockFile.previewElement.classList.add('dz-success');
+//                    mockFile.previewElement.classList.add('dz-complete');
+//                    // Icons
+//                    var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
 
-                                //                    if (mockFileExt == "pdf") {
-                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
-                                //                    } else if (mockFileExt.indexOf("doc") != -1) {
-                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
-                                //                    } else if (mockFileExt.indexOf("xls") != -1) {
-                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
-                                //                    } else if (mockFileExt.indexOf("xlsx") != -1) {
-                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
-                                //                    } else if (mockFileExt.indexOf("txt") != -1) {
-                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
-                                //                    } else if (mockFileExt.indexOf("zip") != -1 || mockFileExt.indexOf("rar") != -1) {
-                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
-                                //                    } else if (mockFileExt.indexOf("tif") != -1 || mockFileExt.indexOf("tiff") != -1) {
-                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
-                                //                    } else {
-                                //                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
-                                //                    }
-                                //                }
-                                //            },
-                                //            removedfile: function (file) {
-                                //                //Server File
-                                //                if (file.accepted == undefined) {
-                                //                    $.ajax({
-                                //                        method: "GET",
-                                //                        url: "/Work/WorkUploadedFileRemove",
-                                //                        data: { workId: urlWorkId, fileUploadTypeID: fileUploadTypeID, fileName: file.name },
-                                //                    }).done(function (result) {
-                                //                        if (result == "True") {
-                                //                            file.previewElement.remove();
-                                //                        }
-                                //                    }).fail(function (error) {
+//                    if (mockFileExt == "pdf") {
+//                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+//                    } else if (mockFileExt.indexOf("doc") != -1) {
+//                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+//                    } else if (mockFileExt.indexOf("xls") != -1) {
+//                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+//                    } else if (mockFileExt.indexOf("xlsx") != -1) {
+//                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/excel.png");
+//                    } else if (mockFileExt.indexOf("txt") != -1) {
+//                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+//                    } else if (mockFileExt.indexOf("zip") != -1 || mockFileExt.indexOf("rar") != -1) {
+//                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
+//                    } else if (mockFileExt.indexOf("tif") != -1 || mockFileExt.indexOf("tiff") != -1) {
+//                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
+//                    } else {
+//                        $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+//                    }
+//                }
+//            },
+//            removedfile: function (file) {
+//                //Server File
+//                if (file.accepted == undefined) {
+//                    $.ajax({
+//                        method: "GET",
+//                        url: "/Work/WorkUploadedFileRemove",
+//                        data: { workId: urlWorkId, fileUploadTypeID: fileUploadTypeID, fileName: file.name },
+//                    }).done(function (result) {
+//                        if (result == "True") {
+//                            file.previewElement.remove();
+//                        }
+//                    }).fail(function (error) {
 
-                                //                        console.log(error);
-                                //                    });
-                                //                } else {
-                                //                    file.previewElement.remove();
-                                //                }
-                                //            }
-                                //        });
+//                        console.log(error);
+//                    });
+//                } else {
+//                    file.previewElement.remove();
+//                }
+//            }
+//        });
 
-                                //    }).fail(function (error) {
-                                //        $('#cover-spin').hide();
-                                //        console.log(error);
-                                //    });
+//    }).fail(function (error) {
+//        $('#cover-spin').hide();
+//        console.log(error);
+//    });
 
-                                //}
+//}
     </script>
     <script src="~/assets/js/pages/crud/file-upload/dropzonejs.js"></script>
 }
