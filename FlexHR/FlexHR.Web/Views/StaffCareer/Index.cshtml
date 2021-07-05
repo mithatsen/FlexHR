@@ -108,7 +108,7 @@
 </div>
 @* add career modal*@
 <div class="modal fade" id="staffCareerAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
@@ -117,9 +117,8 @@
                     </h3>
 
                 </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i aria-hidden="true" class="ki ki-close"></i>
-                </button>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                   </button>
             </div>
             <form id="modalAddCareerForm" method="POST">
                 <div class="modal-body">
@@ -136,10 +135,10 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-6 ">
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Şirket</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row ">
+                                                <label>Şirket</label>
+                                                <div  class="input-group">
                                                     <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
                                                         <option value="-1">Seçiniz</option>
 
@@ -148,9 +147,9 @@
                                                 </div>
 
                                             </div>
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Departman</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label >Departman</label>
+                                                <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
                                                         <option value="-1">Seçiniz</option>
 
@@ -158,9 +157,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Çalışma Şekli</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row  ">
+                                                <label  >Çalışma Şekli</label>
+                                                <div  class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
                                                         <option value="-1">Seçiniz</option>
 
@@ -169,9 +168,9 @@
                                             </div>
 
 
-                                            <div class="form-group row justify-content-center">
-                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label">Başlangıç Tarihi</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row  ">
+                                                <label id="jobFinishDateLbl"  >Başlangıç Tarihi</label>
+                                                <div  class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
                                                         <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
@@ -184,10 +183,11 @@
                                             </div>
 
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Şube</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row  ">
+                                                <label  >Şube</label>
+                                                <div  class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="CompanyBranchId">
                                                         <option value="-1">Seçiniz</option>
 
@@ -196,9 +196,9 @@
                                             </div>
 
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Unvan</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row  ">
+                                                <label  >Unvan</label>
+                                                <div  class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
                                                         <option value="-1">Seçiniz</option>
 
@@ -207,9 +207,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label ">Bitiş Tarihi</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row  ">
+                                                <label id="jobFinishDateLbl">Bitiş Tarihi</label>
+                                                <div  class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_6" data-target-input="nearest">
                                                         <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_6" data-toggle="datetimepicker">

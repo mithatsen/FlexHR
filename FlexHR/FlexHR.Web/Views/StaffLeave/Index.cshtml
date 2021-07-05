@@ -114,8 +114,7 @@
                     </h3>
 
                 </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i aria-hidden="true" class="ki ki-close"></i>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <form id="modalAddLeave" method="POST">
@@ -133,10 +132,10 @@
                                 <div class="card-body mx-auto">
                                     <div class="row">
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label class="col-xl-5 col-lg-3 col-form-label">İzin Türü</label>
-                                                <div class="col-lg-9 col-xl-7">
+                                                <label>İzin Türü</label>
+                                                <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" name="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
                                                         <option value="-1">Seçiniz</option>
 
@@ -144,21 +143,9 @@
 
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6 ">
                                             <div class="form-group row ">
-                                                <label class="col-form-label col-xl-5 col-lg-3 ">Toplam Gün</label>
-                                                <div class="col-lg-9 col-xl-7">
-                                                    <input id="kt_touchspin_1" type="text" class="form-control text-center" value="0" name="TotalDay" placeholder="Toplam" />
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-6">
-
-                                            <div class="form-group row ">
-                                                <label class="col-xl-5 col-lg-3 col-form-label">Başlangıç Tarihi</label>
-                                                <div class="col-lg-9 col-xl-7">
+                                                <label>Başlangıç Tarihi</label>
+                                                <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_14" data-target-input="nearest">
                                                         <input name="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_14" data-toggle="datetimepicker">
@@ -169,12 +156,22 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row ">
+                                                <label>Toplam Gün</label>
+                                                <div class="input-group">
+                                                    <input id="kt_touchspin_1" type="text" class="form-control form-control-lg text-center" value="0" name="TotalDay" placeholder="Toplam" />
+                                                </div>
+                                            </div>
+
 
                                             <div class="form-group row ">
-                                                <label class="col-xl-5 col-lg-3 col-form-label">Bitiş Tarihi</label>
-                                                <div class="col-lg-9 col-xl-7">
+                                                <label>Bitiş Tarihi</label>
+                                                <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_15" data-target-input="nearest">
                                                         <input name="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_15" data-toggle="datetimepicker">
@@ -189,13 +186,12 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-xl-3 pr-0 col-lg-3 col-form-label">Açıklama</label>
-                                                <div class="col-lg-9 col-xl-9">
-                                                    <div class="input-group  pl-0  input-group-lg input-group-solid">
+                                                <label>Açıklama</label>
+                                                <div class="input-group">
 
-                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
 
-                                                    </div>
+                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -282,7 +278,7 @@
                         }).then(function () {
                             window.location.reload();
                         })
-                    }               
+                    }
                 }
             });
         });
