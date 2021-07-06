@@ -10,6 +10,16 @@
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
+    <style>
+        .image-upload > input {
+            display: none;
+        }
+
+        .image-upload i {
+            width: 80px;
+            cursor: pointer;
+        }
+    </style>
 }
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
@@ -133,77 +143,99 @@
                                 <div class="card-body mx-auto">
 
                                     <div class="row">
-
-                                        <div class="col-md-5 ">
+                                        <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label>Tutar</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" >
-                                                    <div class="input-group-append">
-                                                        <select class="form-control form-control-solid form-control-lg" asp-items="ViewBag.Currencies">
-                                                            
+                                                    <a onclick="AddReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        @* fiş ekleme divi *@
+                                        <div id="receiptDiv">
+                                        </div>
+                                            <div class="col-md-5 ">
+                                                <div class="form-group row">
+                                                    <label>Tutar</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-solid form-control-lg">
+                                                        <div class="input-group-append">
+                                                            <select class="form-control form-control-solid form-control-lg" asp-items="ViewBag.Currencies">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group row  ">
+                                                    <label>Taksit</label>
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId">
+                                                            <option value="-1" disabled selected>Seçiniz</option>
+                                                            @for (int i = 1; i < 13; i++)
+                                                            {
+                                                                <option value=@i>@i</option>
+                                                            }
+
 
                                                         </select>
+                                                        <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
                                                     </div>
                                                 </div>
-   
-                                            </div>
-                                             
-                                            
-                                            <div class="form-group row  ">
-                                                <label>Ücret Tipi</label>
-                                                <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
-                                                        <option value="-1">Seçiniz</option>
+                                                <div class="form-group row  ">
+                                                    <label>Ücret Tipi</label>
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
+                                                            <option value="-1">Seçiniz</option>
 
-                                                    </select>
-                                                    <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                                                        </select>
+                                                        <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                                                    </div>
                                                 </div>
+
                                             </div>
+                                            <div class="col-md-2"> </div>
+                                            <div class="col-md-5">
 
-                                        </div>
-                                                <div class="col-md-2"> </div>
-                                                <div class="col-md-5">
-
-                                                    <div class="form-group row  ">
-                                                        <label id="jobFinishDateLbl">Tarih</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                                <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
-                                                                <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
-                                                                    <span class="input-group-text">
-                                                                        <i class="ki ki-calendar"></i>
-                                                                    </span>
-                                                                </div>
+                                                <div class="form-group row  ">
+                                                    <label id="jobFinishDateLbl">Tarih</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
+                                                            <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-
-                                                    <div class="form-group row">
-                                                        <label>Açıklama</label>
-                                                        <div class="input-group">
-                                                            <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
+
+
+
+                                                <div class="form-group row">
+                                                    <label>Açıklama</label>
+                                                    <div class="input-group">
+                                                        <textarea type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
-                                        <!--end::Body-->
-                                    </div>
-
-
                                 </div>
-
-                                <!--end::Form-->
+                                <!--end::Body-->
                             </div>
+
+
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                            <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
-                        </div>
+
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
             </form>
         </div>
     </div>
@@ -291,12 +323,19 @@
 
 
         }
-
-
-
-
-
-
+    </script>
+    <script>
+        let counter = 0;
+        function AddReceipt() {
+            counter++;
+            var divId = "receipt" + counter;
+            var deleteId = "delete" + counter;
+            $("#receiptDiv").append('<div id="' + divId + '" class="justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3"> <label>Fiş Adı</label> <div class="input-group"> <input type="text" class="form-control form-control-solid form-control-lg"> </div></div><div class="form-group col-md-2"> <label>KDV (%)</label> <div class="input-group"> <input type="text" class="form-control form-control-solid form-control-lg"> </div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"> <input type="text" class="form-control form-control-solid form-control-lg"> </div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"> <input type="file" class="custom-file-input "/> <label class="custom-file-label" for="customFile"></label> </div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt('+counter+')" id="' + deleteId+'" class="btn"> <i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+        }
+        function DeleteReceipt(counter) {
+            var divId = "#receipt" + counter;
+            $(divId).remove();
+        }
     </script>
     <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>

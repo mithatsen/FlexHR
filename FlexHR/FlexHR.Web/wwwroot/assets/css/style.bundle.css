@@ -3715,9 +3715,13 @@ input[type="button"].btn-block {
   .custom-file-input[disabled] ~ .custom-file-label,
   .custom-file-input:disabled ~ .custom-file-label {
     background-color: #F3F6F9; }
-  .custom-file-input:lang(en) ~ .custom-file-label::after {
-    content: "Browse"; }
-  .custom-file-input ~ .custom-file-label[data-browse]::after {
+    .custom-file-input:lang(en) ~ .custom-file-label::after {
+        font-family: "Font Awesome 5 Free";
+        display: inline-block;
+        vertical-align: middle;
+        font-weight: 900;
+        content: "\f093";
+    } .custom-file-input ~ .custom-file-label[data-browse]::after {
     content: attr(data-browse); }
 
 .custom-file-label {
