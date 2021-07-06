@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -36,6 +37,7 @@ namespace FlexHR.Web.Controllers
             {
                 var paymentModel = _mapper.Map<ListStaffPaymentDto>(item);
                 paymentModel.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
+         
                 paymentModel.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
                 paymentModels.Add(paymentModel);
             }
@@ -57,7 +59,7 @@ namespace FlexHR.Web.Controllers
             }
         }
 
-        public IActionResult AddStaffPaymentWithAjax(AddStaffPaymentDto model ,int id)
+        public IActionResult AddStaffPaymentWithAjax(AddStaffPaymentDto model ,int id, Receipt receipts)   // buraya dto oluşturulacak gelen veriler maplenerek veritanına atılacak 
         {
             if (ModelState.IsValid)
             {

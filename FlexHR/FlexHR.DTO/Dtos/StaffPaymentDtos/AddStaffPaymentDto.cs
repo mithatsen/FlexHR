@@ -8,7 +8,7 @@ namespace FlexHR.DTO.Dtos.StaffPaymentDtos
     public class AddStaffPaymentDto
     {
         public int StaffId { get; set; }
-        public int GeneralStatusGeneralSubTypeId { get; set; }
+        public int GeneralStatusGeneralSubTypeId { get; set; } = 96;
         public int PaymentTypeGeneralSubTypeId { get; set; }
         public int CurrencyGeneralSubTypeId { get; set; }
         public int? FeeTypeGeneralSubTypeId { get; set; }

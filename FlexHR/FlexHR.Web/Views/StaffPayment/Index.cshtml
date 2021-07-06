@@ -137,7 +137,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="modalAddPaymentForm" method="POST">
+            <form id="modalAddPaymentForm" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -361,7 +361,7 @@
             counter++;
             var divId = "receipt" + counter;
             var deleteId = "delete" + counter;
-            $("#receiptDiv").append('<div id="' + divId + '" class="justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group"> <input type="text" class="form-control form-control-solid form-control-lg"> </div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"> <input type="text" class="form-control form-control-solid form-control-lg"> </div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"> <input type="text" class="form-control form-control-solid form-control-lg"> </div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"> <input type="file" class="custom-file-input "/> <label class="custom-file-label" for="customFile"></label> </div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"> <i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+            $("#receiptDiv").append('<div id="' + divId + '" class="justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="Amount" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input mito" name="file"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
         }
         function DeleteReceipt(counter) {
             var divId = "#receipt" + counter;
@@ -374,11 +374,25 @@
 
             var id = document.getElementById("kt_select2_1").value;
             event.preventDefault();
+            var x = $(".mito");
+            console.log(x);
+            var loopCount = x.length / 4;
+            var receipts = new Array();
+            var temp = 0;
+            for (var i = 0; i < loopCount; i++) {
+
+                receipts.push({ Name: x[temp++].value, Vat: x[temp++].value, Amount: x[temp++].value, FileName: x[temp++].value });
+
+            }
+
+
+
+
 
             $.ajax({
                 url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
                 type: "POST",
-                data: new FormData(this),
+                data: new FormData(this), receipts ,
                 dataType: "json",
                 contentType: false,
                 cache: false,
@@ -391,7 +405,7 @@
                             icon: "success",
                             showCancelButton: false
                         }).then(function () {
-                            window.location.reload();
+                           
                         })
                     }
 
