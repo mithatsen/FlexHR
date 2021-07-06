@@ -79,8 +79,16 @@
 
                                                     <td>@item.PaymentType</td>
 
-                                                    <td>@item.Description Gün</td>
-                                                    <td>@item.Amount ₺</td>
+                                                    <td>@item.Description</td>
+                                                    @{var InstallmentStatus = item.Installment != null ? "Taksit" : null;}
+                                                    <td>
+                                                        @item.Amount @item.CurrencyType
+                                                        @if (InstallmentStatus != null)
+                                                        {
+                                                            <small class="badge badge-pill badge-secondary">@item.Installment @InstallmentStatus</small>
+
+                                                        }
+                                                    </td>
                                                     <td>@item.GeneralStatusGeneralSubTypeId</td>
                                                     <td>@item.CreationDate.ToShortDateString()</td>
                                                     <td>@item.IsPaid</td>
@@ -129,7 +137,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="modalAddCareerForm" method="POST">
+            <form id="modalAddPaymentForm" method="POST">
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -156,9 +164,9 @@
                                             <div class="form-group row">
                                                 <label>Tutar</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-control-solid form-control-lg">
+                                                    <input type="text" name="Amount" class="form-control form-control-solid form-control-lg">
                                                     <div class="input-group-append">
-                                                        <select class="form-control form-control-solid form-control-lg" asp-items="ViewBag.Currencies">
+                                                        <select class="form-control form-control-solid form-control-lg" name="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -168,7 +176,7 @@
                                             <div hidden id="InstallmentDiv" class="form-group row  ">
                                                 <label>Taksit</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId">
+                                                    <select class="form-control form-control-solid form-control-lg" name="Installment">
                                                         <option value="-1" disabled selected>Seçiniz</option>
                                                         @for (int i = 1; i < 13; i++)
                                                         {
@@ -183,7 +191,7 @@
                                             <div id="FeeTypeDiv" class="form-group row  ">
                                                 <label>Ücret Tipi</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
+                                                    <select class="form-control form-control-solid form-control-lg" name="FeeTypeGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
                                                         <option value="-1">Seçiniz</option>
 
                                                     </select>
@@ -196,10 +204,10 @@
                                         <div class="col-md-5">
 
                                             <div class="form-group row  ">
-                                                <label id="jobFinishDateLbl">Tarih</label>
+                                                <label id="jobFinishDateLbl">Ödeme Tarihi</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <input id="ContractStartDate" name="PaymentDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -310,7 +318,7 @@
 
 
     </script>
-@* payment add modal *@
+    @* payment add modal *@
     <script>
         function PaymentTypeChange() {
             var id = document.getElementById("kt_select2_1").value;
@@ -359,6 +367,38 @@
             var divId = "#receipt" + counter;
             $(divId).remove();
         }
+    </script>
+    <script>
+
+        $(document).on("submit", "#modalAddPaymentForm", function (event) { //modalAddCareerForm id li form post edildiğinde
+
+            var id = document.getElementById("kt_select2_1").value;
+            event.preventDefault();
+
+            $.ajax({
+                url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
+                type: "POST",
+                data: new FormData(this),
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    if (data == "true") {
+                        Swal.fire({
+                            title: "Eklendi!",
+                            text: "Kaydınız eklendi.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })
+                    }
+
+                }
+            });
+        });
+
     </script>
     <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>

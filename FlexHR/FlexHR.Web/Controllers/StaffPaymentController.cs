@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
+using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -34,6 +35,7 @@ namespace FlexHR.Web.Controllers
             foreach (var item in staffPaymentList)
             {
                 var paymentModel = _mapper.Map<ListStaffPaymentDto>(item);
+                paymentModel.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
                 paymentModel.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
                 paymentModels.Add(paymentModel);
             }
@@ -54,6 +56,33 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
- 
+
+        public IActionResult AddStaffPaymentWithAjax(AddStaffPaymentDto model ,int id)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == 99)
+                {
+
+                }
+                else if (id == 100 || id == 103)
+                {
+                    model.PaymentTypeGeneralSubTypeId = id;
+                    _staffPaymentService.Add(_mapper.Map<StaffPayment>(model));
+                }
+                else
+                {
+                    model.PaymentTypeGeneralSubTypeId = id;
+                    _staffPaymentService.Add(_mapper.Map<StaffPayment>(model));
+                }
+                return Json("true");
+
+            }
+
+            return Json("false");
+
+        }
+
+
     }
 }

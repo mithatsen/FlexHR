@@ -11,6 +11,7 @@ namespace FlexHR.Entity.Concrete
         public int StaffId { get; set; }
         public int GeneralStatusGeneralSubTypeId { get; set; }
         public int PaymentTypeGeneralSubTypeId { get; set; }
+        public int CurrencyGeneralSubTypeId { get; set; }
         public int? FeeTypeGeneralSubTypeId { get; set; }
         public DateTime PaymentDate { get; set; }
         public string Description { get; set; }
