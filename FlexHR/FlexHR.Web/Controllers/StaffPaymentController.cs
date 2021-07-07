@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
+using FlexHR.DTO.Dtos.ReceiptDtos;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
@@ -59,7 +60,7 @@ namespace FlexHR.Web.Controllers
             }
         }
 
-        public IActionResult AddStaffPaymentWithAjax(AddStaffPaymentDto model ,int id, Receipt receipts)   // buraya dto oluşturulacak gelen veriler maplenerek veritanına atılacak 
+        public IActionResult AddStaffPaymentWithAjax(AddStaffPaymentDto model ,int id, List<AddReceiptDto> receipts)   // buraya dto oluşturulacak gelen veriler maplenerek veritanına atılacak 
         {
             if (ModelState.IsValid)
             {
