@@ -164,9 +164,9 @@
                                             <div class="form-group row">
                                                 <label>Tutar</label>
                                                 <div class="input-group">
-                                                    <input type="text" name="Amount" class="form-control form-control-solid form-control-lg">
+                                                    <input id="txtAmount" type="text" name="Amount" class="form-control form-control-solid form-control-lg">
                                                     <div class="input-group-append">
-                                                        <select class="form-control form-control-solid form-control-lg" name="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
+                                                        <select id="currencyType" class="form-control form-control-solid form-control-lg" name="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -195,7 +195,7 @@
                                                         <option value="-1">Seçiniz</option>
 
                                                     </select>
-                                                    <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                                                    <input id="staffId" type="hidden" name="StaffId" value="@ViewBag.StaffId" />
                                                 </div>
                                             </div>
 
@@ -219,7 +219,7 @@
 
 
 
-                                            <div id="smDescription"  class="form-group row">
+                                            <div id="smDescription" class="form-group row">
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
                                                     <textarea disabled type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
@@ -227,11 +227,11 @@
                                             </div>
 
                                         </div>
-                                        <div id="lgDescription" hidden  class="col-md-12">
+                                        <div id="lgDescription" hidden class="col-md-12">
                                             <div class="form-group row">
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
-                                                    <textarea type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea id="txtDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
                                                 </div>
                                             </div>
 
@@ -249,7 +249,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="fncAddReceipt()" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -267,6 +267,62 @@
 
     @*Delete Staff Payment*@
     <script>
+
+        function fncAddReceipt() {
+            var formdata = new FormData();
+            $('.receiptdiv').each(function (i, obj) {
+           
+                var myKey = "";
+                var file;
+                $(this).find('input').each(function (j, obj2) {
+
+
+                    if ($(obj2).attr("name") == "Name") {
+                        myKey +=$(obj2).val();
+                    }
+                    else if ($(obj2).attr("name") == "Vat") {
+                        myKey += "~" + $(obj2).val();
+                    }
+                    else if ($(obj2).attr("name") == "ReceiptAmount") {
+                        myKey += "~" + $(obj2).val();
+                    }
+                    else if ($(obj2).attr("name") == "File") {
+                        file = $(obj2);
+                        
+                    }
+                });
+                formdata.append(myKey, file[0].files[0]);
+            });
+            var id = document.getElementById("kt_select2_1").value;
+            formdata.append("Amount", $('#txtAmount').val());
+            formdata.append("Date", $('#ContractStartDate').val());
+            formdata.append("Description", $('#txtDescription').val());
+            formdata.append("CurrencyType", $('#currencyType').val());
+            formdata.append("StaffId", $('#staffId').val());
+            $.ajax({
+                url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
+                type: "POST",
+                data: formdata,
+               
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    if (data == "true") {
+                        Swal.fire({
+                            title: "Eklendi!",
+                            text: "Kaydınız eklendi.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+
+                        })
+                    }
+
+                }
+            });
+         
+        }
         function DeleteStaffPayment(id) {
             Swal.fire({
                 title: "Silmek istediğinize emin misiniz ?",
@@ -361,7 +417,7 @@
             counter++;
             var divId = "receipt" + counter;
             var deleteId = "delete" + counter;
-            $("#receiptDiv").append('<div id="' + divId + '" class="justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input mito" name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input mito" name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
         }
         function DeleteReceipt(counter) {
             var divId = "#receipt" + counter;
@@ -385,13 +441,13 @@
 
             }
             // receipts = JSON.stringify(receipts);
-    
+
             console.log(receipts);
             debugger;
             $.ajax({
                 url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
                 type: "POST",
-                data: new FormData(this), receipts ,
+                data: new FormData(this), receipts,
                 dataType: "json",
                 contentType: false,
                 cache: false,
@@ -404,7 +460,7 @@
                             icon: "success",
                             showCancelButton: false
                         }).then(function () {
-                           
+
                         })
                     }
 
