@@ -51,6 +51,7 @@ namespace FlexHR.Web.Controllers
                 paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId).ToList();
                 paymentModels.Add(paymentModel);
             }
+                        
             return View(paymentModels);
         }
         [HttpPost]

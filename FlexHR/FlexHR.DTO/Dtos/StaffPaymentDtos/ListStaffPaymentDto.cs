@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace FlexHR.DTO.Dtos.StaffPaymentDtos
 {
@@ -28,5 +29,6 @@ namespace FlexHR.DTO.Dtos.StaffPaymentDtos
 
 
         public virtual ICollection<Receipt> Receipts { get; set; }
+        public virtual List<Receipt> Receipts2 { get { return Receipts.ToList(); } set { } }
     }
 }
