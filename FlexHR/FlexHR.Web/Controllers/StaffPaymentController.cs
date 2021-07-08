@@ -20,15 +20,17 @@ namespace FlexHR.Web.Controllers
     public class StaffPaymentController : Controller
     {
         private readonly IStaffPaymentService _staffPaymentService;
+        private readonly IReceiptService _receiptService;
         private readonly IMapper _mapper;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IConfiguration _configuration;
-        public StaffPaymentController(IStaffPaymentService staffPaymentService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IConfiguration configuration)
+        public StaffPaymentController(IStaffPaymentService staffPaymentService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IConfiguration configuration, IReceiptService receiptService)
         {
             _staffPaymentService = staffPaymentService;
             _mapper = mapper;
             _generalSubTypeService = generalSubTypeService;
             _configuration = configuration;
+            _receiptService = receiptService;
         }
         public IActionResult Index(int id)
         {
@@ -41,10 +43,12 @@ namespace FlexHR.Web.Controllers
             var paymentModels = new List<ListStaffPaymentDto>();
             foreach (var item in staffPaymentList)
             {
+                
                 var paymentModel = _mapper.Map<ListStaffPaymentDto>(item);
                 paymentModel.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
 
                 paymentModel.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
+                paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId).ToList();
                 paymentModels.Add(paymentModel);
             }
             return View(paymentModels);
@@ -65,17 +69,22 @@ namespace FlexHR.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> AddStaffPaymentWithAjax(IFormCollection data,int id)   // buraya dto oluşturulacak gelen veriler maplenerek veritanına atılacak 
+        public async Task<IActionResult> AddStaffPaymentWithAjax(IFormCollection data, int id)   // buraya dto oluşturulacak gelen veriler maplenerek veritanına atılacak 
         {
+
 
             if (ModelState.IsValid)
             {
+                string amount = data["Amount"];
+                string date = data["Date"];
+                string SmDescription = data["SmDescription"];
+                string LgDescription = data["LgDescription"];
+                string currencyType = data["CurrencyType"];
+                string feeType = data["FeeType"];
+                string installment = data["Installment"];
                 if (id == 99)
                 {
-                    string amount = data["Amount"];
-                    string date = data["Date"];
-                    string description = data["Description"];
-                    string currencyType = data["CurrencyType"];
+
                     List<Receipt> receipts = new List<Receipt>(); //datadan gelen fişleri listeye ekledik.
                     foreach (var item in data.Files)
                     {
@@ -109,7 +118,7 @@ namespace FlexHR.Web.Controllers
                             Vat = Convert.ToDecimal(temp[1]),
                             Amount = Convert.ToDecimal(temp[2]),
                             FileName = item.FileName,
-                            FileFullPath = Path.Combine(staffName,"HarcamaFisleri" + "/"),
+                            FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
 
                         };
                         receipts.Add(receipt);
@@ -123,7 +132,7 @@ namespace FlexHR.Web.Controllers
                         PaymentDate = Convert.ToDateTime(date),
                         CreationDate = DateTime.Now,
                         CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
-                        Description = description,
+                        Description = LgDescription,
                         GeneralStatusGeneralSubTypeId = 96,
                         IsActive = true,
                         IsMailSentToStaff = false,
@@ -136,10 +145,43 @@ namespace FlexHR.Web.Controllers
                 }
                 else if (id == 100 || id == 103)
                 {
-                    
+                    var m = new StaffPayment
+                    {
+                        StaffId = Convert.ToInt32(data["staffId"]),
+                        Amount = Convert.ToDecimal(amount),
+                        PaymentDate = Convert.ToDateTime(date),
+                        CreationDate = DateTime.Now,
+                        CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                        Description = SmDescription,
+                        GeneralStatusGeneralSubTypeId = 96,
+                        IsActive = true,
+                        IsMailSentToStaff = false,
+                        IsPaid = false,
+                        IsSentForApproval = false,
+                        PaymentTypeGeneralSubTypeId = id,
+                        Installment = Convert.ToInt32(installment),
+                    };
+                    _staffPaymentService.Add(m);
                 }
                 else
                 {
+                    var k = new StaffPayment
+                    {
+                        StaffId = Convert.ToInt32(data["staffId"]),
+                        Amount = Convert.ToDecimal(amount),
+                        PaymentDate = Convert.ToDateTime(date),
+                        CreationDate = DateTime.Now,
+                        CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                        Description = SmDescription,
+                        GeneralStatusGeneralSubTypeId = 96,
+                        IsActive = true,
+                        IsMailSentToStaff = false,
+                        IsPaid = false,
+                        IsSentForApproval = false,
+                        PaymentTypeGeneralSubTypeId = id,
+                        FeeTypeGeneralSubTypeId = Convert.ToInt32(feeType)
+                    };
+                    _staffPaymentService.Add(k);
                 }
                 return Json("true");
 
@@ -147,6 +189,46 @@ namespace FlexHR.Web.Controllers
 
             return Json("false");
 
+        }
+        [HttpGet]
+        public IActionResult GetUpdateStaffPaymentModal(int id)
+        {
+            var staffPayment = _staffPaymentService.GetById(id);
+            // var staffPaymentGetReceipts = _staffPaymentService.Get(x => x.StaffPaymentId == id, null, "Receipt").ToList();
+            ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
+            ViewBag.FeeTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FeeType), "GeneralSubTypeId", "Description");
+            var paymentTypeId = staffPayment.PaymentTypeGeneralSubTypeId;
+            if (paymentTypeId == 99)
+            {
+                var temp = _mapper.Map<ListStaffPaymentDto>(staffPayment);
+                temp.Receipts = _receiptService.Get(x => x.StaffPaymentId == id).ToList();
+                return PartialView("_GetUpdateStaffPaymentModal1", temp);
+            }
+            else if (paymentTypeId == 100 || paymentTypeId == 103)
+            {
+                var temp = _mapper.Map<ListStaffPaymentDto>(staffPayment);
+                return PartialView("_GetUpdateStaffPaymentModal2", temp);
+            }
+            else
+            {
+
+                var temp = _mapper.Map<ListStaffPaymentDto>(staffPayment);
+                return PartialView("_GetUpdateStaffPaymentModal3", temp);
+            }
+            //ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
+            //ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
+            //ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
+
+        }
+        [HttpPost]
+        public IActionResult UpdateStaffPayment(ListStaffPaymentDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                _staffPaymentService.Update(_mapper.Map<StaffPayment>(model));
+                return RedirectToAction("Index", new { id = model.StaffId });
+            }
+            return View();
         }
 
 

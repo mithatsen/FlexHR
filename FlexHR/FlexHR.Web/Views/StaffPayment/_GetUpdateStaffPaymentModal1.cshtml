@@ -1,0 +1,148 @@
+﻿@model ListStaffPaymentDto
+<div class="modal fade" id="UpdatePaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 id="PaymentAddModalHeader" class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form asp-action="UpdateStaffPayment" asp-controller="StaffPayment" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+
+                                        @* fiş ekleme divi *@
+                                        <div id="receiptUpdateDiv" class="col-md-12 ">
+                                            <div class="form-group row">
+                                                <div class="input-group">
+                                                    <a onclick="AddUpdateReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
+                                                </div>
+                                            </div>
+                                            @foreach (var item in Model.Receipts)
+                                            {
+                                                <div id="" class="receiptdiv justify-content-between align-items-center d-flex row">
+                                                    <div class="form-group col-md-5 pl-0">
+                                                        <label>Fiş Adı</label>
+                                                        <div class="input-group"><input type="text" asp-for="@item.Name" class="form-control form-control-solid form-control-lg " /></div>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label>KDV(%)</label>
+                                                        <div class="input-group"><input type="text" asp-for="@item.Vat" class="form-control form-control-solid form-control-lg " /></div>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label>Tutar</label>
+                                                        <div class="input-group"><input type="text" asp-for="@item.Amount" class="form-control form-control-solid form-control-lg " /></div>
+                                                    </div>
+                                                    <div class="form-group col-md-2 ">
+                                                        <label></label>
+                                                        <div class="input-group justify-content-center">
+                                                            @*download=" /img/@item.FileFullPath@item.FileName"*@
+                                                            <a href="/img/@item.FileFullPath@item.FileName" target="_blank">
+                                                                <img style="width:70px; height:50px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
+                                                            </a>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label></label> <button onclick="DeleteReceipt()" id="" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button>
+                                                    </div>
+                                                </div>
+                                            }
+                                            
+                                        </div>
+                                        <div class="col-md-12"> <hr /></div>
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row">
+                                                <label>Tutar</label>
+                                                <div class="input-group">
+                                                    <input id="txtAmount" type="text" asp-for="Amount" class="form-control form-control-solid form-control-lg">
+                                                    <div class="input-group-append">
+                                                        <select id="currencyType" class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" asp-for="StaffPaymentId" />
+                                                <input type="hidden" asp-for="CreationDate" />
+                                                <input type="hidden" asp-for="StaffId" />
+                                                <input type="hidden" asp-for="IsActive" />
+                                                <input type="hidden" asp-for="PaymentTypeGeneralSubTypeId" />
+                                                <input type="hidden" asp-for="GeneralStatusGeneralSubTypeId" />
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-5">
+
+                                            <div class="form-group row  ">
+                                                <label id="jobFinishDateLbl">Ödeme Tarihi</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
+                                                        <input id="ContractStartDate" asp-for="PaymentDate" value="@Model.PaymentDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div id="lgDescription" class="col-md-12">
+                                            <div class="form-group row">
+                                                <label>Açıklama</label>
+                                                <div class="input-group">
+                                                    <textarea id="txtLgDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" asp-for="Description" placeholder="Açıklama"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit"  class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script>
+    let counter2 = 0;
+    function AddUpdateReceipt() {
+        counter2++;
+        var divUpdateId = "receipt" + counter2;
+        var deleteUpdateId = "delete" + counter2;
+        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+    }
+    function DeleteReceipt(counter) {
+        var divId = "#receipt" + counter;
+        $(divId).remove();
+    }
+</script>

@@ -39,7 +39,9 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<ITownService, TownManager>();
             services.AddScoped<IStaffRoleService, StaffRoleManager>();
             services.AddScoped<IStaffFileService, StaffFileManager>();
+            services.AddScoped<IReceiptService, ReceiptManager>();
 
+            services.AddScoped<IReceiptDal, EfReceiptRepository>();
             services.AddScoped<ICityDal, EfCityRepository>();
             services.AddScoped<ICompanyDal, EfCompanyRepository>();
             services.AddScoped<ICompanyBranchDal, EfCompanyBranchRepository>();

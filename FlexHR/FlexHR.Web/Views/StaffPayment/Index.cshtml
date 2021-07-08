@@ -93,7 +93,10 @@
                                                     <td>@item.CreationDate.ToShortDateString()</td>
                                                     <td>@item.IsPaid</td>
                                                     <td>
-                                                        <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
+                                                        <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                                            <i class="la la-info text-warning"></i>
+                                                        </a>
+                                                        <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal">
                                                             <i class="la la-edit text-warning"></i>
                                                         </a>
                                                         <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffPayment(@item.StaffPaymentId)" title="Sil">
@@ -160,6 +163,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-12"> <hr /></div>
                                         <div class="col-md-5 ">
                                             <div class="form-group row">
                                                 <label>Tutar</label>
@@ -176,7 +180,7 @@
                                             <div hidden id="InstallmentDiv" class="form-group row  ">
                                                 <label>Taksit</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="Installment">
+                                                    <select id="valInstallment" class="form-control form-control-solid form-control-lg" name="Installment">
                                                         <option value="-1" disabled selected>Seçiniz</option>
                                                         @for (int i = 1; i < 13; i++)
                                                         {
@@ -191,7 +195,7 @@
                                             <div id="FeeTypeDiv" class="form-group row  ">
                                                 <label>Ücret Tipi</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="FeeTypeGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
+                                                    <select id="valFeeType" class="form-control form-control-solid form-control-lg" name="FeeTypeGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
                                                         <option value="-1">Seçiniz</option>
 
                                                     </select>
@@ -206,9 +210,9 @@
                                             <div class="form-group row  ">
                                                 <label id="jobFinishDateLbl">Ödeme Tarihi</label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="ContractStartDate" name="PaymentDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_9" data-target-input="nearest">
+                                                        <input id="ContractStartDate" name="PaymentDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_9" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_9" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -222,7 +226,7 @@
                                             <div id="smDescription" class="form-group row">
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
-                                                    <textarea disabled type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea disabled id="txtSmDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
                                                 </div>
                                             </div>
 
@@ -231,7 +235,7 @@
                                             <div class="form-group row">
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
-                                                    <textarea id="txtDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea id="txtLgDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
                                                 </div>
                                             </div>
 
@@ -257,12 +261,77 @@
 
 </div>
 
+
+<div class="modal fade" id="ShowPaymentReceiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 id="" class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Fişler
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div id="ShowReceiptList">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="UpdateStaffPaymentModalDiv">
+</div>
+
 @section Scripts{
     <script>
 
         $(document).ready(function () {
             $("#tab_6").addClass("active");
         });
+    </script>
+    <script>
+        function ShowReceiptInModal(id) {
+            console.log("avsdjgnkbgmsdlgösdvb");
+            var txtHtml = "<table class='table table-responsive table - striped'> <tr> <th></th> <th>Fiş Adı</th> <th>KDV(%)</th> <th>Tutar</th> </tr>";
+            var listPayment =@Model;
+            debugger;
+            for (var i = 0; i < @Model.Count; i++) {
+                var listReceipt = listPayment.Receipts;
+                if (listPayment[i].PayPaymentTypeGeneralSubTypeId == 99 && listPayment[i].StaffPaymentId==id) {
+                    for (var i = 0; i < listReceipt; i++) {
+                        txtHtml += '<tr> <td> <img src="/img/' + listReceipt[i].FileFullPath + listReceipt[i].FileName + '" alt="' + listReceipt[i].FileName + '"/> </td> <td>' + listReceipt[i].Name + '</td><td>' + listReceipt[i].Vat + '</td><td>' + listReceipt[i].Amount + '</td></tr>'
+                    }
+                }
+            }
+            txtHtml += '</table>';
+            $("#ShowReceiptList").append(txtHtml);
+        }
+    </script>
+
+    @*staff payment Update *@
+    <script>
+        function PaymentUpdate(id) {
+            var modelContent = $("#UpdateStaffPaymentModalDiv");
+            $.ajax({
+                url: "/StaffPayment/GetUpdateStaffPaymentModal/" + id,
+                type: "GET"
+            }).done(function (content) {
+
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#UpdatePaymentModal").modal("show");
+
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
     </script>
 
     @*Delete Staff Payment*@
@@ -271,14 +340,14 @@
         function fncAddReceipt() {
             var formdata = new FormData();
             $('.receiptdiv').each(function (i, obj) {
-           
+
                 var myKey = "";
                 var file;
                 $(this).find('input').each(function (j, obj2) {
 
 
                     if ($(obj2).attr("name") == "Name") {
-                        myKey +=$(obj2).val();
+                        myKey += $(obj2).val();
                     }
                     else if ($(obj2).attr("name") == "Vat") {
                         myKey += "~" + $(obj2).val();
@@ -288,22 +357,25 @@
                     }
                     else if ($(obj2).attr("name") == "File") {
                         file = $(obj2);
-                        
+
                     }
                 });
                 formdata.append(myKey, file[0].files[0]);
             });
             var id = document.getElementById("kt_select2_1").value;
+            formdata.append("Installment", $('#valInstallment').val());
+            formdata.append("FeeType", $('#valFeeType').val());
             formdata.append("Amount", $('#txtAmount').val());
             formdata.append("Date", $('#ContractStartDate').val());
-            formdata.append("Description", $('#txtDescription').val());
+            formdata.append("SmDescription", $('#txtSmDescription').val());
+            formdata.append("LgDescription", $('#txtLgDescription').val());
             formdata.append("CurrencyType", $('#currencyType').val());
             formdata.append("StaffId", $('#staffId').val());
             $.ajax({
                 url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
                 type: "POST",
                 data: formdata,
-               
+
                 contentType: false,
                 cache: false,
                 processData: false,
@@ -315,13 +387,13 @@
                             icon: "success",
                             showCancelButton: false
                         }).then(function () {
-
+                            window.location.reload();
                         })
                     }
 
                 }
             });
-         
+
         }
         function DeleteStaffPayment(id) {
             Swal.fire({
@@ -386,7 +458,7 @@
                 $("#lgDescription").show();
                 $("#FeeTypeDiv").hide();
                 $("#smDescription").hide();
-
+                $("#txtSmDescription").prop("disabled", true);
             }
             else if (id == 100 || id == 103) {
                 $("#receiptDiv").hide();
@@ -395,6 +467,8 @@
                 $("#InstallmentDiv").removeAttr("hidden");
                 $("#InstallmentDiv").show();
                 $("#FeeTypeDiv").hide();
+                $("#txtSmDescription").prop("disabled", false);
+                $("#txtLgDescription").prop("disabled", true);
 
             } else {
                 $("#InstallmentDiv").hide();
@@ -402,6 +476,8 @@
                 $("#receiptDiv").hide();
                 $("#smDescription").show();
                 $("#lgDescription").hide();
+                $("#txtSmDescription").prop("disabled", false);
+                $("#txtLgDescription").prop("disabled", true);
             }
             $("#kt_select2_1 > option").each(function () {
                 if (this.value == id) {
@@ -417,7 +493,7 @@
             counter++;
             var divId = "receipt" + counter;
             var deleteId = "delete" + counter;
-            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg mito"/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input mito" name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
         }
         function DeleteReceipt(counter) {
             var divId = "#receipt" + counter;
@@ -426,47 +502,47 @@
     </script>
     <script>
 
-        $(document).on("submit", "#modalAddPaymentForm", function (event) { //modalAddCareerForm id li form post edildiğinde
+                                                            //$(document).on("submit", "#modalAddPaymentForm", function (event) { //modalAddCareerForm id li form post edildiğinde
 
-            var id = document.getElementById("kt_select2_1").value;
-            event.preventDefault();
-            var x = $(".mito");
-            console.log(x);
-            var loopCount = x.length / 4;
-            var receipts = [];
-            var temp = 0;
-            for (var i = 0; i < loopCount; i++) {
+                                                            //    var id = document.getElementById("kt_select2_1").value;
+                                                            //    event.preventDefault();
+                                                            //    var x = $(".mito");
+                                                            //    console.log(x);
+                                                            //    var loopCount = x.length / 4;
+                                                            //    var receipts = [];
+                                                            //    var temp = 0;
+                                                            //    for (var i = 0; i < loopCount; i++) {
 
-                receipts.push({ Name: x[temp++].value, Vat: x[temp++].value, ReceiptAmount: x[temp++].value, File: x[temp++].files[0] });
+                                                            //        receipts.push({ Name: x[temp++].value, Vat: x[temp++].value, ReceiptAmount: x[temp++].value, File: x[temp++].files[0] });
 
-            }
-            // receipts = JSON.stringify(receipts);
+                                                            //    }
+                                                            //    // receipts = JSON.stringify(receipts);
 
-            console.log(receipts);
-            debugger;
-            $.ajax({
-                url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
-                type: "POST",
-                data: new FormData(this), receipts,
-                dataType: "json",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function (data) {
-                    if (data == "true") {
-                        Swal.fire({
-                            title: "Eklendi!",
-                            text: "Kaydınız eklendi.",
-                            icon: "success",
-                            showCancelButton: false
-                        }).then(function () {
+                                                            //    console.log(receipts);
+                                                            //    debugger;
+                                                            //    $.ajax({
+                                                            //        url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
+                                                            //        type: "POST",
+                                                            //        data: new FormData(this), receipts,
+                                                            //        dataType: "json",
+                                                            //        contentType: false,
+                                                            //        cache: false,
+                                                            //        processData: false,
+                                                            //        success: function (data) {
+                                                            //            if (data == "true") {
+                                                            //                Swal.fire({
+                                                            //                    title: "Eklendi!",
+                                                            //                    text: "Kaydınız eklendi.",
+                                                            //                    icon: "success",
+                                                            //                    showCancelButton: false
+                                                            //                }).then(function () {
 
-                        })
-                    }
+                                                            //                })
+                                                            //            }
 
-                }
-            });
-        });
+                                                            //        }
+                                                            //    });
+                                                            //});
 
     </script>
     <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
