@@ -1,0 +1,42 @@
+﻿@model List<ListReceiptDto>
+
+<div class="modal fade" id="ShowPaymentReceiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 id="" class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Fişler
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class='table table-responsive table-secondary mx-auto'>
+                    <tr class='table table-primary '>
+                        <th class='w-75'></th>
+                        <th>Fiş Adı</th>
+                        <th>KDV(%)</th>
+                        <th>Tutar</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>  <img style="width: 200px; height: 200px;" src="/img/@item.FileFullPath@item.FileName" alt="item.FileName" /></td>
+                            <td>@item.Name</td>
+                            <td>@item.Vat</td>
+                            <td>@item.ReceiptAmount</td>
+                        </tr>
+
+                    }
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

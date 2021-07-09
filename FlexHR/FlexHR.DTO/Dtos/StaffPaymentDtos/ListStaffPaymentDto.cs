@@ -29,6 +29,6 @@ namespace FlexHR.DTO.Dtos.StaffPaymentDtos
 
 
         public virtual ICollection<Receipt> Receipts { get; set; }
-        public virtual List<Receipt> Receipts2 { get { return Receipts.ToList(); } set { } }
+        public virtual List<Receipt> Receipts2 { get { return Receipts!=null? Receipts.ToList() : null; } set { } }
     }
 }

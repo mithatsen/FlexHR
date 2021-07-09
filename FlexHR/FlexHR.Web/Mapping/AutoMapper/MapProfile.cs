@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FlexHR.DTO.Dtos.ReceiptDtos;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
 using FlexHR.DTO.Dtos.StaffGeneralDtos;
@@ -48,6 +49,9 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #endregion
             #region StaffShift
             CreateMap<ListStaffShiftDto, StaffShift>().ReverseMap();
+            #endregion
+            #region Receipt
+            CreateMap<ListReceiptDto, Receipt>().ReverseMap();
             #endregion
         }
     }

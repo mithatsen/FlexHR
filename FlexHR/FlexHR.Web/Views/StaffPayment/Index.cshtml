@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Ödeme Bilgileri";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    int receiptId = 0;
 }
 
 
@@ -98,9 +98,13 @@
                                                     <td>@item.CreationDate.ToShortDateString()</td>
                                                     <td>@item.IsPaid</td>
                                                     <td>
-                                                        <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
-                                                            <i class="la la-info text-warning"></i>
-                                                        </a>
+                                                        @if (item.PaymentTypeGeneralSubTypeId == 99)
+                                                        {
+                                                            <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="details">
+                                                                <i class="la la-info text-info"></i>
+                                                            </a>
+                                                        }
+
                                                         <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal">
                                                             <i class="la la-edit text-warning"></i>
                                                         </a>
@@ -113,7 +117,7 @@
 
                                             }
 
-                                            
+
                                         </tbody>
                                     </table>
                                     <!--end: Datatable-->
@@ -269,28 +273,12 @@
 </div>
 
 
-<div class="modal fade" id="ShowPaymentReceiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 id="" class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Fişler
-                    </h3>
 
-                </div>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <div id="ShowReceiptList">
-
-            </div>
-        </div>
-    </div>
-
-</div>
 
 <div id="UpdateStaffPaymentModalDiv">
+</div>
+
+<div id="ShowStaffPaymentInfoDiv">
 </div>
 
 @section Scripts{
@@ -303,19 +291,43 @@
     </script>
     <script>
         function ShowReceiptInModal(id) {
-            @{
-                var txtHtml = "";
+            //var txtHtml = " <table class='table table-responsive table-dark mx-auto'> <tr class='table table-primary '> <th class='w-75'></th> <th>Fiş Adı</th> <th>KDV(%)</th> <th>Tutar</th> </tr>";
+            var modelContent = $("#ShowStaffPaymentInfoDiv");
+            $.ajax({
+                url: "/StaffPayment/GetStaffPaymentWithReceiptInfoModal/" + id,
+                type: "GET"
+            }).done(function (content) {
+
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#ShowPaymentReceiptModal").modal("show");
+
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+
+            @*@{
+                var txtHtml = " <table class='table table-responsive table-dark mx-auto'> <tr class='table table-primary '> <th class='w-75'></th> <th>Fiş Adı</th> <th>KDV(%)</th> <th>Tutar</th> </tr>";
                 for (int i = 0; i < Model.Count; i++)
                 {
-                    for (int k = 0; k < Model[i].Receipts.Count; k++)
+                    if (Model[i].Receipts2[0].StaffPaymentId == )
                     {
-                        txtHtml += "<tr> <td> <img src='/img/"+ Model[i].Receipts2[k].FileName + "' alt='" + Model[i].Receipts2[k].FileName + "'/> </td> <td>" + Model[i].Receipts2[k].Name + "</td><td>" + Model[i].Receipts2[k].Vat + "</td><td>" + Model[i].Receipts2[k].Amount + "</td></tr>";
+                        for (int k = 0; k < Model[i].Receipts.Count; k++)
+                        {
+                            txtHtml += "<tr> <td> <img style='width: 200px; height: 200px; ' src='/img/" + Model[i].Receipts2[k].FileFullPath + Model[i].Receipts2[k].FileName + "' alt='" + Model[i].Receipts2[k].FileName + "'/> </td> <td>" + Model[i].Receipts2[k].Name + "</td><td>" + Model[i].Receipts2[k].Vat + "</td><td>" + Model[i].Receipts2[k].Amount + "</td></tr>";
+                        }
                     }
+
                 }
+                txtHtml += "</table>";
             }
-            var txtHtml = '<table class="table table-responsive table-striped"> <tr> <th></th> <th>Fiş Adı</th> <th>KDV(%)</th> <th>Tutar</th> </tr>' + '@txtHtml' + '</table>';
-            $("#ShowReceiptList").html(txtHtml);
-            debugger;            
+            var x = @Html.Raw(Json.Serialize(txtHtml))
+            $("#ShowReceiptList").html(x);
+            $("#ShowPaymentReceiptModal").modal("show");*@
+
         }
     </script>
 
@@ -509,47 +521,47 @@
     </script>
     <script>
 
-                                                                                                    //$(document).on("submit", "#modalAddPaymentForm", function (event) { //modalAddCareerForm id li form post edildiğinde
+                                                                                                            //$(document).on("submit", "#modalAddPaymentForm", function (event) { //modalAddCareerForm id li form post edildiğinde
 
-                                                                                                    //    var id = document.getElementById("kt_select2_1").value;
-                                                                                                    //    event.preventDefault();
-                                                                                                    //    var x = $(".mito");
-                                                                                                    //    console.log(x);
-                                                                                                    //    var loopCount = x.length / 4;
-                                                                                                    //    var receipts = [];
-                                                                                                    //    var temp = 0;
-                                                                                                    //    for (var i = 0; i < loopCount; i++) {
+                                                                                                            //    var id = document.getElementById("kt_select2_1").value;
+                                                                                                            //    event.preventDefault();
+                                                                                                            //    var x = $(".mito");
+                                                                                                            //    console.log(x);
+                                                                                                            //    var loopCount = x.length / 4;
+                                                                                                            //    var receipts = [];
+                                                                                                            //    var temp = 0;
+                                                                                                            //    for (var i = 0; i < loopCount; i++) {
 
-                                                                                                    //        receipts.push({ Name: x[temp++].value, Vat: x[temp++].value, ReceiptAmount: x[temp++].value, File: x[temp++].files[0] });
+                                                                                                            //        receipts.push({ Name: x[temp++].value, Vat: x[temp++].value, ReceiptAmount: x[temp++].value, File: x[temp++].files[0] });
 
-                                                                                                    //    }
-                                                                                                    //    // receipts = JSON.stringify(receipts);
+                                                                                                            //    }
+                                                                                                            //    // receipts = JSON.stringify(receipts);
 
-                                                                                                    //    console.log(receipts);
-                                                                                                    //    debugger;
-                                                                                                    //    $.ajax({
-                                                                                                    //        url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
-                                                                                                    //        type: "POST",
-                                                                                                    //        data: new FormData(this), receipts,
-                                                                                                    //        dataType: "json",
-                                                                                                    //        contentType: false,
-                                                                                                    //        cache: false,
-                                                                                                    //        processData: false,
-                                                                                                    //        success: function (data) {
-                                                                                                    //            if (data == "true") {
-                                                                                                    //                Swal.fire({
-                                                                                                    //                    title: "Eklendi!",
-                                                                                                    //                    text: "Kaydınız eklendi.",
-                                                                                                    //                    icon: "success",
-                                                                                                    //                    showCancelButton: false
-                                                                                                    //                }).then(function () {
+                                                                                                            //    console.log(receipts);
+                                                                                                            //    debugger;
+                                                                                                            //    $.ajax({
+                                                                                                            //        url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
+                                                                                                            //        type: "POST",
+                                                                                                            //        data: new FormData(this), receipts,
+                                                                                                            //        dataType: "json",
+                                                                                                            //        contentType: false,
+                                                                                                            //        cache: false,
+                                                                                                            //        processData: false,
+                                                                                                            //        success: function (data) {
+                                                                                                            //            if (data == "true") {
+                                                                                                            //                Swal.fire({
+                                                                                                            //                    title: "Eklendi!",
+                                                                                                            //                    text: "Kaydınız eklendi.",
+                                                                                                            //                    icon: "success",
+                                                                                                            //                    showCancelButton: false
+                                                                                                            //                }).then(function () {
 
-                                                                                                    //                })
-                                                                                                    //            }
+                                                                                                            //                })
+                                                                                                            //            }
 
-                                                                                                    //        }
-                                                                                                    //    });
-                                                                                                    //});
+                                                                                                            //        }
+                                                                                                            //    });
+                                                                                                            //});
 
     </script>
     <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>

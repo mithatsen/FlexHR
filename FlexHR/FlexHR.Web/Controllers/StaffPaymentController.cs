@@ -51,7 +51,7 @@ namespace FlexHR.Web.Controllers
                 paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId).ToList();
                 paymentModels.Add(paymentModel);
             }
-                        
+  
             return View(paymentModels);
         }
         [HttpPost]
@@ -232,6 +232,18 @@ namespace FlexHR.Web.Controllers
             return View();
         }
 
+        public IActionResult GetStaffPaymentWithReceiptInfoModal(int id)
+        {
+         
+        
+            var receipts = _receiptService.Get(x => x.StaffPaymentId == id).ToList();
+            return PartialView("_GetStaffPaymentInfo", _mapper.Map<List<ListReceiptDto>>(receipts));
+        
+              
+            //ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
+            //ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
+            //ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
 
+        }
     }
 }
