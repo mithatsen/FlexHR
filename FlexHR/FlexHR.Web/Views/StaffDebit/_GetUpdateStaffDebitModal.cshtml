@@ -1,0 +1,120 @@
+﻿@model ListStaffDebitDto
+
+<div class="modal fade" id="staffDebitUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Zimmet Güncelle
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form asp-controller="StaffDebit" asp-action="UpdateStaffDebit" method="POST">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+
+                                        <div class="col-md-5 ">
+
+                                            <div class="form-group row ">
+                                                <label>Kategori</label>
+                                                <div class="input-group">
+                                                    <select class="form-control form-control-solid form-control-lg" asp-for="DebitGeneralSubTypeId" asp-items="ViewBag.Categories">
+                                                        <option value="-1">Seçiniz</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row  ">
+                                                <label id="debitIssueDateLbl">Veriliş Tarihi</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
+                                                        <input id="debitStartDate" asp-for="IssueDate" value="@Model.IssueDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row  ">
+                                                <label>Seri Numarası</label>
+                                                <div class="input-group">
+                                                    <input type="text" asp-for="SerialNumber" class="form-control form-control-solid form-control-lg" />
+                                                    <input type="hidden" asp-for="StaffId" class="form-control form-control-solid form-control-lg" />
+                                                    <input type="hidden" asp-for="StaffDebitId" class="form-control form-control-solid form-control-lg" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row  ">
+                                                <label id="jobFinishDateLbl">Bitiş Tarihi</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_6" data-target-input="nearest">
+                                                        @{
+                                                            var date = DateTime.Now.ToShortDateString();
+                                                            @if (Model.ReturnDate != null)
+                                                            {
+                                                                date = Model.ReturnDate.Value.ToShortDateString();
+                                                            }
+                                                            else
+                                                            {
+                                                                date = "Tarih Seçiniz";
+                                                            }
+                                                        }
+                                                        <input id="ContractFinishDate" asp-for="ReturnDate" value="@date" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_6" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label>Açıklama</label>
+                                                <div class="input-group">
+                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" placeholder="Açıklama"></textarea>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="btnUpdateDebit" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
