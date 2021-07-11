@@ -87,44 +87,84 @@ namespace FlexHR.Web.Controllers
                 {
 
                     List<Receipt> receipts = new List<Receipt>(); //datadan gelen fişleri listeye ekledik.
-                    foreach (var item in data.Files)
-                    {
-
-                        var temp = item.Name.Split("~");
-
-                        var staffName = "Staff_" + data["staffId"];
-
-                        var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
-                        var folderPath = Path.Combine(fullPath, staffName);
-                        if (!Directory.Exists(folderPath))
-                            Directory.CreateDirectory(folderPath);
-
-                        var filePath = Path.Combine(folderPath, "HarcamaFisleri" + "/");
-                        if (!Directory.Exists(filePath))
-                            Directory.CreateDirectory(filePath);
-                        var imagePath = Path.Combine(filePath + item.FileName);
-                        if (item.Length > 0)
+  
+                        foreach (var item in data.Files)
                         {
-                            //dosyamızı kaydediyoruz.
 
-                            using (var stream = new FileStream(imagePath, FileMode.Create))
+                            var temp = item.Name.Split("~");
+
+                            var staffName = "Staff_" + data["staffId"];
+
+                            var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
+                            var folderPath = Path.Combine(fullPath, staffName);
+                            if (!Directory.Exists(folderPath))
+                                Directory.CreateDirectory(folderPath);
+
+                            var filePath = Path.Combine(folderPath, "HarcamaFisleri" + "/");
+                            if (!Directory.Exists(filePath))
+                                Directory.CreateDirectory(filePath);
+                            var imagePath = Path.Combine(filePath + item.FileName);
+                            if (item.Length > 0)
                             {
-                                await item.CopyToAsync(stream);
+                                //dosyamızı kaydediyoruz.
+
+                                using (var stream = new FileStream(imagePath, FileMode.Create))
+                                {
+                                    await item.CopyToAsync(stream);
+                                }
                             }
+
+                            Receipt receipt = new Receipt
+                            {
+                                Name = temp[0],
+                                Vat = Convert.ToDecimal(temp[1]),
+                                Amount = Convert.ToDecimal(temp[2]),
+                                FileName = item.FileName,
+                                FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
+
+                            };
+                            receipts.Add(receipt);
+
+                        }
+                        foreach (var item in data.Keys)
+                        {
+                        if (item.Contains("~"))
+                        {
+                            var temp = item.Split("~");
+                            Receipt receipt = new Receipt
+                            {
+                                Name = temp[0],
+                                Vat = Convert.ToDecimal(temp[1]),
+                                Amount = Convert.ToDecimal(temp[2]),
+                                FileName = "",
+                                FileFullPath = "",
+
+                            };
+                            receipts.Add(receipt);
+                        }
                         }
 
-                        Receipt receipt = new Receipt
-                        {
-                            Name = temp[0],
-                            Vat = Convert.ToDecimal(temp[1]),
-                            Amount = Convert.ToDecimal(temp[2]),
-                            FileName = item.FileName,
-                            FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
+                    //else
+                    //{
+                    //    for (int i = 0; i < data.Keys.Count; i++)
+                    //    {
+                    //        //if (data.Keys[i].Contains("~"))
+                    //        //{
 
-                        };
-                        receipts.Add(receipt);
+                    //        //}
+                    //    }
+                    //    //Receipt receipt = new Receipt
+                    //    //{
+                    //    //    Name = temp[0],
+                    //    //    Vat = Convert.ToDecimal(temp[1]),
+                    //    //    Amount = Convert.ToDecimal(temp[2]),
+                    //    //    FileName = item.FileName,
+                    //    //    FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
 
-                    }
+                    //    //};
+                    //    //receipts.Add(receipt);
+                    //}
+
                     var x = new StaffPayment
                     {
                         Receipts = receipts,
