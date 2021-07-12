@@ -278,12 +278,28 @@ namespace FlexHR.Web.Controllers
         
             var receipts = _receiptService.Get(x => x.StaffPaymentId == id).ToList();
             return PartialView("_GetStaffPaymentInfo", _mapper.Map<List<ListReceiptDto>>(receipts));
-        
-              
+
+
             //ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
             //ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
             //ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
 
         }
+        [HttpPost]
+        public bool DeleteReceipt(int id)
+        {
+            try
+            {
+                var model = _receiptService.GetById(id);
+                model.IsActive = false;
+                _receiptService.Update(model);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        
     }
 }

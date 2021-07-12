@@ -36,7 +36,8 @@
                                             </div>
                                             @foreach (var item in Model.Receipts)
                                             {
-                                                <div id="" class="receiptdiv justify-content-between align-items-center d-flex row">
+                                                var param = "db_" + item.Id;
+                                                <div id="dbReceipt_@item.Id" class="receiptdiv justify-content-between align-items-center d-flex row">
                                                     <div class="form-group col-md-5 pl-0">
                                                         <label>Fiş Adı</label>
                                                         <div class="input-group"><input type="text" asp-for="@item.Name" class="form-control form-control-solid form-control-lg " /></div>
@@ -60,11 +61,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-md-1">
-                                                        <label></label> <button onclick="DeleteReceipt()" id="" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button>
+                                                        @*<label></label> <button type="button" onclick="DeleteReceipt("db_'+s+'")" id="" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button>*@
+                                                        <label></label> <button type="button" data-dbtype="db_@item.Id"  id="" class="btn billDelete"><i class="fas fa-trash-alt fa-2x text-danger"></i></button>
                                                     </div>
                                                 </div>
                                             }
-                                            
+
                                         </div>
                                         <div class="col-md-12"> <hr /></div>
                                         <div class="col-md-5 ">
@@ -126,7 +128,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit"  class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -137,12 +139,80 @@
     let counter2 = 0;
     function AddUpdateReceipt() {
         counter2++;
-        var divUpdateId = "receipt" + counter2;
-        var deleteUpdateId = "delete" + counter2;
-        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+        var divUpdateId = "receipt_" + counter2;
+     
+        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button type="button"  data-dbtype="'+divUpdateId+'"  class="btn billDeletee"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
     }
-    function DeleteReceipt(counter) {
-        var divId = "#receipt" + counter;
-        $(divId).remove();
+
+
+    $(".billDelete").click(function () {
+        debugger;
+        alert(this.dataset.dbtype);
+    });
+    $(".billDeletee").click(function () {
+        debugger;
+        alert(this.dataset.dbtype);
+    });
+    function DeleteReceipt() {
+        alert(id);
+        debugger;
+        /*
+        Swal.fire({
+            title: "Silmek istediğinize emin misiniz ?",
+            text: "Bunu geri alamazsınız!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet, sil!",
+            cancelButtonText: "Hayır, iptal et!",
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+
+                if (sjsjs) {
+                    console.log("giirdi");
+                    var idArr = id.split("_");
+                    var receiptId = idArr[1];
+                    console.log(receiptId);
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/StaffPayment/DeleteReceipt/" + receiptId,
+                    }).done(function (result) {
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Silindi!",
+                                text: "Kaydınız silindi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+
+                                $("#" + id).hide();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "Kaydınız silinemedi",
+                                "hata"
+                            )
+                        }
+                    })
+
+                }
+                else {
+                    var divId = "#" + id;
+                    $(divId).remove();
+                }
+
+            } else if (result.dismiss === "cancel") {
+                Swal.fire({
+                    title: "İptal Edildi",
+                    text: "Kaydınız silinmedi",
+                    icon: "error",
+                    showCancelButton: false
+                })
+            }
+        });
+            */
     }
 </script>
