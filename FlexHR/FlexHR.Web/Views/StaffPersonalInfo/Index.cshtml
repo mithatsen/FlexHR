@@ -20,7 +20,7 @@
                 <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_3">
                     <div class="flex-row-fluid ml-lg-8">
                         <!--begin::Form-->
-                        <form class="form" asp-action="UpdateStaffPersonalInfo" asp-controller="StaffPersonalInfo" method="post">
+                        <form id="personalInfo" class="form" asp-action="UpdateStaffPersonalInfo" asp-controller="StaffPersonalInfo" method="post">
                             <!--begin::Card-->
                             <div class="card card-custom card-stretch">
                                 <!--begin::Header-->
@@ -153,6 +153,86 @@
             $("#tab_3").addClass("active");
         });
     </script>
+
+    @*<script>
+        
+        FormValidation.formValidation(
+            document.getElementById('personalInfo'),
+            {
+                fields: {
+                    NameSurname: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Ad soyad alanı boş geçilemez'
+                            }
+                        }
+                    },
+                    EmailJob: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email alanı boş geçilemez'
+                            },
+                            emailAddress: {
+                                message: 'Geçerli bir email adresi girin'
+                            }
+                        }
+                    },
+                    PhoneJob: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Telefon alanı boş geçilemez'
+                            },
+                            phone: {
+                                country: 'TR',
+                                message: 'Geçerli bir numara girin'
+                            }
+                        }
+                    },
+                    JobJoinDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+
+                        }
+                    },
+                    ContractTypeId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Sözleşme türü seçiniz'
+                            },
+
+                        }
+                    },
+                    RoleId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Erişim türü seçiniz'
+                            }
+                        }
+                    },
+                    //JobFinishDate: {
+                    //    validators: {
+                    //        notEmpty: {
+                    //            message: 'Tarih alanı boş geçilemez'
+                    //        },
+
+                    //    }
+                    //}
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+    </script>*@
 
     @*Kişisel bilgiler Güncellendiği için sweet alert*@
     <script>

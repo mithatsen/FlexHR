@@ -20,7 +20,7 @@
                 <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_1">
                     <div class="flex-row-fluid ml-lg-8">
                         <!--begin::Form-->
-                        <form class="form" asp-action="UpdateStaffGeneral" asp-controller="StaffGeneral" method="post">
+                        <form id="generalForm" class="form" asp-action="UpdateStaffGeneral" asp-controller="StaffGeneral" method="post">
                             <!--begin::Card-->
                             <div class="card card-custom card-stretch">
                                 <!--begin::Header-->
@@ -46,13 +46,14 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group row ">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad</label>
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad *</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <input asp-for="NameSurname" class="form-control form-control-lg form-control-solid" type="text" />
+                                                        <input asp-for="NameSurname" name="NameSurname" class="form-control form-control-lg form-control-solid" type="text" required/>
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (İş)</label>
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">E-Posta (İş) *</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
@@ -66,7 +67,7 @@
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Telefon (İş)</label>
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Telefon (İş) *</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
@@ -80,7 +81,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü</label>
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Sözleşme Türü *</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
                                                             <option disabled value="-1">Seçiniz</option>
@@ -125,7 +126,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">İşe Başlama Tarihi</label>
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">İşe Başlama Tarihi *</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
                                                             <input asp-for="JobJoinDate" value="@Model.JobJoinDate.ToShortDateString()" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
@@ -170,7 +171,7 @@
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü</label>
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Erişim Türü *</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select class="form-control form-control-solid form-control-lg" asp-for="RoleId" asp-items="ViewBag.Roles">
                                                             <option disabled value="-1">Seçiniz</option>
@@ -199,11 +200,82 @@
 
 @section Scripts{
     <script src="~/Croppie-2.6.4/demo/demo.js"></script>
+
     <script>
 
         $(document).ready(function () {
             $("#tab_1").addClass("active");
         });
+    </script>
+    <script>
+        FormValidation.formValidation(
+            document.getElementById('generalForm'),
+            {
+                fields: {
+                    NameSurname: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Ad soyad alanı boş geçilemez'
+                            }
+                        }
+                    },
+                    EmailJob: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email alanı boş geçilemez'
+                            },
+                            emailAddress: {
+                                message: 'Geçerli bir email adresi girin'
+                            }
+                        }
+                    },
+                    PhoneJob: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Telefon alanı boş geçilemez'
+                            },
+                            phone: {
+                                country: 'US',
+                                message: 'Geçerli bir numara girin'
+                            }
+                        }
+                    },
+                    JobJoinDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+
+                        }
+                    },
+                    ContractTypeId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Sözleşme türü seçiniz'
+                            },
+
+                        }
+                    },
+                    RoleId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Erişim türü seçiniz'
+                            }
+                        }
+                    },
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
     </script>
     @*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı*@
     <script type="text/javascript">
@@ -231,10 +303,10 @@
             }
         });
     </script>
-  
+
     <script>
         var srcc = $("#photo45").attr("src");
-      
+
        var basic = $('#main-cropper').croppie({
             viewport: { width: 200, height: 200 },
            boundary: { width: 400, height: 400 },
@@ -273,5 +345,7 @@
             });
         });
     </script>
-
+    <!--begin::Page Scripts(used by this page)-->
+    <!--<script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>-->
+    <!--end::Page Scripts-->
 }

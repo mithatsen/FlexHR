@@ -56,13 +56,13 @@
 
                                                 <div class="col-md-6 ">
                                                     <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label ">Ad Soyad</label>
+                                                        <label class="col-xl-4 col-lg-3 col-form-label ">Ad Soyad *</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input name="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" />
+                                                            <input name="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" required />
                                                         </div>
                                                     </div>
                                                     <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (İş)</label>
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (İş) *</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group input-group-lg input-group-solid">
                                                                 <div class="input-group-prepend">
@@ -70,13 +70,13 @@
                                                                         <i class="la la-at"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input name="EmailJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (İş)" />
+                                                                <input name="EmailJob" type="email" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (İş)" required />
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Telefon (İş)</label>
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">Telefon (İş) *</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group input-group-lg input-group-solid">
                                                                 <div class="input-group-prepend">
@@ -84,16 +84,16 @@
                                                                         <i class="la la-phone"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input name="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" />
+                                                                <input name="PhoneJob" type="tel" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" required />
                                                             </div>
 
                                                         </div>
                                                     </div>
                                                     <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü</label>
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü *</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <select id="ContractTypeSelect" name="ContractTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
-                                                                <option value="-1">Seçiniz</option>
+                                                            <select id="ContractTypeSelect" name="ContractTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes" required>
+                                                                <option value="">Seçiniz</option>
 
                                                             </select>
                                                         </div>
@@ -103,7 +103,7 @@
                                                         <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <input id="ContractFinishDate" name="JobFinishDate" type="datetime" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
                                                                     <span class="input-group-text">
                                                                         <i class="ki ki-calendar"></i>
@@ -124,10 +124,10 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label ">İşe Başlama Tarihi</label>
+                                                        <label class="col-xl-4 col-lg-3 col-form-label ">İşe Başlama Tarihi *</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                                                <input type="text" name="JobJoinDate" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                                                <input type="text" name="JobJoinDate" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" required />
                                                                 <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
                                                                     <span class="input-group-text">
                                                                         <i class="ki ki-calendar"></i>
@@ -147,7 +147,7 @@
                                                                         <i class="la la-at"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" name="EmailPersonal" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (Kişisel)" />
+                                                                <input type="email" name="EmailPersonal" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (Kişisel)" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -161,7 +161,7 @@
                                                                         <i class="la la-phone"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" name="PhonePersonal" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
+                                                                <input type="number" name="PhonePersonal" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
 
                                                             </div>
 
@@ -169,11 +169,10 @@
                                                     </div>
 
                                                     <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Erişim Türü</label>
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">Erişim Türü *</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <select class="form-control form-control-solid form-control-lg" name="RoleId" asp-items="ViewBag.Roles">
-                                                                <option value="-1">Seçiniz</option>
-
+                                                            <select class="form-control form-control-solid form-control-lg" name="RoleId" asp-items="ViewBag.Roles" required>
+                                                                <option value="">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -182,9 +181,7 @@
                                                         <div class="col-lg-9 col-xl-6">
                                                             <span class="switch switch-primary">
                                                                 <label>
-
                                                                     <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="1" />
-
                                                                     <span></span>
                                                                 </label>
                                                             </span>
@@ -256,7 +253,7 @@
                                     <!--end::User-->
                                     <!--begin::Name-->
                                     <div class="my-1">
-                                        <a  class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</a>
+                                        <a class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</a>
                                     </div>
                                     <!--end::Name-->
                                     <!--begin::Label-->
@@ -297,6 +294,87 @@
 @section Scripts{
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
 
+    @* form validation *@
+    <script>
+
+        FormValidation.formValidation(
+            document.getElementById('modalForm'),
+            {
+                fields: {
+                    NameSurname: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Ad soyad alanı boş geçilemez'
+                            }
+                        }
+                    },
+                    EmailJob: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email alanı boş geçilemez'
+                            },
+                            emailAddress: {
+                                message: 'Geçerli bir email adresi girin'
+                            }
+                        }
+                    },
+                    PhoneJob: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Telefon alanı boş geçilemez'
+                            },
+                            phone: {
+                                country: 'TR',
+                                message: 'Geçerli bir numara girin'
+                            }
+                        }
+                    },
+                    JobJoinDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                          
+                        }
+                    },
+                    ContractTypeId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Sözleşme türü seçiniz'
+                            },
+
+                        }
+                    },
+                    RoleId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Erişim türü seçiniz'
+                            }
+                        }
+                    },
+                    //JobFinishDate: {
+                    //    validators: {
+                    //        notEmpty: {
+                    //            message: 'Tarih alanı boş geçilemez'
+                    //        },
+
+                    //    }
+                    //}
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+    </script>
+
     @*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı*@
     <script type="text/javascript">
 
@@ -327,13 +405,13 @@
                 $("#dvUserName").attr("hidden", true);
 
             }
-           
+
 
         })
 
 
     </script>
-    
+
 
     <script>
 
@@ -357,4 +435,4 @@
         });
     </script>
 
-    }
+}

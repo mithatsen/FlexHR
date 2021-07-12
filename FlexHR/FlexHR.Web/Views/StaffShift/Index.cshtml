@@ -197,7 +197,39 @@
             $("#tab_7").addClass("active");
         });
     </script>
+    <script>
+         FormValidation.formValidation(
+             document.getElementById('modalAddShift'),
+            {
+                fields: {
+                    StartDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
 
+                        }
+                    },
+                    Description: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Açıklama alanı boş geçilemez'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+    </script>
     @*//add staff shift*@
     <script>
 

@@ -13,7 +13,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
         {
             entity.Property(e => e.EmailJob).HasMaxLength(50);
 
-            entity.Property(e => e.EmailPersonal).HasMaxLength(50);
+            entity.Property(e => e.EmailPersonal).HasMaxLength(50).IsRequired();
 
             entity.Property(e => e.JobFinishDate).HasColumnType("datetime");
 
@@ -25,7 +25,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
 
             entity.Property(e => e.PhoneJob).HasMaxLength(15);
 
-            entity.Property(e => e.PhonePersonal).HasMaxLength(15);
+            entity.Property(e => e.PhonePersonal).HasMaxLength(15).IsRequired();
        
             entity.Property(e => e.Password)
                

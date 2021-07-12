@@ -16,7 +16,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form asp-controller="StaffCareer" asp-action="UpdateStaffCareer" method="POST">
+            <form id="updateCareerForm" asp-controller="StaffCareer" asp-action="UpdateStaffCareer" method="POST">
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -33,10 +33,10 @@
 
                                         <div class="col-md-5 ">
                                             <div class="form-group row ">
-                                                <label  >Şirket</label>
+                                                <label  >Şirket *</label>
                                                 <div class="input-group">
                                                     <select onchange="CompanyChangeUpdate()" class="form-control form-control-solid form-control-lg" id="c_companySelectUpdate" asp-for="CompanyId" asp-items="ViewBag.Companies">
-                                                        <option value="-1">Seçiniz</option>
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
 
@@ -46,20 +46,20 @@
 
                                             </div>
                                             <div class="form-group row ">
-                                                <label  >Departman</label>
+                                                <label  >Departman *</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" asp-for="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
-                                                        <option value="-1">Seçiniz</option>
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row ">
-                                                <label  >Çalışma Şekli</label>
+                                                <label  >Çalışma Şekli *</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" asp-for="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
-                                                        <option value="-1">Seçiniz</option>
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
                                                 </div>
@@ -67,7 +67,7 @@
                                  
 
                                             <div class="form-group row ">
-                                                <label id="jobFinishDateLbl"  >Başlangıç Tarihi</label>
+                                                <label id="jobFinishDateLbl"  >Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_45" data-target-input="nearest">
                                                         <input id="ContractFinishDate" asp-for="JobStartDate" value="@Model.JobStartDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_45" />
@@ -95,10 +95,10 @@
 
 
                                             <div class="form-group row ">
-                                                <label  >Unvan</label>
+                                                <label  >Unvan *</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" asp-for="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
-                                                        <option value="-1">Seçiniz</option>
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
                                                     <input type="hidden" asp-for="@Model.StaffId" />
@@ -117,7 +117,7 @@
                                                             }
                                                             else
                                                             {
-                                                                date = "Tarih Seçiniz";
+                                                                date = "";
                                                             }
                                                         }
 
@@ -153,3 +153,60 @@
     </div>
 
 </div>
+<script>
+     FormValidation.formValidation(
+         document.getElementById('updateCareerForm'),
+        {
+            fields: {
+                JobStartDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
+
+                    }
+                },
+                DepartmantGeneralSubTypeId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Departman seçiniz'
+                        },
+
+                    }
+                },
+                CompanyId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Şirket seçiniz'
+                        }
+                    }
+                },
+                ModeOfOperationGeneralSubTypeId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Çalışma şekli seçiniz'
+                        },
+
+                    }
+                },
+                TitleGeneralSubTypeId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Unvan seçiniz'
+                        }
+                    }
+                },
+            },
+
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            }
+        }
+    );
+</script>
