@@ -48,7 +48,7 @@ namespace FlexHR.Web.Controllers
                 paymentModel.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
 
                 paymentModel.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
-                paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId).ToList();
+                paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId && x.IsActive==true).ToList();
                 paymentModels.Add(paymentModel);
             }
   
@@ -121,7 +121,7 @@ namespace FlexHR.Web.Controllers
                                 Amount = Convert.ToDecimal(temp[2]),
                                 FileName = item.FileName,
                                 FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
-
+                                IsActive=true
                             };
                             receipts.Add(receipt);
 
@@ -242,7 +242,7 @@ namespace FlexHR.Web.Controllers
             if (paymentTypeId == 99)
             {
                 var temp = _mapper.Map<ListStaffPaymentDto>(staffPayment);
-                temp.Receipts = _receiptService.Get(x => x.StaffPaymentId == id).ToList();
+                temp.Receipts = _receiptService.Get(x => x.StaffPaymentId == id && x.IsActive==true).ToList();
                 return PartialView("_GetUpdateStaffPaymentModal1", temp);
             }
             else if (paymentTypeId == 100 || paymentTypeId == 103)
@@ -276,7 +276,7 @@ namespace FlexHR.Web.Controllers
         {
          
         
-            var receipts = _receiptService.Get(x => x.StaffPaymentId == id).ToList();
+            var receipts = _receiptService.Get(x => x.StaffPaymentId == id && x.IsActive==true).ToList();
             return PartialView("_GetStaffPaymentInfo", _mapper.Map<List<ListReceiptDto>>(receipts));
 
 

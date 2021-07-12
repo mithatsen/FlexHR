@@ -96,8 +96,8 @@
                                                     <td>@item.GeneralStatusGeneralSubTypeId</td>
                                                     <td>@item.CreationDate.ToShortDateString()</td>
                                                     <td>@item.IsPaid</td>
-                                                    <td>
-                                                        @if (item.PaymentTypeGeneralSubTypeId == 99)
+                                                    <td class="text-right">
+                                                        @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count>0)
                                                         {
                                                             <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="details">
                                                                 <i class="la la-info text-info"></i>
@@ -292,6 +292,7 @@
         function ShowReceiptInModal(id) {
             //var txtHtml = " <table class='table table-responsive table-dark mx-auto'> <tr class='table table-primary '> <th class='w-75'></th> <th>Fiş Adı</th> <th>KDV(%)</th> <th>Tutar</th> </tr>";
             var modelContent = $("#ShowStaffPaymentInfoDiv");
+
             $.ajax({
                 url: "/StaffPayment/GetStaffPaymentWithReceiptInfoModal/" + id,
                 type: "GET"
@@ -302,13 +303,11 @@
                 }
                 $("#ShowPaymentReceiptModal").modal("show");
 
-
-
             }).fail(function (error) {
                 alert(error);
             });
 
-           
+
 
         }
     </script>
@@ -317,6 +316,8 @@
     <script>
         function PaymentUpdate(id) {
             var modelContent = $("#UpdateStaffPaymentModalDiv");
+            modelContent.html("");
+            debugger;
             $.ajax({
                 url: "/StaffPayment/GetUpdateStaffPaymentModal/" + id,
                 type: "GET"
@@ -326,9 +327,6 @@
                     modelContent.html(content);
                 }
                 $("#UpdatePaymentModal").modal("show");
-
-
-
             }).fail(function (error) {
                 alert(error);
             });
@@ -345,8 +343,6 @@
                 var myKey = "";
                 var file;
                 $(this).find('input').each(function (j, obj2) {
-
-
                     if ($(obj2).attr("name") == "Name") {
                         myKey += $(obj2).val();
                     }
