@@ -12,7 +12,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form asp-action="UpdateStaffPayment" asp-controller="StaffPayment" method="POST" enctype="multipart/form-data">
+            <form  method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -34,10 +34,12 @@
                                                     <a onclick="AddUpdateReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
                                                 </div>
                                             </div>
+                                            
                                             @foreach (var item in Model.Receipts)
                                             {
                                                 var param = "db_" + item.Id;
-                                                <div id="dbReceipt_@item.Id" class="receiptdiv justify-content-between align-items-center d-flex row">
+                                                <div id="dbReceipt_@item.Id" class=" justify-content-between align-items-center d-flex row">
+                                                    <input type="hidden" asp-for="@item.Id" />
                                                     <div class="form-group col-md-5 pl-0">
                                                         <label>Fiş Adı</label>
                                                         <div class="input-group"><input type="text" asp-for="@item.Name" class="form-control form-control-solid form-control-lg " /></div>
@@ -79,12 +81,12 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" asp-for="StaffPaymentId" />
                                                 <input type="hidden" asp-for="CreationDate" />
                                                 <input type="hidden" asp-for="StaffId" />
                                                 <input type="hidden" asp-for="IsActive" />
                                                 <input type="hidden" asp-for="PaymentTypeGeneralSubTypeId" />
                                                 <input type="hidden" asp-for="GeneralStatusGeneralSubTypeId" />
+                                                <input type="hidden" id="StaffPaymentId" value="@Model.StaffPaymentId" />
                                             </div>
 
                                         </div>
@@ -128,7 +130,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="fncAddReceiptOnUpdatePage()" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -142,7 +144,64 @@
         var divUpdateId = "receipt" + counter2;
         var deleteUpdateId = "delete" + counter2;
 
-        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button type="button" onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '"   class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"><input type="hidden" value="0" name="Id"/> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button type="button" onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '"   class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+    }
+    function fncAddReceiptOnUpdatePage() {
+        var formdata = new FormData();
+        $('.receiptdiv').each(function (i, obj) {
+
+            var myKey = "";
+            var file;
+            $(this).find('input').each(function (j, obj2) {
+                if ($(obj2).attr("name") == "Id") {
+                        myKey += $(obj2).val();                    
+                }
+                else if ($(obj2).attr("name") == "Name") {
+                    myKey += "~" + $(obj2).val();
+                }
+                else if ($(obj2).attr("name") == "Vat") {
+                    myKey += "~" + $(obj2).val();
+                }
+                else if ($(obj2).attr("name") == "ReceiptAmount") {
+                    myKey += "~" + $(obj2).val();
+                }
+                else if ($(obj2).attr("name") == "File") {
+                    file = $(obj2);
+                }
+            });
+            console.log(myKey)
+            formdata.append(myKey, file[0].files[0]);
+        });
+        var id = $('#staffId').val();
+  
+        formdata.append("StaffPaymentId", document.getElementById("StaffPaymentId").value);
+        formdata.append("Amount", $('#txtAmount').val());
+        formdata.append("Date", $('#ContractStartDate').val());
+        formdata.append("LgDescription", $('#txtLgDescription').val());
+        formdata.append("StaffId", $('#staffId').val());
+        $.ajax({
+            url: "/StaffPayment/AddReceiptOnUpdatePage/" + id,
+            type: "POST",
+            data: formdata,
+
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                if (data == "true") {
+                    Swal.fire({
+                        title: "Eklendi!",
+                        text: "Kaydınız eklendi.",
+                        icon: "success",
+                        showCancelButton: false
+                    }).then(function () {
+                        window.location.reload();
+                    })
+                }
+
+            }
+        });
+
     }
     function DeleteReceipt(counter) {
 

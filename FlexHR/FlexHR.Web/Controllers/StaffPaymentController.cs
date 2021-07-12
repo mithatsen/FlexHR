@@ -143,28 +143,6 @@ namespace FlexHR.Web.Controllers
                             receipts.Add(receipt);
                         }
                         }
-
-                    //else
-                    //{
-                    //    for (int i = 0; i < data.Keys.Count; i++)
-                    //    {
-                    //        //if (data.Keys[i].Contains("~"))
-                    //        //{
-
-                    //        //}
-                    //    }
-                    //    //Receipt receipt = new Receipt
-                    //    //{
-                    //    //    Name = temp[0],
-                    //    //    Vat = Convert.ToDecimal(temp[1]),
-                    //    //    Amount = Convert.ToDecimal(temp[2]),
-                    //    //    FileName = item.FileName,
-                    //    //    FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
-
-                    //    //};
-                    //    //receipts.Add(receipt);
-                    //}
-
                     var x = new StaffPayment
                     {
                         Receipts = receipts,
@@ -300,6 +278,142 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
-        
+        public async Task<IActionResult> AddReceiptOnUpdatePage(IFormCollection data, int id)
+        {
+
+            if (ModelState.IsValid)
+            {
+                int staffPaymentId = Convert.ToInt32(data["StaffPaymentId"]);
+               var result= _staffPaymentService.Get(x => x.StaffPaymentId == staffPaymentId).FirstOrDefault();
+                string amount = data["Amount"];
+                string date = data["Date"];
+                string LgDescription = data["LgDescription"];
+                if (result.PaymentTypeGeneralSubTypeId == 99)
+                {
+
+                    List<Receipt> receipts = new List<Receipt>(); //datadan gelen fişleri listeye ekledik.
+
+                    foreach (var item in data.Files)
+                    {
+
+                        var temp = item.Name.Split("~");
+                        var staffName = "Staff_" + data["staffId"];
+
+                        var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
+                        var folderPath = Path.Combine(fullPath, staffName);
+                        if (!Directory.Exists(folderPath))
+                            Directory.CreateDirectory(folderPath);
+
+                        var filePath = Path.Combine(folderPath, "HarcamaFisleri" + "/");
+                        if (!Directory.Exists(filePath))
+                            Directory.CreateDirectory(filePath);
+                        var imagePath = Path.Combine(filePath + item.FileName);
+                        if (item.Length > 0)
+                        {
+                            //dosyamızı kaydediyoruz.
+
+                            using (var stream = new FileStream(imagePath, FileMode.Create))
+                            {
+                                await item.CopyToAsync(stream);
+                            }
+                        }
+
+                        if (temp[0] == "0")
+                        {
+                            Receipt receipt = new Receipt
+                            {
+                                Name = temp[1],
+                                Vat = Convert.ToDecimal(temp[2]),
+                                Amount = Convert.ToDecimal(temp[3]),
+                                FileName = item.FileName,
+                                FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
+                                IsActive = true,
+                                StaffPaymentId = staffPaymentId
+                            };
+                            _receiptService.Add(receipt);
+
+                        }
+                        
+                    }
+                    foreach (var key in data.Keys)
+                    {
+                        if (key.Contains("~"))
+                        {
+                            var temp2 = key.Split("~");
+                            Receipt receipt = new Receipt
+                            {
+                                Name = temp2[1],
+                                Vat = Convert.ToDecimal(temp2[2]),
+                                Amount = Convert.ToDecimal(temp2[3]),
+                                FileName = "",
+                                FileFullPath = "",
+                                IsActive = true,
+                                StaffPaymentId = staffPaymentId
+                            };
+                            _receiptService.Add(receipt);
+                        }
+                    }
+
+                    var x = new StaffPayment
+                    {
+                        Receipts = receipts,
+                        StaffId = Convert.ToInt32(data["staffId"]),
+                        Amount = Convert.ToDecimal(amount),
+                        PaymentDate = Convert.ToDateTime(date),
+                        CreationDate = DateTime.Now,
+                        Description = LgDescription,
+                        GeneralStatusGeneralSubTypeId = 96,
+                        IsActive = true,
+                        IsMailSentToStaff = false,
+                        IsPaid = false,
+                        IsSentForApproval = false,
+                        PaymentTypeGeneralSubTypeId = id
+                    };
+                    _staffPaymentService.Update(x);
+
+                }
+                else if (result.PaymentTypeGeneralSubTypeId == 100 || result.PaymentTypeGeneralSubTypeId == 103)
+                {
+                    var m = new StaffPayment
+                    {
+                        StaffId = Convert.ToInt32(data["staffId"]),
+                        Amount = Convert.ToDecimal(amount),
+                        PaymentDate = Convert.ToDateTime(date),
+                        CreationDate = DateTime.Now,
+                        GeneralStatusGeneralSubTypeId = 96,
+                        IsActive = true,
+                        IsMailSentToStaff = false,
+                        IsPaid = false,
+                        IsSentForApproval = false,
+                        PaymentTypeGeneralSubTypeId = id,
+                    };
+                    _staffPaymentService.Add(m);
+                }
+                else
+                {
+                    var k = new StaffPayment
+                    {
+                        StaffId = Convert.ToInt32(data["staffId"]),
+                        Amount = Convert.ToDecimal(amount),
+                        PaymentDate = Convert.ToDateTime(date),
+                        CreationDate = DateTime.Now,
+                        GeneralStatusGeneralSubTypeId = 96,
+                        IsActive = true,
+                        IsMailSentToStaff = false,
+                        IsPaid = false,
+                        IsSentForApproval = false,
+                        PaymentTypeGeneralSubTypeId = id
+                    };
+                    _staffPaymentService.Add(k);
+                }
+                return Json("true");
+
+            }
+
+            return Json("false");
+        }
+
+
+
     }
 }

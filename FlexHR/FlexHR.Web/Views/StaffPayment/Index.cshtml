@@ -317,7 +317,6 @@
         function PaymentUpdate(id) {
             var modelContent = $("#UpdateStaffPaymentModalDiv");
             modelContent.html("");
-            debugger;
             $.ajax({
                 url: "/StaffPayment/GetUpdateStaffPaymentModal/" + id,
                 type: "GET"
