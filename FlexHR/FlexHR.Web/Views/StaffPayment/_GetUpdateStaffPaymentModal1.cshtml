@@ -79,9 +79,9 @@
                                             <div class="form-group row">
                                                 <label>Tutar</label>
                                                 <div class="input-group">
-                                                    <input id="txtAmount" type="text" asp-for="Amount" class="form-control form-control-solid form-control-lg">
+                                                    <input id="txtAmountPartial" type="text" asp-for="Amount" class="form-control form-control-solid form-control-lg">
                                                     <div class="input-group-append">
-                                                        <select id="currencyType" class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
+                                                        <select id="currencyTypePartial" class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -101,7 +101,7 @@
                                                 <label id="jobFinishDateLbl">Ödeme Tarihi</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="ContractStartDate" asp-for="PaymentDate" value="@Model.PaymentDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <input id="ContractStartDatePartial" asp-for="PaymentDate" value="@Model.PaymentDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -116,7 +116,7 @@
                                             <div class="form-group row">
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
-                                                    <textarea id="txtLgDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" asp-for="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea id="txtLgDescriptionPartial" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" asp-for="Description" placeholder="Açıklama"></textarea>
                                                 </div>
                                             </div>
 
@@ -215,10 +215,12 @@
         var id = $('#staffId').val();
   
         formdata.append("StaffPaymentId", document.getElementById("StaffPaymentId").value);
-        formdata.append("Amount", $('#txtAmount').val());
-        formdata.append("Date", $('#ContractStartDate').val());
-        formdata.append("LgDescription", $('#txtLgDescription').val());
+        formdata.append("Amount", $('#txtAmountPartial').val());
+        formdata.append("Date", $('#ContractStartDatePartial').val());
+        formdata.append("LgDescription", $('#txtLgDescriptionPartial').val());
         formdata.append("StaffId", $('#staffId').val());
+        formdata.append("CurrencyType", $('#currencyTypePartial').val());
+
         $.ajax({
             url: "/StaffPayment/AddReceiptOnUpdatePage/" + id,
             type: "POST",

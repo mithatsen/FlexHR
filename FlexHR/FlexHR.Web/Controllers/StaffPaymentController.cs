@@ -381,22 +381,14 @@ namespace FlexHR.Web.Controllers
                             
                         }
                     }
+                    var x = _staffPaymentService.GetById(staffPaymentId);
 
-                    var x = new StaffPayment
-                    {
-                        Receipts = receipts,
-                        StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = Convert.ToDecimal(amount),
-                        PaymentDate = Convert.ToDateTime(date),
-                        CreationDate = DateTime.Now,
-                        Description = LgDescription,
-                        GeneralStatusGeneralSubTypeId = 96,
-                        IsActive = true,
-                        IsMailSentToStaff = false,
-                        IsPaid = false,
-                        IsSentForApproval = false,
-                        PaymentTypeGeneralSubTypeId = id
-                    };
+
+                    x.Amount = Convert.ToDecimal(amount);
+                    x.PaymentDate = Convert.ToDateTime(date);
+                    x.Description = LgDescription;
+                    x.CurrencyGeneralSubTypeId = Convert.ToInt32(data["CurrencyType"]);
+                    
                     _staffPaymentService.Update(x);
 
                 }
@@ -414,6 +406,7 @@ namespace FlexHR.Web.Controllers
                         IsPaid = false,
                         IsSentForApproval = false,
                         PaymentTypeGeneralSubTypeId = id,
+                        CurrencyGeneralSubTypeId = Convert.ToInt32(data["CurrencyType"])
                     };
                     _staffPaymentService.Add(m);
                 }
@@ -430,7 +423,8 @@ namespace FlexHR.Web.Controllers
                         IsMailSentToStaff = false,
                         IsPaid = false,
                         IsSentForApproval = false,
-                        PaymentTypeGeneralSubTypeId = id
+                        PaymentTypeGeneralSubTypeId = id,
+                        CurrencyGeneralSubTypeId = Convert.ToInt32(data["CurrencyType"])
                     };
                     _staffPaymentService.Add(k);
                 }
