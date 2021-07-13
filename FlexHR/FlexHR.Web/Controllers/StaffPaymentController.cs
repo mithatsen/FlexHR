@@ -284,7 +284,7 @@ namespace FlexHR.Web.Controllers
             if (ModelState.IsValid)
             {
                 int staffPaymentId = Convert.ToInt32(data["StaffPaymentId"]);
-               var result= _staffPaymentService.Get(x => x.StaffPaymentId == staffPaymentId).FirstOrDefault();
+                var result= _staffPaymentService.Get(x => x.StaffPaymentId == staffPaymentId).FirstOrDefault();
                 string amount = data["Amount"];
                 string date = data["Date"];
                 string LgDescription = data["LgDescription"];
@@ -333,6 +333,18 @@ namespace FlexHR.Web.Controllers
                             _receiptService.Add(receipt);
 
                         }
+                        else
+                        {
+                            var tempo = _receiptService.GetById(Convert.ToInt32(temp[0]));
+                            tempo.Name = temp[1];
+                            tempo.Vat = Convert.ToDecimal(temp[2]);
+                            tempo.Amount = Convert.ToDecimal(temp[3]);
+                            tempo.FileName = item.FileName;
+                            tempo.FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/");
+                            tempo.IsActive = true;
+                            tempo.StaffPaymentId = staffPaymentId;
+                            _receiptService.Update(tempo);
+                        }
                         
                     }
                     foreach (var key in data.Keys)
@@ -340,17 +352,33 @@ namespace FlexHR.Web.Controllers
                         if (key.Contains("~"))
                         {
                             var temp2 = key.Split("~");
-                            Receipt receipt = new Receipt
+                            if (temp2[0] == "0")
                             {
-                                Name = temp2[1],
-                                Vat = Convert.ToDecimal(temp2[2]),
-                                Amount = Convert.ToDecimal(temp2[3]),
-                                FileName = "",
-                                FileFullPath = "",
-                                IsActive = true,
-                                StaffPaymentId = staffPaymentId
-                            };
-                            _receiptService.Add(receipt);
+                                Receipt receipt = new Receipt
+                                {
+                                    Name = temp2[1],
+                                    Vat = Convert.ToDecimal(temp2[2]),
+                                    Amount = Convert.ToDecimal(temp2[3]),
+                                    FileName = "",
+                                    FileFullPath = "",
+                                    IsActive = true,
+                                    StaffPaymentId = staffPaymentId
+                                };
+                                _receiptService.Add(receipt);
+                            }
+                            else
+                            {
+                                var temp= _receiptService.GetById(Convert.ToInt32(temp2[0]));
+                                temp.Name = temp2[1];
+                                temp.Vat = Convert.ToDecimal(temp2[2]);
+                                temp.Amount = Convert.ToDecimal(temp2[3]);
+                                temp.FileName = temp.FileName;
+                                temp.FileFullPath = temp.FileFullPath;
+                                temp.IsActive = true;
+                                temp.StaffPaymentId = staffPaymentId;
+                                _receiptService.Update(temp);                         
+                            }
+                            
                         }
                     }
 
