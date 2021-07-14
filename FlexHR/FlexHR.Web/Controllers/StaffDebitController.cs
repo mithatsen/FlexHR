@@ -40,7 +40,7 @@ namespace FlexHR.Web.Controllers
             return View(staffDebitDtoList);
         }
         [HttpPost]
-        public JsonResult AddStaffDebitWithAjax(AddStaffDebitDto model)
+        public bool AddStaffDebitWithAjax(AddStaffDebitDto model)
         {
             try
             {
@@ -48,11 +48,11 @@ namespace FlexHR.Web.Controllers
 
                 _staffDebitService.Add(_mapper.Map<StaffDebit>(model));
 
-                return Json("true");
+                return true;
             }
             catch (Exception)
             {
-                return Json("false");
+                return false;
             }
            
         }

@@ -31,7 +31,7 @@
                                         <div class="col-md-5 ">
 
                                             <div class="form-group row ">
-                                                <label>Kategori</label>
+                                                <label>Kategori *</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" asp-for="DebitGeneralSubTypeId" asp-items="ViewBag.Categories">
                                                         <option value="">Seçiniz</option>
@@ -40,7 +40,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row  ">
-                                                <label id="debitIssueDateLbl">Veriliş Tarihi</label>
+                                                <label id="debitIssueDateLbl">Veriliş Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
                                                         <input id="IssueDate" asp-for="IssueDate" value="@Model.IssueDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />

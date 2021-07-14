@@ -12,7 +12,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form  method="POST" enctype="multipart/form-data">
+            <form id="UpdateStaffPaymentModal1" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -34,24 +34,24 @@
                                                     <a onclick="AddUpdateReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
                                                 </div>
                                             </div>
-                                            
+
                                             @foreach (var item in Model.Receipts)
                                             {
-                                                var imgId= "UpdateReceiptImageFile_"+item.Id;
+                                                var imgId = "UpdateReceiptImageFile_" + item.Id;
                                                 var param = "db_" + item.Id;
                                                 <div id="dbReceipt_@item.Id" class="dbReceiptDiv justify-content-between align-items-center d-flex row">
                                                     <input type="hidden" asp-for="@item.Id" name="Id" />
                                                     <div class="form-group col-md-5 pl-0">
                                                         <label>Fiş Adı</label>
-                                                        <div class="input-group"><input type="text" asp-for="@item.Name" name="Name"  class="form-control form-control-solid form-control-lg " /></div>
+                                                        <div class="input-group"><input type="text" asp-for="@item.Name" name="Name" class="form-control form-control-solid form-control-lg " /></div>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label>KDV(%)</label>
-                                                        <div class="input-group"><input type="text" asp-for="@item.Vat" name="Vat"  class="form-control form-control-solid form-control-lg " /></div>
+                                                        <div class="input-group"><input type="text" asp-for="@item.Vat" name="Vat" class="form-control form-control-solid form-control-lg " /></div>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label>Tutar</label>
-                                                        <div class="input-group"><input type="text" asp-for="@item.Amount" name="ReceiptAmount"  class="form-control form-control-solid form-control-lg " /></div>
+                                                        <div class="input-group"><input type="text" asp-for="@item.Amount" name="ReceiptAmount" class="form-control form-control-solid form-control-lg " /></div>
                                                     </div>
                                                     <div class="form-group col-md-2 ">
                                                         <label></label>
@@ -79,7 +79,7 @@
                                             <div class="form-group row">
                                                 <label>Tutar</label>
                                                 <div class="input-group">
-                                                    <input id="txtAmountPartial" type="text" asp-for="Amount" class="form-control form-control-solid form-control-lg">
+                                                    <input id="txtAmountPartial" type="text" asp-for="Amount" name="AmountPayment" class="form-control form-control-solid form-control-lg">
                                                     <div class="input-group-append">
                                                         <select id="currencyTypePartial" class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
                                                         </select>
@@ -160,7 +160,7 @@
             $(this).find('input').each(function (j, obj2) {
                 if ($(obj2).attr("name") == "Id") {
                     myKey += $(obj2).val();
-                    itemId = "#UpdateReceiptImageFile_"+$(obj2).val();
+                    itemId = "#UpdateReceiptImageFile_" + $(obj2).val();
                 }
                 else if ($(obj2).attr("name") == "Name") {
                     myKey += "~" + $(obj2).val();
@@ -171,10 +171,10 @@
                 else if ($(obj2).attr("name") == "ReceiptAmount") {
                     myKey += "~" + $(obj2).val();
                 }
-                else if ($(obj2).attr("name") == "File" && $(itemId).prop('files')!=null) {
+                else if ($(obj2).attr("name") == "File" && $(itemId).prop('files') != null) {
                     file = $(itemId).prop('files');
                 }
-             
+
             });
             console.log(file);
             if (file.length != 0) {
@@ -182,7 +182,7 @@
             } else {
                 formdata.append(myKey, "");
             }
-           
+
         });
         console.log(formdata);
         $('.receiptdiv').each(function (i, obj) {
@@ -213,7 +213,7 @@
 
         });
         var id = $('#staffId').val();
-  
+
         formdata.append("StaffPaymentId", document.getElementById("StaffPaymentId").value);
         formdata.append("Amount", $('#txtAmountPartial').val());
         formdata.append("Date", $('#ContractStartDatePartial').val());
@@ -326,66 +326,60 @@
             }
         });
     };
-    /* function DeleteReceipt() {
-        alert(id);
-        debugger;
 
-        Swal.fire({
-            title: "Silmek istediğinize emin misiniz ?",
-            text: "Bunu geri alamazsınız!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Evet, sil!",
-            cancelButtonText: "Hayır, iptal et!",
-            reverseButtons: true
-        }).then(function (result) {
-            if (result.value) {
+</script>
+<script>
+    FormValidation.formValidation(
+        document.getElementById('UpdateStaffPaymentModal1'),
+        {
+            fields: {
+                PaymentDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
 
-                if (sjsjs) {
-                    console.log("giirdi");
-                    var idArr = id.split("_");
-                    var receiptId = idArr[1];
-                    console.log(receiptId);
+                    }
+                }, Name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Fiş adı alanı boş geçilemez'
+                        },
 
-                    $.ajax({
-                        method: "POST",
-                        url: "/StaffPayment/DeleteReceipt/" + receiptId,
-                    }).done(function (result) {
-                        if (result == true) {
-                            Swal.fire({
-                                title: "Silindi!",
-                                text: "Kaydınız silindi.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
+                    }
+                }, Vat: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Kdv alanı boş geçilemez'
+                        },
 
-                                $("#" + id).hide();
-                            })
+                    }
+                }, ReceiptAmount: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tutar alanı boş geçilemez'
+                        },
 
-                        } else {
-                            Swal.fire(
-                                "Hata",
-                                "Kaydınız silinemedi",
-                                "hata"
-                            )
+                    }
+                },
+                AmountPayment: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tutar alanı boş geçilemez'
                         }
-                    })
+                    }
+                },
 
-                }
-                else {
-                    var divId = "#" + id;
-                    $(divId).remove();
-                }
-
-            } else if (result.dismiss === "cancel") {
-                Swal.fire({
-                    title: "İptal Edildi",
-                    text: "Kaydınız silinmedi",
-                    icon: "error",
-                    showCancelButton: false
-                })
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
             }
-        });
-
-    }*/
+        }
+    );
 </script>

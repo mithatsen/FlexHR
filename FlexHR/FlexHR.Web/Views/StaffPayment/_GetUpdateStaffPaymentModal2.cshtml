@@ -12,7 +12,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form asp-action="UpdateStaffPayment" asp-controller="StaffPayment" method="POST" enctype="multipart/form-data">
+            <form id="UpdateStaffPaymentModal2" asp-action="UpdateStaffPayment" asp-controller="StaffPayment" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -111,3 +111,37 @@
     </div>
 
 </div>
+<script>
+    FormValidation.formValidation(
+        document.getElementById('UpdateStaffPaymentModal2'),
+        {
+            fields: {
+                PaymentDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
+
+                    }
+                },
+                Amount: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tutar alanı boş geçilemez'
+                        }
+                    }
+                },
+
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            }
+        }
+    );
+</script>

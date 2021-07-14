@@ -198,7 +198,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewDebit" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="debitClickFunction()" id="btnNewDebit29" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -220,54 +220,77 @@
     </script>
 
     <script>
-        FormValidation.formValidation(
-            document.getElementById('modalAddDebitForm'),
-            {
-                fields: {
-                    IssueDate: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
 
-                        }
-                    },
-                    DebitGeneralSubTypeId: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Kategori alanı boş geçilemez'
-                            }
-                        }
-                    },
+        // Create a FormValidation instance
+        const fv = FormValidation.formValidation(document.getElementById('modalAddDebitForm'), {
+            fields: {
+                IssueDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
+
+                    }
                 },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    // Validate fields when clicking the Submit button
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // Submit the form when all fields are valid
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                }
+                DebitGeneralSubTypeId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Kategori alanı boş geçilemez'
+                        }
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                // submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
             }
-        ).on('core.form.valid', function () {
-
-            var formData = {
-                DebitGeneralSubTypeId: $("#DebitGeneralSubTypeId").val(),
-                IssueDate: $("#IssueDate").val(),
-                SerialNumber: $("#SerialNumber").val(),
-                ReturnDate: $("#ReturnDate").val(),
-                Description: $("#Description").val(),
-                StaffId: $("#StaffId").val(),
-            };
-            debugger;
-            $.ajax({
-                method: 'post',
-                url: '/StaffDebit/AddStaffDebitWithAjax',
-                data: formData,
-                
-            })
         });
+        function debitClickFunction() {
+            fv.validate().then(function (status) {
+                // Update the login button content based on the validation status
+                if (status == 'Valid') {
+                    var formData = {
+                        DebitGeneralSubTypeId: $("#DebitGeneralSubTypeId").val(),
+                        IssueDate: $("#IssueDate").val(),
+                        SerialNumber: $("#SerialNumber").val(),
+                        ReturnDate: $("#ReturnDate").val(),
+                        Description: $("#Description").val(),
+                        StaffId: $("#StaffId").val(),
+                    };
+
+                    debugger;
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffDebit/AddStaffDebitWithAjax',
+                        data: formData,
+                        success: function (data) {
+                            debugger;
+
+                            if (data == true) {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            }
+
+                        }
+
+                    })
+                }
+            });
+        }
+
+
+
+
     </script>
     @*Modal Add Career*@
     <script>
