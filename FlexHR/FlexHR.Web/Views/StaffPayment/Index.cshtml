@@ -97,7 +97,7 @@
                                                     <td>@item.CreationDate.ToShortDateString()</td>
                                                     <td>@item.IsPaid</td>
                                                     <td class="text-right">
-                                                        @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count>0)
+                                                        @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count > 0)
                                                         {
                                                             <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="details">
                                                                 <i class="la la-info text-info"></i>
@@ -334,62 +334,120 @@
 
     @*Delete Staff Payment*@
     <script>
+        const fv = FormValidation.formValidation(
+            document.getElementById('modalAddPaymentForm'),
+            {
+                fields: {
+                    PaymentDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+
+                        }
+                    }, Name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Fiş adı alanı boş geçilemez'
+                            },
+
+                        }
+                    }, Vat: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kdv alanı boş geçilemez'
+                            },
+
+                        }
+                    }, ReceiptAmount: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tutar alanı boş geçilemez'
+                            },
+
+                        }
+                    },
+                    Amount: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tutar alanı boş geçilemez'
+                            }
+                        }
+                    },
+
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                   
+                }
+            }
+        );
+
 
         function fncAddReceipt() {
-            var formdata = new FormData();
-            $('.receiptdiv').each(function (i, obj) {
+            fv.validate().then(function (status) {
+                if (status == 'Valid') {
+                    var formdata = new FormData();
+                    $('.receiptdiv').each(function (i, obj) {
 
-                var myKey = "";
-                var file;
-                $(this).find('input').each(function (j, obj2) {
-                    if ($(obj2).attr("name") == "Name") {
-                        myKey += $(obj2).val();
-                    }
-                    else if ($(obj2).attr("name") == "Vat") {
-                        myKey += "~" + $(obj2).val();
-                    }
-                    else if ($(obj2).attr("name") == "ReceiptAmount") {
-                        myKey += "~" + $(obj2).val();
-                    }
-                    else if ($(obj2).attr("name") == "File") {
-                        file = $(obj2);
+                        var myKey = "";
+                        var file;
+                        $(this).find('input').each(function (j, obj2) {
+                            if ($(obj2).attr("name") == "Name") {
+                                myKey += $(obj2).val();
+                            }
+                            else if ($(obj2).attr("name") == "Vat") {
+                                myKey += "~" + $(obj2).val();
+                            }
+                            else if ($(obj2).attr("name") == "ReceiptAmount") {
+                                myKey += "~" + $(obj2).val();
+                            }
+                            else if ($(obj2).attr("name") == "File") {
+                                file = $(obj2);
 
-                    }
-                });
-                formdata.append(myKey, file[0].files[0]);
-            });
-            var id = document.getElementById("kt_select2_1").value;
-            formdata.append("Installment", $('#valInstallment').val());
-            formdata.append("FeeType", $('#valFeeType').val());
-            formdata.append("Amount", $('#txtAmount').val());
-            formdata.append("Date", $('#ContractStartDate').val());
-            formdata.append("SmDescription", $('#txtSmDescription').val());
-            formdata.append("LgDescription", $('#txtLgDescription').val());
-            formdata.append("CurrencyType", $('#currencyType').val());
-            formdata.append("StaffId", $('#staffId').val());
-            $.ajax({
-                url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
-                type: "POST",
-                data: formdata,
+                            }
+                        });
+                        formdata.append(myKey, file[0].files[0]);
+                    });
+                    var id = document.getElementById("kt_select2_1").value;
+                    formdata.append("Installment", $('#valInstallment').val());
+                    formdata.append("FeeType", $('#valFeeType').val());
+                    formdata.append("Amount", $('#txtAmount').val());
+                    formdata.append("Date", $('#ContractStartDate').val());
+                    formdata.append("SmDescription", $('#txtSmDescription').val());
+                    formdata.append("LgDescription", $('#txtLgDescription').val());
+                    formdata.append("CurrencyType", $('#currencyType').val());
+                    formdata.append("StaffId", $('#staffId').val());
+                    $.ajax({
+                        url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
+                        type: "POST",
+                        data: formdata,
 
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function (data) {
-                    if (data == "true") {
-                        Swal.fire({
-                            title: "Eklendi!",
-                            text: "Kaydınız eklendi.",
-                            icon: "success",
-                            showCancelButton: false
-                        }).then(function () {
-                            window.location.reload();
-                        })
-                    }
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data == "true") {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                    showCancelButton: false
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+                            }
+
+                        }
+                    });
 
                 }
-            });
 
+
+            });
         }
         function DeleteStaffPayment(id) {
             Swal.fire({
