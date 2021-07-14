@@ -16,7 +16,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form asp-controller="StaffLeave" asp-action="UpdateStaffLeave" method="POST">
+            <form id="updateStaffLeaveForm" asp-controller="StaffLeave" asp-action="UpdateStaffLeave" method="POST">
                 <input type="hidden" asp-for="StaffId" />
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
@@ -33,10 +33,10 @@
 
                                         <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label >İzin Türü</label>
+                                                <label >İzin Türü *</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" asp-for="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
-                                                        <option value="-1">Seçiniz</option>
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
 
@@ -47,7 +47,7 @@
                                                 <input type="hidden" asp-for="StaffLeaveId" />
                                             </div>
                                             <div class="form-group row ">
-                                                <label >Başlangıç Tarihi</label>
+                                                <label >Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_16" data-target-input="nearest">
                                                         <input asp-for="LeaveStartDate" value="@Model.LeaveStartDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_16" />
@@ -73,7 +73,7 @@
                                             </div>
 
                                             <div class="form-group row ">
-                                                <label >Bitiş Tarihi</label>
+                                                <label >Bitiş Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_17" data-target-input="nearest">
                                                         <input asp-for="LeaveEndDate" value="@Model.LeaveEndDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_17" />
@@ -131,4 +131,45 @@
         maxboostedstep: 10,
         
     }); 
+
+
+
+    FormValidation.formValidation(
+        document.getElementById('updateStaffLeaveForm'),
+        {
+            fields: {
+                LeaveTypeGeneralSubTypeId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'İzin türü alanı boş geçilemez'
+                        },
+
+                    }
+                },
+                LeaveStartDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        }
+                    }
+                },
+                LeaveEndDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        }
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            }
+        }
+    );
 </script>
