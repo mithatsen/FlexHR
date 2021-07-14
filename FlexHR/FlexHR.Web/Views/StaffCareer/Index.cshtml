@@ -140,7 +140,7 @@
                                                 <label>Şirket *</label>
                                                 <div class="input-group">
                                                     <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
-                                                        <option value="" >Seçiniz</option>
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
 
@@ -150,7 +150,7 @@
                                             <div class="form-group row ">
                                                 <label>Departman *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg"  id="DepartmantGeneralSubTypeId" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
+                                                    <select class="form-control form-control-solid form-control-lg" id="DepartmantGeneralSubTypeId" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -160,7 +160,7 @@
                                             <div class="form-group row  ">
                                                 <label>Çalışma Şekli *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg"  id="ModeOfOperationGeneralSubTypeId"  name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
+                                                    <select class="form-control form-control-solid form-control-lg" id="ModeOfOperationGeneralSubTypeId" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -236,7 +236,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaffCareers" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="careerClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -259,8 +259,8 @@
         });
     </script>
     <script>
-        // document.addEventListener('DOMContentLoaded', function (e) {
-        FormValidation.formValidation(
+        //Validation
+        const fv = FormValidation.formValidation(
             document.getElementById('modalAddCareerForm'),
             {
                 fields: {
@@ -308,69 +308,51 @@
                     //// Bootstrap Framework Integration
                     bootstrap: new FormValidation.plugins.Bootstrap(),
                     //// Validate fields when clicking the Submit button
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // Submit the form when all fields are valid
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+              
                 },
             }
-        ).on('core.form.valid', function () {
+        );
+        function careerClickFunction() {
+            fv.validate().then(function (status) {
+                if (status == 'Valid') {
+                    var formData = {
+                        CompanyId: $("#c_companySelect").val(),
+                        DepartmantGeneralSubTypeId: $("#DepartmantGeneralSubTypeId").val(),
+                        ModeOfOperationGeneralSubTypeId: $("#ModeOfOperationGeneralSubTypeId").val(),
+                        c_companyBranchSelect: $("#c_companyBranchSelect").val(),
+                        JobStartDate: $("#JobStartDate").val(),
+                        TitleGeneralSubTypeId: $("#TitleGeneralSubTypeId").val(),
+                        JobFinishDate: $("#JobFinishDate").val(),
+                        StaffId: $("#StaffId").val(),
+                    };
 
-            var formData = {
-                CompanyId: $("#c_companySelect").val(),
-                DepartmantGeneralSubTypeId: $("#DepartmantGeneralSubTypeId").val(),
-                ModeOfOperationGeneralSubTypeId: $("#ModeOfOperationGeneralSubTypeId").val(),
-                c_companyBranchSelect: $("#c_companyBranchSelect").val(),
-                JobStartDate: $("#JobStartDate").val(),
-                TitleGeneralSubTypeId: $("#TitleGeneralSubTypeId").val(),
-                JobFinishDate: $("#JobFinishDate").val(),
-                StaffId: $("#StaffId").val(),
-            };
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffCareer/AddStaffCareerWithAjax',
+                        data: formData,
+                        success: function (data) {
+                            if (data == "true") {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                    showCancelButton: false,
 
-            $.ajax({
-                method: 'post',
-                url: '/StaffCareer/AddStaffCareerWithAjax',
-                data: formData,
-            }).then(function (response) {
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+                            }
+
+                        }
+                    })
+                }
 
             });
-        });
-        //   });
+        }
+
     </script>
 
 
-    @*Modal Add Career*@
-    @*<script>
-
-            $(document).on("submit", "#modalAddCareerForm", function (event) { //modalAddCareerForm id li form post edildiğinde
-
-
-                event.preventDefault();
-
-                $.ajax({
-                    url: "/StaffCareer/AddStaffCareerWithAjax",
-                    type: "POST",
-                    data: new FormData(this),
-                    dataType: "json",
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    success: function (data) {
-                        if (data == "true") {
-                            Swal.fire({
-                                title: "Eklendi!",
-                                text: "Kaydınız eklendi.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
-                        }
-
-                    }
-                });
-            });
-        </script>*@
-    @*//update staff career*@
     <script>
         function CareerUpdate(id) {
             console.log(id);
@@ -404,7 +386,7 @@
         function CompanyChange() {
             var id = document.getElementById("c_companySelect").value;
             console.log(id);
-            if (id !="" || id>0) {
+            if (id != "" || id > 0) {
 
                 $.ajax({
                     method: "GET",
@@ -433,7 +415,7 @@
         // kariyer güncelleme sayfasındaki şirket şube listeleme
         function CompanyChangeUpdate() {
 
-            var id = document.getElementById("c_companySelectUpdate").value;          
+            var id = document.getElementById("c_companySelectUpdate").value;
             if (id != "" || id > 0) {
                 $.ajax({
                     method: "GET",
