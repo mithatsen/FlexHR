@@ -180,7 +180,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaffShift" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="shiftClickFunction()"  class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -208,93 +208,84 @@
     @*//add staff shift*@
     <script>
         //  document.addEventListener('DOMContentLoaded', function (e) {
-        FormValidation.formValidation(
-            document.getElementById('modalAddShift'),
-            {
-                fields: {
-                    StartDate: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
+     
+        const fv = FormValidation.formValidation(document.getElementById('modalAddShift'), {
+            fields: {
+                StartDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
 
-                        }
-                    },
-                    Description: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Açıklama alanı boş geçilemez'
-                            }
-                        }
-                    },
+                    }
                 },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    //// Bootstrap Framework Integration
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    //// Validate fields when clicking the Submit button
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // Submit the form when all fields are valid
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                },
-            }
-        ).on('core.form.valid', function () {
-            debugger;
-            var formData = {
-                StaffId: $("#StaffId").val(),
-                StartDate: $("#StartDate").val(),
-                Duration: $("#kt_touchspin_1").val(),
-                Description: $("#Description").val()
-            };
-            $.ajax({
-                method: 'post',
-                url: '/StaffShift/AddStaffShiftWithAjax',
-                data: formData,
-            }).then(function (response) {
+                Duration: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Süre alanı boş geçilemez',
+                        },
+                        between: {
+                            min: 1,
+                            max: 50,
+                            message: '1-50 aralığında olmalı',
+                        }
 
-            });
+                    }
+                },
+                Description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Açıklama alanı boş geçilemez'
+                        }
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                // submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            },
         });
-        //  });
+        function shiftClickFunction() {
+            
+            fv.validate().then(function (status) {
+                alert("abc");
+                // Update the login button content based on the validation status
+                if (status == 'Valid') {
+                    alert("abdasgdsgc");
+                    var formData = {
+                        StaffId: $("#StaffId").val(),
+                        StartDate: $("#StartDate").val(),
+                        Duration: $("#kt_touchspin_1").val(),
+                        Description: $("#Description").val()
+                    };
+                    console.log(formData);
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffShift/AddStaffShiftWithAjax',
+                        data: formData,
+                        success: function (data) {
+                            if (data == 'true') {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            }
 
-        //.on('core.form.validating', function () {
-        //    // Send the form data to back-end
-        //    // You need to grab the form data and create an Ajax request to send them
+                        }
 
+                    })
+                }
+            });
+        }
 
-
-        //    console.log(formData);
-        //    FormValidation.utils.fetch('/StaffShift/AddStaffShiftWithAjax', {
-        //        method: 'POST',
-        //        param: formData
-        //    }).then(function (response) {
-        //        console.log("başarılı");
-        //        console.log(response);
-
-        //    });
-
-        //    //$.ajax({
-        //    //    url: "/StaffShift/AddStaffShiftWithAjax",
-        //    //    method: "POST",
-        //    //    data: formData,
-
-        //    //    contentType: false,
-        //    //    cache: false,
-        //    //    processData: false,
-        //    //    success: function (data) {
-        //    //        if (data == "true") {
-        //    //            Swal.fire({
-        //    //                title: "Eklendi!",
-        //    //                text: "Kaydınız eklendi.",
-        //    //                icon: "success",
-        //    //                showCancelButton: false
-        //    //            }).then(function () {
-        //    //                window.location.reload();
-        //    //            })
-        //    //        }
-        //    //    }
-        //    //});
-
-        //});
     </script>
     @*//update staff shift*@
     <script>
