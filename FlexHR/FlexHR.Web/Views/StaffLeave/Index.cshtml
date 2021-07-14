@@ -117,8 +117,8 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="modalAddLeave" method="POST">
-                <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+            <form id="modalAddLeaveForm">
+                <input type="hidden" name="StaffId" id="StaffId" value="@ViewBag.StaffId" />
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -134,20 +134,20 @@
 
                                         <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label>İzin Türü</label>
+                                                <label>İzin Türü *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
-                                                        <option value="-1">Seçiniz</option>
+                                                    <select class="form-control form-control-solid form-control-lg" id="LeaveTypeGeneralSubTypeId" name="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
 
                                                 </div>
                                             </div>
                                             <div class="form-group row ">
-                                                <label>Başlangıç Tarihi</label>
+                                                <label>Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_14" data-target-input="nearest">
-                                                        <input name="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
+                                                        <input name="LeaveStartDate" id="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_14" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -170,10 +170,10 @@
 
 
                                             <div class="form-group row ">
-                                                <label>Bitiş Tarihi</label>
+                                                <label>Bitiş Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_15" data-target-input="nearest">
-                                                        <input name="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
+                                                        <input name="LeaveEndDate" id="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_15" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -190,7 +190,7 @@
                                                 <div class="input-group">
 
 
-                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" id="Description" name="Description" placeholder="Açıklama"></textarea>
 
                                                 </div>
                                             </div>
@@ -209,7 +209,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="leaveClickFunction()" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -252,6 +252,87 @@
             });
         }
     </script>
+
+    <script>
+        const fv = FormValidation.formValidation(
+            document.getElementById('modalAddLeaveForm'),
+            {
+                fields: {
+                    LeaveTypeGeneralSubTypeId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'İzin türü alanı boş geçilemez'
+                            },
+
+                        }
+                    },
+                    LeaveStartDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            }
+                        }
+                    },
+                    LeaveEndDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+
+                }
+            }
+        );
+        function leaveClickFunction() {
+            fv.validate().then(function (status) {
+                if (status == 'Valid') {
+                    var formData = {
+                        LeaveTypeGeneralSubTypeId: $("#LeaveTypeGeneralSubTypeId").val(),
+                        LeaveStartDate: $("#LeaveStartDate").val(),
+                        LeaveEndDate: $("#LeaveEndDate").val(),
+                        Description: $("#Description").val(),
+                        StaffId: $("#StaffId").val(),
+                        TotalDay: $("#kt_touchspin_1").val()
+                    };
+
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffLeave/AddStaffLeaveWithAjax',
+                        data: formData,
+                        success: function (data) {
+                            if (data == "true") {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                    showCancelButton: false,
+
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+                            }
+
+                        }
+                    })
+                }
+
+            });
+        }
+       
+    </script>
+
+
+
+
+
+
     @*Modal Add StaffLeave*@
     <script>
 
