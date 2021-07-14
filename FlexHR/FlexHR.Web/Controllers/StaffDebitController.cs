@@ -40,7 +40,7 @@ namespace FlexHR.Web.Controllers
             return View(staffDebitDtoList);
         }
         [HttpPost]
-        public IActionResult AddStaffDebitWithAjax(AddStaffDebitDto model)
+        public JsonResult AddStaffDebitWithAjax(AddStaffDebitDto model)
         {
             try
             {

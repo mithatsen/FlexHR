@@ -5,6 +5,7 @@ using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace FlexHR.Web.Controllers
 
             ViewBag.StaffId = id;
             var careerModels = new List<ListStaffCareerDto>();
-            var careerResult = _staffCareerService.Get(p => p.IsActive == true && p.StaffId == id,null, "CompanyBranch");
+            var careerResult = _staffCareerService.Get(p => p.IsActive == true && p.StaffId == id, null, "CompanyBranch");
 
 
             ViewBag.Companies = new SelectList(_companyService.GetAll(), "CompanyId", "CompanyName");
@@ -64,25 +65,25 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult AddStaffCareerWithAjax(AddStaffCareerDto model)
         {
-            ViewBag.StaffId = model.StaffId;
-            if (model.CompanyBranchId == -1)
+            if (ModelState.IsValid)
             {
-                model.CompanyBranchId = null;
+                ViewBag.StaffId = model.StaffId;
+                if (model.CompanyBranchId == -1)
+                {
+                    model.CompanyBranchId = null;
+                }
+                if (model.JobFinishDate == null || model.JobFinishDate > DateTime.Now)
+                {
+                    model.IsCareerContinue = true;
+                }
+                else
+                {
+                    model.IsCareerContinue = false;
+                }
+                _staffCareerService.Add(_mapper.Map<StaffCareer>(model));
+                return Json("true");
             }
-            if (model.JobFinishDate == null || model.JobFinishDate > DateTime.Now)
-            {
-                model.IsCareerContinue = true;
-            }
-            else
-            {
-                model.IsCareerContinue = false;
-            }
-
-
-            _staffCareerService.Add(_mapper.Map<StaffCareer>(model));
-
-
-            return Json("true");
+            return Json("false");
         }
         [HttpGet]
         public IActionResult GetUpdateStaffCareerModal(int id)
@@ -92,8 +93,8 @@ namespace FlexHR.Web.Controllers
             ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
             ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
             ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
-            
-            ViewBag.CompanyBranchs = new SelectList(_companyBranchService.Get(x=>x.CompanyId==staffCareer.CompanyId), "CompanyBranchId", "BranchName");
+
+            ViewBag.CompanyBranchs = new SelectList(_companyBranchService.Get(x => x.CompanyId == staffCareer.CompanyId), "CompanyBranchId", "BranchName");
             return PartialView("GetUpdateStaffCareerModal", _mapper.Map<ListStaffCareerDto>(staffCareer));
 
         }
@@ -136,6 +137,11 @@ namespace FlexHR.Web.Controllers
             {
                 return false;
             }
+        }
+        public JsonResult BranchList(int id)
+        {
+            var jsonString = JsonConvert.SerializeObject(_companyBranchService.GetCompanyBranchListByCompanyId(id));
+            return Json(jsonString);
         }
 
     }

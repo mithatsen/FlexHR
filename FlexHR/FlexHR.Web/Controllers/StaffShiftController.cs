@@ -42,12 +42,17 @@ namespace FlexHR.Web.Controllers
 
         }
         [HttpPost]
-        public IActionResult AddStaffShiftWithAjax(AddStaffShiftDto model)
+        public IActionResult AddStaffShiftWithAjax(AddStaffShiftDto formData)
         {
-            model.IsActive = true;
-            _staffShiftService.Add(_mapper.Map<StaffShift>(model));
+            if (ModelState.IsValid)
+            {
+                formData.IsActive = true;
+                _staffShiftService.Add(_mapper.Map<StaffShift>(formData));
 
-            return Json("true");
+                return Json("true");
+
+            }
+            return Json("false");
         }
         [HttpPost]
         public IActionResult UpdateStaffShift(ListStaffShiftDto model)

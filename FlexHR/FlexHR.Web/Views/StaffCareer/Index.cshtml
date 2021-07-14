@@ -139,8 +139,8 @@
                                             <div class="form-group row ">
                                                 <label>Şirket *</label>
                                                 <div class="input-group">
-                                                    <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies" >
-                                                        <option value="">Seçiniz</option>
+                                                    <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
+                                                        <option value="" >Seçiniz</option>
 
                                                     </select>
 
@@ -150,7 +150,7 @@
                                             <div class="form-group row ">
                                                 <label>Departman *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments" >
+                                                    <select class="form-control form-control-solid form-control-lg"  id="DepartmantGeneralSubTypeId" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -160,8 +160,8 @@
                                             <div class="form-group row  ">
                                                 <label>Çalışma Şekli *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations" >
-                                                        <option value="-1">Seçiniz</option>
+                                                    <select class="form-control form-control-solid form-control-lg"  id="ModeOfOperationGeneralSubTypeId"  name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
                                                 </div>
@@ -172,7 +172,7 @@
                                                 <label id="jobFinishDateLbl">Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="ContractStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <input id="JobStartDate" name="JobStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -189,7 +189,7 @@
                                                 <label>Şube</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="CompanyBranchId">
-                                                        <option value="-1">Seçiniz</option>
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
                                                 </div>
@@ -199,11 +199,11 @@
                                             <div class="form-group row  ">
                                                 <label>Unvan *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" asp-items="ViewBag.Titles" >
-                                                        <option value="-1">Seçiniz</option>
+                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" id="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
-                                                    <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                                                    <input type="hidden" id="StaffId" value="@ViewBag.StaffId" />
                                                 </div>
                                             </div>
 
@@ -211,7 +211,7 @@
                                                 <label id="jobFinishDateLbl">Bitiş Tarihi</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_6" data-target-input="nearest">
-                                                        <input id="ContractFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
+                                                        <input id="JobFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_6" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -236,7 +236,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="submit" id="btnNewStaffCareers" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -247,6 +247,10 @@
 <div id="staffCareerUpdateDiv"></div>
 
 @section Scripts{
+    @*begin::Page Scripts(used by this page)*@
+    <script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>
+    @*end::Page Scripts*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>
 
     <script>
 
@@ -255,6 +259,7 @@
         });
     </script>
     <script>
+        // document.addEventListener('DOMContentLoaded', function (e) {
         FormValidation.formValidation(
             document.getElementById('modalAddCareerForm'),
             {
@@ -298,53 +303,73 @@
                         }
                     },
                 },
-
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
+                    //// Bootstrap Framework Integration
                     bootstrap: new FormValidation.plugins.Bootstrap(),
-                    // Validate fields when clicking the Submit button
+                    //// Validate fields when clicking the Submit button
                     submitButton: new FormValidation.plugins.SubmitButton(),
                     // Submit the form when all fields are valid
                     defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                }
+                },
             }
-        );
+        ).on('core.form.valid', function () {
+
+            var formData = {
+                CompanyId: $("#c_companySelect").val(),
+                DepartmantGeneralSubTypeId: $("#DepartmantGeneralSubTypeId").val(),
+                ModeOfOperationGeneralSubTypeId: $("#ModeOfOperationGeneralSubTypeId").val(),
+                c_companyBranchSelect: $("#c_companyBranchSelect").val(),
+                JobStartDate: $("#JobStartDate").val(),
+                TitleGeneralSubTypeId: $("#TitleGeneralSubTypeId").val(),
+                JobFinishDate: $("#JobFinishDate").val(),
+                StaffId: $("#StaffId").val(),
+            };
+
+            $.ajax({
+                method: 'post',
+                url: '/StaffCareer/AddStaffCareerWithAjax',
+                data: formData,
+            }).then(function (response) {
+
+            });
+        });
+        //   });
     </script>
 
 
     @*Modal Add Career*@
-    <script>
+    @*<script>
 
-        $(document).on("submit", "#modalAddCareerForm", function (event) { //modalAddCareerForm id li form post edildiğinde
+            $(document).on("submit", "#modalAddCareerForm", function (event) { //modalAddCareerForm id li form post edildiğinde
 
 
-            event.preventDefault();
+                event.preventDefault();
 
-            $.ajax({
-                url: "/StaffCareer/AddStaffCareerWithAjax",
-                type: "POST",
-                data: new FormData(this),
-                dataType: "json",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function (data) {
-                    if (data == "true") {
-                        Swal.fire({
-                            title: "Eklendi!",
-                            text: "Kaydınız eklendi.",
-                            icon: "success",
-                            showCancelButton: false
-                        }).then(function () {
-                            window.location.reload();
-                        })
+                $.ajax({
+                    url: "/StaffCareer/AddStaffCareerWithAjax",
+                    type: "POST",
+                    data: new FormData(this),
+                    dataType: "json",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data == "true") {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+                        }
+
                     }
-
-                }
+                });
             });
-        });
-    </script>
+        </script>*@
     @*//update staff career*@
     <script>
         function CareerUpdate(id) {
@@ -379,11 +404,11 @@
         function CompanyChange() {
             var id = document.getElementById("c_companySelect").value;
             console.log(id);
-            if (id > 0) {
+            if (id !="" || id>0) {
 
                 $.ajax({
                     method: "GET",
-                    url: "/Staff/BranchList/" + id,
+                    url: "/StaffCareer/BranchList/" + id,
                 }).done(function (content) {
                     $("#c_companyBranchSelect").attr("disabled", false);
                     $("#c_companyBranchSelect").removeClass("text-muted");
@@ -408,13 +433,11 @@
         // kariyer güncelleme sayfasındaki şirket şube listeleme
         function CompanyChangeUpdate() {
 
-            var id = document.getElementById("c_companySelectUpdate").value;
-            console.log(id);
-            if (id > 0) {
-
+            var id = document.getElementById("c_companySelectUpdate").value;          
+            if (id != "" || id > 0) {
                 $.ajax({
                     method: "GET",
-                    url: "/Staff/BranchList/" + id,
+                    url: "/StaffCareer/BranchList/" + id,
                 }).done(function (content) {
                     $("#c_companyBranchSelectUpdate").attr("disabled", false);
                     $("#c_companyBranchSelectUpdate").removeClass("text-muted");
@@ -430,10 +453,10 @@
 
                 });
             } else {
-                $("#c_companyBranchSelect").empty();
-                $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
-                $("#c_companyBranchSelect").attr("disabled", true);
-                $("#c_companyBranchSelect").addClass("text-muted");
+                $("#c_companyBranchSelectUpdate").empty();
+                $("#c_companyBranchSelectUpdate").append('<option  value="-1">Şube Seçiniz</option>');
+                $("#c_companyBranchSelectUpdate").attr("disabled", true);
+                $("#c_companyBranchSelectUpdate").addClass("text-muted");
             }
         }
     </script>

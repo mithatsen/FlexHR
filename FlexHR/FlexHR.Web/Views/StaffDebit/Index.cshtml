@@ -2,9 +2,6 @@
 @{
     ViewData["Title"] = "Zimmetler";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-
-
 }
 @section Styles{
     <!--begin::Page Vendors Styles(used by this page)-->
@@ -64,7 +61,7 @@
                                                 <tr>
                                                     <td></td>
                                                     <td>@item.DebitGeneralSubTypeName</td>
-                                                    <td>@item.SerialNumber</td>                                                 
+                                                    <td>@item.SerialNumber</td>
                                                     <td>@item.IssueDate.ToShortDateString()</td>
                                                     @if (item.ReturnDate != null)
                                                     {
@@ -116,7 +113,7 @@
                 </button>
             </div>
             <form id="modalAddDebitForm" method="POST">
-                
+
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -134,19 +131,19 @@
                                         <div class="col-md-5 ">
 
                                             <div class="form-group row ">
-                                                <label>Kategori</label>
+                                                <label>Kategori *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="DebitGeneralSubTypeId" asp-items="ViewBag.Categories">
-                                                        <option value="-1">Seçiniz</option>
+                                                    <select class="form-control form-control-solid form-control-lg" id="DebitGeneralSubTypeId" name="DebitGeneralSubTypeId" asp-items="ViewBag.Categories">
+                                                        <option value="">Seçiniz</option>
 
                                                     </select>
                                                 </div>
-                                            </div>    
+                                            </div>
                                             <div class="form-group row  ">
-                                                <label id="debitIssueDateLbl">Veriliş Tarihi</label>
+                                                <label id="debitIssueDateLbl">Veriliş Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="debitStartDate" name="IssueDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <input id="IssueDate" name="IssueDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -162,15 +159,15 @@
                                             <div class="form-group row  ">
                                                 <label>Seri Numarası</label>
                                                 <div class="input-group">
-                                                    <input type="text" name="SerialNumber" class="form-control form-control-solid form-control-lg" />
-                                                    <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                                                    <input type="text" name="SerialNumber" id="SerialNumber" class="form-control form-control-solid form-control-lg" />
+                                                    <input type="hidden" id="StaffId" value="@ViewBag.StaffId" />
                                                 </div>
-                                            </div>                                     
+                                            </div>
                                             <div class="form-group row  ">
                                                 <label id="jobFinishDateLbl">Bitiş Tarihi</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_6" data-target-input="nearest">
-                                                        <input id="ContractFinishDate" name="ReturnDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
+                                                        <input id="ReturnDate" name="ReturnDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_6" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_6" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -185,7 +182,7 @@
                                             <div class="form-group row">
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
-                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" id="Description" placeholder="Açıklama"></textarea>
 
                                                 </div>
                                             </div>
@@ -194,8 +191,6 @@
                                 </div>
                                 <!--end::Body-->
                             </div>
-
-
                         </div>
 
                         <!--end::Form-->
@@ -223,37 +218,88 @@
             $("#tab_9").addClass("active");
         });
     </script>
+
+    <script>
+        FormValidation.formValidation(
+            document.getElementById('modalAddDebitForm'),
+            {
+                fields: {
+                    IssueDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+
+                        }
+                    },
+                    DebitGeneralSubTypeId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kategori alanı boş geçilemez'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        ).on('core.form.valid', function () {
+
+            var formData = {
+                DebitGeneralSubTypeId: $("#DebitGeneralSubTypeId").val(),
+                IssueDate: $("#IssueDate").val(),
+                SerialNumber: $("#SerialNumber").val(),
+                ReturnDate: $("#ReturnDate").val(),
+                Description: $("#Description").val(),
+                StaffId: $("#StaffId").val(),
+            };
+            debugger;
+            $.ajax({
+                method: 'post',
+                url: '/StaffDebit/AddStaffDebitWithAjax',
+                data: formData,
+                
+            })
+        });
+    </script>
     @*Modal Add Career*@
     <script>
 
-        $(document).on("submit", "#modalAddDebitForm", function (event) { 
+        //$(document).on("submit", "#modalAddDebitForm", function (event) {
 
 
-            event.preventDefault();
+        //    event.preventDefault();
 
-            $.ajax({
-                url: "/StaffDebit/AddStaffDebitWithAjax",
-                type: "POST",
-                data: new FormData(this),
-                dataType: "json",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function (data) {
-                    if (data == "true") {
-                        Swal.fire({
-                            title: "Eklendi!",
-                            text: "Kaydınız eklendi.",
-                            icon: "success",
-                            showCancelButton: false
-                        }).then(function () {
-                            window.location.reload();
-                        })
-                    }
+        //    $.ajax({
+        //        url: "/StaffDebit/AddStaffDebitWithAjax",
+        //        type: "POST",
+        //        data: new FormData(this),
+        //        dataType: "json",
+        //        contentType: false,
+        //        cache: false,
+        //        processData: false,
+        //        success: function (data) {
+        //            if (data == "true") {
+        //                Swal.fire({
+        //                    title: "Eklendi!",
+        //                    text: "Kaydınız eklendi.",
+        //                    icon: "success",
+        //                    showCancelButton: false
+        //                }).then(function () {
+        //                    window.location.reload();
+        //                })
+        //            }
 
-                }
-            });
-        });
+        //        }
+        //    });
+        //});
     </script>
     @*//update staff debit*@
     <script>
@@ -283,7 +329,7 @@
 
 
     </script>
-  
+
 
     @*Delete Debit with sweet alert*@
     <script>
@@ -329,7 +375,6 @@
                         icon: "error",
                         showCancelButton: false
                     })
-
 
                 }
             });

@@ -70,7 +70,7 @@
                                                         <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
                                                             <i class="la la-edit text-warning"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon"  onclick="DeleteStaffShift(@item.StaffShiftId)"   title="Sil">
+                                                        <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffShift(@item.StaffShiftId)" title="Sil">
 
                                                             <i class="la la-trash text-danger"></i>
                                                         </a>
@@ -118,7 +118,7 @@
                 </button>
             </div>
             <form id="modalAddShift" method="POST">
-                <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+                <input type="hidden" id="StaffId" value="@ViewBag.StaffId" />
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -137,7 +137,7 @@
                                                 <label>Başlangıç Tarihi</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_18" data-target-input="nearest">
-                                                        <input name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_18" />
+                                                        <input id="StartDate" name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_18" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_18" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -150,7 +150,7 @@
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5 ">
                                             <div class="form-group row ">
-                                                <label >Süre (Saat)</label>
+                                                <label>Süre (Saat)</label>
                                                 <div class="input-group">
                                                     <input id="kt_touchspin_1" type="text" class="form-control form-control-lg text-center" value="0" name="Duration" placeholder="Toplam" />
                                                 </div>
@@ -159,9 +159,9 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label >Açıklama</label>
+                                                <label>Açıklama</label>
                                                 <div class="input-group">
-                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" id="Description" name="Description" placeholder="Açıklama"></textarea>
 
                                                 </div>
                                             </div>
@@ -180,7 +180,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="submit" id="btnNewStaffShift" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -191,6 +191,11 @@
 
 
 @section Scripts{
+    <!--begin::Page Scripts(used by this page)-->
+    <!--<script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>-->
+    <!--end::Page Scripts-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>-->
+
     <script>
 
         $(document).ready(function () {
@@ -198,8 +203,13 @@
         });
     </script>
     <script>
-         FormValidation.formValidation(
-             document.getElementById('modalAddShift'),
+
+    </script>
+    @*//add staff shift*@
+    <script>
+        //  document.addEventListener('DOMContentLoaded', function (e) {
+        FormValidation.formValidation(
+            document.getElementById('modalAddShift'),
             {
                 fields: {
                     StartDate: {
@@ -220,46 +230,71 @@
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
+                    //// Bootstrap Framework Integration
                     bootstrap: new FormValidation.plugins.Bootstrap(),
-                    // Validate fields when clicking the Submit button
+                    //// Validate fields when clicking the Submit button
                     submitButton: new FormValidation.plugins.SubmitButton(),
                     // Submit the form when all fields are valid
                     defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                }
+                },
             }
-        );
-    </script>
-    @*//add staff shift*@
-    <script>
-
-        $(document).on("submit", "#modalAddShift", function (event) { //infoForm id li form post edildiğinde
-
-
-            event.preventDefault();
-
+        ).on('core.form.valid', function () {
+            debugger;
+            var formData = {
+                StaffId: $("#StaffId").val(),
+                StartDate: $("#StartDate").val(),
+                Duration: $("#kt_touchspin_1").val(),
+                Description: $("#Description").val()
+            };
             $.ajax({
-                url: "/StaffShift/AddStaffShiftWithAjax",
-                type: "POST",
-                data: new FormData(this),
-                dataType: "json",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function (data) {
-                    if (data == "true") {
-                        Swal.fire({
-                            title: "Eklendi!",
-                            text: "Kaydınız eklendi.",
-                            icon: "success",
-                            showCancelButton: false
-                        }).then(function () {
-                            window.location.reload();
-                        })
-                    }
-                }
+                method: 'post',
+                url: '/StaffShift/AddStaffShiftWithAjax',
+                data: formData,
+            }).then(function (response) {
+
             });
         });
+        //  });
+
+        //.on('core.form.validating', function () {
+        //    // Send the form data to back-end
+        //    // You need to grab the form data and create an Ajax request to send them
+
+
+
+        //    console.log(formData);
+        //    FormValidation.utils.fetch('/StaffShift/AddStaffShiftWithAjax', {
+        //        method: 'POST',
+        //        param: formData
+        //    }).then(function (response) {
+        //        console.log("başarılı");
+        //        console.log(response);
+
+        //    });
+
+        //    //$.ajax({
+        //    //    url: "/StaffShift/AddStaffShiftWithAjax",
+        //    //    method: "POST",
+        //    //    data: formData,
+
+        //    //    contentType: false,
+        //    //    cache: false,
+        //    //    processData: false,
+        //    //    success: function (data) {
+        //    //        if (data == "true") {
+        //    //            Swal.fire({
+        //    //                title: "Eklendi!",
+        //    //                text: "Kaydınız eklendi.",
+        //    //                icon: "success",
+        //    //                showCancelButton: false
+        //    //            }).then(function () {
+        //    //                window.location.reload();
+        //    //            })
+        //    //        }
+        //    //    }
+        //    //});
+
+        //});
     </script>
     @*//update staff shift*@
     <script>
@@ -338,11 +373,11 @@
 
 
     </script>
-   @*Staff Career Güncellendi için sweet alert*@
+    @*Staff Career Güncellendi için sweet alert*@
     <script>
         $(document).ready(function () {
 
-            if (@ViewBag.StaffShiftUpdateStatus == true) {             
+            if (@ViewBag.StaffShiftUpdateStatus == true) {
                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
             }
         });
