@@ -32,7 +32,7 @@
                                             <div class="col-md-5">
 
                                                 <div class="form-group row ">
-                                                    <label>Başlangıç Tarihi</label>
+                                                    <label>Başlangıç Tarihi *</label>
                                                     <div class="input-group">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_20" data-target-input="nearest">
                                                             <input name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" asp-for="StartDate" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_20" />
@@ -48,7 +48,7 @@
                                             <div class="col-md-2"></div>
                                             <div class="col-md-5 ">
                                                 <div class="form-group row ">
-                                                    <label>Süre (Saat)</label>
+                                                    <label>Süre (Saat) *</label>
                                                     <div class="input-group">
                                                         <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center" value="@Model.Duration" asp-for="Duration" name="Duration" placeholder="Toplam" />
                                                     </div>
@@ -58,7 +58,7 @@
 
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label>Açıklama</label>
+                                                    <label>Açıklama *</label>
                                                     <div class="input-group">
                                                        
                                                             <textarea type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" name="Description" placeholder="Açıklama"></textarea>
@@ -95,7 +95,21 @@
                         validators: {
                             notEmpty: {
                                 message: 'Tarih alanı boş geçilemez'
+
                             },
+
+                        }
+                    },
+                    Duration: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Süre alanı boş geçilemez',
+                            },
+                            between: {
+                                min: 1,
+                                max: 50,
+                                message: '1-50 aralığında olmalı',
+                            }
 
                         }
                     },
