@@ -134,7 +134,7 @@
                                         <div class="col-md-5">
 
                                             <div class="form-group row ">
-                                                <label>Başlangıç Tarihi</label>
+                                                <label>Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_18" data-target-input="nearest">
                                                         <input id="StartDate" name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_18" />
@@ -150,7 +150,7 @@
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5 ">
                                             <div class="form-group row ">
-                                                <label>Süre (Saat)</label>
+                                                <label>Süre (Saat) *</label>
                                                 <div class="input-group">
                                                     <input id="kt_touchspin_1" type="text" class="form-control form-control-lg text-center" value="0" name="Duration" placeholder="Toplam" />
                                                 </div>
@@ -159,7 +159,7 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label>Açıklama</label>
+                                                <label>Açıklama *</label>
                                                 <div class="input-group">
                                                     <textarea type="text" class="form-control form-control-lg form-control-solid" id="Description" name="Description" placeholder="Açıklama"></textarea>
 
@@ -253,10 +253,9 @@
         function shiftClickFunction() {
             
             fv.validate().then(function (status) {
-                alert("abc");
                 // Update the login button content based on the validation status
                 if (status == 'Valid') {
-                    alert("abdasgdsgc");
+                   
                     var formData = {
                         StaffId: $("#StaffId").val(),
                         StartDate: $("#StartDate").val(),
@@ -308,7 +307,7 @@
                 //CompanyChangeUpdate();
 
             }).fail(function (error) {
-                alert(error);
+                
             });
         }
     </script>
@@ -363,6 +362,12 @@
         }
 
 
+    </script>
+    <script>
+        $('#kt_datetimepicker_18').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY HH:mm'
+        });
     </script>
     @*Staff Career Güncellendi için sweet alert*@
     <script>

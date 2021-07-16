@@ -66,7 +66,7 @@
                                         <div class="col-md-5">
 
                                             <div class="form-group row ">
-                                                <label >Toplam Gün</label>
+                                                <label >Toplam Gün *</label>
                                                 <div class="input-group">
                                                     <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center" name="TotalDay" value="@Model.TotalDay" placeholder="Toplam" />
                                                 </div>
@@ -158,6 +158,19 @@
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
                         }
+                    }
+                },
+                TotalDay: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Toplam gün alanı boş geçilemez',
+                        },
+                        between: {
+                            min: 1,
+                            max: 50,
+                            message: '1-365 aralığında olmalı',
+                        }
+
                     }
                 },
             },

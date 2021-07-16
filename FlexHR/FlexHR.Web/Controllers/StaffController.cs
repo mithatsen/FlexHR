@@ -28,27 +28,14 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffRoleService _staffRoleService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IRoleService _roleService;
-        private readonly IStaffCareerService _careerService;
         private readonly IStaffPersonelInfoService _staffPersonelInfoService;
         private readonly IStaffOtherInfoService _staffOtherInfoService;
-        private readonly ITownService _townService;
-        private readonly ICityService _cityService;
-        private readonly ICountryService _countryService;
-        private readonly ICompanyService _companyService;
-        private readonly ICompanyBranchService _companyBranchService;
-        private readonly IStaffCareerService _staffCareerService;
-        private readonly IStaffLeaveService _staffLeaveService;
-        private readonly IStaffShiftService _staffShiftService;
         private readonly IStaffFileService _staffFileService;
-        private readonly IStaffPaymentService _staffPaymentService;
 
         public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
-                                     IRoleService roleService, IStaffCareerService careerService, IStaffPersonelInfoService staffPersonelInfoService,
-                                     IStaffOtherInfoService staffOtherInfoService, ITownService townService, ICityService cityService, ICountryService countryService,
-                                     ICompanyService companyService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService,
-                                     IStaffLeaveService staffLeaveService, IStaffShiftService staffShiftService,
-                                     IStaffPaymentService staffPaymentService, IStaffFileService staffFileService
+                                     IRoleService roleService, IStaffPersonelInfoService staffPersonelInfoService,
+                                     IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService
 
                                 )
         {
@@ -58,20 +45,10 @@ namespace FlexHR.Web.Controllers
             _staffRoleService = staffRoleService;
             _generalSubTypeService = generalSubTypeService;
             _roleService = roleService;
-            _careerService = careerService;
             _staffPersonelInfoService = staffPersonelInfoService;
             _staffOtherInfoService = staffOtherInfoService;
-            _townService = townService;
-            _cityService = cityService;
-            _countryService = countryService;
-            _companyService = companyService;
-            _companyBranchService = companyBranchService;
-            _staffCareerService = staffCareerService;
-            _staffLeaveService = staffLeaveService;
-
-            _staffShiftService = staffShiftService;
             _staffFileService = staffFileService;
-            _staffPaymentService = staffPaymentService;
+
 
         }
 
