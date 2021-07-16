@@ -53,6 +53,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<StaffRole> StaffRole { get; set; }
         public virtual DbSet<LeaveRule> LeaveRules { get; set; }
         public virtual DbSet<Receipt> Receipt { get; set; }
+        public virtual DbSet<LeaveType> LeaveType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

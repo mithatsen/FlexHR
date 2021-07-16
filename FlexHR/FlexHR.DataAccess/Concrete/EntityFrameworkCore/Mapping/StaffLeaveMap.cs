@@ -27,6 +27,12 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_StaffLeave_Staff");
 
+            entity.HasOne(d => d.LeaveType)
+              .WithMany(p => p.StaffLeave)
+              .HasForeignKey(d => d.LeaveTypeId)
+              .OnDelete(DeleteBehavior.ClientSetNull)
+              .HasConstraintName("FK_StaffLeave_LeaveType");
+
         }
     }
 }

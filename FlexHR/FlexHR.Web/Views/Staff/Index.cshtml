@@ -114,7 +114,7 @@
                                                     <div class="form-group row justify-content-center">
                                                         <label class="col-xl-4 col-lg-3 col-form-label ">Ad Soyad *</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input name="M_NameSurname" id="M_NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" />
+                                                            <input name="NameSurname" id="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" />
                                                         </div>
                                                     </div>
                                                     <div class="form-group row justify-content-center">
@@ -140,7 +140,7 @@
                                                                         <i class="la la-phone"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input name="PhoneJob" id="PhoneJob" type="tel" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" />
+                                                                <input name="PhoneJob" id="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" />
                                                             </div>
 
                                                         </div>
@@ -159,7 +159,7 @@
                                                         <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="ContractFinishDate" name="JobFinishDate" type="datetime" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <input id="JobFinishDate" name="JobFinishDate" type="datetime" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
                                                                     <span class="input-group-text">
                                                                         <i class="ki ki-calendar"></i>
@@ -217,7 +217,7 @@
                                                                         <i class="la la-phone"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input type="number" name="PhonePersonal" id="PhonePersonal" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
+                                                                <input type="text" name="PhonePersonal" id="PhonePersonal" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
 
                                                             </div>
 
@@ -294,54 +294,54 @@
         const fv = FormValidation.formValidation(document.getElementById('addStaffFormModal29'),
             {
                 fields: {
-                    M_NameSurname: {
+                    NameSurname: {
                         validators: {
-                            notempty: {
-                                message: 'ad soyad alanı boş geçilemez'
+                            notEmpty: {
+                                message: 'Ad soyad alanı boş geçilemez'
                             }
                         }
                     },
                     EmailPersonal: {
                         validators: {
-                            notempty: {
-                                message: 'email alanı boş geçilemez'
+                            notEmpty: {
+                                message: 'Email alanı boş geçilemez'
                             },
                             emailaddress: {
-                                message: 'geçerli bir email adresi girin'
+                                message: 'Geçerli bir email adresi girin'
                             }
                         }
                     },
                     PhonePersonal: {
                         validators: {
-                            notempty: {
-                                message: 'telefon alanı boş geçilemez'
+                            notEmpty: {
+                                message: 'Telefon alanı boş geçilemez'
                             },
                             phone: {
-                                country: 'us',
-                                message: 'geçerli bir numara girin'
+                                country: 'US',
+                                message: 'Geçerli bir numara girin'
                             }
                         }
                     },
                     JobJoinDate: {
                         validators: {
-                            notempty: {
-                                message: 'tarih alanı boş geçilemez'
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
                             },
 
                         }
                     },
                     ContractTypeId: {
                         validators: {
-                            notempty: {
-                                message: 'sözleşme türü seçiniz'
+                            notEmpty: {
+                                message: 'Sözleşme türü seçiniz'
                             },
 
                         }
                     },
                     RoleId: {
                         validators: {
-                            notempty: {
-                                message: 'erişim türü seçiniz'
+                            notEmpty: {
+                                message: 'Erişim türü seçiniz'
                             }
                         }
                     },
@@ -354,37 +354,30 @@
 
                 }
             });
-        var counter = 0;
         function staffAddClickFunction() {
-            counter++;
-            console.log(counter);
-            debugger;
             fv.validate().then(function (status) {
                 // Update the login button content based on the validation status
                 if (status == 'Valid') {
-                    debugger;
                     var formData = {
-                        M_NameSurname: $("#M_NameSurname").val(),
+                        NameSurname: $("#NameSurname").val(),
                         EmailJob: $("#EmailJob").val(),
                         PhoneJob: $("#PhoneJob").val(),
                         EmailPersonal: $("#EmailPersonal").val(),
                         PhonePersonal: $("#PhonePersonal").val(),
-                        ContractTypeSelect: $("#ContractTypeSelect").val(),
-                        ContractFinishDate: $("#ContractFinishDate").val(),
+                        ContractTypeId: $("#ContractTypeSelect").val(),
+                        JobFinishDate: $("#JobFinishDate").val(),
                         JobJoinDate: $("#JobJoinDate").val(),
                         UserName: $("#UserName").val(),
                         WillUseSystem: $("#WillUseSystem").val(),
                         RoleId: $("#RoleId").val(),
                         Password: $("#Password").val(),
                     };
-                    debugger;
-                    console.log(formData)
                     $.ajax({
                         method: 'post',
                         url: '/Staff/AddStaffWithAjax',
                         data: formData,
                         success: function (data) {
-                            if (data == true) {
+                            if (data == "true") {
                                 Swal.fire({
                                     title: "Eklendi!",
                                     text: "Kaydınız eklendi.",
@@ -408,13 +401,13 @@
         $('#ContractTypeSelect').on('change', function () {
             var id = document.getElementById("ContractTypeSelect").value;
             if (id == 1) {
-                $("#ContractFinishDate").attr("disabled", false);
-                $("#ContractFinishDate").removeClass("text-muted");
+                $("#JobFinishDate").attr("disabled", false);
+                $("#JobFinishDate").removeClass("text-muted");
                 $("#jobFinishDateLbl").removeClass("text-muted");
             }
             else {
-                $("#ContractFinishDate").attr("disabled", true);
-                $("#ContractFinishDate").addClass("text-muted");
+                $("#JobFinishDate").attr("disabled", true);
+                $("#JobFinishDate").addClass("text-muted");
                 $("#jobFinishDateLbl").addClass("text-muted");
             }
         });

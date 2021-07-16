@@ -34,7 +34,7 @@ namespace FlexHR.Web.Controllers
             foreach (var item in staffLeaveList)
             {
                 var leaveModel = _mapper.Map<ListStaffLeaveDto>(item);
-                leaveModel.LeaveType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.LeaveTypeGeneralSubTypeId);
+                //leaveModel.LeaveType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.LeaveTypeGeneralSubTypeId);
                 leaveModel.StatusType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.GeneralStatusGeneralSubTypeId);
                 leaveModels.Add(leaveModel);
             };
@@ -51,7 +51,7 @@ namespace FlexHR.Web.Controllers
             Description = result.Description,
             LeaveStartDate = result.LeaveStartDate,
             LeaveEndDate = result.LeaveEndDate,
-            LeaveTypeGeneralSubTypeId = result.LeaveTypeGeneralSubTypeId,
+            //LeaveTypeGeneralSubTypeId = result.LeaveTypeGeneralSubTypeId,
             TotalDay = result.TotalDay,
             StaffId = result.StaffId,
             StaffLeaveId = result.StaffLeaveId,

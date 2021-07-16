@@ -54,7 +54,7 @@ namespace FlexHR.Web.Controllers
 
         public IActionResult Index()
         {
-            var result = _staffService.Get(x => x.IsActive, null, "StaffFile");
+            var result = _staffService.Get(x => x.IsActive==true, null, "StaffFile");
 
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
             ViewBag.Roles = new SelectList(_roleService.GetAll(), "RoleId", "Name");
@@ -71,9 +71,7 @@ namespace FlexHR.Web.Controllers
             return View(models);
 
         }
-
-
-
+        
 
         [HttpPost]
         public IActionResult AddStaffWithAjax(AddStaffDto modal)
@@ -113,7 +111,7 @@ namespace FlexHR.Web.Controllers
             }
 
             var staffId = staffResult.StaffId;
-            if (modal.ContractTypeId != -1)
+            if (modal.ContractTypeId.ToString() != "")
             {
                 _staffGeneralSubTypeService.Add(new StaffGeneralSubType { StaffId = staffId, GeneralSubTypeId = modal.ContractTypeId });
             }
@@ -121,7 +119,7 @@ namespace FlexHR.Web.Controllers
             _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
             _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });
 
-            return Json("");
+            return Json("true");
         }
     }
 }

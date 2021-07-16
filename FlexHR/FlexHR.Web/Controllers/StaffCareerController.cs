@@ -68,7 +68,7 @@ namespace FlexHR.Web.Controllers
             if (ModelState.IsValid)
             {
                 ViewBag.StaffId = model.StaffId;
-                if (model.CompanyBranchId == -1)
+                if (model.CompanyBranchId.ToString() == "")
                 {
                     model.CompanyBranchId = null;
                 }
