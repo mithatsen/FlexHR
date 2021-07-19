@@ -136,16 +136,30 @@
                                             <div class="form-group row">
                                                 <label>İzin Türü *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" id="LeaveTypeGeneralSubTypeId" name="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
-                                                        <option value="" >Seçiniz </option>
-                                                        @foreach (var item in ViewBag.LeaveTypes)
-                                                        {
-                                                            <option value="@item.Value" title="@item.Text">@item.Text </option>
-                                                        }
+                                                    @*<select class=" form-control form-control-solid form-control-lg" >
+                                                        <option value="">Seçiniz </option>*@
+                                                    <div class="dropdown">
+                                                        <button class="form-control form-control-lg form-control-solid btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            Dropdown button
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                            <ul class="p-0">
 
 
-                                                    </select>
+                                                                @foreach (var item in ViewBag.LeaveTypes)
+                                                                {
+                                                                    <li class="dropdown-item" href="#">@item.Name <a data-toggle='tooltip' title='Durum' class="float-right"><i class='fas fa-info-circle bg-secondary '></i></a></li>
 
+                                                                    // <option data-content='<span href="#" class="tip" title="Tooltip showing"  data-toggle="tooltip" data-placement="top"  data-animation="true"></span>'>asas </option>
+                                                                    //<option value="@item.Id" data-toggle="tooltip" title="@item.Description">@item.Name  </option>
+                                                                }
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    @*</select>*@
+                                                    <a data-toggle="modal" title="Durum"> <i class="fas fa-toggle-on text-success"></i> </a>
                                                 </div>
                                             </div>
                                             <div class="form-group row ">
@@ -226,9 +240,19 @@
 
 
 @section Scripts{
-    <script>
+    <!--begin::Page Scripts(used by this page)-->
+    <!--<script src="~/assets/js/pages/crud/forms/widgets/bootstrap-select.js"></script>-->
+    <!--end::Page Scripts-->
 
+
+    <script>
+        $(function () {
+            $('[data-toggle="modal"]').tooltip()
+        })
         $(document).ready(function () {
+            $(function () {
+                $('[data-toggle="modal"]').tooltip()
+            })
             $("#tab_5").addClass("active");
         });
     </script>
@@ -343,7 +367,7 @@
 
             });
         }
-       
+
     </script>
 
 

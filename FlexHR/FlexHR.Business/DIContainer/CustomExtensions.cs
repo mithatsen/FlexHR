@@ -40,6 +40,7 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<IStaffRoleService, StaffRoleManager>();
             services.AddScoped<IStaffFileService, StaffFileManager>();
             services.AddScoped<IReceiptService, ReceiptManager>();
+            services.AddScoped<ILeaveTypeService, LeaveTypeManager>();
 
             services.AddScoped<IReceiptDal, EfReceiptRepository>();
             services.AddScoped<ICityDal, EfCityRepository>();
@@ -65,6 +66,7 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<IStaffShiftDal, EfStaffShiftRepository>();
             services.AddScoped<ITownDal, EfTownRepository>();
             services.AddScoped<IStaffRoleDal, EfStaffRoleRepository>();
+            services.AddScoped<ILeaveTypeDal, EfLeaveTypeRepository>();
             services.AddScoped(typeof(IGenericDal<>), typeof(EfGenericRepository<>));
         }
     }

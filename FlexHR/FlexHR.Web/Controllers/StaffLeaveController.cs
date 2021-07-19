@@ -15,19 +15,20 @@ namespace FlexHR.Web.Controllers
     public class StaffLeaveController : Controller
     {
         private readonly IStaffLeaveService _staffLeaveService;
+        private readonly ILeaveTypeService _leaveTypeService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
-        public StaffLeaveController(IStaffLeaveService staffLeaveService, IGeneralSubTypeService generalSubTypeService, IMapper mapper)
+        public StaffLeaveController(IStaffLeaveService staffLeaveService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService)
         {
             _staffLeaveService = staffLeaveService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
+            _leaveTypeService = leaveTypeService;
         }
         public IActionResult Index(int id)
         {
-            
-            ViewBag.LeaveTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.LeaveType), "GeneralSubTypeId", "Description");
-            ViewBag.StaffId = id; 
+           
+            ViewBag.StaffId = id;
 
             var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
             var leaveModels = new List<ListStaffLeaveDto>();
@@ -39,30 +40,31 @@ namespace FlexHR.Web.Controllers
                 leaveModels.Add(leaveModel);
             };
             ViewBag.StaffLeaveUpdateStatus = TempData["StaffLeaveUpdateStatus"];
+            ViewBag.LeaveTypes= _leaveTypeService.GetAll();
             return View(leaveModels);
-    }
-    [HttpGet]
-    public IActionResult GetUpdateStaffLeaveModal(int id)
-    {
-        var result = _staffLeaveService.GetById(id);
-        ViewBag.LeaveTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.LeaveType), "GeneralSubTypeId", "Description");
-        var leaveModel = new ListStaffLeaveDto
+        }
+        [HttpGet]
+        public IActionResult GetUpdateStaffLeaveModal(int id)
         {
-            Description = result.Description,
-            LeaveStartDate = result.LeaveStartDate,
-            LeaveEndDate = result.LeaveEndDate,
-            //LeaveTypeGeneralSubTypeId = result.LeaveTypeGeneralSubTypeId,
-            TotalDay = result.TotalDay,
-            StaffId = result.StaffId,
-            StaffLeaveId = result.StaffLeaveId,
-            GeneralStatusGeneralSubTypeId = result.GeneralStatusGeneralSubTypeId,
-            IsActive = result.IsActive
+            var result = _staffLeaveService.GetById(id);
+            ViewBag.LeaveTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.LeaveType), "GeneralSubTypeId", "Description");
+            var leaveModel = new ListStaffLeaveDto
+            {
+                Description = result.Description,
+                LeaveStartDate = result.LeaveStartDate,
+                LeaveEndDate = result.LeaveEndDate,
+                //LeaveTypeGeneralSubTypeId = result.LeaveTypeGeneralSubTypeId,
+                TotalDay = result.TotalDay,
+                StaffId = result.StaffId,
+                StaffLeaveId = result.StaffLeaveId,
+                GeneralStatusGeneralSubTypeId = result.GeneralStatusGeneralSubTypeId,
+                IsActive = result.IsActive
 
-        };
+            };
 
-        return PartialView("GetUpdateStaffLeaveModal", leaveModel);
+            return PartialView("GetUpdateStaffLeaveModal", leaveModel);
 
-    }
+        }
 
         [HttpPost]
         public IActionResult AddStaffLeaveWithAjax(AddStaffLeaveDto model)
@@ -78,7 +80,7 @@ namespace FlexHR.Web.Controllers
 
             _staffLeaveService.Update(_mapper.Map<StaffLeave>(model));
             TempData["StaffLeaveUpdateStatus"] = "true";
-            return RedirectToAction("Index",new { id = model.StaffId });
+            return RedirectToAction("Index", new { id = model.StaffId });
 
         }
         [HttpPost]
