@@ -119,6 +119,7 @@
             </div>
             <form id="modalAddLeaveForm">
                 <input type="hidden" name="StaffId" id="StaffId" value="@ViewBag.StaffId" />
+                <input type="hidden" name="LeaveTypeId" id="LeaveTypeId" value="@ViewBag.StaffId" />
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -135,31 +136,22 @@
                                         <div class="col-md-5">
                                             <div class="form-group row">
                                                 <label>İzin Türü *</label>
-                                                <div class="input-group">
-                                                    @*<select class=" form-control form-control-solid form-control-lg" >
-                                                        <option value="">Seçiniz </option>*@
-                                                    <div class="dropdown">
-                                                        <button class="form-control form-control-lg form-control-solid btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Dropdown button
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <ul class="p-0">
+                                                <div class="input-group dropdown">
+                                                    <a class="form-control form-control-lg form-control-solid btn btn-secondary dropdown-toggle " value="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <p class="my-auto text-left pl-2" id="selectLeaveTypeBtnText">Seçiniz</p>
+                                                    </a>
 
+                                                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                                                        <ul class="p-0">
+                                                            @foreach (var item in ViewBag.LeaveTypes)
+                                                            {
+                                                                <li class="dropdown-item" id="@item.Id" name="@item.Name" onclick="ChangeLeaveType(this)">@item.Name <a data-toggle='tooltip' title='@item.Description' class="float-right"><i class='fas fa-info-circle bg-success '></i></a></li>
 
-                                                                @foreach (var item in ViewBag.LeaveTypes)
-                                                                {
-                                                                    <li class="dropdown-item" href="#">@item.Name <a data-toggle='tooltip' title='Durum' class="float-right"><i class='fas fa-info-circle bg-secondary '></i></a></li>
+                                                            }
 
-                                                                    // <option data-content='<span href="#" class="tip" title="Tooltip showing"  data-toggle="tooltip" data-placement="top"  data-animation="true"></span>'>asas </option>
-                                                                    //<option value="@item.Id" data-toggle="tooltip" title="@item.Description">@item.Name  </option>
-                                                                }
-
-                                                            </ul>
-                                                        </div>
+                                                        </ul>
                                                     </div>
 
-                                                    @*</select>*@
-                                                    <a data-toggle="modal" title="Durum"> <i class="fas fa-toggle-on text-success"></i> </a>
                                                 </div>
                                             </div>
                                             <div class="form-group row ">
@@ -255,6 +247,18 @@
             })
             $("#tab_5").addClass("active");
         });
+    </script>
+@*izin türü değişti*@
+    <script>
+        function ChangeLeaveType(elem) {
+            var id = $(elem).attr("id");
+            var name = $(elem).attr("name");
+           
+            console.log($("#LeaveTypeId").val());
+            $("#selectLeaveTypeBtnText").text(name);
+            
+          
+        }
     </script>
 
     @*//update staff leave*@
