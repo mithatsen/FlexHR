@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlexHR.Entity.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,7 +20,7 @@ namespace FlexHR.DTO.Dtos.StaffLeaveDtos
         public string StatusType { get; set; }
         public string LeaveType { get; set; }
         public int TotalDay { get; set; }
-
+        public List<LeaveType> LeaveTypes { get; set; }
 
     }
 }

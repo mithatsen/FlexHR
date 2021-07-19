@@ -25,7 +25,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult Index(int id)
         {
-        
+            
             ViewBag.LeaveTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.LeaveType), "GeneralSubTypeId", "Description");
             ViewBag.StaffId = id; 
 

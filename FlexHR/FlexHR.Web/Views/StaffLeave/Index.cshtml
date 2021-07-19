@@ -137,7 +137,12 @@
                                                 <label>İzin Türü *</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" id="LeaveTypeGeneralSubTypeId" name="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
-                                                        <option value="">Seçiniz</option>
+                                                        <option value="" >Seçiniz </option>
+                                                        @foreach (var item in ViewBag.LeaveTypes)
+                                                        {
+                                                            <option value="@item.Value" title="@item.Text">@item.Text </option>
+                                                        }
+
 
                                                     </select>
 
