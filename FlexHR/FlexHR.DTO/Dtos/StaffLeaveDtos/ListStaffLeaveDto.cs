@@ -10,7 +10,7 @@ namespace FlexHR.DTO.Dtos.StaffLeaveDtos
         public int StaffLeaveId { get; set; }
         public int StaffId { get; set; }
         public int GeneralStatusGeneralSubTypeId { get; set; }
-        public int LeaveTypeGeneralSubTypeId { get; set; }
+        public int LeaveTypeId { get; set; }
         public DateTime LeaveStartDate { get; set; }
         public DateTime LeaveEndDate { get; set; }
         public string Description { get; set; }

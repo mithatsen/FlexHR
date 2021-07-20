@@ -18,6 +18,7 @@
             </div>
             <form id="updateStaffLeaveForm" asp-controller="StaffLeave" asp-action="UpdateStaffLeave" method="POST">
                 <input type="hidden" asp-for="StaffId" />
+                <input type="hidden" id="LeaveTypeIdUpdateModal" asp-for="LeaveTypeId" value="14" />
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -33,12 +34,40 @@
 
                                         <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label >İzin Türü *</label>
-                                                <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" asp-for="LeaveTypeGeneralSubTypeId" asp-items="ViewBag.LeaveTypes">
-                                                        <option value="">Seçiniz</option>
+                                                <label>İzin Türü *</label>
+                                                <div class="input-group dropdown">
+                                                    <a class="form-control form-control-lg form-control-solid btn btn-secondary dropdown-toggle " value="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <p class="my-auto text-left pl-2" id="selectLeaveTypeBtnTextUpdateModal">@Model.LeaveType</p>
+                                                    </a>
 
-                                                    </select>
+                                                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                                                        <ul class="p-0" style="cursor:pointer">
+                                                            @foreach (var item in ViewBag.LeaveTypes)
+                                                            {
+                                                                var tittle = "";
+                                                                if (item.IsFree)
+                                                                {
+                                                                    tittle += "Ücretsiz İzin_______";
+                                                                }
+                                                                else
+                                                                {
+                                                                    tittle += "Ücretli İzin_______";
+                                                                }
+                                                                if (item.TotalDay == 0)
+                                                                {
+                                                                    tittle += "Süresiz                     " + item.Description;
+                                                                }
+                                                                else
+                                                                {
+                                                                    tittle += item.TotalDay + " Gün                     " + item.Description;
+                                                                }
+
+                                                                <li class="dropdown-item" id="@item.Id" name="@item.Name" onclick="ChangeLeaveTypeUpdateModal(this)">@item.Name <a data-toggle='tooltip' title='@tittle' class="float-right"><i class='fas fa-info-circle bg-success '></i></a></li>
+
+                                                            }
+
+                                                        </ul>
+                                                    </div>
 
                                                 </div>
                                                 <input type="hidden" asp-for="StaffId" />
@@ -47,7 +76,7 @@
                                                 <input type="hidden" asp-for="StaffLeaveId" />
                                             </div>
                                             <div class="form-group row ">
-                                                <label >Başlangıç Tarihi *</label>
+                                                <label>Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_16" data-target-input="nearest">
                                                         <input asp-for="LeaveStartDate" value="@Model.LeaveStartDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_16" />
@@ -59,21 +88,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                           
+
 
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5">
 
                                             <div class="form-group row ">
-                                                <label >Toplam Gün *</label>
+                                                <label>Toplam Gün *</label>
                                                 <div class="input-group">
                                                     <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center" name="TotalDay" value="@Model.TotalDay" placeholder="Toplam" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group row ">
-                                                <label >Bitiş Tarihi *</label>
+                                                <label>Bitiş Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_17" data-target-input="nearest">
                                                         <input asp-for="LeaveEndDate" value="@Model.LeaveEndDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_17" />
@@ -92,7 +121,7 @@
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
 
-                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" placeholder="Açıklama"></textarea>
 
                                                 </div>
                                             </div>
@@ -129,10 +158,13 @@
         int: 1,
         boostat: 5,
         maxboostedstep: 10,
-        
-    }); 
 
-
+    });
+    
+    $(document).ready(function () {
+  
+       
+    });
 
     FormValidation.formValidation(
         document.getElementById('updateStaffLeaveForm'),
@@ -179,10 +211,33 @@
                 // Bootstrap Framework Integration
                 bootstrap: new FormValidation.plugins.Bootstrap(),
                 // Validate fields when clicking the Submit button
-                submitButton: new FormValidation.plugins.SubmitButton(),
-                // Submit the form when all fields are valid
-                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+
             }
         }
     );
+</script>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    $(document).ready(function () {
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+    });
+</script>
+@*izin türü değişti*@
+<script>
+
+    function ChangeLeaveTypeUpdateModal(elem) {
+        var id = $(elem).attr("id");
+        var name = $(elem).attr("name");
+
+        $("#LeaveTypeIdUpdateModal").val(id);
+        $("#selectLeaveTypeBtnTextUpdateModal").text(name);
+
+
+    }
 </script>
