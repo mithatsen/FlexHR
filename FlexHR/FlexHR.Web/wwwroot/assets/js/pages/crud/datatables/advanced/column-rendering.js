@@ -37,10 +37,10 @@ var KTDatatablesAdvancedColumnRendering = function () {
 
             ],
         });
-        var table = $('#kt_datatable_2');
+        var table2 = $('#kt_datatable_2');
 
         // begin first table
-        table.DataTable({
+        table2.DataTable({
             responsive: true,
             paging: true,
             columnDefs: [
@@ -151,7 +151,120 @@ var KTDatatablesAdvancedColumnRendering = function () {
  
         });
        
+        var table = $('#kt_datatable_5');
 
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+            columnDefs: [
+
+                {
+                    targets: -2,
+                    title: 'Durum',
+                    width: '75px',
+                    language: "tr",
+                    render: function (data, type, full, meta) {
+                        var status = {
+                            '96': {
+                                'title': 'Onay Bekliyor',
+                                'state': 'warning'
+
+                            },
+                            '98': {
+                                'title': 'Reddedildi',
+                                'state': 'danger'
+                            },
+                            '97': {
+                                'title': 'Onaylandı',
+                                'state': 'success'
+                            }
+                        };
+                        if (typeof status[data] === 'undefined') {
+                            return data;
+                        }
+                        return '<span class="text-light font-weight-bold badge badge-' + status[data].state + '">' + status[data].title + '</span>';
+                    },
+                },
+
+            ],
+        });
+        var table = $('#kt_datatable_6');
+
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+            columnDefs: [
+
+                {
+                    targets: -2,
+                    title: 'Durum',
+                    width: '75px',
+                    language: "tr",
+                    render: function (data, type, full, meta) {
+                        var status = {
+                            '96': {
+                                'title': 'Onay Bekliyor',
+                                'state': 'warning'
+
+                            },
+                            '98': {
+                                'title': 'Reddedildi',
+                                'state': 'danger'
+                            },
+                            '97': {
+                                'title': 'Onaylandı',
+                                'state': 'success'
+                            }
+                        };
+                        if (typeof status[data] === 'undefined') {
+                            return data;
+                        }
+                        return '<span class="text-light font-weight-bold badge badge-' + status[data].state + '">' + status[data].title + '</span>';
+                    },
+                },
+
+            ],
+        });
+        var table = $('#kt_datatable_7');
+
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+            columnDefs: [
+
+                {
+                    targets: -2,
+                    title: 'Durum',
+                    width: '75px',
+                    language: "tr",
+                    render: function (data, type, full, meta) {
+                        var status = {
+                            '96': {
+                                'title': 'Onay Bekliyor',
+                                'state': 'warning'
+
+                            },
+                            '98': {
+                                'title': 'Reddedildi',
+                                'state': 'danger'
+                            },
+                            '97': {
+                                'title': 'Onaylandı',
+                                'state': 'success'
+                            }
+                        };
+                        if (typeof status[data] === 'undefined') {
+                            return data;
+                        }
+                        return '<span class="text-light font-weight-bold badge badge-' + status[data].state + '">' + status[data].title + '</span>';
+                    },
+                },
+
+            ],
+        });
 
         
 $('#kt_datatable_search_status').on('change', function () {
