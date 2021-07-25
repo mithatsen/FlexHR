@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
+using FlexHR.DTO.Dtos.StaffFileDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Http;
@@ -39,10 +40,18 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult Index(int id)
         {
-
             ViewBag.StaffId = id;
             ViewBag.FileTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType), "GeneralSubTypeId", "Description");
-            return View();
+            StaffFileInfoDto staffFileInfo = new StaffFileInfoDto
+            {
+                IdentityBook = new FileHelper { Name = "Nüfus Cüzdanı", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 4 && x.IsActive == true).Count() },
+                DrivingLicence = new FileHelper { Name = "Ehliyet", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 5 && x.IsActive == true).Count() },
+                SchoolLeavingCertificate = new FileHelper { Name = "Mezuniyet Belgesi", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 6 && x.IsActive == true).Count() },
+                ResidenceCertificate = new FileHelper { Name = "İkametgah", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 7 && x.IsActive == true).Count() },
+                CriminalCertificate = new FileHelper { Name = "Adli Sicil Kaydı", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 8 && x.IsActive == true).Count() },
+                Certificates = new FileHelper { Name = "Sertifikalar", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 9 && x.IsActive == true).Count() }
+            };
+            return View(staffFileInfo);
         }
 
         [HttpPost]
@@ -101,7 +110,7 @@ namespace FlexHR.Web.Controllers
                         if (file.Length > 0)
                         {
                             //dosyamızı kaydediyoruz.
-                           
+
                             using (var stream = new FileStream(imagePath, FileMode.Create))
                             {
                                 await file.CopyToAsync(stream);

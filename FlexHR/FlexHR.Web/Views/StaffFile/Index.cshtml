@@ -1,4 +1,4 @@
-﻿@model ListStaffFileDto
+﻿@model StaffFileInfoDto
 @{
     ViewData["Title"] = "dosya Bilgileri";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -36,16 +36,102 @@
                                     </div>
                                 </div>
                                 <!--end::Header-->
+                                <div class="container w-75">
+                                    <table class="table table-light-dark table-sm mt-2 text-center">
+                                        <thead>
+                                            <tr class="table table-info ">
+                                                <th>Belge Türü</th>
+                                                <th>Dosya Yüklendi mi</th>
+                                                <th>Göster/Düzenle</th>
 
-                                <div class="container">
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                            <td>@Model.IdentityBook.Name</td>
+                                            @if (Model.IdentityBook.Count > 0)
+                                            {
+                                                <td><i class="fas fa-check-circle text-success my-auto"></i></td>
+                                            }
+                                            else
+                                            {
+                                                <td><i class="fas fa-times-circle text-danger my-auto"></i></td>
+                                            }
+                                            <td><a class="btn text-primary" onclick="ShowFileDetail(4)">Göster/Düzenle</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Model.DrivingLicence.Name</td>
+                                            @if (Model.DrivingLicence.Count > 0)
+                                            {
+                                                <td><i class="fas fa-check-circle text-success"></i></td>
+                                            }
+                                            else
+                                            {
+                                                <td><i class="fas fa-times-circle text-danger"></i></td>
+                                            }
+
+                                            <td><a class="btn text-primary" onclick="ShowFileDetail(5)">Göster/Düzenle</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Model.SchoolLeavingCertificate.Name</td>
+                                            @if (Model.SchoolLeavingCertificate.Count > 0)
+                                            {
+                                                <td><i class="fas fa-check-circle text-success"></i></td>
+                                            }
+                                            else
+                                            {
+                                                <td><i class="fas fa-times-circle text-danger"></i></td>
+                                            }
+
+                                            <td><a class="btn text-primary" onclick="ShowFileDetail(6)">Göster/Düzenle</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Model.ResidenceCertificate.Name</td>
+                                            @if (Model.ResidenceCertificate.Count > 0)
+                                            {
+                                                <td><i class="fas fa-check-circle text-success"></i></td>
+                                            }
+                                            else
+                                            {
+                                                <td><i class="fas fa-times-circle text-danger"></i></td>
+                                            }
+                                            <td><a class="btn text-primary" onclick="ShowFileDetail(7)">Göster/Düzenle</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Model.CriminalCertificate.Name</td>
+                                            @if (Model.CriminalCertificate.Count > 0)
+                                            {
+                                                <td><i class="fas fa-check-circle text-success"></i></td>
+                                            }
+                                            else
+                                            {
+                                                <td><i class="fas fa-times-circle text-danger"></i></td>
+                                            }
+                                            <td><a class="btn text-primary" onclick="ShowFileDetail(8)">Göster/Düzenle</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Model.Certificates.Name</td>
+                                            @if (Model.Certificates.Count > 0)
+                                            {
+                                                <td><i class="fas fa-check-circle text-success"></i></td>
+                                            }
+                                            else
+                                            {
+                                                <td><i class="fas fa-times-circle text-danger"></i></td>
+                                            }
+                                            <td><a class="btn text-primary" onclick="ShowFileDetail(9)">Göster/Düzenle</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="container mt-0">
                                     <!--begin::Body-->
-                                    <div class="card-body">
+                                    <div class="">
 
                                         <div class="row">
                                             <div class="card-body">
                                                 <div class="col-md-11 mb-2 ml-7 row ">
                                                     <div class="col-md-10 justify-content-center">
-                                                        <select id="categorySelect" asp-for="FileGeneralSubTypeId" onchange="categoryChange()" class="form-control form-control-solid d-block  form-control-lg" asp-items="@ViewBag.FileTypes">
+                                                        <select id="categorySelect" onchange="categoryChange()" class="form-control form-control-solid d-block  form-control-lg" asp-items="@ViewBag.FileTypes">
                                                             <option hidden value="-1">Önce kategori seçiniz</option>
                                                         </select>
                                                     </div>
@@ -91,6 +177,14 @@
         $(document).ready(function () {
             $("#tab_8").addClass("active");
         });
+    </script>
+    <script>
+        function ShowFileDetail(id) {
+            //$('select>option:eq(' + id + ')').attr('selected', true);
+            $("#categorySelect").val(id);
+            categoryChange();
+            $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+        }
     </script>
 
     @*//add staff file dropzone*@
