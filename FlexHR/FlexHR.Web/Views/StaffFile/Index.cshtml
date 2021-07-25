@@ -36,93 +36,102 @@
                                     </div>
                                 </div>
                                 <!--end::Header-->
-                                <div class="container w-75">
-                                    <table class="table table-light-dark table-sm mt-2 text-center">
-                                        <thead>
-                                            <tr class="table table-info ">
-                                                <th>Belge Türü</th>
-                                                <th>Dosya Yüklendi mi</th>
-                                                <th>Göster/Düzenle</th>
+                                <div class="container ">
+                                    <div class="row">
+                                        <div class="card-body">
+                                            <div class="col-md-11 mb-2 ml-7 row ">
+                                                <div class="col-md-12 justify-content-center">
+                                                    <table class="table table-light-dark table-sm mt-2 text-center table-striped">
+                                                        <thead class="thead-dark">
+                                                            <tr class="table table-info ">
+                                                                <th>Belge Türü</th>
+                                                                <th>Dosya Yüklendi mi</th>
+                                                                <th>Göster/Düzenle</th>
 
-                                            </tr>
-                                        </thead>
-                                        <tr>
-                                            <td>@Model.IdentityBook.Name</td>
-                                            @if (Model.IdentityBook.Count > 0)
-                                            {
-                                                <td><i class="fas fa-check-circle text-success my-auto"></i></td>
-                                            }
-                                            else
-                                            {
-                                                <td><i class="fas fa-times-circle text-danger my-auto"></i></td>
-                                            }
-                                            <td><a class="btn text-primary" onclick="ShowFileDetail(4)">Göster/Düzenle</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>@Model.DrivingLicence.Name</td>
-                                            @if (Model.DrivingLicence.Count > 0)
-                                            {
-                                                <td><i class="fas fa-check-circle text-success"></i></td>
-                                            }
-                                            else
-                                            {
-                                                <td><i class="fas fa-times-circle text-danger"></i></td>
-                                            }
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>@Model.IdentityBook.Name</td>
+                                                                @if (Model.IdentityBook.Count > 0)
+                                                                {
+                                                                    <td><i class="fas fa-check-circle text-success my-auto"></i></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td><i class="fas fa-times-circle text-danger my-auto"></i></td>
+                                                                }
+                                                                <td><a class="btn text-primary" onclick="ShowFileDetail(4)">Göster/Düzenle</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>@Model.DrivingLicence.Name</td>
+                                                                @if (Model.DrivingLicence.Count > 0)
+                                                                {
+                                                                    <td><i class="fas fa-check-circle text-success"></i></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td><i class="fas fa-times-circle text-danger"></i></td>
+                                                                }
 
-                                            <td><a class="btn text-primary" onclick="ShowFileDetail(5)">Göster/Düzenle</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>@Model.SchoolLeavingCertificate.Name</td>
-                                            @if (Model.SchoolLeavingCertificate.Count > 0)
-                                            {
-                                                <td><i class="fas fa-check-circle text-success"></i></td>
-                                            }
-                                            else
-                                            {
-                                                <td><i class="fas fa-times-circle text-danger"></i></td>
-                                            }
+                                                                <td><a class="btn text-primary" onclick="ShowFileDetail(5)">Göster/Düzenle</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>@Model.SchoolLeavingCertificate.Name</td>
+                                                                @if (Model.SchoolLeavingCertificate.Count > 0)
+                                                                {
+                                                                    <td><i class="fas fa-check-circle text-success"></i></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td><i class="fas fa-times-circle text-danger"></i></td>
+                                                                }
 
-                                            <td><a class="btn text-primary" onclick="ShowFileDetail(6)">Göster/Düzenle</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>@Model.ResidenceCertificate.Name</td>
-                                            @if (Model.ResidenceCertificate.Count > 0)
-                                            {
-                                                <td><i class="fas fa-check-circle text-success"></i></td>
-                                            }
-                                            else
-                                            {
-                                                <td><i class="fas fa-times-circle text-danger"></i></td>
-                                            }
-                                            <td><a class="btn text-primary" onclick="ShowFileDetail(7)">Göster/Düzenle</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>@Model.CriminalCertificate.Name</td>
-                                            @if (Model.CriminalCertificate.Count > 0)
-                                            {
-                                                <td><i class="fas fa-check-circle text-success"></i></td>
-                                            }
-                                            else
-                                            {
-                                                <td><i class="fas fa-times-circle text-danger"></i></td>
-                                            }
-                                            <td><a class="btn text-primary" onclick="ShowFileDetail(8)">Göster/Düzenle</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>@Model.Certificates.Name</td>
-                                            @if (Model.Certificates.Count > 0)
-                                            {
-                                                <td><i class="fas fa-check-circle text-success"></i></td>
-                                            }
-                                            else
-                                            {
-                                                <td><i class="fas fa-times-circle text-danger"></i></td>
-                                            }
-                                            <td><a class="btn text-primary" onclick="ShowFileDetail(9)">Göster/Düzenle</a></td>
-                                        </tr>
-                                    </table>
+                                                                <td><a class="btn text-primary" onclick="ShowFileDetail(6)">Göster/Düzenle</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>@Model.ResidenceCertificate.Name</td>
+                                                                @if (Model.ResidenceCertificate.Count > 0)
+                                                                {
+                                                                    <td><i class="fas fa-check-circle text-success"></i></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td><i class="fas fa-times-circle text-danger"></i></td>
+                                                                }
+                                                                <td><a class="btn text-primary" onclick="ShowFileDetail(7)">Göster/Düzenle</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>@Model.CriminalCertificate.Name</td>
+                                                                @if (Model.CriminalCertificate.Count > 0)
+                                                                {
+                                                                    <td><i class="fas fa-check-circle text-success"></i></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td><i class="fas fa-times-circle text-danger"></i></td>
+                                                                }
+                                                                <td><a class="btn text-primary" onclick="ShowFileDetail(8)">Göster/Düzenle</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>@Model.Certificates.Name</td>
+                                                                @if (Model.Certificates.Count > 0)
+                                                                {
+                                                                    <td><i class="fas fa-check-circle text-success"></i></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td><i class="fas fa-times-circle text-danger"></i></td>
+                                                                }
+                                                                <td><a class="btn text-primary" onclick="ShowFileDetail(9)">Göster/Düzenle</a></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
                                 <div class="container mt-0">
                                     <!--begin::Body-->
                                     <div class="">
@@ -269,20 +278,19 @@
                                     //timer: 3600000,
                                     title: 'Dosyalarınız Yüklendi',
                                 }).then(function () {
-                                    $.ajax({
-                                        method: "GET",
-                                        url: "/StaffFile/GetStaffActivePhoto/" + id,
-                                    }).done(function (content) {
-                                        console.log("msmiiii" + content);
-                                        if (content != null) {
-                                            $("#photo45").attr("src", '/img/' + content + '')
-                                        }
-                                        else {
-                                            $("#photo45").attr("src", "/assets/media/users/default.jpg")
-                                        }
-
-
-                                    })
+                                    window.location.reload();
+                                    //$.ajax({
+                                    //    method: "GET",
+                                    //    url: "/StaffFile/GetStaffActivePhoto/" + id,
+                                    //}).done(function (content) {
+                                    //    console.log("msmiiii" + content);
+                                    //    if (content != null) {
+                                    //        $("#photo45").attr("src", '/img/' + content + '')
+                                    //    }
+                                    //    else {
+                                    //        $("#photo45").attr("src", "/assets/media/users/default.jpg")
+                                    //    }
+                                    //})
                                 });
                             } else {
                                 Swal.fire({
