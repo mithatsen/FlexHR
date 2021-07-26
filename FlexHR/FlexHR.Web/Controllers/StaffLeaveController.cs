@@ -15,23 +15,32 @@ namespace FlexHR.Web.Controllers
     public class StaffLeaveController : Controller
     {
         private readonly IStaffLeaveService _staffLeaveService;
+        private readonly IStaffService _staffService;
         private readonly ILeaveTypeService _leaveTypeService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
-        public StaffLeaveController(IStaffLeaveService staffLeaveService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService)
+        private readonly ILeaveRuleService _leaveRuleService;
+        public StaffLeaveController(IStaffLeaveService staffLeaveService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,IStaffService staffService)
         {
             _staffLeaveService = staffLeaveService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _leaveTypeService = leaveTypeService;
+            _leaveRuleService = leaveRuleService;
+            _staffService = staffService;
         }
         public IActionResult Index(int id)
         {
-           
+      
+
+
             ViewBag.StaffId = id;
 
             var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
             var leaveModels = new List<ListStaffLeaveDto>();
+            var staff = _staffService.GetById(id);
+
+            var totalLeaveDeserved=CalculateTotalLeaveAmountDeservedBySeniority(staff.JobJoinDate);
             foreach (var item in staffLeaveList)
             {
                 var leaveModel = _mapper.Map<ListStaffLeaveDto>(item);
@@ -62,9 +71,7 @@ namespace FlexHR.Web.Controllers
                 LeaveType= _leaveTypeService.GetById(result.LeaveTypeId).Name
 
             };
-
             return PartialView("GetUpdateStaffLeaveModal", leaveModel);
-
         }
 
         [HttpPost]
@@ -87,7 +94,7 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public bool DeleteStaffLeave(int id)
         {
-
+           
 
             try
             {
@@ -101,5 +108,38 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
+        public  int CalculateTotalLeaveAmountDeservedBySeniority(DateTime startDate)
+        {
+            var models = _leaveRuleService.GetAll().OrderBy(p=>p.SeniorityYear);
+            var seniorityLevel = (DateTime.Now-startDate).Days/365;
+            int oldCount = 0;
+            int leaveAmount = 14;
+            var totalDayDeserved = 0;
+            foreach (var item in models)
+            {
+                if (seniorityLevel > item.SeniorityYear)
+                {
+                    totalDayDeserved+=(item.SeniorityYear - oldCount) * leaveAmount;
+                }
+                else
+                {
+                    totalDayDeserved += (seniorityLevel - oldCount) * leaveAmount;
+                    leaveAmount += item.AditionalLeaveAmount;
+                    oldCount = item.SeniorityYear;
+                    break;
+                }
+                leaveAmount += item.AditionalLeaveAmount;
+                oldCount = item.SeniorityYear;
+              
+            }
+            if (seniorityLevel - oldCount > 0)
+            {
+                totalDayDeserved += (seniorityLevel - oldCount) * leaveAmount;
+            }
+
+
+            return totalDayDeserved;
+        }
+
     }
 }

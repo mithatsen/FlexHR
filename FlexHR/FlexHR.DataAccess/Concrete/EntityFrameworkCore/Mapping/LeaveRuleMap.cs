@@ -12,12 +12,10 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
         public void Configure(EntityTypeBuilder<LeaveRule> entity)
         {
             entity.HasKey(e => e.RuleId);
-            entity.Property(e => e.AnnualLeaveCount)
+            entity.Property(e => e.AditionalLeaveAmount)
             .IsRequired();
 
-            entity.Property(e => e.MinYear)
-            .IsRequired();
-            entity.Property(e => e.MaxYear)
+            entity.Property(e => e.SeniorityYear)
             .IsRequired();
             entity.Property(e => e.IsActive)
             .IsRequired();

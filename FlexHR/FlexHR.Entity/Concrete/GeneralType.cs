@@ -11,7 +11,6 @@ namespace FlexHR.Entity.Concrete
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
-
         public virtual ICollection<GeneralSubType> GeneralSubType { get; set; }
     }
 }
