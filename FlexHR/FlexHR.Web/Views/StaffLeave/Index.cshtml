@@ -29,12 +29,28 @@
                             <!--begin::Card-->
                             <div class="card card-custom">
                                 <div class="card-header flex-wrap py-5">
-                                    <div class="card-title">
+                                    <div class="card-title w-75">
                                         <i class="fas fa-plane-departure text-dark mr-2"></i>
                                         <h3 class="card-label">
                                             İzinler
-
                                         </h3>
+                                        @{
+                                            decimal TotalLeaveDeserved = ViewBag.TotalLeaveDeserved;
+                                            decimal UsedLeave = ViewBag.UsedLeaveDay;
+                                            decimal RemainLeaveDay = TotalLeaveDeserved - UsedLeave;
+                                            decimal yuzde = TotalLeaveDeserved != 0 ? (RemainLeaveDay / TotalLeaveDeserved) * 100 : 0;
+                                            var abc = yuzde != 0 ? Convert.ToInt32(yuzde) + "%" : "0%";
+
+                                        }
+
+
+                                        <div class="progress w-50 ml-8">
+
+                                            <div class="progress-bar" role="progressbar" style="width:@abc;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">@abc</div>
+
+                                        </div>
+                                        <a data-toggle="tooltip" title="Kalan izin günü @RemainLeaveDay"><span class="ml-4 font-size-sm">@RemainLeaveDay / </span></a> 
+                                        <a data-toggle="tooltip" title="Hak edilen izin günü @TotalLeaveDeserved"><span class="ml-1 font-size-sm"> @TotalLeaveDeserved</span></a>
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Button-->
@@ -50,11 +66,11 @@
                                     <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
                                         <thead>
                                             <tr>
-                                                <th>Başlangıç</th>
+                                                <th >Başlangıç</th>
                                                 <th>Bitiş</th>
                                                 <th>Süre</th>
                                                 <th>İzin Türü</th>
-                                                <th>Açıklama</th>
+                                                <th  width="35%">Açıklama</th>
                                                 <th>Durum</th>
                                                 <th>İşlemler</th>
                                             </tr>
@@ -265,17 +281,29 @@
             $("#tab_5").addClass("active");
         });
     </script>
-@*izin türü değişti*@
+    @*<script>
+            $(document).ready(function () {
+                $(function () {
+                    let TotalLeaveDeserved = ViewBag.TotalLeaveDeserved;
+                    let UsedLeave = 32;
+
+                    let yuzde = TotalLeaveDeserved != 0 ? (UsedLeave / TotalLeaveDeserved) * 100 : 0;
+
+                    $('.progress-bar')
+                })
+            });
+        </script>*@
+    @*izin türü değişti*@
     <script>
-        
+
         function ChangeLeaveType(elem) {
             var id = $(elem).attr("id");
-            var name = $(elem).attr("name");           
-           
+            var name = $(elem).attr("name");
+
             $("#LeaveTypeId").val(id);
             $("#selectLeaveTypeBtnText").text(name);
-            
-          
+
+
         }
     </script>
 
@@ -321,6 +349,10 @@
                         validators: {
                             notEmpty: {
                                 message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
                             }
                         }
                     },
@@ -328,6 +360,10 @@
                         validators: {
                             notEmpty: {
                                 message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
                             }
                         }
                     },
@@ -339,12 +375,21 @@
                             between: {
                                 min: 1,
                                 max: 365,
-                                message: '1-365 aralığında olmalı',
+                                message: 'Toplam gün 0 olamaz',
                             }
 
                         }
                     },
+                    Description: {
+                        validators: {
+                            stringLength: {
+                                max: 999,
+                                message: '1000 karakterden az girin'
+                            }
+                        }
+                    }
                 },
+               
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
                     // Bootstrap Framework Integration

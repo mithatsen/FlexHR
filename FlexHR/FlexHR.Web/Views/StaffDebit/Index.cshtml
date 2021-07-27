@@ -42,15 +42,15 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_9">
                                         <thead>
                                             <tr>
-                                                <th></th>
+
                                                 <th>Kategori</th>
                                                 <th>Seri Numarası</th>
                                                 <th>Veriliş Tarihi</th>
                                                 <th>İade Tarihi</th>
-                                                <th>Açıklama</th>
+                                                <th width="35%">Açıklama</th>
                                                 <th>İşlemler</th>
 
                                             </tr>
@@ -59,7 +59,7 @@
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td></td>
+
                                                     <td>@item.DebitGeneralSubTypeName</td>
                                                     <td>@item.SerialNumber</td>
                                                     <td>@item.IssueDate.ToShortDateString()</td>
@@ -228,6 +228,20 @@
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
                         },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
+
+                    }
+                },
+                ReturnDate: {
+                    validators: {
+
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
 
                     }
                 },
@@ -238,17 +252,37 @@
                         }
                     }
                 },
+                Description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Açıklama alanı boş geçilemez'
+                        },
+                        stringLength: {
+                            max: 499,
+                            message: '500 karakterden az girin'
+                        }
+                    }
+                },
+                SerialNumber: {
+                    validators: {                       
+                        stringLength: {
+                            max: 499,
+                            message: 'Seri numarası 50 karakterden az olmalı'
+                        }
+                    }
+                },
             },
+     
             plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                // Bootstrap Framework Integration
-                bootstrap: new FormValidation.plugins.Bootstrap(),
-                // Validate fields when clicking the Submit button
-                // submitButton: new FormValidation.plugins.SubmitButton(),
-                // Submit the form when all fields are valid
-                // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-            }
-        });
+            trigger: new FormValidation.plugins.Trigger(),
+            // Bootstrap Framework Integration
+            bootstrap: new FormValidation.plugins.Bootstrap(),
+            // Validate fields when clicking the Submit button
+            // submitButton: new FormValidation.plugins.SubmitButton(),
+            // Submit the form when all fields are valid
+            // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+        }
+                        });
         function debitClickFunction() {
             debugger;
             fv.validate().then(function (status) {

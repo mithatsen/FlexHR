@@ -6,7 +6,7 @@
                 <div class="modal-header">
                     <div class="card-title align-items-start flex-column">
                         <h3 class="card-label font-weight-bolder text-dark">
-                            <i class="fas fa-address-book mr-2 text-dark"></i>Mesai Ekle
+                            <i class="fas fa-address-book mr-2 text-dark"></i>Mesai Güncelle
                         </h3>
 
                     </div>
@@ -95,8 +95,11 @@
                         validators: {
                             notEmpty: {
                                 message: 'Tarih alanı boş geçilemez'
-
                             },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
+                            }
 
                         }
                     },
@@ -107,8 +110,7 @@
                             },
                             between: {
                                 min: 1,
-                                max: 50,
-                                message: '1-50 aralığında olmalı',
+                                message: 'Süre alanı 0 olamaz',
                             }
 
                         }
@@ -117,6 +119,10 @@
                         validators: {
                             notEmpty: {
                                 message: 'Açıklama alanı boş geçilemez'
+                            },
+                            stringLength: {
+                                max: 499,
+                                message: '500 karakterden az girin'
                             }
                         }
                     },

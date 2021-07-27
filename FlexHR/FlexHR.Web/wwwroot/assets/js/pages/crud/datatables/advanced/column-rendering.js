@@ -144,12 +144,41 @@ var KTDatatablesAdvancedColumnRendering = function () {
             ],
         });
         var table = $('#kt_datatable_4');
+
         // begin first table
+
         table.DataTable({
             responsive: true,
             paging: true,
- 
+            columnDefs: [
+
+                {
+                    targets: -1,
+                    title: 'Çalýþma Durumu',
+                    width: '20px',
+
+                    render: function (data, type, full, meta) {
+                        var status = {
+                            'True': {
+                                'title': '',
+                                'state': 'success'
+                            },
+                            'False': {
+                                'title': '',
+                                'state': 'danger'
+                            },
+                        };
+                        if (typeof status[data] === 'undefined') {
+                            return data;
+                        }
+                        return '<span class="label label-' + status[data].state + ' label-dot label-xl  mr-2"></span>'
+                        // + '<span class="font-weight-bold text-' + status[data].state + '">' + status[data].title + '</span>';
+                    },
+                },
+
+            ],
         });
+    
        
         var table = $('#kt_datatable_5');
 
@@ -265,8 +294,54 @@ var KTDatatablesAdvancedColumnRendering = function () {
 
             ],
         });
+        var table = $('#kt_datatable_8');
 
-        
+        // begin first table
+
+        table.DataTable({
+            responsive: true,
+            paging: true,
+            columnDefs: [
+
+                {
+                    targets: -1,
+                    title: 'Durum',
+                    width: '75px',
+                    language: "tr",
+                    render: function (data, type, full, meta) {
+                        var status = {
+                            '96': {
+                                'title': 'Onay Bekliyor',
+                                'state': 'warning'
+
+                            },
+                            '98': {
+                                'title': 'Reddedildi',
+                                'state': 'danger'
+                            },
+                            '97': {
+                                'title': 'Onaylandý',
+                                'state': 'success'
+                            }
+                        };
+                        if (typeof status[data] === 'undefined') {
+                            return data;
+                        }
+                        return '<span class="text-light font-weight-bold badge badge-' + status[data].state + '">' + status[data].title + '</span>';
+                    },
+                },
+
+            ],
+        });
+
+        var table = $('#kt_datatable_9');
+
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+           
+        });
 $('#kt_datatable_search_status').on('change', function () {
     datatable.search($(this).val().toLowerCase(), 'Status');
 });

@@ -20,7 +20,7 @@
                 <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_4">
                     <div class="flex-row-fluid ml-lg-8">
                         <!--begin::Form-->
-                        <form class="form" asp-action="UpdateStaffOtherInfo" asp-controller="StaffOtherInfo" method="post">
+                        <form class="form" id="otherInfoForm" asp-action="UpdateStaffOtherInfo" asp-controller="StaffOtherInfo" method="post">
                             <!--begin::Card-->
                             <div class="card card-custom card-stretch">
                                 <!--begin::Header-->
@@ -48,8 +48,8 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Adres</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Adres</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <textarea asp-for="Adress" type="text" class="form-control form-control-lg form-control-solid" placeholder="Adres"></textarea>
@@ -58,8 +58,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ev Telefonu</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Ev Telefonu</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
@@ -74,8 +74,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Posta Kodu</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Posta Kodu</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="PostalCode" type="text" class="form-control form-control-lg form-control-solid" placeholder="Posta Kodu" />
@@ -90,26 +90,26 @@
                                                 @if (Model.TownId > 0)
                                                 {
                                                     <div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
-                                                        <div class="col-lg-9 col-xl-6">
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">Ülke</label>
+                                                        <div class="col-lg-9 col-xl-7">
                                                             <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
-                                                                <option disabled value="-1">Ülke Seçiniz</option>
+                                                                <option  value="-1">Ülke Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
 
 
                                                     <div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
-                                                        <div class="col-lg-9 col-xl-6">
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">Şehir</label>
+                                                        <div class="col-lg-9 col-xl-7">
                                                             <select id="kt_select2_city" onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Cities" placeholder="deneme">
                                                                 <option disabled selected value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
-                                                        <div class="col-lg-9 col-xl-6">
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">İlçe</label>
+                                                        <div class="col-lg-9 col-xl-7">
                                                             <select id="kt_select2_town" asp-for="TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Towns">
                                                                 <option disabled selected value="-1">Seçiniz</option>
                                                             </select>
@@ -119,8 +119,8 @@
                                                 else
                                                 {
                                                     <div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">Ülke</label>
-                                                        <div class="col-lg-9 col-xl-6">
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">Ülke</label>
+                                                        <div class="col-lg-9 col-xl-7">
                                                             <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-lg " asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
                                                                 <option value="-1">Ülke Seçiniz</option>
                                                             </select>
@@ -129,16 +129,16 @@
 
 
                                                     <div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">Şehir</label>
-                                                        <div class="col-lg-9 col-xl-6">
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">Şehir</label>
+                                                        <div class="col-lg-9 col-xl-7">
                                                             <select id="kt_select2_city" onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" disabled class="form-control form-control-solid form-control-lg text-muted">
                                                                 <option disabled value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label class="col-xl-3 col-lg-3 col-form-label">İlçe</label>
-                                                        <div class="col-lg-9 col-xl-6">
+                                                        <label class="col-xl-4 col-lg-3 col-form-label">İlçe</label>
+                                                        <div class="col-lg-9 col-xl-7">
                                                             <select id="kt_select2_town" disabled asp-for="TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted">
                                                                 <option disabled value="-1">Seçiniz</option>
                                                             </select>
@@ -164,8 +164,8 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Banka Adı</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Banka Adı</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="BankName" type="text" class="form-control form-control-lg form-control-solid" placeholder="Banka Adı" />
@@ -174,8 +174,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Hesap No</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Hesap No</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="AccountNo" type="text" class="form-control form-control-lg form-control-solid" placeholder="Hesap No" />
@@ -189,10 +189,10 @@
                                             <div class="col-md-6">
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Hesap Tipi</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Hesap Tipi</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <select id="ContractTypeSelect3" asp-for="AccountTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.AccountTypeList">
-                                                            <option disabled selected value="-1">Seçiniz</option>
+                                                            <option selected value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
@@ -200,10 +200,14 @@
 
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">IBAN</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">IBAN</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
-
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    TR
+                                                                </span>
+                                                            </div>
                                                             <input asp-for="Iban" type="text" class="form-control form-control-lg form-control-solid" placeholder="IBAN" />
 
                                                         </div>
@@ -231,19 +235,19 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Ad Soyad</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Ad Soyad</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="CallPersonNameSurname" type="text" class="form-control form-control-lg form-control-solid" placeholder="Ad Soyad" />
-
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Telefonu</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Telefonu</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
@@ -261,8 +265,8 @@
                                             <div class="col-md-6">
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Yakınlık Dererecesi</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label class="col-xl-4 col-lg-3 col-form-label">Yakınlık Dererecesi</label>
+                                                    <div class="col-lg-9 col-xl-7">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="CallPersonProximityDegree" type="text" class="form-control form-control-lg form-control-solid" placeholder="Yakınlık Derecesi" />
@@ -296,7 +300,106 @@
             $("#tab_4").addClass("active");
         });
     </script>
+    <script>
 
+        FormValidation.formValidation(
+            document.getElementById('otherInfoForm'),
+            {
+                fields: {
+
+                    Adress: {
+                        validators: {
+                            stringLength: {
+                                max: 1999,
+                                message: '2000 karakterden az girin'
+                            }
+                        }
+                    },
+                    HomePhoneNumber: {
+                        validators: {
+                            phone: {
+                                country: 'US',
+                                message: 'Geçerli bir numara girin'
+                            }
+                        }
+                    },
+                    PostalCode: {
+                        validators: {
+                            stringLength: {
+                                min:5,
+                                max: 5,
+                                message: '5 haneli posta kodunu girin'
+                            }
+                        }
+                    },
+                    BankName: {
+                        validators: {
+                            stringLength: {
+                                max: 100,
+                                message: '100 karakterden az girin'
+                            }
+                        }
+                    },
+                    AccountNo: {
+                        validators: {
+                            stringLength: {
+                                max: 20,
+                                message: '20 karakterden az girin'
+                            },
+                            numeric: {
+                                message: 'Hesap no rakamlardan oluşmalıdır'
+                            }
+                        }
+                    },
+                    Iban: {
+                        validators: {
+                            stringLength: {
+                                max: 30,
+                                message: '30 karakterden az girin'
+                            },
+                            numeric: {
+                                message: 'Iban rakamlardan oluşmalıdır'
+                            }
+                        }
+                    },
+                    CallPersonNameSurname: {
+                        validators: {
+                            stringLength: {
+                                max: 50,
+                                message: '50 karakterden az girin'
+                            }
+                        }
+                    },
+                    CallPersonPhoneNumber: {
+                        validators: {
+                            phone: {
+                                country: 'US',
+                                message: 'Geçerli bir numara girin'
+                            }
+                        }
+                    },
+                    CallPersonProximityDegree: {
+                        validators: {
+                            stringLength: {
+                                max: 50,
+                                message: '50 karakterden az girin'
+                            }
+                        }
+                    },
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+    </script>
     @*Ülke ve şehir değişiklikleri drop doena yansı*@
     <script type="text/javascript">
 

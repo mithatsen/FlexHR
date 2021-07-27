@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 id="PaymentAddModalHeader" class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Ekle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Ödeme Güncelle
                     </h3>
 
                 </div>
@@ -338,7 +338,10 @@
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
                         },
-
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
                     }
                 }, Name: {
                     validators: {
@@ -352,6 +355,9 @@
                         notEmpty: {
                             message: 'Kdv alanı boş geçilemez'
                         },
+                        numeric: {
+                            message: ' KDV rakamlardan oluşmalıdır'
+                        }
 
                     }
                 }, ReceiptAmount: {
@@ -359,6 +365,9 @@
                         notEmpty: {
                             message: 'Tutar alanı boş geçilemez'
                         },
+                        numeric: {
+                            message: ' Tutar rakamlardan oluşmalıdır'
+                        }
 
                     }
                 },
@@ -366,6 +375,17 @@
                     validators: {
                         notEmpty: {
                             message: 'Tutar alanı boş geçilemez'
+                        },
+                        numeric: {
+                            message: ' Tutar rakamlardan oluşmalıdır'
+                        }
+                    }
+                },
+                Description: {
+                    validators: {
+                        stringLength: {
+                            max: 499,
+                            message: '500 karakterden az girin'
                         }
                     }
                 },

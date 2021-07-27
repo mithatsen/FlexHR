@@ -1695,7 +1695,7 @@
 				// Backwards compatibility - if there is no sEmptyTable given, then use the same as
 				// sZeroRecords - assuming that is given.
 				if (!lang.sEmptyTable && zeroRecords &&
-					defaults.sEmptyTable === "No data available in table") {
+					defaults.sEmptyTable === "Sonuç bulunamadı") {
 					_fnMap(lang, lang, 'sZeroRecords', 'sEmptyTable');
 				}
 
@@ -11101,12 +11101,12 @@
 				 *    $(document).ready( function() {
 				 *      $('#example').dataTable( {
 				 *        "language": {
-				 *          "emptyTable": "No data available in table"
+				 *          "emptyTable": "Sonuç bulunamadı"
 				 *        }
 				 *      } );
 				 *    } );
 				 */
-				"sEmptyTable": "No data available in table",
+				"sEmptyTable": "Sonuç bulunamadı",
 
 
 				/**

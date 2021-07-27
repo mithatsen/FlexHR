@@ -125,6 +125,20 @@
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
                         },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
+
+                    }
+                },
+                ReturnDate: {
+                    validators: {
+
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
 
                     }
                 },
@@ -132,6 +146,25 @@
                     validators: {
                         notEmpty: {
                             message: 'Kategori alanı boş geçilemez'
+                        }
+                    }
+                },
+                Description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Açıklama alanı boş geçilemez'
+                        },
+                        stringLength: {
+                            max: 499,
+                            message: '500 karakterden az girin'
+                        }
+                    }
+                },
+                SerialNumber: {
+                    validators: {
+                        stringLength: {
+                            max: 499,
+                            message: 'Seri numarası 50 karakterden az olmalı'
                         }
                     }
                 },

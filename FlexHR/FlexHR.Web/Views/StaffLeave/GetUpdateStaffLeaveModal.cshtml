@@ -182,6 +182,10 @@
                     validators: {
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
+                        },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
                         }
                     }
                 },
@@ -189,6 +193,10 @@
                     validators: {
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
+                        },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
                         }
                     }
                 },
@@ -200,9 +208,17 @@
                         between: {
                             min: 1,
                             max: 365,
-                            message: '1-365 aralığında olmalı',
+                            message: 'Toplam gün 0 olamaz',
                         }
 
+                    }
+                },
+                Description: {
+                    validators: {
+                        stringLength: {
+                            max: 999,
+                            message: '1000 karakterden az girin'
+                        }
                     }
                 },
             },

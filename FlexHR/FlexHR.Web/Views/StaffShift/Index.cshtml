@@ -48,10 +48,10 @@
                                     <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_4">
                                         <thead>
                                             <tr>
-                                                <th>Başlangıç</th>
-                                                <th>Süre(saat)</th>
-                                                <th>Açıklama</th>
-                                                <th>İşlemler</th>
+                                                <th width="15%">Başlangıç</th>
+                                                <th width="15%">Süre(saat)</th>
+                                                <th width="55%">Açıklama</th>
+                                                <th width="15%">İşlemler</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -216,6 +216,10 @@
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
                         },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
 
                     }
                 },
@@ -225,9 +229,8 @@
                             message: 'Süre alanı boş geçilemez',
                         },
                         between: {
-                            min: 1,
-                            max: 50,
-                            message: '1-50 aralığında olmalı',
+                            min: 1,                         
+                            message: 'Süre alanı 0 olamaz',
                         }
 
                     }
@@ -236,6 +239,10 @@
                     validators: {
                         notEmpty: {
                             message: 'Açıklama alanı boş geçilemez'
+                        },
+                        stringLength: {
+                            max: 499,
+                            message: '500 karakterden az girin'
                         }
                     }
                 },

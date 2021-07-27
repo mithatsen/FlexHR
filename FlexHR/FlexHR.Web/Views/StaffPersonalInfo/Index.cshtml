@@ -49,7 +49,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Doğum Tarihi</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_4" data-target-input="nearest">
-                                                            @{  var birthDate="";
+                                                            @{ var birthDate = "";
                                                                 if (Model.BirthDate != null)
                                                                 {
                                                                     birthDate = Model.BirthDate.Value.ToShortDateString();
@@ -59,7 +59,7 @@
                                                                     birthDate = null;
                                                                 }
 
-                                                              }
+                                                            }
                                                             <input asp-for="BirthDate" value="@birthDate" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_4" />
                                                             <div class="input-group-append" data-target="#kt_datetimepicker_4" data-toggle="datetimepicker">
                                                                 <span class="input-group-text">
@@ -73,7 +73,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Medeni Hal</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect" asp-for="MaritalStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.MaritalStatusList">
-                                                            <option disabled selected value="-1">Seçiniz</option>
+                                                            <option  selected value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
@@ -82,7 +82,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Engel Derecesi</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect2" asp-for="DegreeOfDisabilityGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.DegreeOfDisabilityList">
-                                                            <option disabled selected value="-1">Seçiniz</option>
+                                                            <option  selected value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
@@ -93,7 +93,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Eğitim Durumu</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="EducationStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.EducationStatusList">
-                                                            <option disabled selected value="-1">Seçiniz</option>
+                                                            <option  selected value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
@@ -116,7 +116,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Cinsiyet</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="GenderGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.GenderList">
-                                                            <option disabled selected value="-1">Seçiniz</option>
+                                                            <option  selected value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
@@ -126,7 +126,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Kan Grubu</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="BloodGroupGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.BloodGroupList">
-                                                            <option disabled selected value="-1">Seçiniz</option>
+                                                            <option  selected value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
@@ -135,7 +135,7 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Tamamlanan En Yüksek Eğitim Seviyesi</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select id="ContractTypeSelect3" asp-for="EducationLevelGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.EducationLevelList">
-                                                            <option disabled selected value="-1">Seçiniz</option>
+                                                            <option  selected value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
@@ -165,71 +165,36 @@
         });
     </script>
 
-    @*<script>
-        
+    <script>
+
         FormValidation.formValidation(
             document.getElementById('personalInfo'),
             {
                 fields: {
-                    NameSurname: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Ad soyad alanı boş geçilemez'
-                            }
-                        }
-                    },
-                    EmailJob: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Email alanı boş geçilemez'
-                            },
-                            emailAddress: {
-                                message: 'Geçerli bir email adresi girin'
-                            }
-                        }
-                    },
-                    PhoneJob: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Telefon alanı boş geçilemez'
-                            },
-                            phone: {
-                                country: 'TR',
-                                message: 'Geçerli bir numara girin'
-                            }
-                        }
-                    },
-                    JobJoinDate: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
 
-                        }
-                    },
-                    ContractTypeId: {
+                    BirthDate: {
                         validators: {
-                            notEmpty: {
-                                message: 'Sözleşme türü seçiniz'
-                            },
 
-                        }
-                    },
-                    RoleId: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Erişim türü seçiniz'
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
                             }
                         }
                     },
-                    //JobFinishDate: {
-                    //    validators: {
-                    //        notEmpty: {
-                    //            message: 'Tarih alanı boş geçilemez'
-                    //        },
+                    IdNumber: {
+                        validators: {
 
-                    //    }
-                    //}
+                            numeric: {
+                                message: 'Geçerli bir kimlik numarası girin'
+                            },
+                            stringLength: {
+                                min:11,
+                                max: 11,
+                                message: 'Geçerli bir kimlik numarası girin'
+                            }
+                        }
+                    },
+
                 },
 
                 plugins: {
@@ -243,17 +208,17 @@
                 }
             }
         );
-    </script>*@
+    </script>
 
     @*Kişisel bilgiler Güncellendiği için sweet alert*@
     <script>
         $(document).ready(function () {
 
             if (@ViewBag.StaffPersonalInfoUpdateStatus == true) {
-                
+
                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
             }
         });
     </script>
-    
+
 }

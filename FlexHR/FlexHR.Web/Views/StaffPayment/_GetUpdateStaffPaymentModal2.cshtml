@@ -44,7 +44,7 @@
                                                 <label>Taksit</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" asp-for="Installment">
-                                                        <option value="-1" disabled selected>Seçiniz</option>
+                                                        <option value=""  selected>Seçiniz</option>
                                                         @for (int i = 1; i < 13; i++)
                                                         {
                                                             <option value=@i>@i</option>
@@ -121,6 +121,10 @@
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
                         },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
 
                     }
                 },
@@ -128,9 +132,20 @@
                     validators: {
                         notEmpty: {
                             message: 'Tutar alanı boş geçilemez'
+                        },
+                        numeric: {
+                            message: ' Tutar rakamlardan oluşmalıdır'
                         }
                     }
                 },
+                Description: {
+                    validators: {
+                        stringLength: {
+                            max: 499,
+                            message: '500 karakterden az girin'
+                        }
+                    }
+                }
 
             },
             plugins: {

@@ -66,12 +66,12 @@
                                             <tr>
                                                 <th>Tarih</th>
                                                 <th>Ödeme Türü</th>
-                                                <th>Açıklama</th>
-                                                <th>Tutar</th>
+                                                <th width="25%">Açıklama</th>
+                                                <th width="10%">Tutar</th>
                                                 <th>Durum</th>
                                                 <th>Oluştrulma Tarihi</th>
-                                                <th>Ödendi</th>
-                                                <th>İşlemler</th>
+                                                <th >Ödendi</th>
+                                                <th width="12%">İşlemler</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -89,14 +89,14 @@
                                                         @item.Amount @item.CurrencyType
                                                         @if (InstallmentStatus != null)
                                                         {
-                                                            <small class="badge badge-pill badge-secondary">@item.Installment @InstallmentStatus</small>
+                                                            <small class="badge badge-pill badge-secondary text-sm-center">@item.Installment @InstallmentStatus</small>
 
                                                         }
                                                     </td>
                                                     <td>@item.GeneralStatusGeneralSubTypeId</td>
                                                     <td>@item.CreationDate.ToShortDateString()</td>
                                                     <td>@item.IsPaid</td>
-                                                    <td class="text-right">
+                                                    <td class="text-left">
                                                         @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count > 0)
                                                         {
                                                             <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="details">
@@ -191,7 +191,7 @@
                                                 <label>Taksit</label>
                                                 <div class="input-group">
                                                     <select id="valInstallment" class="form-control form-control-solid form-control-lg" name="Installment">
-                                                        <option value="-1" disabled selected>Seçiniz</option>
+                                                        <option value=""  selected>Seçiniz</option>
                                                         @for (int i = 1; i < 13; i++)
                                                         {
                                                             <option value=@i>@i</option>
@@ -332,7 +332,7 @@
         }
     </script>
 
-    @*Delete Staff Payment*@
+    @*Validation Staff Payment*@
     <script>
         const fv = FormValidation.formValidation(
             document.getElementById('modalAddPaymentForm'),
@@ -343,6 +343,10 @@
                             notEmpty: {
                                 message: 'Tarih alanı boş geçilemez'
                             },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
+                            }
 
                         }
                     }, Name: {
@@ -357,6 +361,9 @@
                             notEmpty: {
                                 message: 'Kdv alanı boş geçilemez'
                             },
+                            numeric: {
+                                message: ' KDV rakamlardan oluşmalıdır'
+                            }
 
                         }
                     }, ReceiptAmount: {
@@ -364,6 +371,9 @@
                             notEmpty: {
                                 message: 'Tutar alanı boş geçilemez'
                             },
+                            numeric: {
+                                message: ' Tutar rakamlardan oluşmalıdır'
+                            }
 
                         }
                     },
@@ -371,10 +381,21 @@
                         validators: {
                             notEmpty: {
                                 message: 'Tutar alanı boş geçilemez'
+                            },
+                            numeric: {
+                                message: ' Tutar rakamlardan oluşmalıdır'
                             }
+
                         }
                     },
-
+                    Description: {
+                        validators: {
+                            stringLength: {
+                                max: 499,
+                                message: '500 karakterden az girin'
+                            }
+                        }
+                    }
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -512,6 +533,7 @@
                 $("#lgDescription").show();
                 $("#FeeTypeDiv").hide();
                 $("#smDescription").hide();
+                $("#InstallmentDiv").hide();
                 $("#txtSmDescription").prop("disabled", true);
             }
             else if (id == 100 || id == 103) {

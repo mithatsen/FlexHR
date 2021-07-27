@@ -40,7 +40,8 @@ namespace FlexHR.Web.Controllers
             var leaveModels = new List<ListStaffLeaveDto>();
             var staff = _staffService.GetById(id);
 
-            var totalLeaveDeserved=CalculateTotalLeaveAmountDeservedBySeniority(staff.JobJoinDate);
+            ViewBag.TotalLeaveDeserved =CalculateTotalLeaveAmountDeservedBySeniority(staff.JobJoinDate);
+            ViewBag.UsedLeaveDay =CalculateUsedLeaveAmount(id);
             foreach (var item in staffLeaveList)
             {
                 var leaveModel = _mapper.Map<ListStaffLeaveDto>(item);
@@ -52,6 +53,13 @@ namespace FlexHR.Web.Controllers
             ViewBag.LeaveTypes= _leaveTypeService.GetAll();
             return View(leaveModels);
         }
+
+        public int CalculateUsedLeaveAmount(int id)
+        {
+           var count= _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.LeaveTypeId==14).Sum(p=>p.TotalDay);
+            return count;
+        }
+
         [HttpGet]
         public IActionResult GetUpdateStaffLeaveModal(int id)
         {

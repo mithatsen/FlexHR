@@ -115,6 +115,10 @@
                         notEmpty: {
                             message: 'Tarih alanı boş geçilemez'
                         },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
 
                     }
                 },
@@ -122,9 +126,20 @@
                     validators: {
                         notEmpty: {
                             message: 'Tutar alanı boş geçilemez'
+                        },
+                        numeric: {
+                            message: ' Tutar rakamlardan oluşmalıdır'
                         }
                     }
                 },
+                Description: {
+                    validators: {
+                        stringLength: {
+                            max: 499,
+                            message: '500 karakterden az girin'
+                        }
+                    }
+                }
                
             },
             plugins: {

@@ -29,7 +29,7 @@ namespace FlexHR.Web.ViewComponents
         }
         public IViewComponentResult Invoke(int id)
         {
-            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p=>p.JobStartDate).ToList();
+            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null,"CompanyBranch").OrderByDescending(p=>p.JobStartDate).ToList();
 
             var staff = _staffService.GetAllTables(id);
             var picture = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x => x.StaffFileId).FirstOrDefault();
