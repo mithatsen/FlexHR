@@ -13,7 +13,7 @@
 <div class="d-flex flex-column-fluid">
     <!--begin::Container-->
     <div class="container">
-     
+
         <!--begin::Card-->
         <div class="card card-custom">
             <div class="card-header">
@@ -31,14 +31,106 @@
             </div>
         </div>
         <!--end::Card-->
-     
+
     </div>
     <!--end::Container-->
 </div>
+<button data-toggle="modal" data-target="#eventUpdateModal" class="btn btn-primary">  bas  </button>
+@*update event modal*@
+<div class="modal fade" id="eventUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Takvim Düzenle
+                    </h3>
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="modalAddLeaveForm">
+                <input type="hidden" name="eventId" id="eventId" value="" />
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Başlık</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" id="eventTitle" name="Title" placeholder="Başlık">
+                                                </div>
+                                            </div>
 
+                                            <div class="form-group row">
+                                                <label>Açıklama</label>
+                                                <div class="input-group">
+                                                    <textarea id="eventDescription" type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row ">
+                                                <label>Başlangıç Tarihi </label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_23" data-target-input="nearest">
+                                                        <input name="LeaveStartDate" id="eventStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_23" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_23" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row ">
+                                                <label>Bitiş Tarihi </label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_24" data-target-input="nearest">
+                                                        <input name="LeaveEndDate" id="eventEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_24" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_24" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+
+
+                    </div>
+
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="button" onclick="leaveClickFunction()" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
-
+    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
     <script>
         var KTCalendarListView = function () {
 
@@ -54,7 +146,7 @@
                     var calendarEl = document.getElementById('kt_calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-                        locale:'TR',
+                        locale: 'TR',
                         isRTL: KTUtil.isRTL(),
                         header: {
                             left: 'prev,next today',
@@ -82,8 +174,25 @@
                         navLinks: true,
                         events: "Event/GetAllEvents",
                         eventClick: function (calEvent) {
-                           // alert(calEvent.event.title)
-                            alert(calEvent.description)
+                            // alert(calEvent.event.title)
+                            console.log(calEvent)
+                            $("#eventId").val(calEvent.event.id)
+                            $("#eventDescription").val(calEvent.event.extendedProps.description)
+
+
+                            var ds = calEvent.event.start.toString();
+                            var date = moment(new Date(ds.substr(0, 25)));
+                            var ds2 = calEvent.event.end.toString();
+                            var date2 = moment(new Date(ds2.substr(0, 25)));
+                            
+                            // var date = new Date(abc.substr(0, 25));
+                            //console.log(date.format("DD.MM.YYYY HH:mm"));
+                            //console.log(abc);
+                            $("#eventStartDate").val(date.format("DD.MM.YYYY HH:mm"))
+                            $("#eventEndDate").val(date2.format("DD.MM.YYYY HH:mm"))
+                            $("#eventTitle").val(calEvent.event.title)
+                            $("#eventUpdateModal").modal("show");
+
                         },
                         eventRender: function (info) {
                             var element = $(info.el);
