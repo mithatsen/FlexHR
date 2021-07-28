@@ -217,7 +217,7 @@
                             message: 'Tarih alanı boş geçilemez'
                         },
                         date: {
-                            format: 'DD.MM.YYYY',
+                            format: 'DD.MM.YYYY HH:mm',
                             message: 'Geçerli bir tarih girin'
                         }
 
@@ -228,8 +228,8 @@
                         notEmpty: {
                             message: 'Süre alanı boş geçilemez',
                         },
-                        between: {
-                            min: 1,                         
+                        greaterThan: {
+                            min: 1,
                             message: 'Süre alanı 0 olamaz',
                         }
 
