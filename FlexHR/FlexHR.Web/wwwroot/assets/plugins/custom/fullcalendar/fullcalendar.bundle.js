@@ -4499,7 +4499,7 @@ Docs & License: https://fullcalendar.io/
         // allDayDefault: undefined,
         // locale
         locales: [],
-        locale: '',
+        locale: 'tr',
         // dir: will get this from the default locale
         // buttonIcons: null,
         // allows setting a min-height to the event segment to prevent short events overlapping each other
@@ -4578,6 +4578,7 @@ Docs & License: https://fullcalendar.io/
 
     var RAW_EN_LOCALE = {
         code: 'en',
+        
         week: {
             dow: 0,
             doy: 4 // 4 days need to be within the year to be considered the first week
@@ -4588,15 +4589,15 @@ Docs & License: https://fullcalendar.io/
             next: 'next',
             prevYear: 'prev year',
             nextYear: 'next year',
-            year: 'year',
-            today: 'today',
-            month: 'month',
-            week: 'week',
-            day: 'day',
-            list: 'list'
+            year: 'Yil',
+            today: 'Bugun',
+            month: 'Ay',
+            week: 'Hafta',
+            day: 'Gun',
+            list: 'Liste'
         },
         weekLabel: 'W',
-        allDayText: 'all-day',
+        allDayText: 'Tum Gun',
         eventLimitText: 'more',
         noEventsMessage: 'No events to display'
     };
