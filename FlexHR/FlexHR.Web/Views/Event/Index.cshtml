@@ -89,9 +89,9 @@
                                             <div class="form-group row ">
                                                 <label>Başlangıç Tarihi </label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_23" data-target-input="nearest">
-                                                        <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_23" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_23" data-toggle="datetimepicker">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_18" data-target-input="nearest">
+                                                        <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_18" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_18" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -103,9 +103,9 @@
                                             <div class="form-group row ">
                                                 <label>Bitiş Tarihi </label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_24" data-target-input="nearest">
-                                                        <input name="End" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_24" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_24" data-toggle="datetimepicker">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_20" data-target-input="nearest">
+                                                        <input name="End" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_20" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_20" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -182,9 +182,9 @@
                                             <div class="form-group row ">
                                                 <label>Tarih </label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_25" data-target-input="nearest">
-                                                        <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_25" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_25" data-toggle="datetimepicker">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_16" data-target-input="nearest">
+                                                        <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_16" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_16" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -238,7 +238,8 @@
                 </button>
             </div>
             <form id="modalAddPublicHolidayForm" asp-controller="Event" asp-action="UpdatePublicHoliday" method="post">
-
+                <input type="hidden" name="publicHolidayId" id="publicHolidayId" value="" />
+                <input type="hidden" name="End" id="publicHolidayEndDate" value="" />
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -255,14 +256,14 @@
                                             <div class="form-group row">
                                                 <label>Başlık</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Title" placeholder="Başlık">
+                                                    <input type="text" id="publicHolidayTitle" class="form-control form-control-lg form-control-solid" name="Title" placeholder="Başlık">
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
-                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    <textarea type="text" id="publicHolidayDescription" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -271,9 +272,9 @@
                                             <div class="form-group row ">
                                                 <label>Tarih </label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_25" data-target-input="nearest">
-                                                        <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_25" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_25" data-toggle="datetimepicker">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_17" data-target-input="nearest">
+                                                        <input name="Start" id="publicHolidayStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_17" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_17" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -285,7 +286,7 @@
 
                                             <div class="checkbox-inline">
                                                 <label class="checkbox checkbox-success">
-                                                    <input type="checkbox" name="IsHalfDay" value="true" />
+                                                    <input id="publicHolidayCheck" type="checkbox" name="IsHalfDay" value="true" />
                                                     <span></span>
                                                     Yarım gün mü?
                                                 </label>
@@ -305,8 +306,10 @@
                 </div>
 
                 <div class="modal-footer">
+                   
+                    <a class="text-danger cursor-pointer " style="margin-right:370px !important" onclick="deletePublicHoliday()"><i class="fas fa-trash text-danger px-1"></i>Resmi tatili silmek ister misiniz?</a>
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnAddEvent" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="submit" id="btnUpdatePublicHoliday" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -358,9 +361,9 @@
                                             <div class="form-group row ">
                                                 <label>Başlangıç Tarihi </label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_23" data-target-input="nearest">
-                                                        <input name="Start" id="eventStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_23" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_23" data-toggle="datetimepicker">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_99" data-target-input="nearest">
+                                                        <input name="Start" id="eventStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_99" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_99" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -372,9 +375,9 @@
                                             <div class="form-group row ">
                                                 <label>Bitiş Tarihi </label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_24" data-target-input="nearest">
-                                                        <input name="End" id="eventEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_24" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_24" data-toggle="datetimepicker">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_100" data-target-input="nearest">
+                                                        <input name="End" id="eventEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_100" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_100" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -412,7 +415,7 @@
     <script>
 
         $(document).ready(function () {
-            debugger;
+         
                 if (@ViewBag.EventUpdateStatus == true)
                     Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
                 if (@ViewBag.EventAddStatus==true)
@@ -425,6 +428,54 @@
     </script>
 
     <script>
+        function deletePublicHoliday() {
+            var id = $("#publicHolidayId").val();
+            Swal.fire({
+                title: "Silmek istediğinize emin misiniz ?",
+                text: "Bunu geri alamazsınız!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Evet, sil!",
+                cancelButtonText: "Hayır, iptal et!",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/Event/DeletePublicHoliday/" + id,
+                    }).done(function (result) {
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Silindi!",
+                                text: "Kaydınız silindi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "Kaydınız silinemedi",
+                                "hata"
+                            )
+                        }
+
+                    })
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire({
+                        title: "İptal Edildi",
+                        text: "Kaydınız silinmedi",
+                        icon: "error",
+                        showCancelButton: false
+                    })
+
+                }
+            });
+
+        }
         function deleteEvent() {
             var id = $("#eventId").val();
             Swal.fire({
@@ -475,12 +526,32 @@
         }
     </script>
     <script>
+        function FullCalenderProcessPublicHoliday(calEvent) {
+            $("#publicHolidayId").val(calEvent.event.id)
+            $("#publicHolidayDescription").val(calEvent.event.extendedProps.description)
+            var ds = calEvent.event.start.toString();
+            var date = moment(new Date(ds.substr(0, 25)));
+            console.log(calEvent.event);
+            if (calEvent.event.end != null) {
+                var ds2 = calEvent.event.end.toString();
+                var date2 = moment(new Date(ds2.substr(0, 25)));            
+                $("#publicHolidayEndDate").val(date2.format("DD.MM.YYYY"))
+            }
+            $("#publicHolidayStartDate").val(date.format("DD.MM.YYYY"))
+
+            $("#publicHolidayTitle").val(calEvent.event.title);
+            var temp = !calEvent.event.allDay;
+            $("#publicHolidayCheck").prop('checked', temp);
+
+        }
 
         function FullCalenderProcess(calEvent) {
+         
             $("#eventId").val(calEvent.event.id)
             $("#eventDescription").val(calEvent.event.extendedProps.description)
             var ds = calEvent.event.start.toString();
             var date = moment(new Date(ds.substr(0, 25)));
+            console.log(calEvent.event);
             var ds2 = calEvent.event.end.toString();
             var date2 = moment(new Date(ds2.substr(0, 25)));
             $("#eventStartDate").val(date.format("DD.MM.YYYY HH:mm"))
@@ -531,40 +602,49 @@
                         navLinks: true,
                         events: "Event/GetAllEvents",
                         eventDrop: function (calEvent) {
-                            FullCalenderProcess(calEvent);
-                            $("#btnUpdateEvent").trigger("click");
+                            if ($(calEvent.el).hasClass("fc-event-primary")) {
+                                FullCalenderProcessPublicHoliday(calEvent);
+                                $("#btnUpdatePublicHoliday").trigger("click");
+                            }
+                            else if ($(calEvent.el).hasClass("fc-event-danger")) {
+                                FullCalenderProcess(calEvent);
+                                $("#btnUpdateEvent").trigger("click");
+                            }                          
                         },
                         eventResize: function (calEvent) {
-                            FullCalenderProcess(calEvent);
-                            $("#btnUpdateEvent").trigger("click");
+                            if ($(calEvent.el).hasClass("fc-event-primary")) {
+                                console.log("dkdkdk");
+                                console.log(calEvent);
+                                $("#publicHolidayEndDate").val(calEvent.event.end);
+                                FullCalenderProcessPublicHoliday(calEvent);  
+                                $("#btnUpdatePublicHoliday").trigger("click");
+                            }
+                            else if ($(calEvent.el).hasClass("fc-event-danger")) {
+                                console.log(calEvent);
+                                FullCalenderProcess(calEvent);
+                                $("#btnUpdateEvent").trigger("click");
+                            }
+                           
                         },
                         eventClick: function (calEvent) {
-                            console.log(calEvent);
-                            FullCalenderProcess(calEvent);
-                            console.log(calEvent.el.includes("fc-event-danger"));
-                            $("#eventUpdateModal").modal("show");
+                                               
+                            if ($(calEvent.el).hasClass("fc-event-primary")) {                              
+                                FullCalenderProcessPublicHoliday(calEvent);
+                                $("#publicHolidayUpdateModal").modal("show");
+                            }
+                            else if ($(calEvent.el).hasClass("fc-event-danger")) {
+                                FullCalenderProcess(calEvent);
+                                $("#eventUpdateModal").modal("show");
+                            }
+
+
                         },
                         dateClick: function (info) {
                             console.log(info.date.toString());
                             var ds2 = info.date.toString();
                             var date2 = moment(new Date(ds2.substr(0, 25)));
                             $("#eventAddStartDate").val(date2.format("DD.MM.YYYY HH:mm"))
-                            
-                            $("#eventAddModal").modal("show");
-                            /*var element = $(info.el);*/
-
-                            //if (info.event.extendedProps && info.event.extendedProps.description) {
-                            //    if (element.hasClass('fc-day-grid-event')) {
-                            //        element.data('content', info.event.extendedProps.description);
-                            //        element.data('placement', 'top');
-                            //        KTApp.initPopover(element);
-                            //    } else if (element.hasClass('fc-time-grid-event')) {
-                            //        element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                            //    } else if (element.find('.fc-list-item-title').lenght !== 0) {
-                            //        element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                            //    }
-                            //}
-
+                            $("#eventAddModal").modal("show");                           
 
                         },
                         eventRender: function (info) {
@@ -598,6 +678,8 @@
         });
 
     </script>
+  
+    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
     <script src="~/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js" charset="windows-1254"></script>
     <!--end::Page Vendors-->
     <!--begin::Page Scripts(used by this page)-->

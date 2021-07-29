@@ -35,8 +35,8 @@ namespace FlexHR.Web.Controllers
         {
             List<ListEventDto> models = new List<ListEventDto>();
             var events = _eventService.Get(p => p.IsActive == true);
-            var birthDates = _personelInfoService.Get(p => p.IsActive == true,null,"Staff");
-            var publicDays=_publicHolidayService.Get(p => p.IsActive == true);
+            var birthDates = _personelInfoService.Get(p => p.IsActive == true, null, "Staff");
+            var publicDays = _publicHolidayService.Get(p => p.IsActive == true);
             foreach (var item in events)
             {
                 ListEventDto model = new ListEventDto()
@@ -48,39 +48,40 @@ namespace FlexHR.Web.Controllers
                     Title = item.Title,
                     IsActive = item.IsActive,
                     Id = item.Id,
-                    Editable=true,
-                    AllDay=true
+                    Editable = true,
+
                 };
                 models.Add(model);
             }
             foreach (var item in birthDates)
             {
-                var staffName = item.Staff.NameSurname;
-                var month = item.BirthDate.Value.Month;
-                var day = item.BirthDate.Value.Day;
-                var birthDayStart = new DateTime(2021, month, day, 0, 0, 0);
-                var birthDayEnd = new DateTime(2021, month, day, 23, 59, 59);
-                ListEventDto model = new ListEventDto()
+                if (item.BirthDate != null)
                 {
-                    Description = staffName + "'ın Doğum Günü",
-                    ClassName = "fc-event-success fc-event-solid-success",
-                    Start = birthDayStart,
-                    Title = "Doğum Günü",
-                    IsActive = item.IsActive,
-                    AllDay = birthDayEnd.Hour- birthDayStart.Hour >= 23 ? true : false,
-                    Editable=false
-                };
-                models.Add(model);
+                    var staffName = item.Staff.NameSurname;
+                    var month = item.BirthDate.Value.Month;
+                    var day = item.BirthDate.Value.Day;
+                    var birthDayStart = new DateTime(2021, month, day, 0, 0, 0);
+                    var birthDayEnd = new DateTime(2021, month, day, 23, 59, 59);
+                    ListEventDto model = new ListEventDto()
+                    {
+                        Description = staffName + "'ın Doğum Günü",
+                        ClassName = "fc-event-success fc-event-solid-success",
+                        Start = birthDayStart,
+                        End = birthDayEnd,
+                        Title = "Doğum Günü",
+                        IsActive = item.IsActive,
+                        AllDay = birthDayEnd.Hour - birthDayStart.Hour >= 23 ? true : false,
+                        Editable = false
+                    };
+                    models.Add(model);
+                }
+
             }
             foreach (var item in publicDays)
             {
-                //var staffName = item.Staff.NameSurname;
-                //var month = item.BirthDate.Value.Month;
-                //var day = item.BirthDate.Value.Day;
-                //var birthDayStart = new DateTime(2021, month, day, 0, 0, 0);
-                //var birthDayEnd = new DateTime(2021, month, day, 23, 59, 59); && (item.End.Day - item.Start.Day >=1)
                 ListEventDto model = new ListEventDto()
                 {
+
                     Description = item.Description,
                     ClassName = "fc-event-primary fc-event-solid-primary",
                     End = item.End,
@@ -88,7 +89,7 @@ namespace FlexHR.Web.Controllers
                     Title = item.Title,
                     IsActive = item.IsActive,
                     Id = item.PublicHolidayId,
-                    AllDay = item.IsHalfDay
+                    AllDay = !item.IsHalfDay
                 };
                 models.Add(model);
             }
@@ -101,32 +102,44 @@ namespace FlexHR.Web.Controllers
 
             if (ModelState.IsValid)
             {
-              
-              
                 model.IsActive = true;
                 if (model.IsHalfDay == false)
                 {
-                    model.End = model.Start.AddHours(23);
+                    model.End = model.Start.AddHours(23).AddMinutes(59);
                 }
                 else
                 {
-                    model.End = model.Start.AddHours(12);
+                    model.Start = new DateTime(model.Start.Year, model.Start.Month, model.Start.Day, 13, 0, 0);
+                    model.End = new DateTime(model.Start.Year, model.Start.Month, model.Start.Day, 23, 59, 59);
                     model.Description += " (Yarım Gün)";
                 }
-             
+
                 _publicHolidayService.Add(_mapper.Map<PublicHoliday>(model));
-               // TempData["EventAddStatus"] = "true";
+                // TempData["EventAddStatus"] = "true";
             }
 
             return RedirectToAction("Index");
 
         }
         [HttpPost]
-        public IActionResult UpdatePublicHoliday(ListEventDto model)
+        public IActionResult UpdatePublicHoliday(ListPublicHolidayDto model)
         {
 
             if (ModelState.IsValid)
             {
+                if (model.IsHalfDay == false)
+                {
+                    model.Start= new DateTime(model.Start.Year, model.Start.Month, model.Start.Day, 0, 0, 0);
+                    if (model.End.Year < 2000)
+                    {
+                        model.End = model.Start.AddHours(23).AddMinutes(59);
+                    }                 
+                }
+                else
+                {
+                    model.Start = new DateTime(model.Start.Year, model.Start.Month, model.Start.Day, 13, 0, 0);
+                    model.End = new DateTime(model.Start.Year, model.Start.Month, model.Start.Day, 23, 59, 59);
+                }
                 _publicHolidayService.Update(_mapper.Map<PublicHoliday>(model));
                 TempData["EventUpdateStatus"] = "true";
             }
@@ -169,6 +182,23 @@ namespace FlexHR.Web.Controllers
             try
             {
                 _eventService.Update(result);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+        [HttpPost]
+        public bool DeletePublicHoliday(int id)
+        {
+
+            var result = _publicHolidayService.GetById(id);
+            result.IsActive = false;
+            try
+            {
+                _publicHolidayService.Update(result);
                 return true;
             }
             catch (Exception)

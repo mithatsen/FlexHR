@@ -57,6 +57,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #endregion
             #region PublicHoliday
             CreateMap<AddPublicHolidayDto, PublicHoliday>().ReverseMap();
+            CreateMap<ListPublicHolidayDto, PublicHoliday>().ReverseMap();
             #endregion
             #region Debit
             CreateMap<ListStaffDebitDto, StaffDebit>().ReverseMap();

@@ -84,6 +84,18 @@ var KTBootstrapDatetimepicker = function () {
             format: 'MM.yyyy'
         });
 
+        $('#kt_datetimepicker_99').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY HH:mm',
+            autoclose: true
+        });
+
+        $('#kt_datetimepicker_100').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY HH:mm',
+            autoclose: true
+        });
+
     }
 
     var modalDemos = function () {
@@ -111,7 +123,7 @@ var KTBootstrapDatetimepicker = function () {
 
     return {
         // Public functions
-        init: function() {
+        init: function () {
             baseDemos();
             modalDemos();
             validationDemos();
@@ -119,6 +131,6 @@ var KTBootstrapDatetimepicker = function () {
     };
 }();
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     KTBootstrapDatetimepicker.init();
 });
