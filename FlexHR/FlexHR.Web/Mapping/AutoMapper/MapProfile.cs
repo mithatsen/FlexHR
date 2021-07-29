@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FlexHR.DTO.Dtos.EventDtos;
 using FlexHR.DTO.Dtos.ReceiptDtos;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDebitDtos;
@@ -59,6 +60,12 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<ListStaffDebitDto, StaffDebit>().ReverseMap();
             CreateMap<AddStaffDebitDto, StaffDebit>().ReverseMap();
             #endregion
+            #region Event
+            CreateMap<ListEventDto, Event>().ReverseMap();
+            CreateMap<AddEventDto, Event>().ReverseMap();
+           
+            #endregion
+            
         }
     }
     
