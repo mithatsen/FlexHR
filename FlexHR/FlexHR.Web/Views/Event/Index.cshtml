@@ -229,14 +229,15 @@
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
 
     <script>
-        $(document).ready(function () {
-                if (@ViewBag.EventUpdateStatus == true)
-                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
 
-                if (@ViewBag.EventAddStatus == true)
-                Swal.fire("Eklendi!", "Ekleme işlemi başarılı!", "success");
-            alert(@ViewBag.EventAddStatus);
-            alert("sdsdsd")
+        $(document).ready(function () {
+            debugger;
+                if (@ViewBag.EventUpdateStatus == true)
+                    Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+                if (@ViewBag.EventAddStatus==true)
+                     Swal.fire("Eklendi!", "Ekleme işlemi başarılı!", "success");
+
+
         });
 
 
@@ -359,8 +360,6 @@
                         eventClick: function (calEvent) {
                             FullCalenderProcess(calEvent);
                             $("#eventUpdateModal").modal("show");
-
-
                         },
                         eventRender: function (info) {
                             var element = $(info.el);
@@ -376,10 +375,14 @@
                                     element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
                                 }
                             }
-                        }
+                       
+                               
+                        },
+                     
                     });
 
                     calendar.render();
+
                 }
             };
         }();

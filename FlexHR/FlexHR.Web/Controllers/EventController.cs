@@ -24,15 +24,14 @@ namespace FlexHR.Web.Controllers
 
         public IActionResult Index()
         {
-      
+            ViewBag.EventUpdateStatus = TempData["EventUpdateStatus"] != null ? TempData["EventUpdateStatus"] : "false";
+            ViewBag.EventAddStatus = TempData["EventAddStatus"] != null ? TempData["EventAddStatus"] : "false";
             return View();
         }
         public IActionResult GetAllEvents()
         {
-            ViewBag.EventUpdateStatus = TempData["EventUpdateStatus"];
-            ViewBag.EventAddStatus = TempData["EventAddStatus"];
             List<ListEventDto> models = new List<ListEventDto>();
-            var events = _eventService.GetAll();
+            var events = _eventService.Get(p => p.IsActive == true);
             foreach (var item in events)
             {
                 ListEventDto model = new ListEventDto()
@@ -80,13 +79,17 @@ namespace FlexHR.Web.Controllers
         public bool DeleteEvent(int id)
         {
 
-            if (ModelState.IsValid)
+            var result = _eventService.GetById(id);
+            result.IsActive = false;
+            try
             {
-                _eventService.Delete(id);
-
+                _eventService.Update(result);
+                return true;
             }
-
-            return true;
+            catch (Exception)
+            {
+                return false;
+            }
 
         }
     }
