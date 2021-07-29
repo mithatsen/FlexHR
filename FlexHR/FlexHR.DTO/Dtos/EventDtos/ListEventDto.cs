@@ -12,6 +12,8 @@ namespace FlexHR.DTO.Dtos.EventDtos
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public string ClassName { get; set; }
+        public bool AllDay { get; set; }
+        public bool Editable { get; set; } = true;
         public bool IsActive { get; set; } = true;
     }
 }

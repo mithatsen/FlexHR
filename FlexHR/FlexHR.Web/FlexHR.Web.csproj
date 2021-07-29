@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TagHelpers\**" />
+    <Content Remove="TagHelpers\**" />
+    <EmbeddedResource Remove="TagHelpers\**" />
+    <None Remove="TagHelpers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
@@ -21,10 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\FlexHR.Business\FlexHR.Business.csproj" />
     <ProjectReference Include="..\FlexHR.DataAccess\FlexHR.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TagHelpers\" />
   </ItemGroup>
 
   <ItemGroup>

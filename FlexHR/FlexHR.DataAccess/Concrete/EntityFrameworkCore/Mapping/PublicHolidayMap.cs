@@ -13,15 +13,15 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
         {
             entity.Property(e => e.Description).HasMaxLength(500);
 
-            entity.Property(e => e.FinishDate).HasColumnType("datetime");
+            entity.Property(e => e.End).HasColumnType("datetime");
 
-            entity.Property(e => e.HolidayDuration).HasColumnType("numeric(3, 1)");
+           
 
-            entity.Property(e => e.Name)
+            entity.Property(e => e.Title)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            entity.Property(e => e.StartDate).HasColumnType("datetime");
+            entity.Property(e => e.Start).HasColumnType("datetime");
         }
     }
 }
