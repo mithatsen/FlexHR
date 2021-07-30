@@ -11,6 +11,7 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+@await Component.InvokeAsync("StaffSubHeader", new { id = @Model.StaffId })
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = Model.StaffId })
     <div class="card-body">
@@ -93,7 +94,7 @@
                                                         <label class="col-xl-4 col-lg-3 col-form-label">Ülke</label>
                                                         <div class="col-lg-9 col-xl-7">
                                                             <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
-                                                                <option  value="-1">Ülke Seçiniz</option>
+                                                                <option value="-1">Ülke Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -240,7 +241,7 @@
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="CallPersonNameSurname" type="text" class="form-control form-control-lg form-control-solid" placeholder="Ad Soyad" />
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -326,7 +327,7 @@
                     PostalCode: {
                         validators: {
                             stringLength: {
-                                min:5,
+                                min: 5,
                                 max: 5,
                                 message: '5 haneli posta kodunu girin'
                             }

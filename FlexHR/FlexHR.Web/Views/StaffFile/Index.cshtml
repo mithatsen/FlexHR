@@ -17,6 +17,7 @@
     </style>
 
 }
+@await Component.InvokeAsync("StaffSubHeader", new { id = @ViewBag.StaffId })
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
@@ -50,11 +51,11 @@
                                                     <div class=" mb-2 row ">
                                                         <div class="col-md-12 justify-content-center">
                                                             <table class="table table-light table-sm mt-2 text-center border ">
-                                                                <thead >
-                                                                    <tr  class="table table-secondary">
-                                                                        <th  class="border-bottom">Belge Türü</th>
-                                                                        <th  class="border-bottom">Dosya Yüklendi mi</th>
-                                                                        <th  class="border-bottom">Göster/Düzenle</th>
+                                                                <thead>
+                                                                    <tr class="table table-secondary">
+                                                                        <th class="border-bottom">Belge Türü</th>
+                                                                        <th class="border-bottom">Dosya Yüklendi mi</th>
+                                                                        <th class="border-bottom">Göster/Düzenle</th>
 
                                                                     </tr>
                                                                 </thead>

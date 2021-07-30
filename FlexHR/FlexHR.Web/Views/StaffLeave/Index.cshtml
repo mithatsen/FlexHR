@@ -11,6 +11,7 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+@await Component.InvokeAsync("StaffSubHeader", new { id = @ViewBag.StaffId })
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
@@ -49,7 +50,7 @@
                                             <div class="progress-bar" role="progressbar" style="width:@abc;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">@abc</div>
 
                                         </div>
-                                        <a data-toggle="tooltip" title="Kalan izin günü @RemainLeaveDay"><span class="ml-4 font-size-sm">@RemainLeaveDay / </span></a> 
+                                        <a data-toggle="tooltip" title="Kalan izin günü @RemainLeaveDay"><span class="ml-4 font-size-sm">@RemainLeaveDay / </span></a>
                                         <a data-toggle="tooltip" title="Hak edilen izin günü @TotalLeaveDeserved"><span class="ml-1 font-size-sm"> @TotalLeaveDeserved</span></a>
                                     </div>
                                     <div class="card-toolbar">
@@ -66,11 +67,11 @@
                                     <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
                                         <thead>
                                             <tr>
-                                                <th >Başlangıç</th>
+                                                <th>Başlangıç</th>
                                                 <th>Bitiş</th>
                                                 <th>Süre</th>
                                                 <th>İzin Türü</th>
-                                                <th  width="35%">Açıklama</th>
+                                                <th width="35%">Açıklama</th>
                                                 <th>Durum</th>
                                                 <th>İşlemler</th>
                                             </tr>
@@ -389,7 +390,7 @@
                         }
                     }
                 },
-               
+
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
                     // Bootstrap Framework Integration

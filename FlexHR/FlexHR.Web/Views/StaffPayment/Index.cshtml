@@ -24,6 +24,7 @@
     </style>
 }
 
+@await Component.InvokeAsync("StaffSubHeader", new { id = @ViewBag.StaffId })
 <input type="hidden" id="mitat" name="name" value="@Model" />
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
@@ -70,7 +71,7 @@
                                                 <th width="10%">Tutar</th>
                                                 <th>Durum</th>
                                                 <th>Oluştrulma Tarihi</th>
-                                                <th >Ödendi</th>
+                                                <th>Ödendi</th>
                                                 <th width="12%">İşlemler</th>
                                             </tr>
                                         </thead>
@@ -191,7 +192,7 @@
                                                 <label>Taksit</label>
                                                 <div class="input-group">
                                                     <select id="valInstallment" class="form-control form-control-solid form-control-lg" name="Installment">
-                                                        <option value=""  selected>Seçiniz</option>
+                                                        <option value="" selected>Seçiniz</option>
                                                         @for (int i = 1; i < 13; i++)
                                                         {
                                                             <option value=@i>@i</option>
@@ -402,7 +403,7 @@
                     // Bootstrap Framework Integration
                     bootstrap: new FormValidation.plugins.Bootstrap(),
                     // Validate fields when clicking the Submit button
-                   
+
                 }
             }
         );

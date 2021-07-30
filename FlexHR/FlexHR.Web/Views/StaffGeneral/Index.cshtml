@@ -9,6 +9,7 @@
 
     <!--end::Page Vendors Styles-->
 }
+@await Component.InvokeAsync("StaffSubHeader", new { id = @Model.StaffId })
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @Model.StaffId })
     <div class="card-body">
@@ -48,7 +49,7 @@
                                                 <div class="form-group row ">
                                                     <label class="col-xl-4 col-lg-3 col-form-label">Ad Soyad *</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <input asp-for="NameSurname" name="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" required/>
+                                                        <input asp-for="NameSurname" name="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" required />
                                                     </div>
                                                 </div>
 
@@ -72,7 +73,7 @@
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    <i class="la la-phone"></i> 
+                                                                    <i class="la la-phone"></i>
                                                                 </span>
                                                             </div>
                                                             <input asp-for="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" />
@@ -163,7 +164,7 @@
                                                                     <i class="la la-phone"></i>
                                                                 </span>
                                                             </div>
-                                                            <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)"/>
+                                                            <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
                                                             <input type="hidden" asp-for="@Model.StaffId" />
                                                         </div>
 
@@ -231,7 +232,7 @@
                     },
                     EmailJob: {
                         validators: {
-                          
+
                             emailAddress: {
                                 message: 'Geçerli bir email adresi girin'
                             }

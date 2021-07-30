@@ -8,7 +8,21 @@
 @section Styles{
     <link href="~/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
 }
-
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Etkinlikler</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+       
+    </div>
+</div>
 
 <div class="d-flex flex-column-fluid">
     <!--begin::Container-->
@@ -231,7 +245,7 @@
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Resmi Tatil Ekle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Resmi Tatil Düzenle
                     </h3>
                 </div>
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
@@ -282,8 +296,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                             <div class="checkbox-inline">
                                                 <label class="checkbox checkbox-success">
                                                     <input id="publicHolidayCheck" type="checkbox" name="IsHalfDay" value="true" />
@@ -661,10 +673,7 @@
                                     element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
                                 }
                             }
-
-
                         },
-
                     });
 
                     calendar.render();

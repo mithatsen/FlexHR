@@ -4,6 +4,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Personeller</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+        <div class="d-flex align-items-center">
+            <!--begin::Actions-->
+            <form  method="post">
+                <div class="form-group row my-auto ">
+                    <div class="input-group rounded">
+                        <input type="text" id="StaffSearchBar" onchange="StaffSearch();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"  class="form-control rounded" placeholder="Çalışan Ara" aria-label="Search" aria-describedby="search-addon"  autocomplete="off"/>
+                        <button id="btnStaffSearch" onclick="StaffSearch()" type="button" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
 <div class="flex-row-fluid ml-lg-8">
     <!--begin::Form-->
     <!--begin::Card-->
@@ -25,8 +54,8 @@
             </div>
         </div>
         <!--end::Header-->
-
-        <div class="container-fluid">
+       
+        <div id="staffCardList" class="container-fluid">
             <!--begin::Body-->
             <div class="row">
                 @foreach (var item in Model)
@@ -286,7 +315,26 @@
 
 @section Scripts{
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
+    <script>
+        function StaffSearch() {
+            var modelContent = $("#staffCardList");
+            modelContent.html("");
+            var formData = $("#StaffSearchBar").val().toString();
+            console.log(formData);
+            $.ajax({
+                method: 'Post',
+                url: '/Staff/StaffSearchWithAjax',
+                data: formData, 
+            }).done(function (content) {
 
+                if (content != null) {
+                    modelContent.html(content);
+                }
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+    </script>
     @*Modal Add Staff*@
     <script>
 

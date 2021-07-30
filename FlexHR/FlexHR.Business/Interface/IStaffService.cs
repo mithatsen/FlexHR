@@ -9,5 +9,6 @@ namespace FlexHR.Business.Interface
     {
         Staff GetAllTables(int id);
         int GetStaffIdByUserName(string userName);
+        List<Staff> GetStaffBySearchString(string search);
     }
 }

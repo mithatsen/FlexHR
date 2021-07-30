@@ -11,6 +11,8 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+
+@await Component.InvokeAsync("StaffSubHeader", new { id = @ViewBag.StaffId })
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
@@ -180,7 +182,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="shiftClickFunction()"  class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="shiftClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -208,7 +210,7 @@
     @*//add staff shift*@
     <script>
         //  document.addEventListener('DOMContentLoaded', function (e) {
-     
+
         const fv = FormValidation.formValidation(document.getElementById('modalAddShift'), {
             fields: {
                 StartDate: {
@@ -258,11 +260,11 @@
             },
         });
         function shiftClickFunction() {
-            
+
             fv.validate().then(function (status) {
                 // Update the login button content based on the validation status
                 if (status == 'Valid') {
-                   
+
                     var formData = {
                         StaffId: $("#StaffId").val(),
                         StartDate: $("#StartDate").val(),
@@ -314,7 +316,7 @@
                 //CompanyChangeUpdate();
 
             }).fail(function (error) {
-                
+
             });
         }
     </script>

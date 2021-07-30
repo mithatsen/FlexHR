@@ -54,7 +54,7 @@ namespace FlexHR.Web.Controllers
 
         public IActionResult Index()
         {
-            var result = _staffService.Get(x => x.IsActive==true, null, "StaffFile");
+            var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");
 
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
             ViewBag.Roles = new SelectList(_roleService.GetAll(), "RoleId", "Name");
@@ -71,8 +71,27 @@ namespace FlexHR.Web.Controllers
             return View(models);
 
         }
-        
 
+        public IActionResult StaffSearchWithAjax(IFormCollection formData)
+          {
+            IEnumerable<Staff> result;
+            if (formData==null || String.IsNullOrWhiteSpace(formData.Keys.FirstOrDefault()) )
+            {
+                 result = _staffService.Get(x => x.IsActive == true);
+            }
+            else
+            {
+                 result = _staffService.GetStaffBySearchString(formData.Keys.FirstOrDefault());
+            }
+            var models = _mapper.Map<List<ListStaffDto>>(result);
+            foreach (var item in models)
+            {
+                var picture = _staffFileService.Get(x => x.StaffId == item.StaffId && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x => x.StaffFileId).FirstOrDefault();
+
+                item.PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null;
+            }
+            return PartialView("_GetStaffCardBySearch",models);
+        }
         [HttpPost]
         public IActionResult AddStaffWithAjax(AddStaffDto modal)
         {

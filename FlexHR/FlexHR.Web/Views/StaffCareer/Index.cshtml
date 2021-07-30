@@ -11,6 +11,7 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+@await Component.InvokeAsync("StaffSubHeader", new { id = @ViewBag.StaffId })
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
@@ -277,7 +278,7 @@
                     },
                     JobFinishDate: {
                         validators: {
-                           
+
                             date: {
                                 format: 'DD.MM.YYYY',
                                 message: 'Geçerli bir tarih girin'
@@ -320,7 +321,7 @@
                     //// Bootstrap Framework Integration
                     bootstrap: new FormValidation.plugins.Bootstrap(),
                     //// Validate fields when clicking the Submit button
-              
+
                 },
             }
         );

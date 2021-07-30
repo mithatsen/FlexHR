@@ -8,6 +8,7 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+@await Component.InvokeAsync("StaffSubHeader", new { id = @ViewBag.StaffId })
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
@@ -264,7 +265,7 @@
                     }
                 },
                 SerialNumber: {
-                    validators: {                       
+                    validators: {
                         stringLength: {
                             max: 499,
                             message: 'Seri numarası 50 karakterden az olmalı'
@@ -272,17 +273,17 @@
                     }
                 },
             },
-     
+
             plugins: {
-            trigger: new FormValidation.plugins.Trigger(),
-            // Bootstrap Framework Integration
-            bootstrap: new FormValidation.plugins.Bootstrap(),
-            // Validate fields when clicking the Submit button
-            // submitButton: new FormValidation.plugins.SubmitButton(),
-            // Submit the form when all fields are valid
-            // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-        }
-                        });
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                // submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            }
+        });
         function debitClickFunction() {
             debugger;
             fv.validate().then(function (status) {

@@ -70,7 +70,7 @@ namespace FlexHR.Web.Controllers
                         End = birthDayEnd,
                         Title = "Doğum Günü",
                         IsActive = item.IsActive,
-                        AllDay = birthDayEnd.Hour - birthDayStart.Hour >= 23 ? true : false,
+                        AllDay = (birthDayEnd - birthDayStart).TotalHours >= 23 ? true : false,
                         Editable = false
                     };
                     models.Add(model);
@@ -89,7 +89,8 @@ namespace FlexHR.Web.Controllers
                     Title = item.Title,
                     IsActive = item.IsActive,
                     Id = item.PublicHolidayId,
-                    AllDay = !item.IsHalfDay
+                    AllDay = !item.IsHalfDay,
+                    Editable = false
                 };
                 models.Add(model);
             }
@@ -124,9 +125,7 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult UpdatePublicHoliday(ListPublicHolidayDto model)
         {
-
-            if (ModelState.IsValid)
-            {
+            
                 if (model.IsHalfDay == false)
                 {
                     model.Start= new DateTime(model.Start.Year, model.Start.Month, model.Start.Day, 0, 0, 0);
@@ -142,7 +141,6 @@ namespace FlexHR.Web.Controllers
                 }
                 _publicHolidayService.Update(_mapper.Map<PublicHoliday>(model));
                 TempData["EventUpdateStatus"] = "true";
-            }
 
             return RedirectToAction("Index");
 

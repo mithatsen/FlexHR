@@ -20,6 +20,11 @@ namespace FlexHR.Business.Concrete
             return _staffDal.GetAllTables(id);
         }
 
+        public List<Staff> GetStaffBySearchString(string search)
+        {
+            return _staffDal.GetStaffBySearchString(search);
+        }
+
         public int GetStaffIdByUserName(string userName)
         {
             return _staffDal.GetStaffIdByUserName(userName);
