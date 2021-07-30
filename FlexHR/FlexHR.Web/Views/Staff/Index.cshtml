@@ -92,7 +92,7 @@
                                     <!--end::User-->
                                     <!--begin::Name-->
                                     <div class="my-1">
-                                        <a class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</a>
+                                        <h3 class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</h3>
                                     </div>
                                     <!--end::Name-->
                                     <!--begin::Label-->
@@ -306,11 +306,6 @@
 </div>
 
 
-<!--begin::Card-->
-<div class="card card-custom">
-    <!--begin::Row-->
-    <!--end::Row-->
-</div>
 
 
 @section Scripts{
@@ -326,9 +321,11 @@
                 url: '/Staff/StaffSearchWithAjax',
                 data: formData, 
             }).done(function (content) {
-
-                if (content != null) {
+                var strContent = content.toString();
+                if (strContent.includes("<img")) {
                     modelContent.html(content);
+                } else {
+                    modelContent.html('<div class= "card card-custom py-5" ><h3 class="text-center mt-5 mb-5 lead">Sonuç bulunamadı</h3></div>');
                 }
             }).fail(function (error) {
                 alert(error);

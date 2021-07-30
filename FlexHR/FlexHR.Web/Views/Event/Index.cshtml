@@ -20,7 +20,7 @@
             <!--end::Actions-->
         </div>
         <!--end::Info-->
-       
+
     </div>
 </div>
 
@@ -251,7 +251,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="modalAddPublicHolidayForm" asp-controller="Event" asp-action="UpdatePublicHoliday" method="post">
+            <form id="modalUpdatePublicHolidayForm" asp-controller="Event" asp-action="UpdatePublicHoliday" method="post">
                 <input type="hidden" name="publicHolidayId" id="publicHolidayId" value="" />
                 <input type="hidden" name="End" id="publicHolidayEndDate" value="" />
                 <div class="modal-body">
@@ -318,7 +318,7 @@
                 </div>
 
                 <div class="modal-footer">
-                   
+
                     <a class="text-danger cursor-pointer " style="margin-right:370px !important" onclick="deletePublicHoliday()"><i class="fas fa-trash text-danger px-1"></i>Resmi tatili silmek ister misiniz?</a>
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
                     <button type="submit" id="btnUpdatePublicHoliday" class="btn btn-primary font-weight-bold">Kaydet</button>
@@ -427,7 +427,7 @@
     <script>
 
         $(document).ready(function () {
-         
+
                 if (@ViewBag.EventUpdateStatus == true)
                     Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
                 if (@ViewBag.EventAddStatus==true)
@@ -546,7 +546,7 @@
             console.log(calEvent.event);
             if (calEvent.event.end != null) {
                 var ds2 = calEvent.event.end.toString();
-                var date2 = moment(new Date(ds2.substr(0, 25)));            
+                var date2 = moment(new Date(ds2.substr(0, 25)));
                 $("#publicHolidayEndDate").val(date2.format("DD.MM.YYYY"))
             }
             $("#publicHolidayStartDate").val(date.format("DD.MM.YYYY"))
@@ -558,7 +558,7 @@
         }
 
         function FullCalenderProcess(calEvent) {
-         
+
             $("#eventId").val(calEvent.event.id)
             $("#eventDescription").val(calEvent.event.extendedProps.description)
             var ds = calEvent.event.start.toString();
@@ -621,14 +621,14 @@
                             else if ($(calEvent.el).hasClass("fc-event-danger")) {
                                 FullCalenderProcess(calEvent);
                                 $("#btnUpdateEvent").trigger("click");
-                            }                          
+                            }
                         },
                         eventResize: function (calEvent) {
                             if ($(calEvent.el).hasClass("fc-event-primary")) {
                                 console.log("dkdkdk");
                                 console.log(calEvent);
                                 $("#publicHolidayEndDate").val(calEvent.event.end);
-                                FullCalenderProcessPublicHoliday(calEvent);  
+                                FullCalenderProcessPublicHoliday(calEvent);
                                 $("#btnUpdatePublicHoliday").trigger("click");
                             }
                             else if ($(calEvent.el).hasClass("fc-event-danger")) {
@@ -636,11 +636,11 @@
                                 FullCalenderProcess(calEvent);
                                 $("#btnUpdateEvent").trigger("click");
                             }
-                           
+
                         },
                         eventClick: function (calEvent) {
-                                               
-                            if ($(calEvent.el).hasClass("fc-event-primary")) {                              
+
+                            if ($(calEvent.el).hasClass("fc-event-primary")) {
                                 FullCalenderProcessPublicHoliday(calEvent);
                                 $("#publicHolidayUpdateModal").modal("show");
                             }
@@ -656,7 +656,7 @@
                             var ds2 = info.date.toString();
                             var date2 = moment(new Date(ds2.substr(0, 25)));
                             $("#eventAddStartDate").val(date2.format("DD.MM.YYYY HH:mm"))
-                            $("#eventAddModal").modal("show");                           
+                            $("#eventAddModal").modal("show");
 
                         },
                         eventRender: function (info) {
@@ -687,7 +687,239 @@
         });
 
     </script>
-  
+    <script>
+        FormValidation.formValidation(
+            document.getElementById('modalAddEventForm'),
+            {
+                fields: {
+
+                    Description: {
+                        validators: {
+                            stringLength: {
+                                max: 1999,
+                                message: '2000 karakterden az girin'
+                            }
+                        }
+                    },
+
+                    Title: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Başlık alanı boş geçilemez'
+                            },
+                            stringLength: {
+                                max: 100,
+                                message: '100 karakterden az girin'
+                            }
+                        }
+                    },
+                    Start: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY HH:mm',
+                                message: 'Geçerli bir tarih girin'
+                            }
+                        }
+                    },
+                    End: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY HH:mm',
+                                message: 'Geçerli bir tarih girin'
+                            }
+                        }
+                    },
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+
+        
+    </script>
+    <script>
+        FormValidation.formValidation(
+            document.getElementById('modalAddLeaveForm'),
+            {
+                fields: {
+
+                    Description: {
+                        validators: {
+                            stringLength: {
+                                max: 1999,
+                                message: '2000 karakterden az girin'
+                            }
+                        }
+                    },
+
+                    Title: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Başlık alanı boş geçilemez'
+                            },
+                            stringLength: {
+                                max: 100,
+                                message: '100 karakterden az girin'
+                            }
+                        }
+                    },
+                    Start: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY HH:mm',
+                                message: 'Geçerli bir tarih girin'
+                            }
+                        }
+                    },
+                    End: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY HH:mm',
+                                message: 'Geçerli bir tarih girin'
+                            }
+                        }
+                    },
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+
+    </script>
+    <script>
+        
+        FormValidation.formValidation(
+            document.getElementById('modalAddPublicHolidayForm'),
+            {
+                fields: {
+
+                    Description: {
+                        validators: {
+                            stringLength: {
+                                max: 1999,
+                                message: '2000 karakterden az girin'
+                            }
+                        }
+                    },
+
+                    Title: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Başlık alanı boş geçilemez'
+                            },
+                            stringLength: {
+                                max: 100,
+                                message: '100 karakterden az girin'
+                            }
+                        }
+                    },
+                    Start: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
+                            }
+                        }
+                    }
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+
+    </script> 
+<script>
+        
+        FormValidation.formValidation(
+            document.getElementById('modalUpdatePublicHolidayForm'),
+            {
+                fields: {
+
+                    Description: {
+                        validators: {
+                            stringLength: {
+                                max: 1999,
+                                message: '2000 karakterden az girin'
+                            }
+                        }
+                    },
+
+                    Title: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Başlık alanı boş geçilemez'
+                            },
+                            stringLength: {
+                                max: 100,
+                                message: '100 karakterden az girin'
+                            }
+                        }
+                    },
+                    Start: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
+                            }
+                        }
+                    }
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+
+    </script>
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
     <script src="~/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js" charset="windows-1254"></script>
     <!--end::Page Vendors-->

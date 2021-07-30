@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-custom">
+    @*@await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })*@
+    <div class="card-body">
+        <!--begin::Profile Personal Information-->
+        <div class="d-flex flex-row">
+
+            <!--begin::Aside-->
+            <div class="flex-row-auto offcanvas-mobile w-300px w-xxl-400px h-75" id="kt_profile_aside">
+                <!--begin::Profile Card-->
+                <div class="card card-custom card-stretch">
+                    <!--begin::Body-->
+                    <div class="card-body pt-4">
+                        <!--begin::User-->
+                        <div class=" align-items-center">
+                            <!--begin::Card-->
+
+
+                            <div>
+                                <div class="form-group row">
+                                    <label class="col-xl-6 col-lg-6 ml-1 col-form-label">Değişken Türü</label>
+                                    <div class="col-lg-12 col-xl-12">
+                                        <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" >
+                                            <option value="1">sdaf Seçiniz</option>
+                                            <option value="2">asf Seçiniz</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end::User-->
+                        <!--begin::Contact-->
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Profile Card-->
+            </div>
+            <!--end::Aside-->
+            @*@await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })*@
+            <div class="tab-content w-100">
+                <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-business-time text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            Kariyer
+
+                                        </h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffCareerAddModal">
+                                            Pozisyon Ekle
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    @*<table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Başlangıç</th>
+                                                    <th>Bitiş</th>
+                                                    <th>Çalışma Şekli</th>
+                                                    <th>Şirket</th>
+                                                    <th>Şube</th>
+                                                    <th>Departman</th>
+                                                    <th>Unvan</th>
+                                                    <th>İşlemler</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>@item.IsCareerContinue</td>
+                                                        <td>@item.JobStartDate.ToShortDateString()</td>
+                                                        @if (item.JobFinishDate != null)
+                                                        {
+                                                            <td>@item.JobFinishDate.Value.ToShortDateString()</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><span class="badge badge-success badge-pill">Devam ediyor</span> </td>
+                                                        }
+
+                                                        <td>@item.ModeOfOperation</td>
+                                                        <td>@item.CompanyName</td>
+                                                        <td>@item.BranchName</td>
+                                                        <td>@item.DepartmantName</td>
+                                                        <td>@item.Title</td>
+                                                        <td>
+                                                            <a id="CareerUpdateBtn" onclick="CareerUpdate(@item.StaffCareerId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                                                <i class="la la-edit text-warning"></i>
+                                                            </a>
+                                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCareer(@item.StaffCareerId)">
+
+                                                                <i class="la la-trash text-danger"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>*@
+                                    <!--end: Datatable-->
+                                </div>
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Entry-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
+}
