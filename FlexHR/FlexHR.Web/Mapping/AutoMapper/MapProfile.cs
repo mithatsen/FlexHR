@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using FlexHR.DTO.Dtos.EventDtos;
+using FlexHR.DTO.Dtos.GeneralSubTypeDtos;
+using FlexHR.DTO.Dtos.LeaveTypeDtos;
 using FlexHR.DTO.Dtos.ReceiptDtos;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDebitDtos;
@@ -33,7 +35,13 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<ListStaffCareerDto, StaffCareer>().ReverseMap();
             CreateMap<AddStaffCareerDto, StaffCareer>().ReverseMap();
             #endregion
-
+            #region GeneralSubType
+            CreateMap<ListGeneralSubTypeDto, GeneralSubType>().ReverseMap();
+            CreateMap<AddGeneralSubTypeDto, GeneralSubType>().ReverseMap();
+            #endregion 
+            #region LeaveType
+            CreateMap<ListLeaveTypeDto , LeaveType>().ReverseMap();
+            #endregion
             #region StaffLeave
             CreateMap<AddStaffLeaveDto, StaffLeave>().ReverseMap();
             CreateMap<ListStaffLeaveDto, StaffLeave>().ReverseMap();

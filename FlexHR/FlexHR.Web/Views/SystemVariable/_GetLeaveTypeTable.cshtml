@@ -1,0 +1,240 @@
+﻿@model List<ListLeaveTypeDto>
+
+    <div class="tab-content w-100">
+        <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+            <!--begin::Entry-->
+            <div class="d-flex flex-column-fluid">
+                <!--begin::Container-->
+                <div class="container">
+                    <!--begin::Notice-->
+                    <!--end::Notice-->
+                    <!--begin::Card-->
+                    <div class="card card-custom">
+                        <div class="card-header flex-wrap py-5">
+                            <div class="card-title">
+                                <i class="fas fa-umbrella-beach  text-dark mr-2"></i>
+                                <h3 id="VariableTitle" class="card-label">
+                                   İzin Türleri
+
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <!--begin::Button-->
+                                <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#abcvbfd">
+                                    Ekle
+                                </button>
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                                <thead>
+                                    <tr>
+                                        <th>İzin Türü</th>
+                                        <th>Açıklama</th>
+                                        <th>İzin Hakkı</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td width="18%">@item.Name</td>
+                                        <td width="62%">@item.Description</td>
+                                        @if (item.TotalDay > 0)
+                                        {
+                                            <td width="10%">@item.TotalDay Gün</td>
+                                        }
+                                        else
+                                        {
+                                            <td width="5%">Süresiz</td>
+                                        }
+
+                                        <td width="10%">
+                                            <a id="CareerUpdateBtn" onclick="GeneralSubTypeUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                                <i class="la la-edit text-warning"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteGeneralSubType(@item.Id)">
+                                                <i class="la la-trash text-danger"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Container-->
+            </div>
+            <!--end::Entry-->
+        </div>
+    </div>
+
+
+    <!--end: Datatable-->
+    @* add generalsubtype modal *@
+    <div class="modal fade" id="generalSubTypeAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="card-title align-items-start flex-column">
+                        <h3 class="card-label font-weight-bolder text-dark">
+                            <i class="fas fa-address-book mr-2 text-dark"></i> Güncelle
+                        </h3>
+
+                    </div>
+                    <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form id="generalSubTypeAddForm" method="POST">
+                    <div class="modal-body">
+                        <div class="flex-row-fluid ">
+                            <!--begin::Form-->
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <!--end::Header-->
+
+                                <div class="container ">
+                                    <!--begin::Body-->
+                                    <div class="card-body mx-auto">
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label>Açıklama *</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-lg form-control-solid" name="Description" id="Description" placeholder="Açıklama" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+                        </div>
+                        <!--end::Form-->
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="button" onclick="generalSubTypeAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @* update type modal*@
+    <div id="generalSubTypeUpdateDiv"></div>
+
+    <script>
+        function GeneralSubTypeUpdate(id) {
+            console.log(id);
+            var modelContent = $("#generalSubTypeUpdateDiv")
+            $("#generalSubTypeUpdateDiv").empty();
+
+            $.ajax({
+                method: "GET",
+                url: "/SystemVariable/GetUpdateGeneralSubTypeModal/" + id,
+                dataType: "html",
+                cache: false,
+            }).done(function (content) {
+
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#generalSubTypeUpdateModal").modal("show");
+
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+    </script>
+
+    <script>
+        function generalSubTypeAddClickFunction() {
+            var formData = {
+                Description: $("#Description").val(),
+                GeneralTypeId: Number(localStorage.SystemVariableId)
+            };
+            $.ajax({
+                method: 'post',
+                url: '/SystemVariable/AddGeneralSubType',
+                data: formData,
+                success: function (data) {
+                    if (data == true) {
+                        Swal.fire({
+                            title: "Eklendi!",
+                            text: "Kaydınız eklendi.",
+                            icon: "success",
+                        }).then(function () {
+                            window.location.reload()
+                        })
+                    }
+
+                }
+
+            })
+        }
+    </script>
+
+    @*Delete generalSubType with sweet alert*@
+    <script>
+        function DeleteGeneralSubType(id) {
+            Swal.fire({
+                title: "Silmek istediğinize emin misiniz ?",
+                text: "Bunu geri alamazsınız!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Evet, sil!",
+                cancelButtonText: "Hayır, iptal et!",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/SystemVariable/DeleteGeneralSubtype/" + id,
+                    }).done(function (result) {
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Silindi!",
+                                text: "Kaydınız silindi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "Kaydınız silinemedi",
+                                "hata"
+                            )
+                        }
+
+                    })
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire({
+                        title: "İptal Edildi",
+                        text: "Kaydınız silinmedi",
+                        icon: "error",
+                        showCancelButton: false
+                    })
+
+
+                }
+            });
+
+
+        }
+    </script>
