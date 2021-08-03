@@ -1,6 +1,6 @@
-﻿@model ListLeaveTypeDto
+﻿@model ListLeaveRuleDto
 
-<div class="modal fade" id="leaveTypeUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+<div class="modal fade" id="leaveRuleUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,8 +13,8 @@
                 <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="LeaveTypeUpdateForm" asp-controller="SystemVariable" asp-action="UpdateLeaveType" method="POST">
-                <input type="hidden" asp-for="Id" />
+            <form id="LeaveRuleUpdateForm" asp-controller="SystemVariable" asp-action="UpdateLeaveRule" method="POST">
+                <input type="hidden" asp-for="RuleId" />
 
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
@@ -30,45 +30,21 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label>İzin Türü *</label>
+                                                <label>Deneyim (Yıl) *</label>
                                                 <div class="input-group">
-                                                    <input  asp-for="Name" class="form-control form-control-lg form-control-solid" type="text" placeholder="İzin Türü" />
+                                                    <input id="kt_touchspin_3" type="text" class="form-control form-control-lg text-center" asp-for="SeniorityYear" placeholder="Toplam" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5 ">
                                             <div class="form-group row ">
-                                                <label>İzin Hakkı(Gün) *</label>
+                                                <label>Ek İzin Hakkı (Gün) *</label>
                                                 <div class="input-group">
-                                                    <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center" asp-for="TotalDay" placeholder="Toplam" />
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label>Açıklama *</label>
-                                                <div class="input-group">
-
-                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" name="Description" placeholder="Açıklama"></textarea>
-
+                                                    <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center"  asp-for="AditionalLeaveAmount" />
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12 ">
-                                            <div  class="form-group row">
-                                                <div class="checkbox-inline ml-0">
-                                                    <label class="checkbox checkbox-success">
-                                                        <input asp-for="IsFree" type="checkbox"  />
-                                                        <span></span>
-                                                        Ücretsiz izin mi ?
-                                                    </label>
-                                                </div>                              
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +59,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="submit" id="btnUpdateLeaveRule" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -144,6 +120,17 @@
 </script>
 <script>
     $('#kt_touchspin_2, #kt_touchspin_2_2').TouchSpin({
+        buttondown_class: 'btn btn-secondary',
+        buttonup_class: 'btn btn-secondary',
+        min: 0,
+        max: 100,
+        step: 1,
+        int: 1,
+        boostat: 5,
+        maxboostedstep: 10,
+
+    });
+    $('#kt_touchspin_3, #kt_touchspin_2_2').TouchSpin({
         buttondown_class: 'btn btn-secondary',
         buttonup_class: 'btn btn-secondary',
         min: 0,

@@ -1,4 +1,4 @@
-﻿@model List<ListLeaveTypeDto>
+﻿@model List<ListLeaveRuleDto>
 
 <div class="tab-content w-100">
     <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
@@ -14,13 +14,13 @@
                         <div class="card-title">
                             <i class="fas fa-umbrella-beach  text-dark mr-2"></i>
                             <h3 id="VariableTitle" class="card-label">
-                                İzin Türleri
+                                İzin Kuralları
 
                             </h3>
                         </div>
                         <div class="card-toolbar">
                             <!--begin::Button-->
-                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#leaveTypeAddModal">
+                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#leaveRuleAddModal">
                                 Ekle
                             </button>
                             <!--end::Button-->
@@ -31,10 +31,8 @@
                         <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
                             <thead>
                                 <tr>
-                                    <th>İzin Türü</th>
-                                    <th>Açıklama</th>
-                                    <th>İzin Hakkı</th>
-                                    <th>İzin Tipi</th>
+                                    <th>Deneyim (Yıl)</th>
+                                    <th>Ek İzin Miktarı</th>                  
                                     <th>İşlemler</th>
                                 </tr>
                             </thead>
@@ -42,29 +40,14 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td width="18%">@item.Name</td>
-                                        <td width="52%">@item.Description</td>
-                                        @if (item.TotalDay > 0)
-                                        {
-                                            <td width="10%">@item.TotalDay Gün</td>
-                                        }
-                                        else
-                                        {
-                                            <td width="10%">Süresiz</td>
-                                        }
-                                        @if (item.IsFree)
-                                        {
-                                            <td width="10%">Ücretsiz</td>
-                                        }
-                                        else
-                                        {
-                                            <td width="10%">Ücretli</td>
-                                        }
+                                        <td width="45%">@item.SeniorityYear yıllık deneyim</td>
+                                        <td width="45%">+ @item.AditionalLeaveAmount Gün ek izin hakkı</td>
+                                       
                                         <td width="10%">
-                                            <a id="CareerUpdateBtn" onclick="LeaveTypeUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                            <a id="CareerUpdateBtn" onclick="LeaveRuleUpdate(@item.RuleId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
                                                 <i class="la la-edit text-warning"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteLeaveType(@item.Id)">
+                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteLeaveRule(@item.RuleId)">
                                                 <i class="la la-trash text-danger"></i>
                                             </a>
                                         </td>
@@ -85,20 +68,20 @@
 
 <!--end: Datatable-->
 @* add leavetype modal *@
-<div class="modal fade" id="leaveTypeAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+<div class="modal fade" id="leaveRuleAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>İzin Türü Ekle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>İzin Kuralı Ekle
                     </h3>
 
                 </div>
                 <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="LeaveTypeAddForm" method="POST">
+            <form id="LeaveRuleAddForm" method="POST">
 
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
@@ -107,52 +90,28 @@
                         <div class="card card-custom card-stretch">
                             <!--begin::Header-->
                             <!--end::Header-->
-
                             <div class="container ">
                                 <!--begin::Body-->
                                 <div class="card-body mx-auto">
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label>İzin Türü Adı*</label>
+                                                <label>Deneyim(Yıl)*</label>
                                                 <div class="input-group">
-                                                    <input name="Name" id="Name" class="form-control form-control-lg form-control-solid" type="text" placeholder="İzin Türü" />
+                                                    <input id="kt_touchspin_3" type="text" class="form-control form-control-lg text-center" name="SeniorityYear" placeholder="Toplam" value="0" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5 ">
                                             <div class="form-group row ">
-                                                <label>İzin Hakkı(Gün) *</label>
+                                                <label>Ek İzin Hakkı(Gün) *</label>
                                                 <div class="input-group">
-                                                    <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center" name="TotalDay" placeholder="Toplam" value="0" />
+                                                    <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center" name="AditionalLeaveAmount" value="0" />
                                                 </div>
                                             </div>
 
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label>Açıklama *</label>
-                                                <div class="input-group">
-
-                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description"  id="Description" placeholder="Açıklama"></textarea>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 ">
-                                            <div class="form-group row">
-                                                <div class="checkbox-inline ml-0">
-                                                    <label class="checkbox checkbox-success">
-                                                        <input name="IsFree" type="checkbox" id="IsFree" />
-                                                        <span></span>
-                                                        Ücretsiz izin mi ?
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        </div>     
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +126,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button"  onclick="leaveTypeAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="leaveRuleAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -175,18 +134,41 @@
 </div>
 
 @* update type modal*@
-<div id="leaveTypeUpdateDiv">
+<div id="leaveRuleUpdateDiv">
 
 </div>
 
 <script>
-    function LeaveTypeUpdate(id) {
-        var modelContent = $("#leaveTypeUpdateDiv")
-        $("#leaveTypeUpdateDiv").empty();
+    $('#kt_touchspin_2, #kt_touchspin_2_2').TouchSpin({
+        buttondown_class: 'btn btn-secondary',
+        buttonup_class: 'btn btn-secondary',
+        min: 0,
+        max: 100,
+        step: 1,
+        int: 1,
+        boostat: 5,
+        maxboostedstep: 10,
+
+    });
+    $('#kt_touchspin_3, #kt_touchspin_2_2').TouchSpin({
+        buttondown_class: 'btn btn-secondary',
+        buttonup_class: 'btn btn-secondary',
+        min: 0,
+        max: 100,
+        step: 1,
+        int: 1,
+        boostat: 5,
+        maxboostedstep: 10,
+
+    });
+
+    function LeaveRuleUpdate(id) {
+        var modelContent = $("#leaveRuleUpdateDiv")
+        $("#leaveRuleUpdateDiv").empty();
 
         $.ajax({
             method: "GET",
-            url: "/SystemVariable/GetUpdateLeaveTypeModal/" + id,
+            url: "/SystemVariable/GetUpdateLeaveRuleModal/" + id,
             dataType: "html",
             cache: false,
         }).done(function (content) {
@@ -194,7 +176,7 @@
             if (content != null) {
                 modelContent.html(content);
             }
-            $("#leaveTypeUpdateModal").modal("show");
+            $("#leaveRuleUpdateModal").modal("show");
 
 
 
@@ -217,16 +199,14 @@
     });
 </script>
 <script>
-    function leaveTypeAddClickFunction() {
-        var formData = {
-            Name: $("#Name").val(),
-            Description: $("#Description").val(),
-            IsFree: $("#IsFree").val(),
-            TotalDay: $("#kt_touchspin_2").val()
-        }; 
+    function leaveRuleAddClickFunction() {
+        var formData = {        
+            SeniorityYear: $("#kt_touchspin_3").val(),
+            AditionalLeaveAmount: $("#kt_touchspin_2").val()
+        };
         $.ajax({
             method: 'post',
-            url: '/SystemVariable/AddLeaveType',
+            url: '/SystemVariable/AddLeaveRule',
             data: formData,
             success: function (data) {
                 if (data == true) {
@@ -245,9 +225,9 @@
     }
 </script>
 
-@*Delete generalSubType with sweet alert*@
+@*Delete generalSubRule with sweet alert*@
 <script>
-    function DeleteLeaveType(id) {
+    function DeleteLeaveRule(id) {
         Swal.fire({
             title: "Silmek istediğinize emin misiniz ?",
             text: "Bunu geri alamazsınız!",
@@ -261,7 +241,7 @@
 
                 $.ajax({
                     method: "POST",
-                    url: "/SystemVariable/DeleteLeaveType/" + id,
+                    url: "/SystemVariable/DeleteLeaveRule/" + id,
                 }).done(function (result) {
                     if (result == true) {
                         Swal.fire({

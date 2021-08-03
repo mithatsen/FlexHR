@@ -118,7 +118,7 @@ namespace FlexHR.Web.Controllers
         }
         public  int CalculateTotalLeaveAmountDeservedBySeniority(DateTime startDate)
         {
-            var models = _leaveRuleService.GetAll().OrderBy(p=>p.SeniorityYear);
+            var models = _leaveRuleService.Get(x=>x.IsActive==true).OrderBy(p=>p.SeniorityYear);
             var seniorityLevel = (DateTime.Now-startDate).Days/365;
             int oldCount = 0;
             int leaveAmount = 14;
