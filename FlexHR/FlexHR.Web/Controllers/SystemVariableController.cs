@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
+using FlexHR.DTO.Dtos.CompanyDtos;
 using FlexHR.DTO.Dtos.GeneralSubTypeDtos;
 using FlexHR.DTO.Dtos.LeaveRuleDtos;
 using FlexHR.DTO.Dtos.LeaveTypeDtos;
+using FlexHR.DTO.Dtos.RoleDtos;
 using FlexHR.Entity.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,14 +21,19 @@ namespace FlexHR.Web.Controllers
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly ILeaveTypeService _leaveTypeService;
         private readonly ILeaveRuleService _leaveRuleService;
+        private readonly IRoleService _roleService;
         private readonly IMapper _mapper;
+        private readonly ICompanyService _companyService;
 
-        public SystemVariableController(IGeneralTypeService generalTypeService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService)
+        public SystemVariableController(IGeneralTypeService generalTypeService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,
+            ICompanyService companyService, IRoleService roleService)
         {
             _generalTypeService = generalTypeService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _leaveTypeService = leaveTypeService;
+            _companyService = companyService;
+            _roleService = roleService;
             _leaveRuleService = leaveRuleService;
         }
 
@@ -56,6 +63,11 @@ namespace FlexHR.Web.Controllers
         {
             var result = _leaveRuleService.GetById(id);
             return PartialView("_GetLeaveRuleUpdateModal", _mapper.Map<ListLeaveRuleDto>(result));
+        } 
+        public IActionResult GetUpdateCompanyModal(int id)
+        {
+            var result = _companyService.GetById(id);
+            return PartialView("_GetCompanyUpdateModal", _mapper.Map<ListCompanyDto>(result));
         }
 
         [HttpPost]
@@ -95,6 +107,18 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
+        public bool AddCompany(AddCompanyDto model)
+        {
+            try
+            {
+                _companyService.Add(_mapper.Map<Company>(model));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         [HttpPost]
         public IActionResult UpdateGeneralSubType(ListGeneralSubTypeDto model)
@@ -117,6 +141,14 @@ namespace FlexHR.Web.Controllers
         {
             model.IsActive = true;
             _leaveRuleService.Update(_mapper.Map<LeaveRule>(model));
+            TempData["GeneralSubTypeUpdateStatus"] = "true";
+            return RedirectToAction("Index");
+        } 
+        [HttpPost]
+        public IActionResult UpdateCompany(ListCompanyDto model)
+        {
+            model.IsActive = true;
+            _companyService.Update(_mapper.Map<Company>(model));
             TempData["GeneralSubTypeUpdateStatus"] = "true";
             return RedirectToAction("Index");
         }
@@ -167,6 +199,36 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
+        [HttpPost]
+        public bool DeleteCompany(int id)
+        {
+            try
+            {
+                var temp = _companyService.GetById(id);
+                temp.IsActive = false;
+                _companyService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }  
+        [HttpPost]
+        public bool DeleteRole(int id)
+        {
+            try
+            {
+                var temp = _companyService.GetById(id);
+                temp.IsActive = false;
+                _companyService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public IActionResult GetLeaveTypeList()
         {
             var result = _leaveTypeService.Get(x=>x.IsActive==true);
@@ -177,7 +239,41 @@ namespace FlexHR.Web.Controllers
             var result = _leaveRuleService.Get(x => x.IsActive == true).OrderBy(x=>x.SeniorityYear);
             return PartialView("_GetLeaveRuleTable", _mapper.Map<List<ListLeaveRuleDto>>(result));
         }
-        
+        public IActionResult GetCompanyList()
+        {
+            var result = _companyService.Get(x => x.IsActive == true);
+            return PartialView("_GetCompanyTable", _mapper.Map<List<ListCompanyDto>>(result));
+        }
+
+
+
+
+
+        public IActionResult GetRoleList()
+        {
+            var result = _roleService.Get(x => x.IsActive == true);
+            return PartialView("_GetRoleTable", _mapper.Map<List<ListRoleDto>>(result));
+        }
+        [HttpPost]
+        public bool AddRole(AddRoleDto model)
+        {
+            try
+            {
+                _roleService.Add(_mapper.Map<Role>(model));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        public IActionResult GetUpdateRoleModal(int id)
+        {
+            var result = _roleService.GetById(id);
+            return PartialView("_GetRoleUpdateModal", _mapper.Map<ListRoleDto>(result));
+        }
 
     }
 }

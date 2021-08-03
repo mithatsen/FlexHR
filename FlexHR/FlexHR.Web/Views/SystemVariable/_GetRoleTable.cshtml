@@ -1,4 +1,5 @@
-﻿@model List<ListGeneralSubTypeDto>
+﻿@model List<ListRoleDto>
+
 <div class="tab-content w-100">
     <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
         <!--begin::Entry-->
@@ -11,15 +12,15 @@
                 <div class="card card-custom">
                     <div class="card-header flex-wrap py-5">
                         <div class="card-title">
-                            <i class="fas fa-cog  text-dark mr-2"></i>
+                            <i class="fas fa-umbrella-beach  text-dark mr-2"></i>
                             <h3 id="VariableTitle" class="card-label">
-                                Sistem Değişkenleri
+                                Roller
 
                             </h3>
                         </div>
                         <div class="card-toolbar">
                             <!--begin::Button-->
-                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#generalSubTypeAddModal">
+                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#roleAddModal">
                                 Ekle
                             </button>
                             <!--end::Button-->
@@ -30,6 +31,7 @@
                         <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
                             <thead>
                                 <tr>
+                                    <th>Rol Adı </th>
                                     <th>Açıklama</th>
                                     <th>İşlemler</th>
                                 </tr>
@@ -38,13 +40,14 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td width="85%">@item.Description</td>
-                                        <td width="15%">
-                                            <a id="CareerUpdateBtn" onclick="GeneralSubTypeUpdate(@item.GeneralSubTypeId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                        <td width="20%">@item.Name</td>
+                                        <td width="70%">+ @item.Description </td>
+
+                                        <td width="10%">
+                                            <a id="CareerUpdateBtn" onclick="RoleUpdate(@item.RoleId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
                                                 <i class="la la-edit text-warning"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteGeneralSubType(@item.GeneralSubTypeId)">
-
+                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteRole(@item.RoleId)">
                                                 <i class="la la-trash text-danger"></i>
                                             </a>
                                         </td>
@@ -64,21 +67,22 @@
 
 
 <!--end: Datatable-->
-@* add generalsubtype modal *@
-<div class="modal fade" id="generalSubTypeAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md " role="document">
+@*add leavetype modal *@
+<div class="modal fade" id="roleAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i> Ekle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Rol Ekle
                     </h3>
 
                 </div>
                 <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="generalSubTypeAddForm" method="POST">
+            <form id="RoleAddForm" method="POST">
+
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -86,32 +90,42 @@
                         <div class="card card-custom card-stretch">
                             <!--begin::Header-->
                             <!--end::Header-->
-
                             <div class="container ">
                                 <!--begin::Body-->
                                 <div class="card-body mx-auto">
                                     <div class="row">
-
-                                        <div class="col-md-12">
+                                        <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label>Açıklama *</label>
+                                                <label>Rol Adı*</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Description" id="Description" placeholder="Açıklama" />
+                                                    <input name="Name" id="Name" class="form-control form-control-lg form-control-solid" type="text" placeholder="Rol Adı" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Açıklama*</label>
+                                                <div class="input-group">
+                                                    <input name="Description" id="Description" class="form-control form-control-lg form-control-solid" type="text" placeholder="Açıklama" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!--end::Body-->
                             </div>
-                            <!--end::Body-->
-                        </div>
-                    </div>
-                    <!--end::Form-->
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="generalSubTypeAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="button" onclick="roleAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -119,17 +133,19 @@
 </div>
 
 @* update type modal*@
-<div id="generalSubTypeUpdateDiv"></div>
+<div id="roleUpdateDiv">
+
+</div>
 
 <script>
-    function GeneralSubTypeUpdate(id) {
-        console.log(id);
-        var modelContent = $("#generalSubTypeUpdateDiv")
-        $("#generalSubTypeUpdateDiv").empty();
+
+    function RoleUpdate(id) {
+        var modelContent = $("#roleUpdateDiv")
+        $("#roleUpdateDiv").empty();
 
         $.ajax({
             method: "GET",
-            url: "/SystemVariable/GetUpdateGeneralSubTypeModal/" + id,
+            url: "/SystemVariable/GetUpdateRoleModal/" + id,
             dataType: "html",
             cache: false,
         }).done(function (content) {
@@ -137,7 +153,7 @@
             if (content != null) {
                 modelContent.html(content);
             }
-            $("#generalSubTypeUpdateModal").modal("show");
+            $("#roleUpdateModal").modal("show");
 
 
 
@@ -148,14 +164,14 @@
 </script>
 
 <script>
-    function generalSubTypeAddClickFunction() {
+    function roleAddClickFunction() {
         var formData = {
-            Description: $("#Description").val(),
-            GeneralTypeId: Number(localStorage.SystemVariableId)
+            Name: $("#Name").val(),
+            Description: $("#Description").val()
         };
         $.ajax({
             method: 'post',
-            url: '/SystemVariable/AddGeneralSubType',
+            url: '/SystemVariable/AddRole',
             data: formData,
             success: function (data) {
                 if (data == true) {
@@ -174,9 +190,9 @@
     }
 </script>
 
-@*Delete generalSubType with sweet alert*@
+@*Delete generalSubRule with sweet alert*@
 <script>
-    function DeleteGeneralSubType(id) {
+    function DeleteRole(id) {
         Swal.fire({
             title: "Silmek istediğinize emin misiniz ?",
             text: "Bunu geri alamazsınız!",
@@ -190,7 +206,7 @@
 
                 $.ajax({
                     method: "POST",
-                    url: "/SystemVariable/DeleteGeneralSubtype/" + id,
+                    url: "/SystemVariable/DeleteRole/" + id,
                 }).done(function (result) {
                     if (result == true) {
                         Swal.fire({
@@ -222,7 +238,7 @@
 
             }
         });
+
+
     }
-    var textAs = $('#kt_select2_1 option:selected').text();
-    $('#VariableTitle').text(textAs);
 </script>

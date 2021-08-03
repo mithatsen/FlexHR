@@ -1,4 +1,4 @@
-﻿@model List<ListGeneralSubTypeDto>
+﻿@model List<ListCompanyDto>
 <div class="tab-content w-100">
     <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
         <!--begin::Entry-->
@@ -13,13 +13,13 @@
                         <div class="card-title">
                             <i class="fas fa-cog  text-dark mr-2"></i>
                             <h3 id="VariableTitle" class="card-label">
-                                Sistem Değişkenleri
+                                Şirketler
 
                             </h3>
                         </div>
                         <div class="card-toolbar">
                             <!--begin::Button-->
-                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#generalSubTypeAddModal">
+                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#companyAddModal">
                                 Ekle
                             </button>
                             <!--end::Button-->
@@ -30,7 +30,7 @@
                         <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
                             <thead>
                                 <tr>
-                                    <th>Açıklama</th>
+                                    <th>Şirket Adı</th>
                                     <th>İşlemler</th>
                                 </tr>
                             </thead>
@@ -38,12 +38,12 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td width="85%">@item.Description</td>
+                                        <td width="85%">@item.CompanyName</td>
                                         <td width="15%">
-                                            <a id="CareerUpdateBtn" onclick="GeneralSubTypeUpdate(@item.GeneralSubTypeId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                            <a id="CareerUpdateBtn" onclick="CompanyUpdate(@item.CompanyId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
                                                 <i class="la la-edit text-warning"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteGeneralSubType(@item.GeneralSubTypeId)">
+                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCompany(@item.CompanyId)">
 
                                                 <i class="la la-trash text-danger"></i>
                                             </a>
@@ -64,8 +64,8 @@
 
 
 <!--end: Datatable-->
-@* add generalsubtype modal *@
-<div class="modal fade" id="generalSubTypeAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+@* add Company modal *@
+<div class="modal fade" id="companyAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md " role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -78,7 +78,7 @@
                 <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="generalSubTypeAddForm" method="POST">
+            <form id="companyAddForm" method="POST">
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
@@ -94,9 +94,9 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label>Açıklama *</label>
+                                                <label>Şirket Adı *</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Description" id="Description" placeholder="Açıklama" />
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="CompanyName" id="CompanyName" placeholder="Şirket Adı" />
                                                 </div>
                                             </div>
                                         </div>
@@ -111,7 +111,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="generalSubTypeAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="companyAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -119,17 +119,17 @@
 </div>
 
 @* update type modal*@
-<div id="generalSubTypeUpdateDiv"></div>
+<div id="companyUpdateDiv"></div>
 
 <script>
-    function GeneralSubTypeUpdate(id) {
+    function CompanyUpdate(id) {
         console.log(id);
-        var modelContent = $("#generalSubTypeUpdateDiv")
-        $("#generalSubTypeUpdateDiv").empty();
+        var modelContent = $("#companyUpdateDiv")
+        $("#companyUpdateDiv").empty();
 
         $.ajax({
             method: "GET",
-            url: "/SystemVariable/GetUpdateGeneralSubTypeModal/" + id,
+            url: "/SystemVariable/GetUpdateCompanyModal/" + id,
             dataType: "html",
             cache: false,
         }).done(function (content) {
@@ -137,7 +137,7 @@
             if (content != null) {
                 modelContent.html(content);
             }
-            $("#generalSubTypeUpdateModal").modal("show");
+            $("#companyUpdateModal").modal("show");
 
 
 
@@ -148,14 +148,13 @@
 </script>
 
 <script>
-    function generalSubTypeAddClickFunction() {
+    function companyAddClickFunction() {
         var formData = {
-            Description: $("#Description").val(),
-            GeneralTypeId: Number(localStorage.SystemVariableId)
+            CompanyName: $("#CompanyName").val()
         };
         $.ajax({
             method: 'post',
-            url: '/SystemVariable/AddGeneralSubType',
+            url: '/SystemVariable/AddCompany',
             data: formData,
             success: function (data) {
                 if (data == true) {
@@ -174,9 +173,9 @@
     }
 </script>
 
-@*Delete generalSubType with sweet alert*@
+@*Delete company with sweet alert*@
 <script>
-    function DeleteGeneralSubType(id) {
+    function DeleteCompany(id) {
         Swal.fire({
             title: "Silmek istediğinize emin misiniz ?",
             text: "Bunu geri alamazsınız!",
@@ -190,7 +189,7 @@
 
                 $.ajax({
                     method: "POST",
-                    url: "/SystemVariable/DeleteGeneralSubtype/" + id,
+                    url: "/SystemVariable/DeleteCompany/" + id,
                 }).done(function (result) {
                     if (result == true) {
                         Swal.fire({
@@ -218,11 +217,8 @@
                     icon: "error",
                     showCancelButton: false
                 })
-
-
             }
         });
     }
-    var textAs = $('#kt_select2_1 option:selected').text();
-    $('#VariableTitle').text(textAs);
+   
 </script>

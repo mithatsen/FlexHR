@@ -1,0 +1,70 @@
+﻿@model ListRoleDto
+
+<div class="modal fade" id="roleUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>İzin Türü Düzenle
+                    </h3>
+
+                </div>
+                <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="RoleUpdateForm" asp-controller="SystemVariable" asp-action="UpdateRole" method="POST">
+                <input type="hidden" asp-for="RoleId" />
+
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Rol Adı*</label>
+                                                <div class="input-group">
+                                                    <input asp-for="Name" id="Name" class="form-control form-control-lg form-control-solid" type="text" placeholder="Rol Adı" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Açıklama*</label>
+                                                <div class="input-group">
+                                                    <input asp-for="Description" id="Description" class="form-control form-control-lg form-control-solid" type="text" placeholder="Açıklama" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+
+
+                    </div>
+
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

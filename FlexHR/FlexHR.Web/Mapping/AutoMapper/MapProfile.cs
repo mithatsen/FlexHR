@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using FlexHR.DTO.Dtos.CompanyDtos;
 using FlexHR.DTO.Dtos.EventDtos;
 using FlexHR.DTO.Dtos.GeneralSubTypeDtos;
 using FlexHR.DTO.Dtos.LeaveRuleDtos;
 using FlexHR.DTO.Dtos.LeaveTypeDtos;
 using FlexHR.DTO.Dtos.ReceiptDtos;
+using FlexHR.DTO.Dtos.RoleDtos;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.DTO.Dtos.StaffDebitDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
@@ -21,12 +23,12 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Mapping.AutoMapper
 {
-    public class MapProfile:Profile
+    public class MapProfile : Profile
     {
         public MapProfile()
         {
             #region Staff
-            CreateMap<ListStaffDto, Staff>().ReverseMap();          
+            CreateMap<ListStaffDto, Staff>().ReverseMap();
             CreateMap<UpdateStaffDto, Staff>().ReverseMap();
             CreateMap<UpdateStaffDto, StaffPersonelInfo>().ReverseMap();
             CreateMap<UpdateStaffPersonalInfoDto, StaffPersonelInfo>().ReverseMap();
@@ -41,8 +43,8 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<AddGeneralSubTypeDto, GeneralSubType>().ReverseMap();
             #endregion 
             #region LeaveType
-            CreateMap<ListLeaveTypeDto , LeaveType>().ReverseMap();
-            CreateMap<AddLeaveTypeDto , LeaveType>().ReverseMap();
+            CreateMap<ListLeaveTypeDto, LeaveType>().ReverseMap();
+            CreateMap<AddLeaveTypeDto, LeaveType>().ReverseMap();
             #endregion
             #region StaffLeave
             CreateMap<AddStaffLeaveDto, StaffLeave>().ReverseMap();
@@ -81,10 +83,17 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #region Leave Rule
             CreateMap<ListLeaveRuleDto, LeaveRule>().ReverseMap();
             CreateMap<AddLeaveRuleDto, LeaveRule>().ReverseMap();
-
+            #endregion
+            #region Company
+            CreateMap<ListCompanyDto, Company>().ReverseMap();
+            CreateMap<AddCompanyDto, Company>().ReverseMap();
+            #endregion
+            #region Role
+            CreateMap<ListRoleDto, Role>().ReverseMap();
+            CreateMap<AddRoleDto, Role>().ReverseMap();
             #endregion
 
         }
     }
-    
+
 }

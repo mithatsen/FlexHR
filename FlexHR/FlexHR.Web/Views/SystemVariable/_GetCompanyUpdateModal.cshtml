@@ -1,0 +1,58 @@
+﻿@model ListCompanyDto
+
+<div class="modal fade" id="companyUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Şirket Adı Düzenle
+                    </h3>
+
+                </div>
+                <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="CompanyUpdateForm" asp-controller="SystemVariable" asp-action="UpdateCompany" method="POST">
+                <input type="hidden" asp-for="CompanyId" />
+
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label>Şirket Adı *</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" asp-for="CompanyName" placeholder="Şirket Adı" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+
+
+                    </div>
+
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="btnUpdateCompany" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
