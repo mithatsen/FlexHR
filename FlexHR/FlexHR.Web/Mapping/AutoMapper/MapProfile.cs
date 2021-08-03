@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FlexHR.DTO.Dtos.CompanyBranchDtos;
 using FlexHR.DTO.Dtos.CompanyDtos;
 using FlexHR.DTO.Dtos.EventDtos;
 using FlexHR.DTO.Dtos.GeneralSubTypeDtos;
@@ -91,6 +92,10 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #region Role
             CreateMap<ListRoleDto, Role>().ReverseMap();
             CreateMap<AddRoleDto, Role>().ReverseMap();
+            #endregion
+            #region Company Branch
+            CreateMap<ListCompanyBranchDto, CompanyBranch>().ReverseMap();
+            CreateMap<AddCompanyBranchDto, CompanyBranch>().ReverseMap();
             #endregion
 
         }

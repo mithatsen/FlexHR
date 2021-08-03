@@ -124,8 +124,6 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public bool DeleteCareer(int id)
         {
-
-
             try
             {
                 var career = _staffCareerService.GetById(id);

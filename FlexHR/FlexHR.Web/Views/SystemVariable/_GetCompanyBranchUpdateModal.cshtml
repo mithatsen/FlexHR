@@ -1,0 +1,65 @@
+﻿@model ListCompanyBranchDto
+
+
+<div class="modal fade" id="CompanyBranchUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i> Güncelle
+                    </h3>
+
+                </div>
+                <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="CompanyBranchUpdateForm" asp-controller="SystemVariable" asp-action="UpdateCompanyBranch" method="POST">
+                <input type="hidden" asp-for="CompanyBranchId" />
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Şube Adı*</label>
+                                                <div class="input-group">
+                                                    <input asp-for="BranchName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Şube Adı" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Şirket *</label>
+                                                <select class="form-control form-control-solid form-control-lg" asp-for="CompanyId" asp-items="ViewBag.Companies">
+                                                    <option value="">Seçiniz</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

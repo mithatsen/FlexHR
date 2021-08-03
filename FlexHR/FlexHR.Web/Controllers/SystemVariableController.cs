@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
+using FlexHR.DTO.Dtos.CompanyBranchDtos;
 using FlexHR.DTO.Dtos.CompanyDtos;
 using FlexHR.DTO.Dtos.GeneralSubTypeDtos;
 using FlexHR.DTO.Dtos.LeaveRuleDtos;
@@ -22,11 +23,12 @@ namespace FlexHR.Web.Controllers
         private readonly ILeaveTypeService _leaveTypeService;
         private readonly ILeaveRuleService _leaveRuleService;
         private readonly IRoleService _roleService;
+        private readonly ICompanyBranchService _companyBranchService;
         private readonly IMapper _mapper;
         private readonly ICompanyService _companyService;
 
         public SystemVariableController(IGeneralTypeService generalTypeService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,
-            ICompanyService companyService, IRoleService roleService)
+            ICompanyService companyService, IRoleService roleService, ICompanyBranchService companyBranchService)
         {
             _generalTypeService = generalTypeService;
             _generalSubTypeService = generalSubTypeService;
@@ -35,6 +37,7 @@ namespace FlexHR.Web.Controllers
             _companyService = companyService;
             _roleService = roleService;
             _leaveRuleService = leaveRuleService;
+            _companyBranchService = companyBranchService;
         }
 
         public IActionResult Index()
@@ -69,6 +72,20 @@ namespace FlexHR.Web.Controllers
             var result = _companyService.GetById(id);
             return PartialView("_GetCompanyUpdateModal", _mapper.Map<ListCompanyDto>(result));
         }
+        public IActionResult GetUpdateRoleModal(int id)
+        {
+            var result = _roleService.GetById(id);
+            return PartialView("_GetRoleUpdateModal", _mapper.Map<ListRoleDto>(result));
+        }
+        public IActionResult GetUpdateCompanyBranchModal(int id)
+        {
+            ViewBag.Companies = new SelectList(_companyService.Get(p=>p.IsActive==true), "CompanyId", "CompanyName");
+            var result = _companyBranchService.GetById(id);
+            return PartialView("_GetCompanyBranchUpdateModal", _mapper.Map<ListCompanyBranchDto>(result));
+        }
+
+
+
 
         [HttpPost]
         public bool AddGeneralSubType(AddGeneralSubTypeDto model)
@@ -107,6 +124,7 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
+        [HttpPost]
         public bool AddCompany(AddCompanyDto model)
         {
             try
@@ -119,6 +137,34 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
+        [HttpPost]
+        public bool AddCompanyBranch(AddCompanyBranchDto model)
+        {
+            try
+            {
+                _companyBranchService.Add(_mapper.Map<CompanyBranch>(model));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        [HttpPost]
+        public bool AddRole(AddRoleDto model)
+        {
+            try
+            {
+                _roleService.Add(_mapper.Map<Role>(model));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
 
         [HttpPost]
         public IActionResult UpdateGeneralSubType(ListGeneralSubTypeDto model)
@@ -152,9 +198,26 @@ namespace FlexHR.Web.Controllers
             TempData["GeneralSubTypeUpdateStatus"] = "true";
             return RedirectToAction("Index");
         }
-        
+        [HttpPost]
+        public IActionResult UpdateRole(ListRoleDto model)
+        {
+            model.IsActive = true;
+            _roleService.Update(_mapper.Map<Role>(model));
+            TempData["GeneralSubTypeUpdateStatus"] = "true";
+            return RedirectToAction("Index");
+        }
 
-       [HttpPost]
+        [HttpPost]
+        public IActionResult UpdateCompanyBranch(ListCompanyBranchDto model)
+        {
+            model.IsActive = true;
+            _companyBranchService.Update(_mapper.Map<CompanyBranch>(model));
+            TempData["GeneralSubTypeUpdateStatus"] = "true";
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
         public bool DeleteGeneralSubtype(int id)
         {
             try
@@ -213,15 +276,30 @@ namespace FlexHR.Web.Controllers
             {
                 return false;
             }
-        }  
+        }
+        [HttpPost]
+        public bool DeleteCompanyBranch(int id)
+        {
+            try
+            {
+                var temp = _companyBranchService.GetById(id);
+                temp.IsActive = false;
+                _companyBranchService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         [HttpPost]
         public bool DeleteRole(int id)
         {
             try
             {
-                var temp = _companyService.GetById(id);
+                var temp = _roleService.GetById(id);
                 temp.IsActive = false;
-                _companyService.Update(temp);
+                _roleService.Update(temp);
                 return true;
             }
             catch (Exception)
@@ -244,36 +322,34 @@ namespace FlexHR.Web.Controllers
             var result = _companyService.Get(x => x.IsActive == true);
             return PartialView("_GetCompanyTable", _mapper.Map<List<ListCompanyDto>>(result));
         }
-
-
-
-
-
         public IActionResult GetRoleList()
         {
             var result = _roleService.Get(x => x.IsActive == true);
             return PartialView("_GetRoleTable", _mapper.Map<List<ListRoleDto>>(result));
         }
-        [HttpPost]
-        public bool AddRole(AddRoleDto model)
+        public IActionResult GetCompanyBranchList()
         {
-            try
+            ViewBag.Companies = new SelectList(_companyService.Get(p => p.IsActive == true), "CompanyId", "CompanyName");
+            var result = _companyBranchService.Get(x => x.IsActive == true,null,"Company");
+            //var temp = _mapper.Map<List<ListCompanyBranchDto>>(result);   ÖĞREN İÇ İÇE MAP
+            var models = new List<ListCompanyBranchDto>();
+            foreach (var item in result)
             {
-                _roleService.Add(_mapper.Map<Role>(model));
-                return true;
+                var model = new ListCompanyBranchDto
+                {
+                    CompanyId = item.CompanyId,
+                    BranchName = item.BranchName,
+                    CompanyBranchId = item.CompanyBranchId,
+                    CompanyName = item.Company.CompanyName,
+                    IsActive = true
+                };
+                models.Add(model);
             }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
 
-
-        public IActionResult GetUpdateRoleModal(int id)
-        {
-            var result = _roleService.GetById(id);
-            return PartialView("_GetRoleUpdateModal", _mapper.Map<ListRoleDto>(result));
+            return PartialView("_GetCompanyBranchTable", models);
         }
+        
+
 
     }
 }

@@ -1,4 +1,4 @@
-﻿@model List<ListRoleDto>
+﻿@model List<ListCompanyBranchDto>
 
 <div class="tab-content w-100">
     <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
@@ -14,13 +14,12 @@
                         <div class="card-title">
                             <i class="fas fa-umbrella-beach  text-dark mr-2"></i>
                             <h3 id="VariableTitle" class="card-label">
-                                Roller
-
+                                Şubeler
                             </h3>
                         </div>
                         <div class="card-toolbar">
                             <!--begin::Button-->
-                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#roleAddModal">
+                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#companyBranchAddModal">
                                 Ekle
                             </button>
                             <!--end::Button-->
@@ -31,8 +30,8 @@
                         <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
                             <thead>
                                 <tr>
-                                    <th>Rol Adı </th>
-                                    <th>Açıklama</th>
+                                    <th>Şube </th>
+                                    <th>Şirket</th>
                                     <th>İşlemler</th>
                                 </tr>
                             </thead>
@@ -40,14 +39,14 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td width="20%">@item.Name</td>
-                                        <td width="70%">@item.Description </td>
+                                        <td width="20%">@item.BranchName</td>
+                                        <td width="70%">@item.CompanyName </td>
 
                                         <td width="10%">
-                                            <a id="CareerUpdateBtn" onclick="RoleUpdate(@item.RoleId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                            <a id="CareerUpdateBtn" onclick="CompanyBranchUpdate(@item.CompanyBranchId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
                                                 <i class="la la-edit text-warning"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteRole(@item.RoleId)">
+                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCompanyBranch(@item.CompanyBranchId)">
                                                 <i class="la la-trash text-danger"></i>
                                             </a>
                                         </td>
@@ -67,21 +66,21 @@
 
 
 <!--end: Datatable-->
-@*add leavetype modal *@
-<div class="modal fade" id="roleAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+@*add  modal *@
+<div class="modal fade" id="companyBranchAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Rol Ekle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Şube Ekle
                     </h3>
 
                 </div>
                 <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="RoleAddForm" method="POST">
+            <form id="CompanyBranchAddForm" method="POST">
 
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
@@ -96,19 +95,20 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label>Rol Adı*</label>
+                                                <label>Şube Adı*</label>
                                                 <div class="input-group">
-                                                    <input name="Name" id="Name" class="form-control form-control-lg form-control-solid" type="text" placeholder="Rol Adı" />
+                                                    <input name="BranchName" id="BranchName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Şube Adı" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5">
                                             <div class="form-group row">
-                                                <label>Açıklama*</label>
-                                                <div class="input-group">
-                                                    <input name="Description" id="Description" class="form-control form-control-lg form-control-solid" type="text" placeholder="Açıklama" />
-                                                </div>
+                                                <label>Şirket *</label>
+                                                <select class="form-control form-control-solid form-control-lg" name="CompanyId" id="CompanyId" asp-items="ViewBag.Companies">
+                                                    <option value="">Seçiniz</option>
+
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                        <button type="button" onclick="roleAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                        <button type="button" onclick="CompanyBranchAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
                     </div>
                 </div>
             </form>
@@ -139,13 +139,13 @@
 
 <script>
 
-    function RoleUpdate(id) {
+    function CompanyBranchUpdate(id) {
         var modelContent = $("#roleUpdateDiv")
         $("#roleUpdateDiv").empty();
 
         $.ajax({
             method: "GET",
-            url: "/SystemVariable/GetUpdateRoleModal/" + id,
+            url: "/SystemVariable/GetUpdateCompanyBranchModal/" + id,
             dataType: "html",
             cache: false,
         }).done(function (content) {
@@ -153,7 +153,7 @@
             if (content != null) {
                 modelContent.html(content);
             }
-            $("#roleUpdateModal").modal("show");
+            $("#CompanyBranchUpdateModal").modal("show");
 
 
 
@@ -164,14 +164,14 @@
 </script>
 
 <script>
-    function roleAddClickFunction() {
+    function CompanyBranchAddClickFunction() {
         var formData = {
-            Name: $("#Name").val(),
-            Description: $("#Description").val()
+            BranchName: $("#BranchName").val(),
+            CompanyId: $("#CompanyId").val()
         };
         $.ajax({
             method: 'post',
-            url: '/SystemVariable/AddRole',
+            url: '/SystemVariable/AddCompanyBranch',
             data: formData,
             success: function (data) {
                 if (data == true) {
@@ -192,7 +192,7 @@
 
 @*Delete generalSubRule with sweet alert*@
 <script>
-    function DeleteRole(id) {
+    function DeleteCompanyBranch(id) {
         Swal.fire({
             title: "Silmek istediğinize emin misiniz ?",
             text: "Bunu geri alamazsınız!",
@@ -206,7 +206,7 @@
 
                 $.ajax({
                     method: "POST",
-                    url: "/SystemVariable/DeleteRole/" + id,
+                    url: "/SystemVariable/DeleteCompanyBranch/" + id,
                 }).done(function (result) {
                     if (result == true) {
                         Swal.fire({
