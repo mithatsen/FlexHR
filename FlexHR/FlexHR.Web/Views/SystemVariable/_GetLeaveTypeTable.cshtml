@@ -53,10 +53,10 @@
                                         }
 
                                         <td width="10%">
-                                            <a id="CareerUpdateBtn" onclick="GeneralSubTypeUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                            <a id="CareerUpdateBtn" onclick="LeaveTypeUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
                                                 <i class="la la-edit text-warning"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteGeneralSubType(@item.Id)">
+                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteLeaveType(@item.Id)">
                                                 <i class="la la-trash text-danger"></i>
                                             </a>
                                         </td>
@@ -131,17 +131,18 @@
     </div>
 
     @* update type modal*@
-    <div id="generalSubTypeUpdateDiv"></div>
+    <div id="leaveTypeUpdateDiv">
+
+    </div>
 
     <script>
-        function GeneralSubTypeUpdate(id) {
-            console.log(id);
-            var modelContent = $("#generalSubTypeUpdateDiv")
-            $("#generalSubTypeUpdateDiv").empty();
+        function LeaveTypeUpdate(id) {        
+            var modelContent = $("#leaveTypeUpdateDiv")
+            $("#leaveTypeUpdateDiv").empty();
 
             $.ajax({
                 method: "GET",
-                url: "/SystemVariable/GetUpdateGeneralSubTypeModal/" + id,
+                url: "/SystemVariable/GetUpdateLeaveTypeModal/" + id,
                 dataType: "html",
                 cache: false,
             }).done(function (content) {
@@ -149,7 +150,7 @@
                 if (content != null) {
                     modelContent.html(content);
                 }
-                $("#generalSubTypeUpdateModal").modal("show");
+                $("#leaveTypeUpdateModal").modal("show");
 
 
 

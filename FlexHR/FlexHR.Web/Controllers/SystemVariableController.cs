@@ -44,6 +44,11 @@ namespace FlexHR.Web.Controllers
             var result = _generalSubTypeService.GetById(id);
             return PartialView("_GetGeneralSubTypeUpdateModal", _mapper.Map<ListGeneralSubTypeDto>(result));
         }
+        public IActionResult GetUpdateLeaveTypeModal(int id)
+        {
+            var result = _leaveTypeService.GetById(id);         
+            return PartialView("_GetLeaveTypeUpdateModal", _mapper.Map<ListLeaveTypeDto>(result));
+        }
 
         [HttpPost]
         public bool AddGeneralSubType(AddGeneralSubTypeDto model)
@@ -84,5 +89,6 @@ namespace FlexHR.Web.Controllers
             var result = _leaveTypeService.Get(x=>x.IsActive==true);
             return PartialView("_GetLeaveTypeTable", _mapper.Map<List<ListLeaveTypeDto>>(result));
         }
+        
     }
 }

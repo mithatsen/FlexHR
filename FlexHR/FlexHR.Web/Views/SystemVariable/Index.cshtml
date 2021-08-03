@@ -26,7 +26,7 @@
                                     <label class="col-xl-6 col-lg-6 ml-1 col-form-label">Değişken Türü</label>
                                     <div class="col-lg-12 col-xl-12">
                                         <select id="kt_select2_1" onchange="generalTypeChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" asp-items="@ViewBag.GeneralTypeList">
-                                            <option value="-1">Değişken Türü Seçiniz</option>
+                                            <option value="-1" selected>Değişken Türü Seçiniz</option>
                                         </select>
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
             }
 
-            if (localStorage.SystemVariableId != "0") {
+            if (localStorage.SystemVariableId != "0" && localStorage.SystemVariableId!=null ) {
                 $('#kt_select2_1').val(Number(localStorage.SystemVariableId));
                 $('#kt_select2_1').select2().trigger('change');
 

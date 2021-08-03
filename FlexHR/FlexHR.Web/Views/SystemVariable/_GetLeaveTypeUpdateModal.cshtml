@@ -1,0 +1,149 @@
+﻿@model ListLeaveTypeDto
+
+<div class="modal fade" id="leaveTypeUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>İzin Türü Düzenle
+                    </h3>
+
+                </div>
+                <button type="button" class=" link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="shiftUpdateForm" asp-controller="StaffShift" asp-action="UpdateStaffShift" method="POST">
+                <input type="hidden" asp-for="Id" />
+            
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Ad Soyad *</label>
+                                                <div class="input-group">
+                                                    <input name="LeaveTypeName" id="LeaveTypeName"  asp-for="Name" class="form-control form-control-lg form-control-solid" type="text" placeholder="İzin Türü" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row ">
+                                                <label>Süre (Saat) *</label>
+                                                <div class="input-group">
+                                                    <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center"  asp-for="TotalDay"  placeholder="Toplam" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label>Açıklama *</label>
+                                                <div class="input-group">
+
+                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" name="Description" placeholder="Açıklama"></textarea>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+
+
+                    </div>
+
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+         FormValidation.formValidation(
+             document.getElementById('shiftUpdateForm'),
+            {
+                fields: {
+                    StartDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
+                            }
+
+                        }
+                    },
+                    Duration: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Süre alanı boş geçilemez',
+                            },
+                            greaterThan: {
+                                min: 1,
+                                message: 'Süre alanı 0 olamaz',
+                            }
+
+                        }
+                    },
+                    Description: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Açıklama alanı boş geçilemez'
+                            },
+                            stringLength: {
+                                max: 499,
+                                message: '500 karakterden az girin'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+            }
+        );
+</script>
+<script>
+        $('#kt_touchspin_2, #kt_touchspin_2_2').TouchSpin({
+            buttondown_class: 'btn btn-secondary',
+            buttonup_class: 'btn btn-secondary',
+            min: 0,
+            max: 100,
+            step: 1,
+            int: 1,
+            boostat: 5,
+            maxboostedstep: 10,
+
+        });
+        $('#kt_datetimepicker_20').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY HH:mm'
+        });
+</script>
