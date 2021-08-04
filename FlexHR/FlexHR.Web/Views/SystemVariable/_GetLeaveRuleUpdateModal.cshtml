@@ -67,45 +67,37 @@
 </div>
 <script>
     FormValidation.formValidation(
-        document.getElementById('shiftUpdateForm'),
+        document.getElementById('LeaveRuleUpdateForm'),
         {
             fields: {
-                StartDate: {
+                SeniorityYear: {
                     validators: {
                         notEmpty: {
-                            message: 'Tarih alanı boş geçilemez'
+                            message: 'Deneyim alanı boş geçilemez',
                         },
-                        date: {
-                            format: 'DD.MM.YYYY',
-                            message: 'Geçerli bir tarih girin'
-                        }
-
-                    }
-                },
-                Duration: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Süre alanı boş geçilemez',
-                        },
-                        greaterThan: {
+                        between: {
                             min: 1,
-                            message: 'Süre alanı 0 olamaz',
+                            max: 365,
+                            message: 'Toplam yıl 0 olamaz',
                         }
 
                     }
                 },
-                Description: {
+                AditionalLeaveAmount: {
                     validators: {
                         notEmpty: {
-                            message: 'Açıklama alanı boş geçilemez'
+                            message: 'Ek izin hakkı alanı boş geçilemez',
                         },
-                        stringLength: {
-                            max: 499,
-                            message: '500 karakterden az girin'
+                        between: {
+                            min: 1,
+                            max: 365,
+                            message: 'Toplam gün 0 olamaz',
                         }
+
                     }
                 },
             },
+           
             plugins: {
                 trigger: new FormValidation.plugins.Trigger(),
                 // Bootstrap Framework Integration
@@ -140,9 +132,5 @@
         boostat: 5,
         maxboostedstep: 10,
 
-    });
-    $('#kt_datetimepicker_20').datetimepicker({
-        locale: 'tr',
-        format: 'DD.MM.YYYY HH:mm'
     });
 </script>

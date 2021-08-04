@@ -67,4 +67,40 @@
     </div>
 </div>
 
+<script>
+    FormValidation.formValidation(
+        document.getElementById('RoleUpdateForm'),
+        {
+            fields: {
+                Name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'İzin türü adı alanı boş geçilemez'
+                        }
+                    }
+                },
+                Description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Açıklama alanı boş geçilemez'
+                        },
+                        stringLength: {
+                            max: 999,
+                            message: '1000 karakterden az girin'
+                        }
+                    }
+                },
 
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            }
+        }
+    );
+</script>

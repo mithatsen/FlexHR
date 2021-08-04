@@ -12,7 +12,7 @@
                 <div class="card card-custom">
                     <div class="card-header flex-wrap py-5">
                         <div class="card-title">
-                            <i class="fas fa-umbrella-beach  text-dark mr-2"></i>
+                            <i class="fas fa-map-marker-alt  text-dark mr-2"></i>
                             <h3 id="VariableTitle" class="card-label">
                                 Şubeler
                             </h3>
@@ -164,29 +164,62 @@
 </script>
 
 <script>
-    function CompanyBranchAddClickFunction() {
-        var formData = {
-            BranchName: $("#BranchName").val(),
-            CompanyId: $("#CompanyId").val()
-        };
-        $.ajax({
-            method: 'post',
-            url: '/SystemVariable/AddCompanyBranch',
-            data: formData,
-            success: function (data) {
-                if (data == true) {
-                    Swal.fire({
-                        title: "Eklendi!",
-                        text: "Kaydınız eklendi.",
-                        icon: "success",
-                    }).then(function () {
-                        window.location.reload()
-                    })
-                }
+
+    var fv = FormValidation.formValidation(
+        document.getElementById('CompanyBranchAddForm'),
+        {
+            fields: {
+                BranchName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Şube adı alanı boş geçilemez'
+                        }
+                    }
+                },
+                CompanyId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Şirket seçiniz'
+                        }
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
 
             }
+        }
+    );
+    function CompanyBranchAddClickFunction() {
+        fv.validate().then(function (status) {
+            if (status == 'Valid') {
+                var formData = {
+                    BranchName: $("#BranchName").val(),
+                    CompanyId: $("#CompanyId").val()
+                };
+                $.ajax({
+                    method: 'post',
+                    url: '/SystemVariable/AddCompanyBranch',
+                    data: formData,
+                    success: function (data) {
+                        if (data == true) {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload()
+                            })
+                        }
 
-        })
+                    }
+
+                })
+            }
+        });
     }
 </script>
 
