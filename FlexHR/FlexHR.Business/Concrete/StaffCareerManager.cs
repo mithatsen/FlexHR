@@ -15,9 +15,6 @@ namespace FlexHR.Business.Concrete
             _staffCareerDal = staffCareerDal;
         }
 
-        public List<StaffCareer> GetAllTableByStaffId(int id)
-        {
-            return _staffCareerDal.GetAllTableByStaffId(id);
-        }
+       
     }
 }

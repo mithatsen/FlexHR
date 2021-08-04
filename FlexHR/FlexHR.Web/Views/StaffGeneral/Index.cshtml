@@ -84,13 +84,13 @@
                                                 <div class="form-group row">
                                                     <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü *</label>
                                                     <div class="col-lg-9 col-xl-6">
-                                                        <select id="ContractTypeSelect" asp-for="ContractTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
-                                                            <option disabled value="-1">Seçiniz</option>
+                                                        <select id="ContractTypeSelect" asp-for="ContractTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
+                                                            <option value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
                                                 </div>
-                                                @if (Model.ContractTypeId == 1)
+                                                @if (Model.ContractTypeGeneralSubTypeId == 1)
                                                 {
                                                     <div class="form-group row">
                                                         <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
@@ -175,7 +175,7 @@
                                                     <label class="col-xl-4 col-lg-3 col-form-label">Erişim Türü *</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <select class="form-control form-control-solid form-control-lg" asp-for="RoleId" asp-items="ViewBag.Roles">
-                                                            <option disabled value="-1">Seçiniz</option>
+                                                            <option  value="">Seçiniz</option>
 
                                                         </select>
                                                     </div>
@@ -268,7 +268,7 @@
                             },
                         }
                     },
-                    ContractTypeId: {
+                    ContractTypeGeneralSubTypeId: {
                         validators: {
                             notEmpty: {
                                 message: 'Sözleşme türü seçiniz'

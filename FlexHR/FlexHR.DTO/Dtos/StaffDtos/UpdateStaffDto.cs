@@ -16,7 +16,7 @@ namespace FlexHR.DTO.Dtos.StaffDtos
     public class UpdateStaffDto
     {
         public int StaffId { get; set; }
-        public int ContractTypeId { get; set; }
+        public int ContractTypeGeneralSubTypeId{ get; set; }
         public int RoleId { get; set; }
         public string NameSurname { get; set; }
         public string EmailJob { get; set; }
@@ -50,7 +50,6 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public List<GeneralSubType> ContractTypeList { get; set; } // bu dropdown için
   
         public List<Role> Roles { get; set; } // bu dropdown için
-        public virtual ICollection<StaffGeneralSubType> StaffGeneralSubType { get; set; }
         public List<ListStaffCareerDto> ListStaffCareer { get; set; }
         public List<ListStaffLeaveDto> ListStaffLeave { get; set; }
 

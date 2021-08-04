@@ -14,6 +14,6 @@ namespace FlexHR.Entity.Concrete
         public bool IsActive { get; set; }
 
         public virtual GeneralType GeneralType { get; set; }
-        public virtual ICollection<StaffGeneralSubType> StaffGeneralSubType { get; set; }
+      
     }
 }

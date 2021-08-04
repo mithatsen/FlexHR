@@ -17,10 +17,10 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _context = context;
         }
 
-        public Staff GetAllTables(int id)
-        {
-            return _context.Staff.Include(x => x.StaffGeneralSubType).ThenInclude(x => x.GeneralSubType).ThenInclude(x => x.GeneralType).Where(p=>p.StaffId==id).FirstOrDefault();
-        }
+        //public Staff GetAllTables(int id)
+        //{
+        //    return _context.Staff.Include(x => x.StaffGeneralSubType).ThenInclude(x => x.GeneralSubType).ThenInclude(x => x.GeneralType).Where(p=>p.StaffId==id).FirstOrDefault();
+        //}
 
         public List<Staff> GetStaffBySearchString(string search)
         {

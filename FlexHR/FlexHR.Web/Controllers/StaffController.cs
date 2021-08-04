@@ -23,7 +23,7 @@ namespace FlexHR.Web.Controllers
     public class StaffController : Controller
     {
         private readonly IStaffService _staffService;
-        private readonly IStaffGeneralSubTypeService _staffGeneralSubTypeService;
+        
         private readonly IMapper _mapper;
         private readonly IStaffRoleService _staffRoleService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
@@ -32,7 +32,7 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffOtherInfoService _staffOtherInfoService;
         private readonly IStaffFileService _staffFileService;
 
-        public StaffController(IStaffService staffService, IMapper mapper, IStaffGeneralSubTypeService staffGeneralSubTypeService,
+        public StaffController(IStaffService staffService, IMapper mapper,
                                      IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService,
                                      IRoleService roleService, IStaffPersonelInfoService staffPersonelInfoService,
                                      IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService
@@ -41,7 +41,7 @@ namespace FlexHR.Web.Controllers
         {
             _staffService = staffService;
             _mapper = mapper;
-            _staffGeneralSubTypeService = staffGeneralSubTypeService;
+      
             _staffRoleService = staffRoleService;
             _generalSubTypeService = generalSubTypeService;
             _roleService = roleService;
@@ -77,7 +77,7 @@ namespace FlexHR.Web.Controllers
             IEnumerable<Staff> result;
             if (formData==null || String.IsNullOrWhiteSpace(formData.Keys.FirstOrDefault()) )
             {
-                 result = _staffService.Get(x => x.IsActive == true);
+                 result = _staffService.GetAll();
             }
             else
             {
@@ -130,10 +130,7 @@ namespace FlexHR.Web.Controllers
             }
 
             var staffId = staffResult.StaffId;
-            if (modal.ContractTypeId.ToString() != "")
-            {
-                _staffGeneralSubTypeService.Add(new StaffGeneralSubType { StaffId = staffId, GeneralSubTypeId = modal.ContractTypeId });
-            }
+           
             _staffRoleService.Add(new StaffRole { StaffId = staffId, RoleId = modal.RoleId });
             _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
             _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });

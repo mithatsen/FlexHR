@@ -34,9 +34,9 @@ namespace FlexHR.Web.Controllers
         public IActionResult GetAllEvents()
         {
             List<ListEventDto> models = new List<ListEventDto>();
-            var events = _eventService.Get(p => p.IsActive == true);
+            var events = _eventService.GetAll();
             var birthDates = _personelInfoService.Get(p => p.IsActive == true, null, "Staff");
-            var publicDays = _publicHolidayService.Get(p => p.IsActive == true);
+            var publicDays = _publicHolidayService.GetAll();
             foreach (var item in events)
             {
                 ListEventDto model = new ListEventDto()

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FlexHR.DataAccess.Interface
 {
-    public interface IGenericDal<T> where T : class, ITable, new()
+    public interface IGenericDal<T> where T : class, new()
     {
         void Add(T table);
         void Delete(int id);

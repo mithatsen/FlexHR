@@ -230,7 +230,7 @@
                 data: { categoryId2: catId2 },
             }).done(function (content) {
                 let serverFiles = JSON.parse(content);
-                console.log(serverFiles);
+       
 
 
                 Dropzone.autoDiscover = false;
@@ -244,21 +244,19 @@
                     maxFilesize: 500, // MB
                     parallelUploads: 10,
                     timeout: 3600000,
-                    addRemoveLinks: true,
+                    addRemoveLinks: true,                
                     params: { categoryId: catId },
                     init: function () {
                         var dz = this;
-
                         serverFiles.length == 0 ? document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> " : document.getElementById("myAwesomeDropzone").innerHTML = " ";
                         // Server Files
-                        for (var i = 0; i < serverFiles.length; i++) {
-                            console.log("girdidjhdh");
+                        for (var i = 0; i < serverFiles.length; i++) {                          
                             var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType, value: serverFiles[i].StaffFileId };
                             this.options.addedfile.call(this, mockFile);
                             this.options.thumbnail.call(this, mockFile, serverFiles[i].FileFullPath + serverFiles[i].FileName);
                             mockFile.previewElement.classList.add('dz-success');
                             mockFile.previewElement.classList.add('dz-complete');
-
+                            console.log(mockFile);
                             // Icons
                             var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
                             if (mockFileExt == "pdf") {
@@ -279,6 +277,14 @@
                             } else {
                                 $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default_icon.png.png");
                             }
+                            var a = document.createElement('a');
+                            a.setAttribute('href', '/img/' + serverFiles[i].FileFullPath + serverFiles[i].FileName);                             
+                            a.setAttribute('target', '_blank');
+                            a.setAttribute('download', serverFiles[i].FileName);
+                            a.innerHTML = "<i style='cursor:pointer' class='fas fa-download text-dark'></i>";
+                            mockFile.previewTemplate.appendChild(a);
+
+                     
                             // $("#def").append('<img src="/img/'+serverFiles[i].FileFullPath + serverFiles[i].FileName + '"/>')
                         }
                         // this.removeAllFiles(true);
@@ -287,7 +293,7 @@
                         });
                         dz.on("complete", function (file) {
                             /*   dz.removeAllFiles(file);*/
-                            console.log(file.upload);
+                        
                             if (file.upload) {
                                 Swal.fire({
                                     icon: 'success',
@@ -295,18 +301,7 @@
                                     title: 'Dosyalarınız Yüklendi',
                                 }).then(function () {
                                     window.location.reload();
-                                    //$.ajax({
-                                    //    method: "GET",
-                                    //    url: "/StaffFile/GetStaffActivePhoto/" + id,
-                                    //}).done(function (content) {
-                                    //    console.log("msmiiii" + content);
-                                    //    if (content != null) {
-                                    //        $("#photo45").attr("src", '/img/' + content + '')
-                                    //    }
-                                    //    else {
-                                    //        $("#photo45").attr("src", "/assets/media/users/default.jpg")
-                                    //    }
-                                    //})
+                                 
                                 });
                             } else {
                                 Swal.fire({
@@ -325,15 +320,16 @@
                             file.previewElement.classList.add('dz-complete');
                             file.previewElement.classList.add('dz-image-preview');
                         });
-                        dz.on("success", function (file) {
-
+                        dz.on("success", function (file) {                         
+                        
                             categoryChange();
                         });
 
                     },
+                   
                     removedfile: function (file) {
                         //Server File
-                        console.log("hee"); Swal.fire({
+                        Swal.fire({
                             title: "Silmek istediğinize emin misiniz ?",
                             text: "Bunu geri alamazsınız!",
                             icon: "warning",
@@ -343,8 +339,7 @@
                             reverseButtons: true
                         }).then(function (result) {
                             if (result.value) {
-                                console.log(file);
-                                console.log(result);
+                        
                                 $.ajax({
                                     method: "POST",
                                     url: "/StaffFile/StaffFileRemove",
@@ -390,7 +385,7 @@
                             }
                         })
                     },
-
+                  
                     dictDefaultMessage: "",
                     dictRemoveFile: "Dosyayı Sil",
                     dictCancelUpload: "İptal Et",

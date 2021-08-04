@@ -75,7 +75,7 @@ namespace FlexHR.Web.Controllers
         public IActionResult StaffLeaveRemainInfo()
         {
             List<ListLeaveInfoAllStaffDto> models = new List<ListLeaveInfoAllStaffDto>();
-            var staffs = _staffService.Get(x => x.IsActive == true);
+            var staffs = _staffService.GetAll();
 
             foreach (var item in staffs)
             {
@@ -105,7 +105,7 @@ namespace FlexHR.Web.Controllers
         public IActionResult StaffLeaveMonthlyInfo(DateTime dateTime)
         {
             List<ListLeaveInfoMonthlyDto> models = new List<ListLeaveInfoMonthlyDto>();
-            var staffs = _staffService.Get(x => x.IsActive == true);
+            var staffs = _staffService.GetAll();
             DateTime date = dateTime.Year != 0001 ? dateTime : DateTime.Now;
             foreach (var item in staffs)
             {
@@ -142,7 +142,7 @@ namespace FlexHR.Web.Controllers
 
         public int CalculateTotalLeaveAmountDeservedBySeniority(DateTime startDate)
         {
-            var models = _leaveRuleService.Get(x=>x.IsActive==true).OrderBy(p => p.SeniorityYear);
+            var models = _leaveRuleService.GetAll().OrderBy(p => p.SeniorityYear);
             var seniorityLevel = (DateTime.Now - startDate).Days / 365;
             int oldCount = 0;
             int leaveAmount = 14;

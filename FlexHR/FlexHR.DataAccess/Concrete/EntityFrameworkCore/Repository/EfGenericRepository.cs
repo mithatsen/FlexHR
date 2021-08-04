@@ -24,10 +24,11 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _context.SaveChanges();
         }
 
+    
         public List<T> GetAll()
         {
            
-            return _context.Set<T>().ToList();
+            return _context.Set<T>().Where(x => x.IsActive).ToList();
         }
 
         public T GetById(int id)

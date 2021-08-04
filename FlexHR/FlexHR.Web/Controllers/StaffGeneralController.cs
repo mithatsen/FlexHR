@@ -15,15 +15,14 @@ namespace FlexHR.Web.Controllers
     public class StaffGeneralController : Controller
     {
         private readonly IStaffService _staffService;
-        private readonly IStaffGeneralSubTypeService _staffGeneralSubTypeService;
+     
         private readonly IStaffRoleService _staffRoleService;
         private readonly IRoleService _roleService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
-        public StaffGeneralController(IStaffService staffService, IStaffGeneralSubTypeService staffGeneralSubTypeService, IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService, IRoleService roleService, IMapper mapper)
+        public StaffGeneralController(IStaffService staffService,  IStaffRoleService staffRoleService, IGeneralSubTypeService generalSubTypeService, IRoleService roleService, IMapper mapper)
         {
-            _staffService = staffService;
-            _staffGeneralSubTypeService = staffGeneralSubTypeService;
+            _staffService = staffService;         
             _staffRoleService = staffRoleService;
             _generalSubTypeService = generalSubTypeService;
             _roleService = roleService;
@@ -31,24 +30,17 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult Index(int id)
         {
-            var staff = _staffService.GetAllTables(id);
-            var staffGeneralSubTypes = _staffGeneralSubTypeService.GetByStaffId(id);
+            var staff = _staffService.GetById(id);
+          
             var staffRole = _staffRoleService.GetUserRoleByStaffId(id);
-            int contractTypeId = -1;
-            foreach (var item in staffGeneralSubTypes)
-            {
-                if (item.GeneralSubType.GeneralTypeId == (int)GeneralTypeEnum.ContractType)
-                {
-                    contractTypeId = item.GeneralSubTypeId;
-                }
-            }
-
+            
+           
             ViewBag.Roles = new SelectList(_roleService.GetAll(), "RoleId", "Name");
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
     
             ListStaffGeneralDto listStaffGeneralDto = new ListStaffGeneralDto
             {
-                ContractTypeId = contractTypeId,
+                ContractTypeGeneralSubTypeId = staff.ContractTypeGeneralSubTypeId,
                 RoleId = staffRole.RoleId,
                 EmailJob = staff.EmailJob,
                 StaffId = staff.StaffId,
@@ -68,27 +60,8 @@ namespace FlexHR.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var staffGeneralSubTypes = _staffGeneralSubTypeService.GetByStaffId(model.StaffId);
-                var staffRole = _staffRoleService.GetUserRoleByStaffId(model.StaffId);
-                var counter = 0;
-                foreach (var item in staffGeneralSubTypes)
-                {
-                    if (item.GeneralSubType.GeneralTypeId == (int)GeneralTypeEnum.ContractType)
-                    {
-                        counter++;
-                        item.GeneralSubTypeId = model.ContractTypeId;
-                        item.GeneralSubType = null;
-                        _staffGeneralSubTypeService.Update(item);
-                    }
-                }
-                if (counter == 0 && model.ContractTypeId != 0)
-                {
-                    _staffGeneralSubTypeService.Add(new StaffGeneralSubType
-                    {
-                        GeneralSubTypeId = model.ContractTypeId,
-                        StaffId = model.StaffId
-                    });
-                }
+              
+                var staffRole = _staffRoleService.GetUserRoleByStaffId(model.StaffId);             
                 staffRole.RoleId = model.RoleId;
                 _staffRoleService.Update(staffRole);
                 model.Password = "abc";

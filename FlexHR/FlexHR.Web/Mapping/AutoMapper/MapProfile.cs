@@ -30,8 +30,6 @@ namespace FlexHR.Web.Mapping.AutoMapper
         {
             #region Staff
             CreateMap<ListStaffDto, Staff>().ReverseMap();
-            CreateMap<UpdateStaffDto, Staff>().ReverseMap();
-            CreateMap<UpdateStaffDto, StaffPersonelInfo>().ReverseMap();
             CreateMap<UpdateStaffPersonalInfoDto, StaffPersonelInfo>().ReverseMap();
             CreateMap<ListStaffGeneralDto, Staff>().ReverseMap();
             #endregion

@@ -42,7 +42,6 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<StaffCareer> StaffCareer { get; set; }
         public virtual DbSet<StaffDebit> StaffDebit { get; set; }
         public virtual DbSet<StaffFile> StaffFile { get; set; }
-        public virtual DbSet<StaffGeneralSubType> StaffGeneralSubType { get; set; }
         public virtual DbSet<StaffLeave> StaffLeave { get; set; }
         public virtual DbSet<StaffOtherInfo> StaffOtherInfo { get; set; }
         public virtual DbSet<StaffPayment> StaffPayment { get; set; }
@@ -71,7 +70,6 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
             modelBuilder.ApplyConfiguration(new CityMap());
             modelBuilder.ApplyConfiguration(new TownMap());
             modelBuilder.ApplyConfiguration(new StaffFileMap());
-            modelBuilder.ApplyConfiguration(new StaffGeneralSubTypeMap());
             modelBuilder.ApplyConfiguration(new StaffLeaveMap());
             modelBuilder.ApplyConfiguration(new StaffMap());
             modelBuilder.ApplyConfiguration(new StaffOtherInfoMap());

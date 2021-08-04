@@ -6,5 +6,6 @@ namespace FlexHR.Entity.Interface
 {
     public interface ITable
     {
+        public bool IsActive { get; set; }
     }
 }

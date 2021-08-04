@@ -309,22 +309,22 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetLeaveTypeList()
         {
-            var result = _leaveTypeService.Get(x=>x.IsActive==true);
+            var result = _leaveTypeService.GetAll();
             return PartialView("_GetLeaveTypeTable", _mapper.Map<List<ListLeaveTypeDto>>(result));
         }
         public IActionResult GetLeaveRuleList()
         {
-            var result = _leaveRuleService.Get(x => x.IsActive == true).OrderBy(x=>x.SeniorityYear);
+            var result = _leaveRuleService.GetAll().OrderBy(x=>x.SeniorityYear);
             return PartialView("_GetLeaveRuleTable", _mapper.Map<List<ListLeaveRuleDto>>(result));
         }
         public IActionResult GetCompanyList()
         {
-            var result = _companyService.Get(x => x.IsActive == true);
+            var result = _companyService.GetAll();
             return PartialView("_GetCompanyTable", _mapper.Map<List<ListCompanyDto>>(result));
         }
         public IActionResult GetRoleList()
         {
-            var result = _roleService.Get(x => x.IsActive == true);
+            var result = _roleService.GetAll();
             return PartialView("_GetRoleTable", _mapper.Map<List<ListRoleDto>>(result));
         }
         public IActionResult GetCompanyBranchList()

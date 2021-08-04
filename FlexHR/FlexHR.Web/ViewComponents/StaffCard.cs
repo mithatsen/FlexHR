@@ -31,7 +31,7 @@ namespace FlexHR.Web.ViewComponents
         {
             var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null,"CompanyBranch").OrderByDescending(p=>p.JobStartDate).ToList();
 
-            var staff = _staffService.GetAllTables(id);
+            var staff = _staffService.GetById(id);
             var picture = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x => x.StaffFileId).FirstOrDefault();
 
             StaffCardDto staffCardDto;

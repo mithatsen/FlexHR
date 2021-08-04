@@ -15,7 +15,7 @@ namespace FlexHR.DTO.Dtos.StaffGeneralDtos
         public string PhonePersonal { get; set; }
         public DateTime JobJoinDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
-        public int ContractTypeId { get; set; }
+        public int ContractTypeGeneralSubTypeId { get; set; }
         public int RoleId { get; set; }
         public string Password { get; set; }
         public string UserName { get; set; }

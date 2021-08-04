@@ -9,7 +9,7 @@ using System.Text;
 
 namespace FlexHR.Business.Concrete
 {
-    public class GenericManager<T> : IGenericService<T> where T : class, ITable, new()
+    public class GenericManager<T> : IGenericService<T> where T : class, new()
     {
 
         private readonly IGenericDal<T> _genericDal;

@@ -28,7 +28,6 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<IRoleService, RoleManager>();
             services.AddScoped<IStaffCareerService, StaffCareerManager>();
             services.AddScoped<IStaffDebitService, StaffDebitManager>();
-            services.AddScoped<IStaffGeneralSubTypeService, StaffGeneralSubTypeManager>();
             services.AddScoped<IStaffLeaveService, StaffLeaveManager>();
             services.AddScoped<IStaffOtherInfoService, StaffOtherInfoManager>();
             services.AddScoped<IStaffPaymentService, StaffPaymentManager>();
@@ -58,7 +57,6 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<IStaffCareerDal, EfStaffCareerRepository>();
             services.AddScoped<IStaffDebitDal, EfStaffDebitRepository>();
             services.AddScoped<IStaffFileDal, EfStaffFileRepository>();
-            services.AddScoped<IStaffGeneralSubTypeDal, EfStaffGeneralSubTypeRepository>();
             services.AddScoped<IStaffLeaveDal, EfStaffLeaveRepository>();
             services.AddScoped<IStaffOtherInfoDal, EfStaffOtherInfoRepository>();
             services.AddScoped<IStaffPaymentDal, EfStaffPaymentDalRepository>();
