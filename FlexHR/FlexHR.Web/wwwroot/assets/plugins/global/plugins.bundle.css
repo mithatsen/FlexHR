@@ -5462,7 +5462,7 @@ Build date: 2019-12-19 16:51:02
     }
 
         .dropzone.dz-clickable * {
-            cursor: default;
+            cursor: pointer;
         }
 
         .dropzone.dz-clickable .dz-message, .dropzone.dz-clickable .dz-message * {

@@ -331,22 +331,10 @@ namespace FlexHR.Web.Controllers
         {
             ViewBag.Companies = new SelectList(_companyService.Get(p => p.IsActive == true), "CompanyId", "CompanyName");
             var result = _companyBranchService.Get(x => x.IsActive == true,null,"Company");
-            //var temp = _mapper.Map<List<ListCompanyBranchDto>>(result);   ÖĞREN İÇ İÇE MAP
-            var models = new List<ListCompanyBranchDto>();
-            foreach (var item in result)
-            {
-                var model = new ListCompanyBranchDto
-                {
-                    CompanyId = item.CompanyId,
-                    BranchName = item.BranchName,
-                    CompanyBranchId = item.CompanyBranchId,
-                    CompanyName = item.Company.CompanyName,
-                    IsActive = true
-                };
-                models.Add(model);
-            }
+            var temp = _mapper.Map<List<ListCompanyBranchDto>>(result);  // ÖĞREN İÇ İÇE MAP
+           
 
-            return PartialView("_GetCompanyBranchTable", models);
+            return PartialView("_GetCompanyBranchTable", temp);
         }
         
 

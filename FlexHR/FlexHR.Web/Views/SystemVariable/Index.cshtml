@@ -138,7 +138,7 @@
             $("#btnGetRoles").removeClass("active");
             $("#btnGetCompanies").removeClass("active");
             $("#btnGetCompanyBranchs").removeClass("active");
-
+     
             var id = document.getElementById("kt_select2_1").value;
 
             if (id > 0) {
@@ -167,6 +167,7 @@
             $("#btnGetCompanyBranchs").removeClass("active");
             $("#btnGetCompanies").removeClass("active");
             $("#btnGetLeaveRules").removeClass("active");
+            $("#btnGetLeaveTypes").addClass("active");
 
             var modelContent = $("#systemVariableTable")
             $("#systemVariableTable").empty();
@@ -191,6 +192,8 @@
             $("#btnGetRoles").removeClass("active");
             $("#btnGetCompanyBranchs").removeClass("active");
             $("#btnGetCompanies").removeClass("active");
+            $("#btnGetLeaveRules").addClass("active");
+
             var modelContent = $("#systemVariableTable")
             $("#systemVariableTable").empty();
             localStorage.SystemVariableId = 1001;
@@ -215,7 +218,7 @@
             $("#btnGetLeaveTypes").removeClass("active");
             $("#btnGetLeaveRules").removeClass("active");
             $("#btnGetCompanyBranchs").removeClass("active");
-        
+            $("#btnGetCompanies").addClass("active");
             var modelContent = $("#systemVariableTable")
             $("#systemVariableTable").empty();
             localStorage.SystemVariableId = 1002;
@@ -238,7 +241,7 @@
             $("#btnGetLeaveRules").removeClass("active");
             $("#btnGetCompanyBranchs").removeClass("active");
             $("#btnGetCompanies").removeClass("active");
-
+            $("#btnGetRoles").addClass("active");
             var modelContent = $("#systemVariableTable")
             $("#systemVariableTable").empty();
             localStorage.SystemVariableId = 1003;
@@ -260,6 +263,7 @@
             $("#btnGetLeaveRules").removeClass("active");
             $("#btnGetRoles").removeClass("active");
             $("#btnGetCompanies").removeClass("active");
+            $("#btnGetCompanyBranchs").addClass("active");
             var modelContent = $("#systemVariableTable")
             $("#systemVariableTable").empty();
             localStorage.SystemVariableId = 1004;

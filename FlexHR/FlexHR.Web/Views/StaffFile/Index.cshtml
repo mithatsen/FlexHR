@@ -9,6 +9,8 @@
 @section Styles{
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/lightbox2-2.11.3/dist/css/lightbox.css" rel="stylesheet" />
+    <script src="~/lightbox2-2.11.3/dist/js/lightbox-plus-jquery.min.js"></script>
     <!--end::Page Vendors Styles-->
     <style>
         .table th, .table td {
@@ -161,10 +163,13 @@
                                                         </div>
                                                         <input type="hidden" id="staffId" value="@ViewBag.StaffId" />
                                                         <div class="form-group row ml-8">
+
                                                             <div id="deleteDropzone" class="col-md-11  ml-3">
-                                                                <div class="dropzone dropzone-default dropzone-primary" id="myAwesomeDropzone">
+                                                                <div class="gallery">
+                                                                    <div class="dropzone dropzone-default dropzone-primary" id="myAwesomeDropzone">
 
 
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -214,6 +219,11 @@
 
     @*//add staff file dropzone*@
     <script>
+        $(document).ready(function () {
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        })
         var id = document.getElementById("staffId").value;
 
         function categoryChange() {
@@ -230,7 +240,7 @@
                 data: { categoryId2: catId2 },
             }).done(function (content) {
                 let serverFiles = JSON.parse(content);
-       
+
 
 
                 Dropzone.autoDiscover = false;
@@ -244,13 +254,13 @@
                     maxFilesize: 500, // MB
                     parallelUploads: 10,
                     timeout: 3600000,
-                    addRemoveLinks: true,                
+                    addRemoveLinks: true,
                     params: { categoryId: catId },
                     init: function () {
                         var dz = this;
                         serverFiles.length == 0 ? document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> " : document.getElementById("myAwesomeDropzone").innerHTML = " ";
                         // Server Files
-                        for (var i = 0; i < serverFiles.length; i++) {                          
+                        for (var i = 0; i < serverFiles.length; i++) {
                             var mockFile = { name: serverFiles[i].FileName, size: 12345, type: serverFiles[i].ContentType, value: serverFiles[i].StaffFileId };
                             this.options.addedfile.call(this, mockFile);
                             this.options.thumbnail.call(this, mockFile, serverFiles[i].FileFullPath + serverFiles[i].FileName);
@@ -278,14 +288,31 @@
                                 $(mockFile.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default_icon.png.png");
                             }
                             var a = document.createElement('a');
-                            a.setAttribute('href', '/img/' + serverFiles[i].FileFullPath + serverFiles[i].FileName);                             
+                            a.setAttribute('href', '/img/' + serverFiles[i].FileFullPath + serverFiles[i].FileName);
                             a.setAttribute('target', '_blank');
+                            a.setAttribute('data-toggle', 'tooltip');
+                            a.setAttribute('title', 'İndir');
                             a.setAttribute('download', serverFiles[i].FileName);
-                            a.innerHTML = "<i style='cursor:pointer' class='fas fa-download text-dark'></i>";
+                            a.innerHTML = "<i style='cursor:pointer' class='fas fa-download text-success p-2 mx-2'></i>";
                             mockFile.previewTemplate.appendChild(a);
 
-                     
-                            // $("#def").append('<img src="/img/'+serverFiles[i].FileFullPath + serverFiles[i].FileName + '"/>')
+                            if (mockFileExt == "pdf") {
+                                var a = document.createElement('a');
+                                a.setAttribute('href', '/img/' + serverFiles[i].FileFullPath + serverFiles[i].FileName);
+                                a.setAttribute('target', '_blank');
+                                a.setAttribute('title', 'Göster');
+                                a.setAttribute('data-toggle', 'tooltip');
+                                a.innerHTML = "<i style='cursor:pointer' class='fas fa-eye text-secondary p-2 '></i>";
+                                mockFile.previewTemplate.appendChild(a);
+                            } else if (mockFileExt.indexOf("jpg") != -1 || mockFileExt.indexOf("png") != -1 || mockFileExt.indexOf("jfif") != -1 || mockFileExt.indexOf("svg") != -1 || mockFileExt.indexOf("jpeg") != -1) {
+                                var b = document.createElement('a');
+                                b.setAttribute('href', '/img/' + serverFiles[i].FileFullPath + serverFiles[i].FileName);
+                                b.setAttribute('title', 'Göster');
+                                b.setAttribute('data-toggle', 'tooltip');
+                                b.setAttribute('data-lightbox', "my-gallery");
+                                b.innerHTML = "<i style='cursor:pointer' class='fas fa-eye text-secondary p-2 '></i>";
+                                mockFile.previewTemplate.appendChild(b);
+                            }
                         }
                         // this.removeAllFiles(true);
                         $('#uploadButton').click(function () {
@@ -293,7 +320,7 @@
                         });
                         dz.on("complete", function (file) {
                             /*   dz.removeAllFiles(file);*/
-                        
+
                             if (file.upload) {
                                 Swal.fire({
                                     icon: 'success',
@@ -301,7 +328,7 @@
                                     title: 'Dosyalarınız Yüklendi',
                                 }).then(function () {
                                     window.location.reload();
-                                 
+
                                 });
                             } else {
                                 Swal.fire({
@@ -320,13 +347,13 @@
                             file.previewElement.classList.add('dz-complete');
                             file.previewElement.classList.add('dz-image-preview');
                         });
-                        dz.on("success", function (file) {                         
-                        
+                        dz.on("success", function (file) {
+
                             categoryChange();
                         });
 
                     },
-                   
+
                     removedfile: function (file) {
                         //Server File
                         Swal.fire({
@@ -339,7 +366,7 @@
                             reverseButtons: true
                         }).then(function (result) {
                             if (result.value) {
-                        
+
                                 $.ajax({
                                     method: "POST",
                                     url: "/StaffFile/StaffFileRemove",
@@ -385,9 +412,9 @@
                             }
                         })
                     },
-                  
+
                     dictDefaultMessage: "",
-                    dictRemoveFile: "Dosyayı Sil",
+                    dictRemoveFile: "<i class='fas fa-trash-alt text-danger'></i>",
                     dictCancelUpload: "İptal Et",
                 });
 

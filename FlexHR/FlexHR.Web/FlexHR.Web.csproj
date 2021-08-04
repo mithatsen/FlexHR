@@ -32,6 +32,24 @@
 
   <ItemGroup>
     <None Include="wwwroot\Croppie-2.6.4\.github\ISSUE_TEMPLATE.md" />
+    <None Include="wwwroot\lightbox2-2.11.3\.editorconfig" />
+    <None Include="wwwroot\lightbox2-2.11.3\.github\ISSUE_TEMPLATE.md" />
+    <None Include="wwwroot\lightbox2-2.11.3\.github\PULL_REQUEST_TEMPLATE.md" />
+    <None Include="wwwroot\lightbox2-2.11.3\.gitignore" />
+    <None Include="wwwroot\lightbox2-2.11.3\.jscsrc" />
+    <None Include="wwwroot\lightbox2-2.11.3\.jshintrc" />
+    <None Include="wwwroot\lightbox2-2.11.3\DEPLOY.md" />
+    <None Include="wwwroot\lightbox2-2.11.3\dist\js\lightbox-plus-jquery.js" />
+    <None Include="wwwroot\lightbox2-2.11.3\dist\js\lightbox-plus-jquery.min.js" />
+    <None Include="wwwroot\lightbox2-2.11.3\dist\js\lightbox-plus-jquery.min.map" />
+    <None Include="wwwroot\lightbox2-2.11.3\dist\js\lightbox.js" />
+    <None Include="wwwroot\lightbox2-2.11.3\dist\js\lightbox.min.js" />
+    <None Include="wwwroot\lightbox2-2.11.3\dist\js\lightbox.min.map" />
+    <None Include="wwwroot\lightbox2-2.11.3\Gruntfile.js" />
+    <None Include="wwwroot\lightbox2-2.11.3\LICENSE" />
+    <None Include="wwwroot\lightbox2-2.11.3\README.md" />
+    <None Include="wwwroot\lightbox2-2.11.3\ROADMAP.md" />
+    <None Include="wwwroot\lightbox2-2.11.3\src\js\lightbox.js" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

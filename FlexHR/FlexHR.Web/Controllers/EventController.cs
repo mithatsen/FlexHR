@@ -55,7 +55,7 @@ namespace FlexHR.Web.Controllers
             }
             foreach (var item in birthDates)
             {
-                if (item.BirthDate != null)
+                if (item.BirthDate != null && item.Staff.IsActive==true)
                 {
                     var staffName = item.Staff.NameSurname;
                     var month = item.BirthDate.Value.Month;
