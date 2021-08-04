@@ -2,12 +2,12 @@
 
 
 <div class="modal fade" id="CompanyBranchUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md " role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i> Güncelle
+                        <i class="fas fa-address-book mr-2 text-dark"></i> Düzenle
                     </h3>
 
                 </div>
@@ -63,3 +63,35 @@
         </div>
     </div>
 </div>
+<script>
+    FormValidation.formValidation(
+        document.getElementById('CompanyBranchUpdateForm'),
+        {
+            fields: {
+                BranchName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Şube adı alanı boş geçilemez'
+                        }
+                    }
+                },
+                CompanyId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Şirket seçiniz'
+                        }
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            }
+        }
+    );
+</script>
