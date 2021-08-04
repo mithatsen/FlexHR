@@ -11,7 +11,7 @@
                 <div class="card card-custom">
                     <div class="card-header flex-wrap py-5">
                         <div class="card-title">
-                            <i class="fas fa-cog  text-dark mr-2"></i>
+                            <i class="fas fa-building text-dark mr-2"></i>
                             <h3 id="VariableTitle" class="card-label">
                                 Şirketler
 
@@ -147,28 +147,54 @@
 </script>
 
 <script>
-    function companyAddClickFunction() {
-        var formData = {
-            CompanyName: $("#CompanyName").val()
-        };
-        $.ajax({
-            method: 'post',
-            url: '/SystemVariable/AddCompany',
-            data: formData,
-            success: function (data) {
-                if (data == true) {
-                    Swal.fire({
-                        title: "Eklendi!",
-                        text: "Kaydınız eklendi.",
-                        icon: "success",
-                    }).then(function () {
-                        window.location.reload()
-                    })
-                }
+
+    var fv = FormValidation.formValidation(
+        document.getElementById('companyAddForm'),
+        {
+            fields: {
+                CompanyName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Şirket adı alanı boş geçilemez'
+                        }
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
 
             }
+        }
+    );
+    function companyAddClickFunction() {
+        fv.validate().then(function (status) {
+            if (status == 'Valid') {
+                var formData = {
+                    CompanyName: $("#CompanyName").val()
+                };
+                $.ajax({
+                    method: 'post',
+                    url: '/SystemVariable/AddCompany',
+                    data: formData,
+                    success: function (data) {
+                        if (data == true) {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload()
+                            })
+                        }
 
-        })
+                    }
+
+                })
+            }
+        });
     }
 </script>
 

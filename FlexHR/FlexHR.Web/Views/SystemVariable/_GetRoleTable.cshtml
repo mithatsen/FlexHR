@@ -12,7 +12,7 @@
                 <div class="card card-custom">
                     <div class="card-header flex-wrap py-5">
                         <div class="card-title">
-                            <i class="fas fa-umbrella-beach  text-dark mr-2"></i>
+                            <i class="fas fa-user-tag  text-dark mr-2"></i>
                             <h3 id="VariableTitle" class="card-label">
                                 Roller
 
@@ -164,29 +164,68 @@
 </script>
 
 <script>
-    function roleAddClickFunction() {
-        var formData = {
-            Name: $("#Name").val(),
-            Description: $("#Description").val()
-        };
-        $.ajax({
-            method: 'post',
-            url: '/SystemVariable/AddRole',
-            data: formData,
-            success: function (data) {
-                if (data == true) {
-                    Swal.fire({
-                        title: "Eklendi!",
-                        text: "Kaydınız eklendi.",
-                        icon: "success",
-                    }).then(function () {
-                        window.location.reload()
-                    })
-                }
+
+    var fv = FormValidation.formValidation(
+        document.getElementById('RoleAddForm'),
+        {
+            fields: {
+                Name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'İzin türü adı alanı boş geçilemez'
+                        }
+                    }
+                },
+                Description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Açıklama alanı boş geçilemez'
+                        },
+                        stringLength: {
+                            max: 999,
+                            message: '1000 karakterden az girin'
+                        }
+                    }
+                },
+              
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
 
             }
+        }
+    );
+    function roleAddClickFunction() {
+        fv.validate().then(function (status) {
+            if (status == 'Valid') {
+                var formData = {
+                    Name: $("#Name").val(),
+                    Description: $("#Description").val()
+                };
+                $.ajax({
+                    method: 'post',
+                    url: '/SystemVariable/AddRole',
+                    data: formData,
+                    success: function (data) {
+                        if (data == true) {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload()
+                            })
+                        }
 
-        })
+                    }
+
+                })
+            }
+
+        });
     }
 </script>
 

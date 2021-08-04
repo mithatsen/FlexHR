@@ -12,7 +12,7 @@
                 <div class="card card-custom">
                     <div class="card-header flex-wrap py-5">
                         <div class="card-title">
-                            <i class="fas fa-umbrella-beach  text-dark mr-2"></i>
+                            <i class="fas fa-clipboard-list  text-dark mr-2"></i>
                             <h3 id="VariableTitle" class="card-label">
                                 İzin Kuralları
 
@@ -32,7 +32,7 @@
                             <thead>
                                 <tr>
                                     <th>Deneyim (Yıl)</th>
-                                    <th>Ek İzin Miktarı</th>                  
+                                    <th>Ek İzin Miktarı</th>
                                     <th>İşlemler</th>
                                 </tr>
                             </thead>
@@ -42,7 +42,7 @@
                                     <tr>
                                         <td width="45%">@item.SeniorityYear yıllık deneyim</td>
                                         <td width="45%">+ @item.AditionalLeaveAmount Gün ek izin hakkı</td>
-                                       
+
                                         <td width="10%">
                                             <a id="CareerUpdateBtn" onclick="LeaveRuleUpdate(@item.RuleId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
                                                 <i class="la la-edit text-warning"></i>
@@ -111,7 +111,7 @@
                                                 </div>
                                             </div>
 
-                                        </div>     
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -137,7 +137,77 @@
 <div id="leaveRuleUpdateDiv">
 
 </div>
+<script>
+   var fv= FormValidation.formValidation(
+        document.getElementById('LeaveRuleAddForm'),
+        {
+            fields: {
+                SeniorityYear: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Deneyim alanı boş geçilemez',
+                        },
+                        between: {
+                            min: 1,
+                            max: 365,
+                            message: 'Toplam yıl 0 olamaz',
+                        }
 
+                    }
+                },
+                AditionalLeaveAmount: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Ek izin hakkı alanı boş geçilemez',
+                        },
+                        between: {
+                            min: 1,
+                            max: 365,
+                            message: 'Toplam gün 0 olamaz',
+                        }
+
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+
+            }
+        }
+    );
+    function leaveRuleAddClickFunction() {
+        fv.validate().then(function (status) {
+            if (status == 'Valid') {
+                var formData = {
+                    SeniorityYear: $("#kt_touchspin_3").val(),
+                    AditionalLeaveAmount: $("#kt_touchspin_2").val()
+                };
+                $.ajax({
+                    method: 'post',
+                    url: '/SystemVariable/AddLeaveRule',
+                    data: formData,
+                    success: function (data) {
+                        if (data == true) {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload()
+                            })
+                        }
+
+                    }
+
+                })
+            }
+
+        });
+    }
+</script>
 <script>
     $('#kt_touchspin_2, #kt_touchspin_2_2').TouchSpin({
         buttondown_class: 'btn btn-secondary',
@@ -185,35 +255,7 @@
         });
     }
 </script>
-<script>
-    
-</script>
-<script>
-    function leaveRuleAddClickFunction() {
-        var formData = {        
-            SeniorityYear: $("#kt_touchspin_3").val(),
-            AditionalLeaveAmount: $("#kt_touchspin_2").val()
-        };
-        $.ajax({
-            method: 'post',
-            url: '/SystemVariable/AddLeaveRule',
-            data: formData,
-            success: function (data) {
-                if (data == true) {
-                    Swal.fire({
-                        title: "Eklendi!",
-                        text: "Kaydınız eklendi.",
-                        icon: "success",
-                    }).then(function () {
-                        window.location.reload()
-                    })
-                }
 
-            }
-
-        })
-    }
-</script>
 
 @*Delete generalSubRule with sweet alert*@
 <script>

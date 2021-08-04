@@ -217,32 +217,86 @@
     });
 </script>
 <script>
-    function leaveTypeAddClickFunction() {
-        var formData = {
-            Name: $("#Name").val(),
-            Description: $("#Description").val(),
-            IsFree: $("#IsFree").val(),
-            TotalDay: $("#kt_touchspin_2").val()
-        }; 
-        $.ajax({
-            method: 'post',
-            url: '/SystemVariable/AddLeaveType',
-            data: formData,
-            success: function (data) {
-                if (data == true) {
-                    Swal.fire({
-                        title: "Eklendi!",
-                        text: "Kaydınız eklendi.",
-                        icon: "success",
-                    }).then(function () {
-                        window.location.reload()
-                    })
-                }
+
+    
+
+    var fv = FormValidation.formValidation(
+        document.getElementById('LeaveTypeAddForm'),
+        {
+            fields: {
+                Name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'İzin türü adı alanı boş geçilemez'
+                        }
+                    }
+                },
+                Description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Açıklama alanı boş geçilemez'
+                        },
+                        stringLength: {
+                            max: 999,
+                            message: '1000 karakterden az girin'
+                        }
+                    }
+                },
+                TotalDay: {
+                    validators: {
+                        notEmpty: {
+                            message: 'İzin hakkı alanı boş geçilemez',
+                        },
+                        between: {
+                            min: 1,
+                            max: 365,
+                            message: 'Toplam gün 0 olamaz',
+                        }
+
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
 
             }
+        }
+    );
+    function leaveTypeAddClickFunction() {
+        fv.validate().then(function (status) {
+            if (status == 'Valid') {
+                var formData = {
+                    Name: $("#Name").val(),
+                    Description: $("#Description").val(),
+                    IsFree: $("#IsFree").val(),
+                    TotalDay: $("#kt_touchspin_2").val()
+                };
+                $.ajax({
+                    method: 'post',
+                    url: '/SystemVariable/AddLeaveType',
+                    data: formData,
+                    success: function (data) {
+                        if (data == true) {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload()
+                            })
+                        }
 
-        })
+                    }
+
+                })
+            }
+
+        });
     }
+   
 </script>
 
 @*Delete generalSubType with sweet alert*@

@@ -91,31 +91,14 @@
 </div>
 <script>
     FormValidation.formValidation(
-        document.getElementById('shiftUpdateForm'),
+        document.getElementById('LeaveTypeUpdateForm'),
         {
             fields: {
-                StartDate: {
+                Name: {
                     validators: {
                         notEmpty: {
-                            message: 'Tarih alanı boş geçilemez'
-                        },
-                        date: {
-                            format: 'DD.MM.YYYY',
-                            message: 'Geçerli bir tarih girin'
+                            message: 'İzin türü adı alanı boş geçilemez'
                         }
-
-                    }
-                },
-                Duration: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Süre alanı boş geçilemez',
-                        },
-                        greaterThan: {
-                            min: 1,
-                            message: 'Süre alanı 0 olamaz',
-                        }
-
                     }
                 },
                 Description: {
@@ -124,9 +107,22 @@
                             message: 'Açıklama alanı boş geçilemez'
                         },
                         stringLength: {
-                            max: 499,
-                            message: '500 karakterden az girin'
+                            max: 999,
+                            message: '1000 karakterden az girin'
                         }
+                    }
+                },
+                TotalDay: {
+                    validators: {
+                        notEmpty: {
+                            message: 'İzin hakkı alanı boş geçilemez',
+                        },
+                        between: {
+                            min: 1,
+                            max: 365,
+                            message: 'Toplam gün 0 olamaz',
+                        }
+
                     }
                 },
             },
@@ -153,9 +149,5 @@
         boostat: 5,
         maxboostedstep: 10,
 
-    });
-    $('#kt_datetimepicker_20').datetimepicker({
-        locale: 'tr',
-        format: 'DD.MM.YYYY HH:mm'
     });
 </script>
