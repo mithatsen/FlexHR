@@ -328,11 +328,13 @@
         var srcc = $("#photo45").attr("src");
 
        var basic = $('#main-cropper').croppie({
-            viewport: { width: 200, height: 200 },
-           boundary: { width: 400, height: 400 },
+           viewport: { width: 200, height:200 },
+           boundary: { width: 300, height: 300 },         
            url:srcc,
            showZoomer: true,
-           enableOrientation: true
+           enableOrientation: true,
+           maxZoomedCropWidth: 40,
+          
         });
 
         function readFile(input) {

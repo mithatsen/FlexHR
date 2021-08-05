@@ -614,7 +614,7 @@
         addClass(wrap, 'cr-slider-wrap');
         addClass(zoomer, 'cr-slider');
         zoomer.type = 'range';
-        zoomer.step = '0.0001';
+        zoomer.step = '0.01';
         zoomer.value = '1';
         zoomer.style.display = self.options.showZoomer ? '' : 'none';
         zoomer.setAttribute('aria-label', 'zoom');

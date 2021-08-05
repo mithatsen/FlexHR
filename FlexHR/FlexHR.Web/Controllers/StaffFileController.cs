@@ -42,16 +42,18 @@ namespace FlexHR.Web.Controllers
         {
             ViewBag.StaffId = id;
             ViewBag.FileTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType), "GeneralSubTypeId", "Description");
-            StaffFileInfoDto staffFileInfo = new StaffFileInfoDto
+            var models = new List<FileHelper>();
+            var fileTypes = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType);
+           
+            foreach (var item in fileTypes)
             {
-                IdentityBook = new FileHelper { Name = "Nüfus Cüzdanı", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 4 && x.IsActive == true).Count() },
-                DrivingLicence = new FileHelper { Name = "Ehliyet", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 5 && x.IsActive == true).Count() },
-                SchoolLeavingCertificate = new FileHelper { Name = "Mezuniyet Belgesi", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 6 && x.IsActive == true).Count() },
-                ResidenceCertificate = new FileHelper { Name = "İkametgah", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 7 && x.IsActive == true).Count() },
-                CriminalCertificate = new FileHelper { Name = "Adli Sicil Kaydı", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 8 && x.IsActive == true).Count() },
-                Certificates = new FileHelper { Name = "Sertifikalar", Count = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 9 && x.IsActive == true).Count() }
-            };
-            return View(staffFileInfo);
+                var temp = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == item.GeneralSubTypeId && x.IsActive == true);
+
+                FileHelper model = new FileHelper { TypeId = item.GeneralSubTypeId, Name = item.Description, Count = temp.Count()};
+                models.Add(model);
+            }
+           
+            return View(models);
         }
 
         [HttpPost]
@@ -135,16 +137,26 @@ namespace FlexHR.Web.Controllers
             return Json(fileList);
         }
         [HttpPost]
-        public bool StaffFileRemove(IFormFile file, int fileId)
+        public int StaffFileRemove(IFormFile file, int fileId,int typeId,int staffId)
         {
             if (fileId > 0)
             {
-                var result = _staffFileService.Get(x => x.StaffFileId == fileId).FirstOrDefault();
-                result.IsActive = false;
-                _staffFileService.Update(result);
-                return true;
+                try
+                {
+                    var result = _staffFileService.Get(x => x.StaffFileId == fileId).FirstOrDefault();
+                    result.IsActive = false;
+                    _staffFileService.Update(result);
+                    var x= _staffFileService.Get(x => x.StaffId == staffId && x.IsActive == true && x.FileGeneralSubTypeId == typeId).Count();
+                    return x;
+                }
+                catch (Exception)
+                {
+
+                    return -1;
+                }
+                
             }
-            return true;
+            return _staffFileService.GetAll().Count();
         }
 
         public string GetStaffActivePhoto(int id)

@@ -1,4 +1,4 @@
-﻿@model StaffFileInfoDto
+﻿@model List<FileHelper>
 @{
     ViewData["Title"] = "dosya Bilgileri";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -62,80 +62,21 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td> <p class="my-auto">@Model.IdentityBook.Name</p></td>
-                                                                        @if (Model.IdentityBook.Count > 0)
-                                                                        {
-                                                                            <td><i class="fas fa-check-circle text-success my-auto"></i></td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td><i class="fas fa-times-circle text-danger my-auto"></i></td>
-                                                                        }
-                                                                        <td><a class="btn text-primary" onclick="ShowFileDetail(4)">Göster/Düzenle</a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>@Model.DrivingLicence.Name</td>
-                                                                        @if (Model.DrivingLicence.Count > 0)
-                                                                        {
-                                                                            <td><i class="fas fa-check-circle text-success"></i></td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td><i class="fas fa-times-circle text-danger"></i></td>
-                                                                        }
-
-                                                                        <td><a class="btn text-primary" onclick="ShowFileDetail(5)">Göster/Düzenle</a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>@Model.SchoolLeavingCertificate.Name</td>
-                                                                        @if (Model.SchoolLeavingCertificate.Count > 0)
-                                                                        {
-                                                                            <td><i class="fas fa-check-circle text-success"></i></td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td><i class="fas fa-times-circle text-danger"></i></td>
-                                                                        }
-
-                                                                        <td><a class="btn text-primary" onclick="ShowFileDetail(6)">Göster/Düzenle</a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>@Model.ResidenceCertificate.Name</td>
-                                                                        @if (Model.ResidenceCertificate.Count > 0)
-                                                                        {
-                                                                            <td><i class="fas fa-check-circle text-success"></i></td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td><i class="fas fa-times-circle text-danger"></i></td>
-                                                                        }
-                                                                        <td><a class="btn text-primary" onclick="ShowFileDetail(7)">Göster/Düzenle</a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>@Model.CriminalCertificate.Name</td>
-                                                                        @if (Model.CriminalCertificate.Count > 0)
-                                                                        {
-                                                                            <td><i class="fas fa-check-circle text-success"></i></td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td><i class="fas fa-times-circle text-danger"></i></td>
-                                                                        }
-                                                                        <td><a class="btn text-primary" onclick="ShowFileDetail(8)">Göster/Düzenle</a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>@Model.Certificates.Name</td>
-                                                                        @if (Model.Certificates.Count > 0)
-                                                                        {
-                                                                            <td><i class="fas fa-check-circle text-success"></i></td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td><i class="fas fa-times-circle text-danger"></i></td>
-                                                                        }
-                                                                        <td><a class="btn text-primary" onclick="ShowFileDetail(9)">Göster/Düzenle</a></td>
-                                                                    </tr>
+                                                                    @foreach (var item in Model)
+                                                                    {
+                                                                        <tr>
+                                                                            <td> <p class="my-auto">@item.Name</p></td>
+                                                                            @if (item.Count > 0)
+                                                                            {
+                                                                                <td><i id="abc_@item.TypeId" class="fas fa-check-circle text-success my-auto"></i></td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td><i class="fas fa-times-circle text-danger my-auto"></i></td>
+                                                                            }
+                                                                            <td><a class="btn text-primary" onclick="ShowFileDetail(@item.TypeId)">Göster/Düzenle</a></td>
+                                                                        </tr>
+                                                                    }                                                                  
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -218,8 +159,20 @@
     </script>
 
     @*//add staff file dropzone*@
-    <script>
+<script>
         $(document).ready(function () {
+            localStorage.SystemFileId;
+
+
+            if (localStorage.SystemFileId == "" || typeof localStorage.SystemFileId === 'undefined' || localStorage.SystemFileId == -1) {
+                localStorage.SystemFileId = -1;
+                $("#categorySelect").val(-1);
+            } else {
+                $("#categorySelect").val(localStorage.SystemFileId);
+                categoryChange();
+            }
+
+
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
@@ -227,9 +180,11 @@
         var id = document.getElementById("staffId").value;
 
         function categoryChange() {
+
             $("#myAwesomeDropzone").remove();
             $("#deleteDropzone").append("<div class='dropzone dropzone-default dropzone-primary' id='myAwesomeDropzone'> </div >");
             var catId2 = document.getElementById("categorySelect").value;
+            localStorage.SystemFileId = catId2;
             if (".dz-preview") {
                 $("#myAwesomeDropzone").empty();
                 document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> ";
@@ -240,9 +195,6 @@
                 data: { categoryId2: catId2 },
             }).done(function (content) {
                 let serverFiles = JSON.parse(content);
-
-
-
                 Dropzone.autoDiscover = false;
                 var catId = document.getElementById("categorySelect").value;
 
@@ -265,8 +217,15 @@
                             this.options.addedfile.call(this, mockFile);
                             this.options.thumbnail.call(this, mockFile, serverFiles[i].FileFullPath + serverFiles[i].FileName);
                             mockFile.previewElement.classList.add('dz-success');
-                            mockFile.previewElement.classList.add('dz-complete');
-                            console.log(mockFile);
+                            mockFile.previewElement.classList.add('dz-complete'); this.on("thumbnail", function (file) {
+                            mockFile.previewElement.addEventListener("click", function (e) {
+                                var b = document.createElement('a');
+                                b.setAttribute('href', '/img/' + serverFiles[i].FileFullPath + serverFiles[i].FileName);
+                                b.setAttribute('title', 'Göster');
+                                b.setAttribute('data-toggle', 'tooltip');
+                                b.setAttribute('data-lightbox', "my-gallery");
+                            });
+                            });
                             // Icons
                             var mockFileExt = serverFiles[i].FileName.split('.').pop().toLowerCase();
                             if (mockFileExt == "pdf") {
@@ -314,13 +273,11 @@
                                 mockFile.previewTemplate.appendChild(b);
                             }
                         }
-                        // this.removeAllFiles(true);
+
                         $('#uploadButton').click(function () {
                             dz.processQueue();
                         });
                         dz.on("complete", function (file) {
-                            /*   dz.removeAllFiles(file);*/
-
                             if (file.upload) {
                                 Swal.fire({
                                     icon: 'success',
@@ -370,9 +327,9 @@
                                 $.ajax({
                                     method: "POST",
                                     url: "/StaffFile/StaffFileRemove",
-                                    data: { fileId: file.value },
+                                    data: { fileId: file.value, typeId: localStorage.SystemFileId,staffId:@ViewBag.StaffId },
                                 }).done(function (result) {
-                                    if (result == true) {
+                                    if (result != -1) {
                                         Swal.fire({
                                             title: "Silindi!",
                                             text: "Kaydınız silindi.",
@@ -380,17 +337,16 @@
                                             showCancelButton: false
                                         }).then(function () {
                                             file.previewElement.remove();
-                                            $.ajax({
-                                                method: "GET",
-                                                url: "/StaffFile/GetStaffActivePhoto/" + id,
-                                            }).done(function (content) {
-                                                if (content != null) {
-                                                    $("#photo45").attr("src", '/img/' + content + '')
-                                                }
-                                                else {
-                                                    $("#photo45").attr("src", "/assets/media/users/default.jpg")
-                                                }
-                                            })
+                                            debugger;
+                                            if (result == 0) {
+                                                var deger = "#abc_" + localStorage.SystemFileId;
+                                                console.log(deger + result);
+                                                $(deger).removeClass("fa-check-circle");
+                                                $(deger).addClass("fa-times-circle");
+                                                $(deger).removeClass("text-success");
+                                                $(deger).addClass("text-danger");
+                                            }
+
                                         })
 
                                     } else {
@@ -551,6 +507,6 @@
 //    });
 
 //}
-    </script>
+</script>
     <script src="~/assets/js/pages/crud/file-upload/dropzonejs.js"></script>
 }
