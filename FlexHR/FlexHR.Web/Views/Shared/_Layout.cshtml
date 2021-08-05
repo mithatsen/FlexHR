@@ -162,7 +162,7 @@
                                 <div class="menu-submenu" kt-hidden-height="80" style="">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
-                                       
+
                                         <li class="menu-item" aria-haspopup="true">
                                             <a asp-controller="Leave" asp-action="Index" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -183,7 +183,7 @@
                                     </ul>
                                 </div>
                             </li>
-                         
+
                             <li class="menu-item" aria-haspopup="true">
                                 <a asp-controller="Product" asp-action="Index" class="menu-link">
                                     <span class="svg-icon menu-icon">
@@ -210,6 +210,38 @@
                                     </span>
                                     <span class="menu-text">Sistem Değişkenleri</span>
                                 </a>
+                            </li>
+                            <li class="menu-item menu-item-submenu " aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <i class="fas fa-file-upload"></i>
+                                    </span>
+                                    <span class="menu-text"> Dosya İşlemleri </span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu" kt-hidden-height="80" style="">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a asp-controller="UploadFile" asp-action="Index" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Personel Takip</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a asp-controller="UploadFile" asp-action="RefectoryList" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Yemekhane Takip</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
                                 <a asp-controller="Home" asp-action="LogOut" class="menu-link">
@@ -371,7 +403,6 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/features/miscellaneous/cropper.js"></script>
     <!--end::Page Scripts-->
-
     <!-- or even simpler -->
     @*<img class="my-image" src="~/assets/media/bg/bg-1.jpg" />
         <script>

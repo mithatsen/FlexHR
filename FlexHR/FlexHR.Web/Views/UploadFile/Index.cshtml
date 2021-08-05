@@ -1,0 +1,237 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Devamsızlık İşlemleri</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+
+
+    </div>
+</div>
+<div class="card card-custom " >
+    @*@await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })*@
+    <div class="card-body">
+        <!--begin::Profile Personal Information-->
+        <div class="d-flex flex-row">
+
+            <!--begin::Aside-->
+            <div class=" col-md-3" style="height: 380px; " id="kt_profile_aside">
+                <!--begin::Profile Card-->
+                <div class="card card-custom card-stretch">
+                    <!--begin::Body-->
+                    <div class="card-body pt-4">
+                        <!--begin::User-->
+                        <div class=" align-items-center">
+                            <!--begin::Card-->
+
+
+                            <div>
+                                @*dropzone gelecek*@
+
+
+                                <div class="dropzone dropzone-default dropzone-primary mt-2" id="personalFileDropzone">
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!--end::User-->
+                        <!--begin::Contact-->
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Profile Card-->
+            </div>
+            <!--end::Aside-->
+            <!--begin: Datatable-->
+            <div class="tab-content w-100">
+                <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-building text-dark mr-2"></i>
+                                        <h3 id="VariableTitle" class="card-label">
+                                            Şirketler
+
+                                        </h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#companyAddModal">
+                                            Ekle
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                                        <thead>
+                                            <tr>
+                                                <th>Şirket Adı</th>
+                                                <th>İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td width="85%">asdsdasdsdasfsaf</td>
+                                                <td width="15%">
+                                                    <a id="CareerUpdateBtn" onclick="CompanyUpdate()" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                                        <i class="la la-edit text-warning"></i>
+                                                    </a>
+                                                    <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCompany()">
+
+                                                        <i class="la la-trash text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Entry-->
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+
+        $('#personalFileDropzone').dropzone({
+            autoProcessQueue: false,
+            acceptedFiles: 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            url: "/Product/UploadProductsFilesforJob",
+            paramName: "file",
+            maxFiles: 1,
+            maxFilesize: 4000,
+            //parallelUploads: 100,
+            timeout: 3600000,
+            uploadMultiple: false,
+            init: function () {
+                var dz = this;
+
+                dz.on('addedfile', function (file) {
+                    var ext = file.name.split('.').pop().toLowerCase();
+                    if (ext == "pdf") {
+                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/pdf.png");
+                    } else if (ext.indexOf("doc") != -1) {
+                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/word.png");
+                    } else if (ext.indexOf("xls") != -1) {
+                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/xlsx_icon.png");
+                    } else if (ext.indexOf("xlsx") != -1) {
+                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/xlsx_icon.png");
+                    } else if (ext.indexOf("txt") != -1) {
+                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/txt.png");
+                    } else if (ext.indexOf("zip") != -1 || ext.indexOf("rar") != -1) {
+                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/zip.png");
+                    } else if (ext.indexOf("tif") != -1 || ext.indexOf("tiff") != -1) {
+                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/tiff.png");
+                    } else {
+                        $(file.previewElement).find(".dz-image img").attr("src", "/assets/media/file-upload-icons/default.png");
+                    }
+
+                    file.previewElement.classList.add('dz-success');
+                    file.previewElement.classList.add('dz-complete');
+                    file.previewElement.classList.add('dz-image-preview');
+                    file.previewElement.classList.remove('dz-file-preview');
+                });
+
+                $("#productFileUpload").click(function () {
+                    $('#cover-spin').show();
+                    dz.processQueue();
+                });
+
+                $("#productFileUploadRemove").click(function () {
+                    dz.removeAllFiles();
+                });
+
+                dz.on("sending", function (file) { });
+
+                dz.on("complete", function (file, response) {
+                    //dz.removeFile(file);
+                    //$('#cover-spin').hide();
+                    //swal.fire({
+                    //    "title": "",
+                    //    "text": languege.OperationSuccess,
+                    //    "type": "success",
+                    //    "confirmButtonClass": "btn btn-secondary",
+                    //    "confirmButtonText": languege.OK
+                    //});
+                });
+
+                dz.on("success", function (file, responseText) {
+                    dz.removeFile(file);
+                    $('#cover-spin').hide();
+                    swal.fire({
+                        "title": languege.OperationSuccess,
+                        "text": file.xhr.statusText.replaceAll("ý", "ı"),
+                        "type": "success",
+                        "confirmButtonClass": "btn btn-secondary",
+                        "confirmButtonText": languege.OK
+                    });
+                });
+
+                dz.on("error", function (file, responseText) {
+                    dz.removeFile(file);
+                    $('#cover-spin').hide();
+                    swal.fire({
+                        "title": languege.OperationFail,
+                        "text": file.xhr.statusText.replaceAll("ý", "ı"),
+                        "type": "error",
+                        "confirmButtonClass": "btn btn-secondary",
+                        "confirmButtonText": languege.OK
+                    });
+                });
+
+                dz.on("queuecomplete", function (progress) { });
+
+                dz.on("canceled", function (progress) {
+                    Swal.fire({
+                        "title": "",
+                        "text": "Dosyalar yüklenirken bir hata meydana geldi!",
+                        "type": "error",
+                        "confirmButtonClass": "btn btn-secondary",
+                        "confirmButtonText": languege.OK
+                    });
+                });
+            },
+            dictDefaultMessage: "Buraya excel dosyalarınızı sürükle bırak yapabilirsiniz.",
+            dictRemoveFile: "Dosyayı Sil",
+            addRemoveLinks: true,
+            removedfile: function (file) {
+                file.previewElement.remove();
+            }
+        });
+    </script>
+
+    <script src="~/assets/js/pages/crud/file-upload/dropzonejs.js"></script>
+}
