@@ -1,0 +1,215 @@
+﻿@model ListPaymentViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">İzinler</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+            <!--begin::Actions-->
+            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 active" id="tab_1" asp-controller="Leave" asp-action="Index" asp-route-id="@Model">
+                <span class="nav-icon mr-2">
+                    <span class="svg-icon mr-3">
+                        <i class="fas fa-plane-departure"></i>
+                    </span>
+                </span>
+                <span class="nav-text font-weight-bold">İzinler </span>
+            </a>
+            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Leave" asp-action="StaffLeaveRemainInfo" asp-route-id="@Model">
+                <span class="nav-icon mr-2">
+                    <span class="svg-icon mr-3">
+                        <i class="fas fa-chart-bar"></i>
+                    </span>
+                </span>
+                <span class="nav-text font-weight-bold">Raporlar</span>
+            </a>
+            <!--end::Actions-->
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+
+<br />
+<div class="card card-custom">
+    <div class="card-header card-header-tabs-line">
+        <div class="card-toolbar">
+            <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
+      
+                <li class="nav-item mr-3">
+                    <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-user-clock"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Onay Bekleyenler</span>
+                    </a>
+                </li>
+                <li class="nav-item mr-3">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-user-check"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Onaylananlar</span>
+                    </a>
+                </li>
+                <li class="nav-item mr-3">
+                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-user-times"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Reddedilenler</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="card card-custom">
+        <div class="card-body  ">
+            <div class="tab-content pt-5">
+               
+                @*Onay bekleyenler*@
+                <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
+
+                    <h3 class="text-dark mb-4">Onay Bekleyen İzinler</h3>
+                    <hr />
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_5">
+                        <thead>
+                            <tr>
+                                <th>Tarih</th>
+                                <th>Ödeme Türü</th>
+                                <th width="25%">Açıklama</th>
+                                <th width="10%">Tutar</th>
+                                <th>Durum</th>
+                                <th>Oluştrulma Tarihi</th>
+                                <th>Ödendi</th>
+                                <th width="12%">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.PendingApprovalPayments)
+                            {
+                            <tr>
+                                <td>@item.PaymentDate.ToShortDateString()</td>
+                                <td>@item.PaymentType</td>
+                                <td>@item.Description</td>
+                                <td>@item.Amount </td>
+                                <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                <td>@item.CreationDate.ToShortDateString()</td>
+                                <td>@item.IsPaid</td>
+                                <td></td>
+
+                            </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+                @*onaylananlar*@
+                <div class="tab-pane" id="kt_apps_contacts_view_tab_3" role="tabpanel">
+                    <h3 class="text-dark mb-4">Onaylanan İzinler</h3>
+                    <hr />
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_6">
+                        <thead>
+                            <tr>
+                                <th>Başlangıç</th>
+                                <th>Bitiş</th>
+                                <th>Süre</th>
+                                <th>İzin Türü</th>
+                                <th>Açıklama</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.ApprovedLeaves)
+                            {
+                                <tr>
+
+                                    <td>@item.LeaveStartDate.ToString("d")</td>
+
+                                    <td>@item.LeaveEndDate.ToString("d")</td>
+
+                                    <td>@item.TotalDay Gün</td>
+                                    <td>@item.LeaveType</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                    <td></td>
+
+                                </tr>
+
+                            }*@
+                        </tbody>
+                    </table>
+                </div>
+                @*reddedilenler*@
+                <div class="tab-pane" id="kt_apps_contacts_view_tab_4" role="tabpanel">
+                    <h3 class="text-dark mb-4">Reddedilen İzinler</h3>
+                    <hr />
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_7">
+                        <thead>
+                            <tr>
+                                <th>Başlangıç</th>
+                                <th>Bitiş</th>
+                                <th>Süre</th>
+                                <th>İzin Türü</th>
+                                <th>Açıklama</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.RejectedLeaves)
+                            {
+                                <tr>
+
+                                    <td>@item.LeaveStartDate.ToString("d")</td>
+
+                                    <td>@item.LeaveEndDate.ToString("d")</td>
+
+                                    <td>@item.TotalDay Gün</td>
+                                    <td>@item.LeaveType</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                    <td></td>
+                                </tr>
+
+                            }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+}
