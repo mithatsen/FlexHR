@@ -80,6 +80,14 @@ namespace FlexHR.Web.Controllers
 
             };
             return PartialView("GetUpdateStaffLeaveModal", leaveModel);
+        } 
+        [HttpGet]
+        public IActionResult GetLeaveRequestModal()
+        {
+           
+            ViewBag.LeaveTypes = _leaveTypeService.GetAll();
+            ViewBag.Staffs = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
+            return PartialView("_GetLeaveRequestModal");
         }
 
         [HttpPost]

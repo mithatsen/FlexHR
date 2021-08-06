@@ -40,38 +40,51 @@ namespace FlexHR.Web.Controllers
         public IActionResult Index()
 
         {
-            var approvedLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97).ToList());
-            var pendingApprovalLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96).ToList());
-            var rejectedLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 98).ToList());
-            var upcomingLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.LeaveStartDate > DateTime.Now).ToList());
-
-            foreach (var item in approvedLeaves)
-            {
-                item.LeaveType = _leaveTypeService.GetById(item.LeaveTypeId).Name;
-            }
-            foreach (var item in pendingApprovalLeaves)
-            {
-                item.LeaveType = _leaveTypeService.GetById(item.LeaveTypeId).Name;
-            }
-            foreach (var item in rejectedLeaves)
-            {
-                item.LeaveType = _leaveTypeService.GetById(item.LeaveTypeId).Name;
-            }
-            foreach (var item in upcomingLeaves)
-            {
-                item.LeaveType = _leaveTypeService.GetById(item.LeaveTypeId).Name;
-            }
-
+            var approvedLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null, "Staff,LeaveType").ToList());
+            var pendingApprovalLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff,LeaveType").ToList());
+            var rejectedLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff,LeaveType").ToList());
+         
             ListLeaveViewModel listLeaveViewModel = new ListLeaveViewModel
             {
                 ApprovedLeaves = approvedLeaves,
                 PendingApprovalLeaves = pendingApprovalLeaves,
                 RejectedLeaves = rejectedLeaves,
-                UpcomingLeaves = upcomingLeaves
             };
             return View(listLeaveViewModel);
         }
 
+        [HttpPost]
+        public bool ApproveLeave(int id)
+        {
+            var temp = _staffLeaveService.GetById(id);
+            temp.GeneralStatusGeneralSubTypeId = 97;
+            try
+            {
+                _staffLeaveService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+        [HttpPost]
+        public bool RejectLeave(int id)
+        {
+            var temp = _staffLeaveService.GetById(id);
+            temp.GeneralStatusGeneralSubTypeId = 98;
+            try
+            {
+                _staffLeaveService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
         public IActionResult StaffLeaveRemainInfo()
         {
             List<ListLeaveInfoAllStaffDto> models = new List<ListLeaveInfoAllStaffDto>();

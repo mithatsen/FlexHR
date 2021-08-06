@@ -48,6 +48,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #region StaffLeave
             CreateMap<AddStaffLeaveDto, StaffLeave>().ReverseMap();
             CreateMap<ListStaffLeaveDto, StaffLeave>().ReverseMap();
+            CreateMap<StaffLeave, ListStaffLeaveDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             #endregion
             #region StaffShift
             CreateMap<AddStaffShiftDto, StaffShift>().ReverseMap();

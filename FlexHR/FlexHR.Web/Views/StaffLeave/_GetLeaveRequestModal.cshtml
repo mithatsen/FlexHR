@@ -1,0 +1,163 @@
+﻿@*add leave modal*@
+<div class="modal fade" id="staffLeaveRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>İzin Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="modalAddLeaveForm">
+
+                <input type="hidden" name="LeaveTypeId" id="LeaveTypeId" value="14" />
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+
+                                        <div class="col-md-5">
+                                          
+                                            <div class="form-group row">
+                                                <label>Personel *</label>
+                                                <div class="input-group">
+                                                    <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <option value="-1">Personel Seçiniz</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <label>Başlangıç Tarihi *</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_14" data-target-input="nearest">
+                                                        <input name="LeaveStartDate" id="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_14" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row ">
+                                                <label>Toplam Gün *</label>
+                                                <div class="input-group">
+                                                    <input id="kt_touchspin_1" type="text" class="form-control form-control-lg text-center" value="0" name="TotalDay" placeholder="Toplam" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>İzin Türü *</label>
+                                                <div class="input-group dropdown">
+                                                    <a class="form-control form-control-lg form-control-solid btn btn-secondary dropdown-toggle " value="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <p class="my-auto text-left pl-2" id="selectLeaveTypeBtnText">Yıllık İzin </p>
+                                                    </a>
+
+                                                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                                                        <ul class="p-0" style="cursor:pointer">
+                                                            @foreach (var item in ViewBag.LeaveTypes)
+                                                            {
+                                                                var tittle = "";
+                                                                if (item.IsFree)
+                                                                {
+                                                                    tittle += "Ücretsiz İzin_______";
+                                                                }
+                                                                else
+                                                                {
+                                                                    tittle += "Ücretli İzin_______";
+                                                                }
+                                                                if (item.TotalDay == 0)
+                                                                {
+                                                                    tittle += "Süresiz                     " + item.Description;
+                                                                }
+                                                                else
+                                                                {
+                                                                    tittle += item.TotalDay + " Gün                     " + item.Description;
+                                                                }
+                                                                <li class="dropdown-item" id="@item.Id" name="@item.Name" onclick="ChangeLeaveType(this)">@item.Name <a data-toggle='tooltip' title='@tittle' class="float-right"><i class='fas fa-info-circle bg-success '></i></a></li>
+
+                                                            }
+
+                                                        </ul>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row ">
+                                                <label>Bitiş Tarihi *</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_15" data-target-input="nearest">
+                                                        <input name="LeaveEndDate" id="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_15" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label>Açıklama</label>
+                                                <div class="input-group">
+
+
+                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" id="Description" name="Description" placeholder="Açıklama"></textarea>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+
+
+                    </div>
+
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="button" onclick="leaveClickFunction()" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>
+<script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
+<script>
+
+    function ChangeLeaveType(elem) {
+        var id = $(elem).attr("id");
+        var name = $(elem).attr("name");
+
+        $("#LeaveTypeId").val(id);
+        $("#selectLeaveTypeBtnText").text(name);
+
+
+    }
+</script>
