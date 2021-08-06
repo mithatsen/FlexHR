@@ -16,6 +16,7 @@
                 <form id="shiftUpdateForm" asp-controller="StaffShift" asp-action="UpdateStaffShift" method="POST">
                     <input type="hidden" asp-for="StaffId" />
                     <input type="hidden" asp-for="StaffShiftId" />
+                    <input type="hidden" asp-for="GeneralStatusGeneralSubTypeId" />
                     <input type="hidden" asp-for="IsActive" />
                     <div class="modal-body">
                         <div class="flex-row-fluid ">
@@ -60,8 +61,8 @@
                                                 <div class="form-group row">
                                                     <label>Açıklama *</label>
                                                     <div class="input-group">
-                                                       
-                                                            <textarea type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" name="Description" placeholder="Açıklama"></textarea>
+
+                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" name="Description" placeholder="Açıklama"></textarea>
 
                                                     </div>
                                                 </div>
@@ -97,7 +98,7 @@
                                 message: 'Tarih alanı boş geçilemez'
                             },
                             date: {
-                                format: 'DD.MM.YYYY',
+                                format: 'DD.MM.YYYY HH:mm',
                                 message: 'Geçerli bir tarih girin'
                             }
 

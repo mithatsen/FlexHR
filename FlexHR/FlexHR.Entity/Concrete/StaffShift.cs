@@ -12,6 +12,7 @@ namespace FlexHR.Entity.Concrete
         public DateTime StartDate { get; set; }
         public int Duration { get; set; }
         public string Description { get; set; }
+        public int GeneralStatusGeneralSubTypeId { get; set; }
         public bool IsSentForApproval { get; set; }
         public bool IsMailSentToStaff { get; set; }
         public bool IsActive { get; set; }
