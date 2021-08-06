@@ -11,32 +11,11 @@
             <!--end::Page Title-->
             <!--begin::Actions-->
             <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
-            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">İzinler</h5>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Mesai Talepleri</h5>
             <!--end::Actions-->
         </div>
         <!--end::Info-->
-        <!--begin::Toolbar-->
-        <div class="d-flex align-items-center">
-            <!--begin::Actions-->
-            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 active" id="tab_1" asp-controller="Shift" asp-action="Index" asp-route-id="@Model">
-                <span class="nav-icon mr-2">
-                    <span class="svg-icon mr-3">
-                        <i class="fas fa-plane-departure"></i>
-                    </span>
-                </span>
-                <span class="nav-text font-weight-bold">İzinler </span>
-            </a>
-            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Leave" asp-action="StaffLeaveRemainInfo" asp-route-id="@Model">
-                <span class="nav-icon mr-2">
-                    <span class="svg-icon mr-3">
-                        <i class="fas fa-chart-bar"></i>
-                    </span>
-                </span>
-                <span class="nav-text font-weight-bold">Raporlar</span>
-            </a>
-            <!--end::Actions-->
-        </div>
-        <!--end::Toolbar-->
+
     </div>
 </div>
 
@@ -44,9 +23,9 @@
 <div class="card card-custom">
     <div class="card-header card-header-tabs-line">
         <div class="card-toolbar">
-            <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">       
+            <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
                 <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                    <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-user-clock"></i>
@@ -62,7 +41,7 @@
                                 <i class="fas fa-user-check"></i>
                             </span>
                         </span>
-                        <span class="nav-text font-weight-bold">Onaylananlar</span>
+                        <span class="nav-text font-weight-bold">Onaylananler</span>
                     </a>
                 </li>
                 <li class="nav-item mr-3">
@@ -83,32 +62,34 @@
     <div class="card card-custom">
         <div class="card-body  ">
             <div class="tab-content pt-5">
-             
-                @*Onay bekleyenler*@
-                <div class="tab-pane" id="kt_apps_contacts_view_tab_2" role="tabpanel">
 
-                    <h3 class="text-dark mb-4">Onay Bekleyen İzinler</h3>
-                    <hr />
-                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_11">
+                @*Onay bekleyenler*@
+                <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
+
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_9">
                         <thead>
                             <tr>
+                                <th>Ad Soyad</th>
                                 <th width="15%">Başlangıç</th>
                                 <th width="10%">Süre(saat)</th>
                                 <th width="55%">Açıklama</th>
-                                <th width="10%">Durum</th>
                                 <th width="10%">İşlemler</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.PendingApprovalLeaves)
                             {
-                            <tr>
-                                <td>@item.StartDate.ToString("g")</td>
-                                <td>@item.Duration Saat</td>
-                                <td>@item.Description</td>
-                                <td>@item.GeneralStatusGeneralSubTypeId</td>
-                                <td>İşlemler</td>
-                            </tr>
+                                <tr>
+                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    <td>@item.StartDate.ToString("g")</td>
+                                    <td>@item.Duration Saat</td>
+                                    <td>@item.Description</td>
+
+                                    <td>
+                                        <a class="btn btn-hover-bg-light btn-sm" onclick="approveShift(@item.StaffShiftId)"><span><i class="fas fa-check text-success"></i></span></a>
+                                        <a class="btn btn-hover-bg-light btn-sm" onclick="rejectShift(@item.StaffShiftId)"><span><i class="fas fa-times text-danger"></i></span></a>
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -117,54 +98,56 @@
 
                 @*onaylananlar*@
                 <div class="tab-pane" id="kt_apps_contacts_view_tab_3" role="tabpanel">
-                    <h3 class="text-dark mb-4">Onaylanan İzinler</h3>
+
                     <hr />
-                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_12">
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_14">
                         <thead>
                             <tr>
+                                <th>Ad Soyad</th>
                                 <th width="15%">Başlangıç</th>
                                 <th width="10%">Süre(saat)</th>
                                 <th width="55%">Açıklama</th>
-                                <th width="10%">Durum</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.ApprovedShift)
                             {
-                            <tr>
+                                <tr>
+                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    <td>@item.StartDate.ToString("g")</td>
+                                    <td>@item.Duration Saat</td>
+                                    <td>@item.Description</td>
 
-                                <td>@item.StartDate.ToString("g")</td>
-                                <td>@item.Duration Saat</td>
-                                <td>@item.Description</td>
-                                <td>@item.GeneralStatusGeneralSubTypeId</td>
-                            </tr>
+                                </tr>
                             }
                         </tbody>
                     </table>
                 </div>
                 @*reddedilenler*@
                 <div class="tab-pane" id="kt_apps_contacts_view_tab_4" role="tabpanel">
-                    <h3 class="text-dark mb-4">Reddedilen İzinler</h3>
+
                     <hr />
-                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_13">
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_15">
                         <thead>
                             <tr>
-                                <th width="15%">Başlangıç</th>
-                                <th width="10%">Süre(saat)</th>
-                                <th width="55%">Açıklama</th>
-                                <th width="10%">Durum</th>
+                                <th width="20%">Ad Soyad</th>
+                                <th width="20%">Başlangıç</th>
+                                <th width="20%">Süre(saat)</th>
+                                <th width="40%">Açıklama</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.RejectedShift)
                             {
-                            <tr>
+                                <tr>
+                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    <td>@item.StartDate.ToString("g")</td>
+                                    <td>@item.Duration Saat</td>
+                                    <td>@item.Description</td>
 
-                                <td>@item.StartDate.ToString("g")</td>
-                                <td>@item.Duration Saat</td>
-                                <td>@item.Description</td>
-                                <td>@item.GeneralStatusGeneralSubTypeId</td>
-                            </tr>
+                                </tr>
 
                             }
                         </tbody>
@@ -180,4 +163,99 @@
     <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+    <script>
+        function approveShift(id) {
+            Swal.fire({
+                title: "Onaylamak ister misiniz ?",
+                text: "Bunu geri alamazsınız!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Evet",
+                cancelButtonText: "Hayır",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        method: "POST",
+                        url: "/Shift/ApproveShift/"+id,
+                    }).done(function (result) {
+                        debugger;
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Onaylandı!",
+                                text: "Talep Onaylandı.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "Kaydınız onaylanmadı",
+                                "hata"
+                            )
+                        }
+
+                    })
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire({
+                        title: "İptal Edildi",
+                        text: "Kaydınız onaylanmadı",
+                        icon: "error",
+                        showCancelButton: false
+                    })
+                }
+            });
+         
+        }
+        function rejectShift(id) {
+            Swal.fire({
+                title: "Talebi Reddetmek İster Misiniz ?",
+                text: "Bunu geri alamazsınız!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Evet",
+                cancelButtonText: "Hayır",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        method: "POST",
+                        url: "/Shift/RejectShift/" + id,
+                    }).done(function (result) {
+                        debugger;
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Başarılı!",
+                                text: "Talep Reddedildi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "İşlem Başarısız",
+                                "hata"
+                            )
+                        }
+
+                    })
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire({
+                        title: "İptal Edildi",
+                        text: "Kaydınız onaylanmadı",
+                        icon: "error",
+                        showCancelButton: false
+                    })
+                }
+            });
+           
+        }
+    </script>
+    
 }

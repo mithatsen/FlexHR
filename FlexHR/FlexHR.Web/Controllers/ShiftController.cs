@@ -21,10 +21,10 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult Index()
         {
-            var approvedShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true).ToList());
-            var pendingApprovalShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true).ToList());
-            var rejectedShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true).ToList());
-
+            var approvedShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());
+            var pendingApprovalShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true,null, "Staff").ToList());
+            var rejectedShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true,null, "Staff").ToList());
+         
             ListShiftViewModel listShiftViewModel = new ListShiftViewModel
                 {              
                    ApprovedShift=approvedShifts,
@@ -33,5 +33,38 @@ namespace FlexHR.Web.Controllers
                 };
             return View(listShiftViewModel);           
         }
+        [HttpPost]
+        public bool ApproveShift(int id)
+        {
+            var temp=_staffShiftService.GetById(id);
+            temp.GeneralStatusGeneralSubTypeId = 97;
+            try
+            {
+                _staffShiftService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+           
+        }
+        [HttpPost]
+        public bool RejectShift(int id)
+        {
+            var temp = _staffShiftService.GetById(id);
+            temp.GeneralStatusGeneralSubTypeId = 98;
+            try
+            {
+                _staffShiftService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
     }
 }
