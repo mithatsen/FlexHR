@@ -57,7 +57,7 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStaffShift(ListStaffShiftDto model)
         {
-            model.IsActive = true;
+            model.IsActive = true;       
             _staffShiftService.Update(_mapper.Map<StaffShift>(model));
             TempData["StaffShiftUpdateStatus"] = "true";
             return RedirectToAction("Index",new {id=model.StaffId });

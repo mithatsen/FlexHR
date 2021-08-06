@@ -47,13 +47,14 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_4">
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
                                         <thead>
                                             <tr>
                                                 <th width="15%">Başlangıç</th>
-                                                <th width="15%">Süre(saat)</th>
+                                                <th width="10%">Süre(saat)</th>
                                                 <th width="55%">Açıklama</th>
-                                                <th width="15%">İşlemler</th>
+                                                <th width="10%">Durum</th>
+                                                <th width="10%">İşlemler</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -66,6 +67,7 @@
                                                     <td>@item.Duration Saat</td>
 
                                                     <td>@item.Description</td>
+                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
 
 
                                                     <td>
@@ -76,10 +78,7 @@
 
                                                             <i class="la la-trash text-danger"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" title="Onay">
-
-                                                            <i class="la la-check" text-success"></i>
-                                                        </a>
+                                                    
                                                     </td>
                                                 </tr>
 
