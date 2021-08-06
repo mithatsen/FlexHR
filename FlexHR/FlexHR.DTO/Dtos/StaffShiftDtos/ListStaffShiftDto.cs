@@ -7,6 +7,7 @@ namespace FlexHR.DTO.Dtos.StaffShiftDtos
     public class ListStaffShiftDto
     {
         public int StaffShiftId { get; set; }
+        public string NameSurname { get; set; }
         public int StaffId { get; set; }
         public DateTime StartDate { get; set; }
         public int Duration { get; set; }
