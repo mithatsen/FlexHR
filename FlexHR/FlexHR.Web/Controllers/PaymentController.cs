@@ -24,11 +24,10 @@ namespace FlexHR.Web.Controllers
             _staffPaymentService = staffPaymentService;
         }
         public IActionResult Index()
-
         {
-            var approvedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 97).ToList());
-            var pendingApprovalPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96).ToList());
-            var rejectedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 98).ToList());
+            var approvedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());
+            var pendingApprovalPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff").ToList());
+            var rejectedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff").ToList());
 
             foreach (var item in approvedPayment)
             {
@@ -49,6 +48,54 @@ namespace FlexHR.Web.Controllers
                 RejectedPayments = rejectedPayment
             };
             return View(listPaymentViewModel);
+        }
+        [HttpPost]
+        public bool ApprovePayment(int id)
+        {
+            var temp = _staffPaymentService.GetById(id);
+            temp.GeneralStatusGeneralSubTypeId = 97;
+            try
+            {
+                _staffPaymentService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+        [HttpPost]
+        public bool RejectPayment(int id)
+        {
+            var temp = _staffPaymentService.GetById(id);
+            temp.GeneralStatusGeneralSubTypeId = 98;
+            try
+            {
+                _staffPaymentService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        } 
+        [HttpPost]
+        public bool IsPaidPayment(int id)
+        {
+            var temp = _staffPaymentService.GetById(id);
+            temp.IsPaid =true;
+            try
+            {
+                _staffPaymentService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
 
     }

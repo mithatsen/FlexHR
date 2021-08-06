@@ -493,6 +493,30 @@ var KTDatatablesAdvancedColumnRendering = function () {
             ],
         });
 
+        var table = $('#kt_datatable_14');
+
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+           
+        });
+        var table = $('#kt_datatable_15');
+
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+           
+        });
+        var table = $('#kt_datatable_16');
+
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+           
+        });
 $('#kt_datatable_search_status').on('change', function () {
     datatable.search($(this).val().toLowerCase(), 'Status');
 });

@@ -96,7 +96,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<ListCompanyBranchDto,CompanyBranch >();
             CreateMap<AddCompanyBranchDto, CompanyBranch>().ReverseMap();
             #endregion
-
+            CreateMap<StaffPayment, ListStaffPaymentDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
         }
     }
 
