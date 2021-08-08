@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlexHR.DTO.Dtos.CompanyBranchDtos;
 using FlexHR.DTO.Dtos.CompanyDtos;
+using FlexHR.DTO.Dtos.DashboardDtos;
 using FlexHR.DTO.Dtos.EventDtos;
 using FlexHR.DTO.Dtos.GeneralSubTypeDtos;
 using FlexHR.DTO.Dtos.LeaveRuleDtos;
@@ -49,10 +50,15 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<AddStaffLeaveDto, StaffLeave>().ReverseMap();
             CreateMap<ListStaffLeaveDto, StaffLeave>().ReverseMap();
             CreateMap<StaffLeave, ListStaffLeaveDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            CreateMap<StaffLeave, ListStaffLeaveOnDashboardDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+
             #endregion
             #region StaffShift
             CreateMap<AddStaffShiftDto, StaffShift>().ReverseMap();
             CreateMap<ListStaffShiftDto, StaffShift>().ReverseMap();
+            CreateMap<StaffShift,ListStaffShiftOnDashboardDto > ().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            CreateMap<StaffShift, ListStaffShiftDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+
             #endregion
             #region StaffOtherInfo
             CreateMap<ListStaffOtherInfoDto, StaffOtherInfo>().ReverseMap();
@@ -60,11 +66,11 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #region StaffPayment
             CreateMap<ListStaffPaymentDto, StaffPayment>().ReverseMap();
             CreateMap<AddStaffPaymentDto, StaffPayment>().ReverseMap();
+            CreateMap<StaffPayment, ListStaffPaymentDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            CreateMap<StaffPayment, ListStaffPaymentOnDashboardDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            
             #endregion
-            #region StaffShift
-            CreateMap<StaffShift, ListStaffShiftDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
-       
-            #endregion
+
             #region Receipt
             CreateMap<ListReceiptDto, Receipt>().ReverseMap();
             #endregion
@@ -98,7 +104,8 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<ListCompanyBranchDto,CompanyBranch >();
             CreateMap<AddCompanyBranchDto, CompanyBranch>().ReverseMap();
             #endregion
-            CreateMap<StaffPayment, ListStaffPaymentDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+
+       
         }
     }
 

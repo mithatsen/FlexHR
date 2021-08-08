@@ -1,4 +1,4 @@
-﻿
+﻿@model ListDashboardViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,7 +15,7 @@
             <!--end::Actions-->
         </div>
         <!--end::Info-->
-       
+
 
     </div>
 </div>
@@ -25,15 +25,134 @@
         <!--begin::Dashboard-->
         <!--begin::Row-->
         <div class="row">
+            @*Harcama Talepleri*@
             <div class="col-xl-4">
                 <!--begin::List Widget 2-->
                 <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                     <!--begin::Header-->
                     <div class="card-header border-0">
                         <h3 class="card-title font-weight-bolder text-success">Harcama Talepleri</h3>
-                      
+
                     </div>
-                    
+
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+
+                        @foreach (var item in Model.StaffPayments)
+                        {
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50 symbol-light mr-5">
+                                    <span class="symbol-label">
+                                        <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 mr-2">
+                                    <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@item.CreationDate.ToString("d")</span>
+                                </div>
+                                <!--end::Text-->
+                                <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                            </div>
+                        }
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 2-->
+            </div>
+            @*Mesai Talepleri*@
+            <div class="col-xl-4">
+                <!--begin::List Widget 2-->
+                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bolder text-success">Mesai Talepleri</h3>
+
+                    </div>
+
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+                        <!--begin::Item-->
+                        @foreach (var item in Model.StaffShifts)
+                        {
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50 symbol-light mr-5">
+                                    <span class="symbol-label">
+                                        <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 mr-2">
+                                    <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@item.StartDate.ToString("d")</span>
+                                </div>
+                                <!--end::Text-->
+                                <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                            </div>
+                        }
+
+                       
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 2-->
+            </div>
+            @*İzin Talepleri*@
+            <div class="col-xl-4">
+                <!--begin::List Widget 2-->
+                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bolder text-success">İzin Talepleri</h3>
+
+                    </div>
+
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+                        @foreach (var item in Model.StaffLeaves)
+                        {
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50 symbol-light mr-5">
+                                    <span class="symbol-label">
+                                        <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 mr-2">
+                                    <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
+                                </div>
+                                <!--end::Text-->
+                                <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                            </div>
+                        }
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 2-->
+            </div>
+            @*Resmi Tatiller*@
+            <div class="col-xl-4">
+                <!--begin::List Widget 2-->
+                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bolder text-success">Resmi Tatiller</h3>
+
+                    </div>
+
                     <!--end::Header-->
                     <!--begin::Body-->
                     <div class="card-body pt-2">
@@ -73,7 +192,172 @@
                             <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
                         </div>
                         <!--end::Item-->
-                     
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 2-->
+            </div>
+            @*Etkinlikler*@
+            <div class="col-xl-4">
+                <!--begin::List Widget 2-->
+                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bolder text-success">Etkinlikler</h3>
+
+                    </div>
+
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
+                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
+                            </div>
+                            <!--end::Text-->
+                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
+                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
+                            </div>
+                            <!--end::Text-->
+                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                        </div>
+                        <!--end::Item-->
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 2-->
+            </div>
+            @*Yaklaşan İzinler*@
+            <div class="col-xl-4">
+                <!--begin::List Widget 2-->
+                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bolder text-success">Yaklaşan İzinler</h3>
+
+                    </div>
+
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
+                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
+                            </div>
+                            <!--end::Text-->
+                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
+                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
+                            </div>
+                            <!--end::Text-->
+                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                        </div>
+                        <!--end::Item-->
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 2-->
+            </div>
+            @*Yaklaşan Doğum Günleri*@
+            <div class="col-xl-4">
+                <!--begin::List Widget 2-->
+                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bolder text-success">Yaklaşan Doğum Günleri</h3>
+
+                    </div>
+
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
+                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
+                            </div>
+                            <!--end::Text-->
+                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
+                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
+                            </div>
+                            <!--end::Text-->
+                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                        </div>
+                        <!--end::Item-->
+
                     </div>
                     <!--end::Body-->
                 </div>
