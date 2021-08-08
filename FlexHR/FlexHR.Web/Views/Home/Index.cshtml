@@ -20,24 +20,25 @@
     </div>
 </div>
 <div class="d-flex flex-column-fluid">
-    <!--begin::Container-->
-    <div class="container">
-        <!--begin::Dashboard-->
-        <!--begin::Row-->
-        <div class="row">
-            @*Harcama Talepleri*@
-            <div class="col-xl-4">
-                <!--begin::List Widget 2-->
-                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
-                    <!--begin::Header-->
-                    <div class="card-header border-0">
-                        <h3 class="card-title font-weight-bolder text-success">Harcama Talepleri</h3>
+    <!--begin::Dashboard-->
+    <!--begin::Row-->
+    <div class="row">
+        @*Harcama Talepleri*@
+        <div class="col-xl-3">
+            <!--begin::List Widget 2-->
+            <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-success"> <a class="text-success" asp-controller="Payment" asp-action="Index">Ödeme Talepleri</a></h3>
 
-                    </div>
+                </div>
 
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body pt-2">
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+
+                    @if (Model.StaffPayments != null)
+                    {
 
                         @foreach (var item in Model.StaffPayments)
                         {
@@ -45,52 +46,79 @@
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label">
-                                        <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                        @if (item.GenderGeneralSubTypeId == 52)
+                                        {
+                                            <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                        }
+                                        else if (item.GenderGeneralSubTypeId == 53)
+                                        {
+                                            <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
+                                        }
                                     </span>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
                                     <span class="text-muted font-weight-bold">@item.CreationDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
                                 <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
                             </div>
                         }
+                    }
 
-                    </div>
-                    <!--end::Body-->
                 </div>
-                <!--end::List Widget 2-->
+                <!--end::Body-->
             </div>
-            @*Mesai Talepleri*@
-            <div class="col-xl-4">
-                <!--begin::List Widget 2-->
-                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
-                    <!--begin::Header-->
-                    <div class="card-header border-0">
-                        <h3 class="card-title font-weight-bolder text-success">Mesai Talepleri</h3>
+            <!--end::List Widget 2-->
+        </div>
+        @*Mesai Talepleri*@
+        <div class="col-xl-3">
+            <!--begin::List Widget 2-->
+            <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-success"> <a class="text-success" asp-controller="Shift" asp-action="Index">Mesai Talepleri</a></h3>
 
-                    </div>
+                </div>
 
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body pt-2">
-                        <!--begin::Item-->
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+                    <!--begin::Item-->
+
+                    @if (Model.StaffShifts != null)
+                    {
+
                         @foreach (var item in Model.StaffShifts)
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label">
-                                        <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                        @if (item.GenderGeneralSubTypeId == 52)
+                                        {
+                                            <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                        }
+                                        else if (item.GenderGeneralSubTypeId == 53)
+                                        {
+                                            <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
+                                        }
                                     </span>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
                                     <span class="text-muted font-weight-bold">@item.StartDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
@@ -98,271 +126,274 @@
                             </div>
                         }
 
-                       
+                    }
 
-                    </div>
-                    <!--end::Body-->
                 </div>
-                <!--end::List Widget 2-->
+                <!--end::Body-->
             </div>
-            @*İzin Talepleri*@
-            <div class="col-xl-4">
-                <!--begin::List Widget 2-->
-                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
-                    <!--begin::Header-->
-                    <div class="card-header border-0">
-                        <h3 class="card-title font-weight-bolder text-success">İzin Talepleri</h3>
+            <!--end::List Widget 2-->
+        </div>
+        @*İzin Talepleri*@
+        <div class="col-xl-3">
+            <!--begin::List Widget 2-->
+            <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-success">  <a class="text-success" asp-controller="Leave" asp-action="Index">İzin Talepleri</a></h3>
 
-                    </div>
+                </div>
 
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body pt-2">
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+
+                    @if (Model.StaffLeaves != null)
+                    {
+
                         @foreach (var item in Model.StaffLeaves)
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label">
-                                        <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                        @if (item.GenderGeneralSubTypeId == 52)
+                                        {
+                                            <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                        }
+                                        else if (item.GenderGeneralSubTypeId == 53)
+                                        {
+                                            <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
+                                        }
                                     </span>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
                                     <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
-                                <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                                <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> <a onclick="getStaffLeaveApproveModal(@item.StaffLeaveId)">Detay</a></span>
                             </div>
                         }
-
-                    </div>
-                    <!--end::Body-->
+                    }
                 </div>
-                <!--end::List Widget 2-->
+                <!--end::Body-->
             </div>
-            @*Resmi Tatiller*@
-            <div class="col-xl-4">
-                <!--begin::List Widget 2-->
-                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
-                    <!--begin::Header-->
-                    <div class="card-header border-0">
-                        <h3 class="card-title font-weight-bolder text-success">Resmi Tatiller</h3>
-
-                    </div>
-
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body pt-2">
-                        <!--begin::Item-->
-                        <div class="d-flex align-items-center flex-wrap mb-5">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
-                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
-                            </div>
-                            <!--end::Text-->
-                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="d-flex align-items-center flex-wrap mb-5">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
-                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
-                            </div>
-                            <!--end::Text-->
-                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
-                        </div>
-                        <!--end::Item-->
-
-                    </div>
-                    <!--end::Body-->
-                </div>
-                <!--end::List Widget 2-->
-            </div>
-            @*Etkinlikler*@
-            <div class="col-xl-4">
-                <!--begin::List Widget 2-->
-                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
-                    <!--begin::Header-->
-                    <div class="card-header border-0">
-                        <h3 class="card-title font-weight-bolder text-success">Etkinlikler</h3>
-
-                    </div>
-
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body pt-2">
-                        <!--begin::Item-->
-                        <div class="d-flex align-items-center flex-wrap mb-5">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
-                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
-                            </div>
-                            <!--end::Text-->
-                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="d-flex align-items-center flex-wrap mb-5">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
-                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
-                            </div>
-                            <!--end::Text-->
-                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
-                        </div>
-                        <!--end::Item-->
-
-                    </div>
-                    <!--end::Body-->
-                </div>
-                <!--end::List Widget 2-->
-            </div>
-            @*Yaklaşan İzinler*@
-            <div class="col-xl-4">
-                <!--begin::List Widget 2-->
-                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
-                    <!--begin::Header-->
-                    <div class="card-header border-0">
-                        <h3 class="card-title font-weight-bolder text-success">Yaklaşan İzinler</h3>
-
-                    </div>
-
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body pt-2">
-                        <!--begin::Item-->
-                        <div class="d-flex align-items-center flex-wrap mb-5">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
-                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
-                            </div>
-                            <!--end::Text-->
-                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="d-flex align-items-center flex-wrap mb-5">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
-                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
-                            </div>
-                            <!--end::Text-->
-                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
-                        </div>
-                        <!--end::Item-->
-
-                    </div>
-                    <!--end::Body-->
-                </div>
-                <!--end::List Widget 2-->
-            </div>
-            @*Yaklaşan Doğum Günleri*@
-            <div class="col-xl-4">
-                <!--begin::List Widget 2-->
-                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
-                    <!--begin::Header-->
-                    <div class="card-header border-0">
-                        <h3 class="card-title font-weight-bolder text-success">Yaklaşan Doğum Günleri</h3>
-
-                    </div>
-
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body pt-2">
-                        <!--begin::Item-->
-                        <div class="d-flex align-items-center flex-wrap mb-5">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
-                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
-                            </div>
-                            <!--end::Text-->
-                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="d-flex align-items-center flex-wrap mb-5">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
-                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
-                            </div>
-                            <!--end::Text-->
-                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
-                        </div>
-                        <!--end::Item-->
-
-                    </div>
-                    <!--end::Body-->
-                </div>
-                <!--end::List Widget 2-->
-            </div>
+            <!--end::List Widget 2-->
         </div>
+        @*Yaklaşan İzinler*@
+        <div class="col-xl-3">
+            <!--begin::List Widget 2-->
+            <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-success">Yaklaşan İzinler</h3>
+
+                </div>
+
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+                    @foreach (var item in Model.UpcomingLeaves)
+                    {
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    @if (item.GenderGeneralSubTypeId == 52)
+                                    {
+                                        <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                    }
+                                    else if (item.GenderGeneralSubTypeId == 53)
+                                    {
+                                        <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
+                                    }
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::List Widget 2-->
+        </div>
+
+        @*Doğum günleri*@
+        <div class="col-xl-3">
+            <!--begin::List Widget 2-->
+            <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-success"><a class="text-success" asp-controller="Event" asp-action="Index">Yaklaşan Doğum Günleri</a></h3>
+
+                </div>
+
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+                    @if (Model.BirtDates != null)
+                    {
+
+
+                        @foreach (var item in Model.BirtDates)
+                        {
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50 symbol-light mr-5">
+                                    <span class="symbol-label">
+                                        <i class="fas fa-gift text-danger fa-2x  h-50 align-self-center"></i>
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 mr-2">
+                                    <a asp-controller="Event" asp-action="Index" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@item.BirthDate.Value.ToString("dd MMMM")</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    <!--end::Item-->
+
+
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::List Widget 2-->
+        </div>
+        @*Etkinlikler*@
+        <div class="col-xl-3">
+            <!--begin::List Widget 2-->
+            <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-success"><a class="text-success" asp-controller="Event" asp-action="Index">Etkinlikler</a></h3>
+
+                </div>
+
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+
+                    @if (Model.Events != null)
+                    {
+
+
+                        @foreach (var item in Model.Events)
+                        {
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50 symbol-light mr-5">
+                                    <span class="symbol-label">
+                                        <i class="fas fa-calendar-alt text-primary fa-2x  h-50 align-self-center"></i>
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 mr-2">
+                                    <a asp-controller="Event" asp-action="Index" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.Title</a>
+                                    <span class="text-muted font-weight-bold">@item.Start.ToString("d") </span>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::List Widget 2-->
+        </div>
+        @*Resmi tatiller Günleri*@
+        <div class="col-xl-3">
+            <!--begin::List Widget 2-->
+            <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+
+                    <h3 class="card-title font-weight-bolder text-success"><a class="text-success" asp-controller="Event" asp-action="Index">Resmi Tatiller</a></h3>
+                </div>
+
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+                    @if (Model.PublicDays != null)
+                    {
+
+
+                        @foreach (var item in Model.PublicDays)
+                        {
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50 symbol-light mr-5">
+                                    <span class="symbol-label">
+                                        <i class="fas fa-calendar-day text-success fa-2x  h-50 align-self-center"></i>
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 mr-2">
+                                    <a asp-controller="Event" asp-action="Index" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.Title</a>
+                                    <span class="text-muted font-weight-bold">@item.Start.ToString("d") </span>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::List Widget 2-->
+        </div>
+
     </div>
 </div>
+
+<div class="modal fade" id="staffLeaveApproveDash" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg p-5 " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>İzin Düzenle
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <table class=" table table-separate table-head-custom table-checkable" id="kt_datatable_14">
+                <thead>
+                    <tr>
+                        <th>İzin Türü</th>
+                        <th>Başlangıç Tarih</th>
+                        <th>Bitiş Tarih</th>
+                        <th>Toplam Gün</th>
+                        <th>Kalan İzin Hakkı</th>
+                    </tr>
+                </thead>
+                <tbody id="tableIn">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+
+}

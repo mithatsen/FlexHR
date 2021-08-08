@@ -51,12 +51,13 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<ListStaffLeaveDto, StaffLeave>().ReverseMap();
             CreateMap<StaffLeave, ListStaffLeaveDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffLeave, ListStaffLeaveOnDashboardDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            CreateMap<StaffLeave, ListStaffUpcomingLeaveOnDashboardDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
 
             #endregion
             #region StaffShift
             CreateMap<AddStaffShiftDto, StaffShift>().ReverseMap();
             CreateMap<ListStaffShiftDto, StaffShift>().ReverseMap();
-            CreateMap<StaffShift,ListStaffShiftOnDashboardDto > ().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            CreateMap<StaffShift, ListStaffShiftOnDashboardDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffShift, ListStaffShiftDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
 
             #endregion
@@ -68,7 +69,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<AddStaffPaymentDto, StaffPayment>().ReverseMap();
             CreateMap<StaffPayment, ListStaffPaymentDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffPayment, ListStaffPaymentOnDashboardDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
-            
+
             #endregion
 
             #region Receipt
@@ -77,6 +78,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #region PublicHoliday
             CreateMap<AddPublicHolidayDto, PublicHoliday>().ReverseMap();
             CreateMap<ListPublicHolidayDto, PublicHoliday>().ReverseMap();
+            CreateMap<PublicHoliday, ListStaffPublicDayOnDashboardDto>();
             #endregion
             #region Debit
             CreateMap<ListStaffDebitDto, StaffDebit>().ReverseMap();
@@ -84,8 +86,9 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #endregion
             #region Event
             CreateMap<ListEventDto, Event>().ReverseMap();
+            CreateMap<Event, ListStaffEventOnDashboardDto>();
             CreateMap<AddEventDto, Event>().ReverseMap();
-
+            CreateMap<StaffPersonelInfo, ListStaffBirthOnDashboardDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             #endregion
             #region Leave Rule
             CreateMap<ListLeaveRuleDto, LeaveRule>().ReverseMap();
@@ -101,11 +104,11 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #endregion
             #region Company Branch
             CreateMap<CompanyBranch, ListCompanyBranchDto>().ForMember(d => d.CompanyName, o => o.MapFrom(s => s.Company.CompanyName));
-            CreateMap<ListCompanyBranchDto,CompanyBranch >();
+            CreateMap<ListCompanyBranchDto, CompanyBranch>();
             CreateMap<AddCompanyBranchDto, CompanyBranch>().ReverseMap();
             #endregion
 
-       
+
         }
     }
 
