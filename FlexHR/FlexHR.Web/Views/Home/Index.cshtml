@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Hoşgeldin Ahmet</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+       
+
+    </div>
+</div>
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+        <!--begin::Dashboard-->
+        <!--begin::Row-->
+        <div class="row">
+            <div class="col-xl-4">
+                <!--begin::List Widget 2-->
+                <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bolder text-success">Harcama Talepleri</h3>
+                      
+                    </div>
+                    
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
+                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
+                            </div>
+                            <!--end::Text-->
+                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-light mr-5">
+                                <span class="symbol-label">
+                                    <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mr-2">
+                                <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">Hakan Güneş</a>
+                                <span class="text-muted font-weight-bold">24 Ağustos 2021</span>
+                            </div>
+                            <!--end::Text-->
+                            <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                        </div>
+                        <!--end::Item-->
+                     
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 2-->
+            </div>
+        </div>
+    </div>
+</div>
