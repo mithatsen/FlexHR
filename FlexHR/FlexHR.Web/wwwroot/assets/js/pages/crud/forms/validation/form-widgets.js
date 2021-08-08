@@ -73,7 +73,7 @@ var KTFormWidgetsValidation = function () {
 
         // Select2
         $('#kt_select2').select2({
-            placeholder: "Select a state",
+            placeholder: "Seçiniz",
         });
 
         $('#kt_select2').on('change', function(){

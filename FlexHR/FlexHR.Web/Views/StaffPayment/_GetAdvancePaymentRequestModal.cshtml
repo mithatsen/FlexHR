@@ -1,0 +1,214 @@
+﻿
+<div class="modal fade" id="staffAdvancePaymentRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 id="PaymentAddModalHeader" class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Avans Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="modalRequestAdvancePaymentForm" method="POST">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row">
+                                                <label>Personel *</label>
+                                                <div class="input-group">
+                                                    <select id="kt_select2_1"  style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <option value="">Personel Seçiniz</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label>Tutar</label>
+                                                <div class="input-group">
+                                                    <input id="txtAmount" type="text" name="AmountRequest" class="form-control form-control-solid form-control-lg">
+                                                    <div class="input-group-append">
+                                                        <select id="currencyType" class="form-control form-control-solid form-control-lg" name="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div id="InstallmentDiv" class="form-group row  ">
+                                                <label>Taksit</label>
+                                                <div class="input-group">
+                                                    <select id="valInstallment" class="form-control form-control-solid form-control-lg" name="Installment">
+                                                        <option value="" selected>Seçiniz</option>
+                                                        @for (int i = 1; i < 13; i++)
+                                                        {
+                                                            <option value=@i>@i</option>
+                                                        }
+
+
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-5">
+
+                                            <div class="form-group row  ">
+                                                <label id="jobFinishDateLbl">Ödeme Tarihi</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_9" data-target-input="nearest">
+                                                        <input id="ContractStartDate" name="PaymentDateRequest" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_9" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_9" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="smDescription" class="form-group row">
+                                                <label>Açıklama</label>
+                                                <div class="input-group">
+                                                    <textarea id="txtSmDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="DescriptionRequest" placeholder="Açıklama"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="button" onclick="fncAddAdvancePayment()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script>
+    $('#kt_select2_1').select2({
+        placeholder: 'Personel Seçiniz'
+    });
+</script>
+
+<script>
+    var fvRequestAdvancePaymento = FormValidation.formValidation(
+        document.getElementById('modalRequestAdvancePaymentForm'),
+        {
+            fields: {
+                StaffId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Personel seçiniz'
+                        }
+                    }
+                },
+                PaymentDateRequest: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
+
+                    }
+                },
+                AmountRequest: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tutar alanı boş geçilemez'
+                        },
+                        numeric: {
+                            message: ' Tutar rakamlardan oluşmalıdır'
+                        }
+
+                    }
+                },
+                DescriptionRequest: {
+                    validators: {
+                        stringLength: {
+                            max: 499,
+                            message: '500 karakterden az girin'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+
+            }
+        }
+    );
+
+    function fncAddAdvancePayment() {
+    
+        fvRequestAdvancePaymento.validate().then(function (status) {
+            console.log(status);
+            if (status == 'Valid') {
+                var formdata = new FormData();
+                formdata.append("Installment", $('#valInstallment').val());
+                formdata.append("Amount", $('#txtAmount').val());
+                formdata.append("SmDescription", $('#txtSmDescription').val());
+                formdata.append("CurrencyType", $('#currencyType').val());
+                formdata.append("StaffId", $('#kt_select2_1').val());
+                formdata.append("Date", $('#ContractStartDate').val());
+                $.ajax({
+                    url: "/StaffPayment/AddStaffPaymentWithAjax/" + 100,
+                    type: "POST",
+                    data: formdata,
+
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data == "true") {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+                        }
+
+                    }
+                });
+
+            }
+        });
+    }
+
+
+</script>

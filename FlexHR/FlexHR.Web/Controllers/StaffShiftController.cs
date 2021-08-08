@@ -78,5 +78,11 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
         }
+        [HttpGet]
+        public IActionResult GetShiftRequestModal()
+        {
+
+            return PartialView("_GetShiftRequestModal");
+        }
     }
 }

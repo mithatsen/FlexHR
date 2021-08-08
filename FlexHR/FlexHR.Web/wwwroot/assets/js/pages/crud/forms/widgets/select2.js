@@ -4,7 +4,7 @@ var KTSelect2 = function() {
     var demos = function() {
         // country
         $('#kt_select2_1, #kt_select2_1_validate').select2({
-            placeholder: 'Select a state'
+            placeholder: 'Seciniz'
         });
         // city
         $('#kt_select2_city, #kt_select2_1_validate').select2({
@@ -16,7 +16,7 @@ var KTSelect2 = function() {
         });
         // nested
         $('#kt_select2_2, #kt_select2_2_validate').select2({
-            placeholder: 'Select a state'
+            placeholder: 'Seçiniz'
         });
 
         // multi select
@@ -117,7 +117,7 @@ var KTSelect2 = function() {
 
         // tagging support
         $('#kt_select2_12_1, #kt_select2_12_2, #kt_select2_12_3, #kt_select2_12_4').select2({
-            placeholder: "Select an option",
+            placeholder: "Seciniz",
         });
 
         // disabled mode
@@ -158,7 +158,7 @@ var KTSelect2 = function() {
         $('#kt_select2_modal').on('shown.bs.modal', function () {
             // country
             $('#kt_select2_1_modal').select2({
-                placeholder: "Select a state"
+                placeholder: "Seçiniz"
             });
             // city
             $('#kt_select2_city_modal').select2({
