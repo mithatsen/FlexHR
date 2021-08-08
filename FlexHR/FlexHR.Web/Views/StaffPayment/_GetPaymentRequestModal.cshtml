@@ -48,13 +48,12 @@
 
                                             </div>
                                             <div class="form-group row">
-                                                <label>Personel *</label>
+                                                <label>Açıklama</label>
                                                 <div class="input-group">
-                                                    <select id="kt_select2_1" onchange="staffChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
-                                                        <option value="-1">Personel Seçiniz</option>
-                                                    </select>
+                                                    <textarea id="txtLgDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                         <div class="col-md-2"> </div>
                                         <div class="col-md-5">
@@ -72,17 +71,17 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div id="lgDescription" class="col-md-12">
                                             <div class="form-group row">
-                                                <label>Açıklama</label>
+                                                <label>Personel *</label>
                                                 <div class="input-group">
-                                                    <textarea id="txtLgDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    <select id="personal_select2" onchange="staffChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <option value="">Personel Seçiniz</option>
+                                                    </select>
                                                 </div>
                                             </div>
-
                                         </div>
+
+                                          
                                     </div>
                                 </div>
                                 <!--end::Body-->
@@ -102,7 +101,7 @@
 </div>
 
 
-<script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
+
 <script>
     let counterRequest = 0;
     function AddReceipt() {
@@ -116,7 +115,11 @@
         $(divId).remove();
     }
 </script>
-
+<script>
+    $('#personal_select2').select2({
+        placeholder: 'Personel Seçiniz'
+    });
+</script>
 @*Validation Staff Payment*@
 <script>
     var fvRequest = FormValidation.formValidation(
@@ -176,6 +179,14 @@
 
                     }
                 },
+                StaffId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Personel seçiniz'
+                        },
+
+                    }
+                },
                 Description: {
                     validators: {
                         stringLength: {
@@ -196,7 +207,7 @@
     );
     var id = 0;
     function staffChange() {
-        id = document.getElementById("kt_select2_1").value;
+        id = document.getElementById("personal_select2").value;
     }
     function fncAddRequestReceipt() {
         fvRequest.validate().then(function (status) {
@@ -223,7 +234,6 @@
                     });
                     formdata.append(myKey, file[0].files[0]);
                 });
-                var id = document.getElementById("kt_select2_1").value;
                 formdata.append("Installment", $('#valInstallment').val());
                 formdata.append("FeeType", $('#valFeeType').val());
                 formdata.append("Amount", $('#txtAmount').val());
@@ -231,7 +241,7 @@
                 formdata.append("SmDescription", $('#txtSmDescription').val());
                 formdata.append("LgDescription", $('#txtLgDescription').val());
                 formdata.append("CurrencyType", $('#currencyType').val());
-                formdata.append("StaffId", $('#staffId').val());
+                formdata.append("StaffId", $('#personal_select2').val());
                 $.ajax({
                     url: "/StaffPayment/AddStaffPaymentWithAjax/" + 99,
                     type: "POST",

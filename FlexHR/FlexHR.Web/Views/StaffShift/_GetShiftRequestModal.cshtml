@@ -12,7 +12,7 @@
                 <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="modalAddShift" method="POST">
+            <form id="modalRequestShiftForm" method="POST">
                 <input type="hidden" id="StaffId" value="@ViewBag.StaffId" />
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
@@ -41,6 +41,13 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group row">
+                                                <label>Açıklama *</label>
+                                                <div class="input-group">
+                                                    <textarea type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" id="Description" name="Description" placeholder="Açıklama"></textarea>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5 ">
@@ -50,14 +57,12 @@
                                                     <input id="kt_touchspin_1" type="text" class="form-control form-control-lg text-center" value="0" name="Duration" placeholder="Toplam" />
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label>Açıklama *</label>
+                                                <label>Personel *</label>
                                                 <div class="input-group">
-                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" id="Description" name="Description" placeholder="Açıklama"></textarea>
-
+                                                    <select id="personal_select2" onchange="staffChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <option value="">Personel Seçiniz</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,12 +80,119 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="shiftClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    <button type="button" onclick="shiftRequestClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+<script>
+    $('#personal_select2').select2({
+        placeholder: 'Personel Seçiniz'
+    });
+</script>
 
+@*//add staff shift*@
+<script>
+    //  document.addEventListener('DOMContentLoaded', function (e) {
+
+    var fvShiftRequest = FormValidation.formValidation(document.getElementById('modalRequestShiftForm'), {
+        fields: {
+            StartDate: {
+                validators: {
+                    notEmpty: {
+                        message: 'Tarih alanı boş geçilemez'
+                    },
+                    date: {
+                        format: 'DD.MM.YYYY HH:mm',
+                        message: 'Geçerli bir tarih girin'
+                    }
+
+                }
+            },
+            Duration: {
+                validators: {
+                    notEmpty: {
+                        message: 'Süre alanı boş geçilemez',
+                    },
+                    greaterThan: {
+                        min: 1,
+                        message: 'Süre alanı 0 olamaz',
+                    }
+
+                }
+            },
+            StaffId: {
+                validators: {
+                    notEmpty: {
+                        message: 'Personel seçiniz'
+                    },
+
+                }
+            },
+            Description: {
+                validators: {
+                    notEmpty: {
+                        message: 'Açıklama alanı boş geçilemez'
+                    },
+                    stringLength: {
+                        max: 499,
+                        message: '500 karakterden az girin'
+                    }
+                }
+            },
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            // Bootstrap Framework Integration
+            bootstrap: new FormValidation.plugins.Bootstrap(),
+            // Validate fields when clicking the Submit button
+            // submitButton: new FormValidation.plugins.SubmitButton(),
+            // Submit the form when all fields are valid
+            // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+        },
+    });
+    function shiftRequestClickFunction() {
+
+        fvShiftRequest.validate().then(function (status) {
+            // Update the login button content based on the validation status
+            if (status == 'Valid') {
+
+                var formData = {
+                    StaffId: $("#personal_select2").val(),
+                    StartDate: $("#StartDate").val(),
+                    Duration: $("#kt_touchspin_1").val(),
+                    Description: $("#Description").val()
+                };
+                console.log(formData);
+                $.ajax({
+                    method: 'post',
+                    url: '/StaffShift/AddStaffShiftWithAjax',
+                    data: formData,
+                    success: function (data) {
+                        if (data == 'true') {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload()
+                            })
+                        }
+
+                    }
+
+                })
+            }
+        });
+    }
+
+</script>
+<script>
+    $('#kt_datetimepicker_18').datetimepicker({
+        locale: 'tr',
+        format: 'DD.MM.YYYY HH:mm'
+    });
+</script>
 <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>

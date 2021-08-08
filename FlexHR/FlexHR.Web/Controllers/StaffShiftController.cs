@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,11 @@ namespace FlexHR.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IStaffShiftService _staffShiftService;
-        public StaffShiftController(IStaffShiftService staffShiftService, IMapper mapper, IGeneralSubTypeService generalSubTypeService)
+        private readonly IStaffService _staffService;
+        public StaffShiftController(IStaffShiftService staffShiftService, IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService)
         {
             _staffShiftService = staffShiftService;
+            _staffService = staffService;
             _mapper = mapper;
             _generalSubTypeService = generalSubTypeService;
         }
@@ -81,6 +84,7 @@ namespace FlexHR.Web.Controllers
         [HttpGet]
         public IActionResult GetShiftRequestModal()
         {
+            ViewBag.Staffs = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
 
             return PartialView("_GetShiftRequestModal");
         }
