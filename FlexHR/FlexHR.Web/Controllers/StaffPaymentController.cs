@@ -19,18 +19,20 @@ namespace FlexHR.Web.Controllers
 {
     public class StaffPaymentController : Controller
     {
+        private readonly IStaffService _staffService;
         private readonly IStaffPaymentService _staffPaymentService;
         private readonly IReceiptService _receiptService;
         private readonly IMapper _mapper;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IConfiguration _configuration;
-        public StaffPaymentController(IStaffPaymentService staffPaymentService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IConfiguration configuration, IReceiptService receiptService)
+        public StaffPaymentController(IStaffPaymentService staffPaymentService, IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IConfiguration configuration, IReceiptService receiptService)
         {
             _staffPaymentService = staffPaymentService;
             _mapper = mapper;
             _generalSubTypeService = generalSubTypeService;
             _configuration = configuration;
             _receiptService = receiptService;
+            _staffService = staffService;
         }
         public IActionResult Index(int id)
         {
@@ -43,15 +45,15 @@ namespace FlexHR.Web.Controllers
             var paymentModels = new List<ListStaffPaymentDto>();
             foreach (var item in staffPaymentList)
             {
-                
+
                 var paymentModel = _mapper.Map<ListStaffPaymentDto>(item);
                 paymentModel.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
 
                 paymentModel.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
-                paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId && x.IsActive==true).ToList();
+                paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId && x.IsActive == true).ToList();
                 paymentModels.Add(paymentModel);
             }
-  
+
             return View(paymentModels);
         }
         [HttpPost]
@@ -87,47 +89,47 @@ namespace FlexHR.Web.Controllers
                 {
 
                     List<Receipt> receipts = new List<Receipt>(); //datadan gelen fişleri listeye ekledik.
-  
-                        foreach (var item in data.Files)
+
+                    foreach (var item in data.Files)
+                    {
+
+                        var temp = item.Name.Split("~");
+
+                        var staffName = "Staff_" + data["staffId"];
+
+                        var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
+                        var folderPath = Path.Combine(fullPath, staffName);
+                        if (!Directory.Exists(folderPath))
+                            Directory.CreateDirectory(folderPath);
+
+                        var filePath = Path.Combine(folderPath, "HarcamaFisleri" + "/");
+                        if (!Directory.Exists(filePath))
+                            Directory.CreateDirectory(filePath);
+                        var imagePath = Path.Combine(filePath + item.FileName);
+                        if (item.Length > 0)
                         {
+                            //dosyamızı kaydediyoruz.
 
-                            var temp = item.Name.Split("~");
-
-                            var staffName = "Staff_" + data["staffId"];
-
-                            var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
-                            var folderPath = Path.Combine(fullPath, staffName);
-                            if (!Directory.Exists(folderPath))
-                                Directory.CreateDirectory(folderPath);
-
-                            var filePath = Path.Combine(folderPath, "HarcamaFisleri" + "/");
-                            if (!Directory.Exists(filePath))
-                                Directory.CreateDirectory(filePath);
-                            var imagePath = Path.Combine(filePath + item.FileName);
-                            if (item.Length > 0)
+                            using (var stream = new FileStream(imagePath, FileMode.Create))
                             {
-                                //dosyamızı kaydediyoruz.
-
-                                using (var stream = new FileStream(imagePath, FileMode.Create))
-                                {
-                                    await item.CopyToAsync(stream);
-                                }
+                                await item.CopyToAsync(stream);
                             }
-
-                            Receipt receipt = new Receipt
-                            {
-                                Name = temp[0],
-                                Vat = Convert.ToDecimal(temp[1]),
-                                Amount = Convert.ToDecimal(temp[2]),
-                                FileName = item.FileName,
-                                FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
-                                IsActive=true
-                            };
-                            receipts.Add(receipt);
-
                         }
-                        foreach (var item in data.Keys)
+
+                        Receipt receipt = new Receipt
                         {
+                            Name = temp[0],
+                            Vat = Convert.ToDecimal(temp[1]),
+                            Amount = Convert.ToDecimal(temp[2]),
+                            FileName = item.FileName,
+                            FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
+                            IsActive = true
+                        };
+                        receipts.Add(receipt);
+
+                    }
+                    foreach (var item in data.Keys)
+                    {
                         if (item.Contains("~"))
                         {
                             var temp = item.Split("~");
@@ -142,7 +144,7 @@ namespace FlexHR.Web.Controllers
                             };
                             receipts.Add(receipt);
                         }
-                        }
+                    }
                     var x = new StaffPayment
                     {
                         Receipts = receipts,
@@ -210,6 +212,15 @@ namespace FlexHR.Web.Controllers
 
         }
         [HttpGet]
+        public IActionResult GetAdvancePaymentRequestModal()
+        {
+
+            ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
+            ViewBag.Staffs = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
+            return PartialView("_GetAdvancePaymentRequestModal");
+
+        }
+        [HttpGet]
         public IActionResult GetUpdateStaffPaymentModal(int id)
         {
             var staffPayment = _staffPaymentService.GetById(id);
@@ -220,7 +231,7 @@ namespace FlexHR.Web.Controllers
             if (paymentTypeId == 99)
             {
                 var temp = _mapper.Map<ListStaffPaymentDto>(staffPayment);
-                temp.Receipts = _receiptService.Get(x => x.StaffPaymentId == id && x.IsActive==true).ToList();
+                temp.Receipts = _receiptService.Get(x => x.StaffPaymentId == id && x.IsActive == true).ToList();
                 return PartialView("_GetUpdateStaffPaymentModal1", temp);
             }
             else if (paymentTypeId == 100 || paymentTypeId == 103)
@@ -239,6 +250,13 @@ namespace FlexHR.Web.Controllers
             //ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
 
         }
+        [HttpGet]
+        public IActionResult GetPaymentRequestModal()
+        {
+            ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
+            ViewBag.Staffs = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
+            return PartialView("_GetPaymentRequestModal");
+        }
         [HttpPost]
         public IActionResult UpdateStaffPayment(ListStaffPaymentDto model)
         {
@@ -252,9 +270,9 @@ namespace FlexHR.Web.Controllers
 
         public IActionResult GetStaffPaymentWithReceiptInfoModal(int id)
         {
-         
-        
-            var receipts = _receiptService.Get(x => x.StaffPaymentId == id && x.IsActive==true).ToList();
+
+
+            var receipts = _receiptService.Get(x => x.StaffPaymentId == id && x.IsActive == true).ToList();
             return PartialView("_GetStaffPaymentInfo", _mapper.Map<List<ListReceiptDto>>(receipts));
 
 
@@ -284,7 +302,7 @@ namespace FlexHR.Web.Controllers
             if (ModelState.IsValid)
             {
                 int staffPaymentId = Convert.ToInt32(data["StaffPaymentId"]);
-                var result= _staffPaymentService.Get(x => x.StaffPaymentId == staffPaymentId).FirstOrDefault();
+                var result = _staffPaymentService.Get(x => x.StaffPaymentId == staffPaymentId).FirstOrDefault();
                 string amount = data["Amount"];
                 string date = data["Date"];
                 string LgDescription = data["LgDescription"];
@@ -345,7 +363,7 @@ namespace FlexHR.Web.Controllers
                             tempo.StaffPaymentId = staffPaymentId;
                             _receiptService.Update(tempo);
                         }
-                        
+
                     }
                     foreach (var key in data.Keys)
                     {
@@ -368,7 +386,7 @@ namespace FlexHR.Web.Controllers
                             }
                             else
                             {
-                                var temp= _receiptService.GetById(Convert.ToInt32(temp2[0]));
+                                var temp = _receiptService.GetById(Convert.ToInt32(temp2[0]));
                                 temp.Name = temp2[1];
                                 temp.Vat = Convert.ToDecimal(temp2[2]);
                                 temp.Amount = Convert.ToDecimal(temp2[3]);
@@ -376,9 +394,9 @@ namespace FlexHR.Web.Controllers
                                 temp.FileFullPath = temp.FileFullPath;
                                 temp.IsActive = true;
                                 temp.StaffPaymentId = staffPaymentId;
-                                _receiptService.Update(temp);                         
+                                _receiptService.Update(temp);
                             }
-                            
+
                         }
                     }
                     var x = _staffPaymentService.GetById(staffPaymentId);
@@ -388,7 +406,7 @@ namespace FlexHR.Web.Controllers
                     x.PaymentDate = Convert.ToDateTime(date);
                     x.Description = LgDescription;
                     x.CurrencyGeneralSubTypeId = Convert.ToInt32(data["CurrencyType"]);
-                    
+
                     _staffPaymentService.Update(x);
 
                 }

@@ -1,0 +1,328 @@
+﻿<div class="modal fade" id="staffPaymentRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 id="PaymentAddModalHeader" class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Harcama Talep Et
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="modalRequestPaymentForm" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+
+                                        @* fiş ekleme divi *@
+                                        <div id="receiptDiv" class="col-md-12 ">
+                                            <div class="form-group row">
+                                                <div class="input-group">
+                                                    <a onclick="AddReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12"> <hr /></div>
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row">
+                                                <label>Tutar</label>
+                                                <div class="input-group">
+                                                    <input id="txtAmount" type="text" name="Amount" class="form-control form-control-solid form-control-lg">
+                                                    <div class="input-group-append">
+                                                        <select id="currencyType" class="form-control form-control-solid form-control-lg" name="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
+                                                <label>Personel *</label>
+                                                <div class="input-group">
+                                                    <select id="kt_select2_1" onchange="staffChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <option value="-1">Personel Seçiniz</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-5">
+
+                                            <div class="form-group row  ">
+                                                <label id="jobFinishDateLbl">Ödeme Tarihi</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_9" data-target-input="nearest">
+                                                        <input id="ContractStartDate" name="PaymentDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_9" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_9" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="lgDescription" class="col-md-12">
+                                            <div class="form-group row">
+                                                <label>Açıklama</label>
+                                                <div class="input-group">
+                                                    <textarea id="txtLgDescription" type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+                        </div>
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="button" onclick="fncAddRequestReceipt()" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
+<script>
+    let counterRequest = 0;
+    function AddReceipt() {
+        counterRequest++;
+        var divId = "receipt" + counterRequest;
+        var deleteId = "delete" + counterRequest;
+        $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counterRequest + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+    }
+    function DeleteReceipt(counterRequest) {
+        var divId = "#receipt" + counterRequest;
+        $(divId).remove();
+    }
+</script>
+
+@*Validation Staff Payment*@
+<script>
+    var fvRequest = FormValidation.formValidation(
+        document.getElementById('modalRequestPaymentForm'),
+        {
+            fields: {
+                PaymentDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
+                        date: {
+                            format: 'DD.MM.YYYY',
+                            message: 'Geçerli bir tarih girin'
+                        }
+
+                    }
+                },
+                Name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Fiş adı alanı boş geçilemez'
+                        },
+
+                    }
+                },
+                Vat: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Kdv alanı boş geçilemez'
+                        },
+                        numeric: {
+                            message: ' KDV rakamlardan oluşmalıdır'
+                        }
+
+                    }
+                },
+                ReceiptAmount: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tutar alanı boş geçilemez'
+                        },
+                        numeric: {
+                            message: ' Tutar rakamlardan oluşmalıdır'
+                        }
+
+                    }
+                },
+                Amount: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tutar alanı boş geçilemez'
+                        },
+                        numeric: {
+                            message: ' Tutar rakamlardan oluşmalıdır'
+                        }
+
+                    }
+                },
+                Description: {
+                    validators: {
+                        stringLength: {
+                            max: 499,
+                            message: '500 karakterden az girin'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+
+            }
+        }
+    );
+    var id = 0;
+    function staffChange() {
+        id = document.getElementById("kt_select2_1").value;
+    }
+    function fncAddRequestReceipt() {
+        fvRequest.validate().then(function (status) {
+            if (status == 'Valid') {
+                var formdata = new FormData();
+                $('.receiptdiv').each(function (i, obj) {
+
+                    var myKey = "";
+                    var file;
+                    $(this).find('input').each(function (j, obj2) {
+                        if ($(obj2).attr("name") == "Name") {
+                            myKey += $(obj2).val();
+                        }
+                        else if ($(obj2).attr("name") == "Vat") {
+                            myKey += "~" + $(obj2).val();
+                        }
+                        else if ($(obj2).attr("name") == "ReceiptAmount") {
+                            myKey += "~" + $(obj2).val();
+                        }
+                        else if ($(obj2).attr("name") == "File") {
+                            file = $(obj2);
+
+                        }
+                    });
+                    formdata.append(myKey, file[0].files[0]);
+                });
+                var id = document.getElementById("kt_select2_1").value;
+                formdata.append("Installment", $('#valInstallment').val());
+                formdata.append("FeeType", $('#valFeeType').val());
+                formdata.append("Amount", $('#txtAmount').val());
+                formdata.append("Date", $('#ContractStartDate').val());
+                formdata.append("SmDescription", $('#txtSmDescription').val());
+                formdata.append("LgDescription", $('#txtLgDescription').val());
+                formdata.append("CurrencyType", $('#currencyType').val());
+                formdata.append("StaffId", $('#staffId').val());
+                $.ajax({
+                    url: "/StaffPayment/AddStaffPaymentWithAjax/" + 99,
+                    type: "POST",
+                    data: formdata,
+
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data == "true") {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Kaydınız eklendi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+                        }
+
+                    }
+                });
+
+            }
+
+
+        });
+    }
+    function DeleteStaffPayment(id) {
+        Swal.fire({
+            title: "Silmek istediğinize emin misiniz ?",
+            text: "Bunu geri alamazsınız!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet, sil!",
+            cancelButtonText: "Hayır, iptal et!",
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+
+                $.ajax({
+                    method: "POST",
+                    url: "/StaffPayment/DeleteStaffPayment/" + id,
+                }).done(function (result) {
+                    if (result == true) {
+                        Swal.fire({
+                            title: "Silindi!",
+                            text: "Kaydınız silindi.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })
+
+                    } else {
+                        Swal.fire(
+                            "Hata",
+                            "Kaydınız silinemedi",
+                            "hata"
+                        )
+                    }
+
+                })
+            } else if (result.dismiss === "cancel") {
+                Swal.fire({
+                    title: "İptal Edildi",
+                    text: "Kaydınız silinmedi",
+                    icon: "error",
+                    showCancelButton: false
+                })
+            }
+        });
+
+
+    }
+</script>
+
+<script>
+    let counter = 0;
+    function AddReceipt() {
+        counter++;
+        var divId = "receipt" + counter;
+        var deleteId = "delete" + counter;
+        $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+    }
+    function DeleteReceipt(counter) {
+        var divId = "#receipt" + counter;
+        $(divId).remove();
+    }
+</script>
+
+<script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
+<script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+<script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
