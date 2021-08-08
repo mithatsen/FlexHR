@@ -215,14 +215,6 @@
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a asp-controller="Leave" asp-action="StaffLeaveRemainInfo" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">İzin Raporları</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
                                             <a asp-controller="Payment" asp-action="Index" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -334,7 +326,7 @@
             </div>
             <!--end::Aside-->
             <!--begin::Wrapper-->
-            <div id="RequestStaffLeaveModalDiv">   </div>
+            <div id="RequestStaffModalDiv">   </div>
             <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
                 <!--begin::Header-->
                 <div id="kt_header" class="header header-fixed bg-dark">
@@ -485,10 +477,74 @@
     <script src="~/Croppie-2.6.4/croppie.js"></script>
 
     <script>
+        
+        function getPaymentRequestModal() {
+
+            var modelContent = $("#RequestStaffModalDiv")
+            $("#RequestStaffModalDiv").empty();
+
+            $.ajax({
+                method: "GET",
+                url: "/StaffPayment/GetPaymentRequestModal/",
+                dataType: "html",
+                cache: false,
+            }).done(function (content) {
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#staffPaymentRequestModal").modal("show");
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+    </script>
+    <script>
+        function getShiftRequestModal() {
+            var modelContent = $("#RequestStaffModalDiv")
+            $("#RequestStaffModalDiv").empty();
+
+            $.ajax({
+                method: "GET",
+                url: "/StaffShift/GetShiftRequestModal/",
+                dataType: "html",
+                cache: false,
+            }).done(function (content) {
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#staffShiftRequestModal").modal("show");
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+        function getAdvancePaymentRequestModal() {
+            var modelContent = $("#RequestStaffModalDiv")
+            $("#RequestStaffModalDiv").empty();
+
+            $.ajax({
+                method: "GET",
+                url: "/StaffPayment/GetAdvancePaymentRequestModal/",
+                dataType: "html",
+                cache: false,
+            }).done(function (content) {
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#staffAdvancePaymentRequestModal").modal("show");
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
         function getLeaveRequestModal() {
 
-            var modelContent = $("#RequestStaffLeaveModalDiv")
-            $("#RequestStaffLeaveModalDiv").empty();
+            var modelContent = $("#RequestStaffModalDiv")
+            $("#RequestStaffModalDiv").empty();
 
             $.ajax({
                 method: "GET",
@@ -507,7 +563,7 @@
             });
         }
     </script>
-   
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
