@@ -67,7 +67,7 @@
                                     <span class="text-muted font-weight-bold">@item.CreationDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
-                                <a asp-controller="Home" asp-action="Index"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                                <a onclick=getStaffPaymentApproveModal(@item.StaffPaymentId) class="cursor-pointer" ><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
                             </div>
                         }
                     }
@@ -403,6 +403,27 @@
                     modelContent.html(content);
                 }
                 $("#staffShiftApprove").modal("show");
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+
+        }
+        function getStaffPaymentApproveModal(id) {
+            var modelContent = $("#approveDiv")
+            $("#approveDiv").empty();
+
+            $.ajax({
+                method: "GET",
+                url: "/Home/GetApproveStaffPaymentModal/" + id,
+                dataType: "html",
+                cache: false,
+            }).done(function (content) {
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#staffPaymentApprove").modal("show");
 
 
             }).fail(function (error) {

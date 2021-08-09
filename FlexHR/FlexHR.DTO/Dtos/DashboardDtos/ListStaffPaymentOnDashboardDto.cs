@@ -21,8 +21,6 @@ namespace FlexHR.DTO.Dtos.DashboardDtos
         public decimal Amount { get; set; }
         public DateTime CreationDate { get; set; }
         public int? Installment { get; set; }
-
-
         public virtual ICollection<Receipt> Receipts { get; set; }
 
     }
