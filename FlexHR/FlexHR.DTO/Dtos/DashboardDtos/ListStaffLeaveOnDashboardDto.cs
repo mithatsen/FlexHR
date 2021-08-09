@@ -16,5 +16,6 @@ namespace FlexHR.DTO.Dtos.DashboardDtos
         public string LeaveType { get; set; }
         public int TotalDay { get; set; }
         public int GenderGeneralSubTypeId { get; set; }
+        public int TotalRemainingDay { get; set; }
     }
 }

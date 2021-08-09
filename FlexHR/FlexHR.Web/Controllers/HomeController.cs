@@ -17,11 +17,14 @@ namespace FlexHR.Web.Controllers
         private readonly IPublicHolidayService _publicHolidayService;
         private readonly IEventService _eventService;
         private readonly IStaffShiftService _staffShiftService;
+        private readonly IStaffService _staffService;
         private readonly IStaffPersonelInfoService _staffPersonelInfoService;
         private readonly IStaffLeaveService _staffLeaveService;
         private readonly IStaffPaymentService _staffPaymentService;
+        private readonly ILeaveRuleService _leaveRuleService;
         public HomeController(IMapper mapper, IStaffShiftService staffShiftService, IStaffPersonelInfoService staffPersonelInfoService,IStaffLeaveService staffLeaveService,
-            IStaffPaymentService staffPaymentService, IEventService eventService, IPublicHolidayService publicHolidayService)
+            IStaffPaymentService staffPaymentService, IEventService eventService, IPublicHolidayService publicHolidayService, ILeaveRuleService leaveRuleService,
+            IStaffService staffService)
         {
             _mapper = mapper;
             _publicHolidayService = publicHolidayService;
@@ -30,6 +33,8 @@ namespace FlexHR.Web.Controllers
             _staffPersonelInfoService = staffPersonelInfoService;
             _staffLeaveService = staffLeaveService;
             _staffPaymentService = staffPaymentService;
+            _leaveRuleService = leaveRuleService;
+            _staffService = staffService;
         }
     
         public IActionResult Index()
@@ -75,5 +80,59 @@ namespace FlexHR.Web.Controllers
             var model = new ListDashboardViewModel { StaffShifts = shifts, StaffLeaves=leaves,StaffPayments=payments ,BirtDates=birthDates,Events=events,PublicDays=publicDays,UpcomingLeaves=upcomingLeaves};
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult GetApproveStaffLeaveModal(int id)
+        {
+            var temp=_staffLeaveService.Get(x=>x.StaffLeaveId==id,null,"Staff,LeaveType").FirstOrDefault();
+            var result=_mapper.Map<ListStaffLeaveOnDashboardDto>(temp);
+            var totalDayDeserved = CalculateTotalLeaveAmountDeservedBySeniority(temp.Staff.JobJoinDate);
+            var totalDayUsed = _staffLeaveService.Get(p => p.StaffId == temp.StaffId && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.LeaveTypeId == 14).Sum(p => p.TotalDay);
+            result.TotalRemainingDay = totalDayDeserved - totalDayUsed;
+      
+
+            return PartialView("_GetApproveStaffLeaveModal",result);
+        }
+        [HttpGet]
+        public IActionResult GetApproveStaffShiftModal(int id)
+        {
+            var staffShift = _staffShiftService.Get(p => p.StaffShiftId == id,null,"Staff").FirstOrDefault();
+            
+            return PartialView("_GetApproveStaffShiftModal", _mapper.Map<ListStaffShiftOnDashboardDto>(staffShift));
+        }
+        
+        public int CalculateTotalLeaveAmountDeservedBySeniority(DateTime startDate)
+        {
+            var models = _leaveRuleService.GetAll().OrderBy(p => p.SeniorityYear);
+            var seniorityLevel = (DateTime.Now - startDate).Days / 365;
+            int oldCount = 0;
+            int leaveAmount = 14;
+            var totalDayDeserved = 0;
+            foreach (var item in models)
+            {
+                if (seniorityLevel > item.SeniorityYear)
+                {
+                    totalDayDeserved += (item.SeniorityYear - oldCount) * leaveAmount;
+                }
+                else
+                {
+                    totalDayDeserved += (seniorityLevel - oldCount) * leaveAmount;
+                    leaveAmount += item.AditionalLeaveAmount;
+                    oldCount = item.SeniorityYear;
+                    break;
+                }
+                leaveAmount += item.AditionalLeaveAmount;
+                oldCount = item.SeniorityYear;
+
+            }
+            if (seniorityLevel - oldCount > 0)
+            {
+                totalDayDeserved += (seniorityLevel - oldCount) * leaveAmount;
+            }
+
+
+            return totalDayDeserved;
+        }
+
     }
 }

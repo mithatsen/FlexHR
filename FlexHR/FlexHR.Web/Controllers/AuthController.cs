@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
-    public class OutController : Controller
+    public class AuthController : Controller
     {
         public IActionResult Index()
         {
