@@ -24,12 +24,12 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
         public List<Staff> GetStaffBySearchString(string search)
         {
-            return _context.Staff.Include(p=>p.StaffPersonelInfo).Where(p => p.IsActive==true && (p.UserName.Contains(search)|| p.NameSurname.Contains(search)|| p.StaffPersonelInfo.FirstOrDefault().IdNumber.Contains(search))).ToList();
+            return _context.Staff.Include(p=>p.StaffPersonelInfo).Where(p => p.IsActive==true && ( p.NameSurname.Contains(search)|| p.StaffPersonelInfo.FirstOrDefault().IdNumber.Contains(search))).ToList();
         }
 
-        public int GetStaffIdByUserName(string userName)
-        {
-            return _context.Staff.Where(p => p.UserName == userName).FirstOrDefault().StaffId;
-        }
+        //public int GetStaffIdByUserName(string userName)
+        //{
+        //    return _context.Staff.Where(p => p.UserName == userName).FirstOrDefault().StaffId;
+        //}
     }
 }

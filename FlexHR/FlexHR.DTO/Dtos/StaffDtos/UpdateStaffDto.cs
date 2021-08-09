@@ -49,7 +49,7 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public List<GeneralSubType> AccountTypeList { get; set; }
         public List<GeneralSubType> ContractTypeList { get; set; } // bu dropdown için
   
-        public List<Role> Roles { get; set; } // bu dropdown için
+        
         public List<ListStaffCareerDto> ListStaffCareer { get; set; }
         public List<ListStaffLeaveDto> ListStaffLeave { get; set; }
 

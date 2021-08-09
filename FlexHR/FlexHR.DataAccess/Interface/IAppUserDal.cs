@@ -5,8 +5,7 @@ using System.Text;
 
 namespace FlexHR.DataAccess.Interface
 {
-    public interface IStaffRoleDal : IGenericDal<StaffRole>
+    public interface IAppUserDal : IGenericDal<AppUser>
     {
-        StaffRole GetUserRoleByStaffId(int id);
     }
 }

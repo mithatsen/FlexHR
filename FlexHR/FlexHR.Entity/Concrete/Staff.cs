@@ -15,22 +15,21 @@ namespace FlexHR.Entity.Concrete
         public string PhonePersonal { get; set; }
         public DateTime JobJoinDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
         public int ContractTypeGeneralSubTypeId { get; set; }
         public bool WillUseSystem { get; set; }
         public bool IsActive { get; set; }
 
+        public AppUser AppUser { get; set; }
         public virtual ICollection<StaffCareer> StaffCareer { get; set; }
         public virtual ICollection<StaffDebit> StaffDebit { get; set; }
         public virtual ICollection<StaffFile> StaffFile { get; set; }
-      
+
         public virtual ICollection<StaffLeave> StaffLeave { get; set; }
         public virtual ICollection<StaffOtherInfo> StaffOtherInfo { get; set; }
         public virtual ICollection<StaffPayment> StaffPayment { get; set; }
         public virtual ICollection<StaffPersonelInfo> StaffPersonelInfo { get; set; }
         public virtual ICollection<StaffSalary> StaffSalary { get; set; }
         public virtual ICollection<StaffShift> StaffShift { get; set; }
-        public virtual ICollection<StaffRole> StaffRole { get; set; }
+
     }
 }

@@ -7,7 +7,7 @@ namespace FlexHR.Business.Interface
 {
     public interface IStaffService : IGenericService<Staff>
     {
-        int GetStaffIdByUserName(string userName);
+       // int GetStaffIdByUserName(string userName);
         List<Staff> GetStaffBySearchString(string search);
     }
 }

@@ -7,11 +7,11 @@ using System.Text;
 
 namespace FlexHR.Business.Concrete
 {
-    public class RoleManager : GenericManager<Role>, IRoleService
+    public class AppUserManager : GenericManager<AppUser>, IAppUserService
     {
-        public RoleManager(IRoleDal roleDal) : base(roleDal)
+        public AppUserManager(IGenericDal<AppUser> genericDal) : base(genericDal)
         {
-
         }
     }
+    
 }

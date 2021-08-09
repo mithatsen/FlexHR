@@ -7,7 +7,7 @@ namespace FlexHR.DataAccess.Interface
 {
     public interface IStaffDal : IGenericDal<Staff>
     {
-        int GetStaffIdByUserName(string userName);
+       // int GetStaffIdByUserName(string userName);
         List<Staff> GetStaffBySearchString(string search);
     }
 }

@@ -1,5 +1,6 @@
 using FlexHR.Business.DIContainer;
 using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context;
+using FlexHR.Entity.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,17 @@ namespace FlexHR.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<AppUser, AppRole>(opt =>
+            {
+                opt.Password.RequireDigit = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequiredLength = 1;
+
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                opt.Lockout.MaxFailedAccessAttempts = 3;
+            }).AddEntityFrameworkStores<FlexHRContext>();
             services.AddDbContext<FlexHRContext>();
             services.AddContainerWithDependencies();
             services.AddAutoMapper(typeof(Startup));

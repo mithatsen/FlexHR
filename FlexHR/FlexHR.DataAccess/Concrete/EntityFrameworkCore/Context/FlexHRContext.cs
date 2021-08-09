@@ -1,5 +1,6 @@
 ﻿using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
 {
-    public class FlexHRContext:DbContext
+    public class FlexHRContext : IdentityDbContext<AppUser, AppRole, int>
     {
         private readonly IConfiguration _configuration;
         public FlexHRContext(IConfiguration configuration)
@@ -37,7 +38,6 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<GeneralSubType> GeneralSubType { get; set; }
         public virtual DbSet<GeneralType> GeneralType { get; set; }
         public virtual DbSet<PublicHoliday> PublicHoliday { get; set; }
-        public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
         public virtual DbSet<StaffCareer> StaffCareer { get; set; }
         public virtual DbSet<StaffDebit> StaffDebit { get; set; }
@@ -49,7 +49,6 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<StaffSalary> StaffSalary { get; set; }
         public virtual DbSet<StaffShift> StaffShift { get; set; }
         public virtual DbSet<Town> Town { get; set; }
-        public virtual DbSet<StaffRole> StaffRole { get; set; }
         public virtual DbSet<LeaveRule> LeaveRules { get; set; }
         public virtual DbSet<Receipt> Receipt { get; set; }
         public virtual DbSet<LeaveType> LeaveType { get; set; }
@@ -65,7 +64,6 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
             modelBuilder.ApplyConfiguration(new GeneralSubTypeMap());
             modelBuilder.ApplyConfiguration(new GeneralTypeMap());
             modelBuilder.ApplyConfiguration(new PublicHolidayMap());
-            modelBuilder.ApplyConfiguration(new RoleMap());
             modelBuilder.ApplyConfiguration(new StaffCareerMap());
             modelBuilder.ApplyConfiguration(new StaffDebitMap());
             modelBuilder.ApplyConfiguration(new CityMap());
@@ -78,7 +76,6 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
             modelBuilder.ApplyConfiguration(new StaffPersonelInfoMap());
             modelBuilder.ApplyConfiguration(new StaffSalaryMap());
             modelBuilder.ApplyConfiguration(new StaffShiftMap());
-            modelBuilder.ApplyConfiguration(new StaffRoleMap());
             modelBuilder.ApplyConfiguration(new LeaveRuleMap());
             modelBuilder.ApplyConfiguration(new ReceiptRuleMap());
             modelBuilder.ApplyConfiguration(new FileColumnMap());

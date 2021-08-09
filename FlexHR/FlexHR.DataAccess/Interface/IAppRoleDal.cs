@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FlexHR.Business.Interface
+namespace FlexHR.DataAccess.Interface
 {
-    public interface IRoleService : IGenericService<Role>
+    public interface IAppRoleDal: IGenericDal<AppRole>
     {
     }
 }

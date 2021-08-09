@@ -21,22 +21,22 @@ namespace FlexHR.Web.Controllers
         private readonly IGeneralTypeService _generalTypeService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly ILeaveTypeService _leaveTypeService;
-        private readonly ILeaveRuleService _leaveRuleService;
-        private readonly IRoleService _roleService;
+        private readonly ILeaveRuleService _leaveRuleService;        
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IMapper _mapper;
         private readonly ICompanyService _companyService;
+        private readonly IAppRoleService _appRoleService;
 
         public SystemVariableController(IGeneralTypeService generalTypeService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,
-            ICompanyService companyService, IRoleService roleService, ICompanyBranchService companyBranchService)
+            ICompanyService companyService,  ICompanyBranchService companyBranchService, IAppRoleService appRoleService)
         {
             _generalTypeService = generalTypeService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _leaveTypeService = leaveTypeService;
             _companyService = companyService;
-            _roleService = roleService;
             _leaveRuleService = leaveRuleService;
+            _appRoleService = appRoleService;
             _companyBranchService = companyBranchService;
         }
 
@@ -74,7 +74,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetUpdateRoleModal(int id)
         {
-            var result = _roleService.GetById(id);
+            var result = _appRoleService.GetById(id);
             return PartialView("_GetRoleUpdateModal", _mapper.Map<ListRoleDto>(result));
         }
         public IActionResult GetUpdateCompanyBranchModal(int id)
@@ -83,8 +83,6 @@ namespace FlexHR.Web.Controllers
             var result = _companyBranchService.GetById(id);
             return PartialView("_GetCompanyBranchUpdateModal", _mapper.Map<ListCompanyBranchDto>(result));
         }
-
-
 
 
         [HttpPost]
@@ -155,7 +153,7 @@ namespace FlexHR.Web.Controllers
         {
             try
             {
-                _roleService.Add(_mapper.Map<Role>(model));
+                _appRoleService.Add(_mapper.Map<AppRole>(model));
                 return true;
             }
             catch (Exception)
@@ -202,7 +200,7 @@ namespace FlexHR.Web.Controllers
         public IActionResult UpdateRole(ListRoleDto model)
         {
             model.IsActive = true;
-            _roleService.Update(_mapper.Map<Role>(model));
+            _appRoleService.Update(_mapper.Map<AppRole>(model));
             TempData["GeneralSubTypeUpdateStatus"] = "true";
             return RedirectToAction("Index");
         }
@@ -297,9 +295,9 @@ namespace FlexHR.Web.Controllers
         {
             try
             {
-                var temp = _roleService.GetById(id);
+                var temp = _appRoleService.GetById(id);
                 temp.IsActive = false;
-                _roleService.Update(temp);
+                _appRoleService.Update(temp);
                 return true;
             }
             catch (Exception)
@@ -324,7 +322,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetRoleList()
         {
-            var result = _roleService.GetAll();
+            var result = _appRoleService.GetAll();
             return PartialView("_GetRoleTable", _mapper.Map<List<ListRoleDto>>(result));
         }
         public IActionResult GetCompanyBranchList()

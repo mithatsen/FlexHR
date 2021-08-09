@@ -99,8 +99,8 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<AddCompanyDto, Company>().ReverseMap();
             #endregion
             #region Role
-            CreateMap<ListRoleDto, Role>().ReverseMap();
-            CreateMap<AddRoleDto, Role>().ReverseMap();
+            CreateMap<ListRoleDto, AppRole>().ReverseMap();
+            CreateMap<AddRoleDto, AppRole>().ReverseMap();
             #endregion
             #region Company Branch
             CreateMap<CompanyBranch, ListCompanyBranchDto>().ForMember(d => d.CompanyName, o => o.MapFrom(s => s.Company.CompanyName));

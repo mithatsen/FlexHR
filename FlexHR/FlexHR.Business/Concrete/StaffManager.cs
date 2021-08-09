@@ -20,9 +20,9 @@ namespace FlexHR.Business.Concrete
             return _staffDal.GetStaffBySearchString(search);
         }
 
-        public int GetStaffIdByUserName(string userName)
-        {
-            return _staffDal.GetStaffIdByUserName(userName);
-        }
+        //public int GetStaffIdByUserName(string userName)
+        //{
+        //    return _staffDal.GetStaffIdByUserName(userName);
+        //}
     }
 }

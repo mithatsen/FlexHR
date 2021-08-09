@@ -7,11 +7,10 @@ using System.Text;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 {
-    public class EfRoleRepository : EfGenericRepository<Role>, IRoleDal
+    public class EfAppRoleRepository : EfGenericRepository<AppRole>, IAppRoleDal
     {
-        public EfRoleRepository(FlexHRContext context) : base(context)
+        public EfAppRoleRepository(FlexHRContext context) : base(context)
         {
-
         }
     }
 }
