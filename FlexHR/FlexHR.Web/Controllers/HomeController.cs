@@ -22,9 +22,10 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffLeaveService _staffLeaveService;
         private readonly IStaffPaymentService _staffPaymentService;
         private readonly ILeaveRuleService _leaveRuleService;
+        private readonly IGeneralSubTypeService _generalSubTypeService;
         public HomeController(IMapper mapper, IStaffShiftService staffShiftService, IStaffPersonelInfoService staffPersonelInfoService,IStaffLeaveService staffLeaveService,
             IStaffPaymentService staffPaymentService, IEventService eventService, IPublicHolidayService publicHolidayService, ILeaveRuleService leaveRuleService,
-            IStaffService staffService)
+            IStaffService staffService, IGeneralSubTypeService generalSubTypeService)
         {
             _mapper = mapper;
             _publicHolidayService = publicHolidayService;
@@ -35,6 +36,7 @@ namespace FlexHR.Web.Controllers
             _staffPaymentService = staffPaymentService;
             _leaveRuleService = leaveRuleService;
             _staffService = staffService;
+            _generalSubTypeService = generalSubTypeService;
         }
     
         public IActionResult Index()
@@ -100,7 +102,19 @@ namespace FlexHR.Web.Controllers
             
             return PartialView("_GetApproveStaffShiftModal", _mapper.Map<ListStaffShiftOnDashboardDto>(staffShift));
         }
+        [HttpGet]
+        public IActionResult GetApproveStaffPaymentModal(int id)
+        {
+           
+            var staffPayment = _staffPaymentService.Get(p => p.StaffPaymentId == id, null, "Staff,Receipts").FirstOrDefault();
+
+            var model = _mapper.Map<ListStaffPaymentOnDashboardDto>(staffPayment);
+            model.PaymentType=_generalSubTypeService.GetDescriptionByGeneralSubTypeId(model.PaymentTypeGeneralSubTypeId);
+            model.CurrencyType=_generalSubTypeService.GetDescriptionByGeneralSubTypeId(model.CurrencyGeneralSubTypeId);
+            return PartialView("_GetApproveStaffPaymentModal",model );
+        }
         
+
         public int CalculateTotalLeaveAmountDeservedBySeniority(DateTime startDate)
         {
             var models = _leaveRuleService.GetAll().OrderBy(p => p.SeniorityYear);

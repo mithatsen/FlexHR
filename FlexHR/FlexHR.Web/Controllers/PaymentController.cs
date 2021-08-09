@@ -31,15 +31,20 @@ namespace FlexHR.Web.Controllers
 
             foreach (var item in approvedPayment)
             {
-                item.PaymentType = _generalSubTypeService.GetById(item.PaymentTypeGeneralSubTypeId).Description;
+                item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
+                item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
+
+
             }
             foreach (var item in pendingApprovalPayment)
             {
-                item.PaymentType = _generalSubTypeService.GetById(item.PaymentTypeGeneralSubTypeId).Description;
+                item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
+                item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
             }
             foreach (var item in rejectedPayment)
             {
-                item.PaymentType = _generalSubTypeService.GetById(item.PaymentTypeGeneralSubTypeId).Description;
+                item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
+                item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
             }
             ListPaymentViewModel listPaymentViewModel = new ListPaymentViewModel
             {

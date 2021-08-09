@@ -14,14 +14,14 @@
                     </button>
                 </div>
                 <div class="card text-center">
-                    <div class="card-header" style="background-color:#181c32">
-                        <h3 class="text-light">@Model.NameSurname Mesai talebinde bulunmuştur.</h3>
+                    <div class="card-header" style="background-color:#181c32">                 
+                        <h4 class="text-light">@Model.NameSurname <span class="text-warning"> Mesai </span> talebinde bulunmuştur.</h4>
                     </div>
                     <div class="card-body" style="background-color:#181c32">
                         <h4 class="card-title text-light "> Tarih :@Model.StartDate  </h4>
-                        <p class="card-title "> <h6 class="text-light">Açıklama: @Model.Description </h6></p>
-                        <div class="card-footer text-muted" style="background-color:#181c32">
-                           Toplam yapılan Mesai Saati: @Model.Duration Saat
+                        <p class="card-title "> <h4 class="text-light">Açıklama: @Model.Description </h4></p>
+                        <div class="card-footer text-warning" style="background-color:#181c32">
+                            <h4>  Toplam yapılan Mesai Saati: @Model.Duration Saat  </h4>
                         </div>
                     </div>
 

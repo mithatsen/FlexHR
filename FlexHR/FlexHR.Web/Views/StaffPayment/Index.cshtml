@@ -167,7 +167,7 @@
                                     <div class="row">
 
                                         @* fiş ekleme divi *@
-                                        <div hidden id="receiptDiv" class="col-md-12 ">
+                                        <div id="receiptDiv" class="col-md-12 ">
                                             <div class="form-group row">
                                                 <div class="input-group">
                                                     <a onclick="AddReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
@@ -179,7 +179,7 @@
                                             <div class="form-group row">
                                                 <label>Tutar</label>
                                                 <div class="input-group">
-                                                    <input id="txtAmount" type="text" name="Amount" class="form-control form-control-solid form-control-lg">
+                                                    <input id="txtAmount" type="text" name="Amount" class="form-control form-control-solid form-control-lg" >
                                                     <div class="input-group-append">
                                                         <select id="currencyType" class="form-control form-control-solid form-control-lg" name="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
                                                         </select>
@@ -350,14 +350,16 @@
                             }
 
                         }
-                    }, Name: {
+                    },
+                    Name: {
                         validators: {
                             notEmpty: {
                                 message: 'Fiş adı alanı boş geçilemez'
                             },
 
                         }
-                    }, Vat: {
+                    },
+                    Vat: {
                         validators: {
                             notEmpty: {
                                 message: 'Kdv alanı boş geçilemez'
@@ -367,7 +369,8 @@
                             }
 
                         }
-                    }, ReceiptAmount: {
+                    },
+                    ReceiptAmount: {
                         validators: {
                             notEmpty: {
                                 message: 'Tutar alanı boş geçilemez'
@@ -570,7 +573,7 @@
             counter++;
             var divId = "receipt" + counter;
             var deleteId = "delete" + counter;
-            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input required type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" required class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
         }
         function DeleteReceipt(counter) {
             var divId = "#receipt" + counter;

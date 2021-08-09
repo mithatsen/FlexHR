@@ -1,0 +1,111 @@
+﻿@model ListStaffPaymentOnDashboardDto
+<div class="modal fade" id="staffPaymentApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <form id="approveStaffLeave" method="post">
+        <div class="modal-dialog modal-dialog-centered modal-lg p-5 " role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#181c32">
+                    <div class="card-title align-items-start flex-column">
+                        <h3 class="card-label font-weight-bolder text-light">
+                            <i class="fas fa-address-book mr-2 text-light"></i>Ödeme Detay
+                        </h3>
+
+                    </div>
+                    <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="card text-center">
+                    <div class="card-header" style="background-color:#181c32">
+                        <h4 class="text-light">@Model.NameSurname <span class="text-warning"> @Model.PaymentType </span> talebinde bulunmuştur.</h4>
+                    </div>
+                    <div class="card-body" style="background-color:#181c32">
+                        <h4 class="card-title text-light "> Tarih :@Model.CreationDate.ToShortDateString()  </h4>
+                        <p class="card-title "> <h4 class="text-light">Açıklama: @Model.Description </h4></p>
+                        @if (Model.Receipts.Count > 0)
+                        {
+                            <table class="table table-lg mt-4 "style="background-color:#181c32;">
+                                <tr class="table table-light"  color:white">
+                                    <th>Fiş Adı</th>
+                                    <th>KDV </th>
+                                    <th>Miktar (@Model.CurrencyType) </th>
+                                    <th>Dosya </th>
+                                </tr>
+                                @foreach (var item in Model.Receipts)
+                                {
+                                    <tr class="text-light">
+
+                                        <td>@item.Name</td>
+                                        <td>@item.Vat</td>
+                                        <td>@item.Amount @Model.CurrencyType</td>
+                                        <td> <a href="/img/@item.FileFullPath@item.FileName" download title="@item.FileName"><i class="fas fa-image text-warning"></i></a></td>
+
+
+                                    </tr>
+                                }
+                            </table>
+                        }
+
+                        <div class="card-footer text-warning" style="background-color:#181c32">
+                            <h4>Talep Edilen Toplam @Model.PaymentType Tutarı : @Model.Amount @Model.CurrencyType</h4>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer" style="background-color:#181c32">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="button" onclick="approveShiftDash(@Model.StaffPaymentId)" class="btn btn-primary font-weight-bold">Onayla</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function approveShiftDash(id) {
+        Swal.fire({
+            title: "Onaylamak ister misiniz ?",
+            text: "Bunu geri alamazsınız!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet",
+            cancelButtonText: "Hayır",
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    method: "POST",
+                    url: "/Payment/ApprovePayment/" + id,
+                }).done(function (result) {
+                    debugger;
+                    if (result == true) {
+                        Swal.fire({
+                            title: "Onaylandı!",
+                            text: "Talep Onaylandı.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })
+
+                    } else {
+                        Swal.fire(
+                            "Hata",
+                            "Kaydınız onaylanmadı",
+                            "hata"
+                        )
+                    }
+
+                })
+            } else if (result.dismiss === "cancel") {
+                Swal.fire({
+                    title: "İptal Edildi",
+                    text: "Kaydınız onaylanmadı",
+                    icon: "error",
+                    showCancelButton: false
+                })
+            }
+        });
+
+    }
+
+</script>
