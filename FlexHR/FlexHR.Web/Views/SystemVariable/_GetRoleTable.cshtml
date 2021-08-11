@@ -28,11 +28,12 @@
                     </div>
                     <div class="card-body">
 
-                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_14">
                             <thead>
                                 <tr>
                                     <th>Rol Adı </th>
                                     <th>Açıklama</th>
+                                    <th>Yetki Türü</th>
                                     <th>İşlemler</th>
                                 </tr>
                             </thead>
@@ -41,10 +42,11 @@
                                 {
                                     <tr>
                                         <td width="20%">@item.Name</td>
-                                        <td width="70%">@item.Description </td>
+                                        <td width="50%">@item.Description </td>
+                                        <td width="20%">@item.AuthorizeType </td>
 
                                         <td width="10%">
-                                            <a id="CareerUpdateBtn" onclick="RoleUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                            <a id="CareerUpdateBtn" onclick="RoleUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Düzenle">
                                                 <i class="la la-edit text-warning"></i>
                                             </a>
                                             <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteRole(@item.Id)">
@@ -104,6 +106,18 @@
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Yetki Tipi</label>
+                                                <div class="input-group">
+                                                    <select id="authorizeType" class="form-control form-control-solid form-control-lg" name="AuthorizeTypeGeneralSubTypeId" asp-items="ViewBag.AuthorizeTypes">
+                                                        <option value="">Seçiniz</option>
+
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
                                             <div class="form-group row">
                                                 <label>Açıklama*</label>
                                                 <div class="input-group">
@@ -187,7 +201,14 @@
                         }
                     }
                 },
-              
+                AuthorizeTypeGeneralSubTypeId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Yetki Tipi boş geçilemez '
+                        }
+                    }
+                },
+
             },
             plugins: {
                 trigger: new FormValidation.plugins.Trigger(),
@@ -203,7 +224,8 @@
             if (status == 'Valid') {
                 var formData = {
                     Name: $("#Name").val(),
-                    Description: $("#Description").val()
+                    Description: $("#Description").val(),
+                    AuthorizeTypeGeneralSubTypeId: $("#authorizeType").val()
                 };
                 $.ajax({
                     method: 'post',
@@ -215,6 +237,14 @@
                                 title: "Eklendi!",
                                 text: "Kaydınız eklendi.",
                                 icon: "success",
+                            }).then(function () {
+                                window.location.reload()
+                            })
+                        } else {
+                            Swal.fire({
+                                title: "Başarısız!",
+                                text: "Kaydınız eklenmedi.",
+                                icon: "error",
                             }).then(function () {
                                 window.location.reload()
                             })
@@ -281,3 +311,5 @@
 
     }
 </script>
+<script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+<script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
