@@ -26,6 +26,7 @@ namespace FlexHR.Entity.Enums
         Currency = 17 ,
         Period = 18 ,
         Debit = 19 ,
-        EmailState = 20 
+        EmailState = 20 ,
+        AuthorizeType =21
     }
 }

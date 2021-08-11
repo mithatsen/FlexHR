@@ -9,6 +9,7 @@ namespace FlexHR.Entity.Concrete
     public class AppRole:IdentityRole<int>,ITable
     {
         public string Description { get; set; }
+        public int AuthorizeTypeGeneralSubTypeId { get; set; }
         public bool IsActive { get; set; }
     }
 }

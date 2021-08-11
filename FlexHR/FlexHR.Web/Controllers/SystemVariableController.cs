@@ -7,6 +7,9 @@ using FlexHR.DTO.Dtos.LeaveRuleDtos;
 using FlexHR.DTO.Dtos.LeaveTypeDtos;
 using FlexHR.DTO.Dtos.RoleDtos;
 using FlexHR.Entity.Concrete;
+using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -26,9 +29,10 @@ namespace FlexHR.Web.Controllers
         private readonly IMapper _mapper;
         private readonly ICompanyService _companyService;
         private readonly IAppRoleService _appRoleService;
+        private readonly RoleManager<AppRole> _roleManager;
 
         public SystemVariableController(IGeneralTypeService generalTypeService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,
-            ICompanyService companyService,  ICompanyBranchService companyBranchService, IAppRoleService appRoleService)
+            ICompanyService companyService,  ICompanyBranchService companyBranchService, IAppRoleService appRoleService, RoleManager<AppRole> roleManager)
         {
             _generalTypeService = generalTypeService;
             _generalSubTypeService = generalSubTypeService;
@@ -38,6 +42,7 @@ namespace FlexHR.Web.Controllers
             _leaveRuleService = leaveRuleService;
             _appRoleService = appRoleService;
             _companyBranchService = companyBranchService;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index()
@@ -74,8 +79,11 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetUpdateRoleModal(int id)
         {
-            var result = _appRoleService.GetById(id);
-            return PartialView("_GetRoleUpdateModal", _mapper.Map<ListRoleDto>(result));
+            ViewBag.AuthorizeTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.AuthorizeType), "GeneralSubTypeId", "Description");
+
+            var result = _mapper.Map<ListRoleDto>(_appRoleService.GetById(id));
+            result.AuthorizeType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(result.AuthorizeTypeGeneralSubTypeId);
+            return PartialView("_GetRoleUpdateModal", result);
         }
         public IActionResult GetUpdateCompanyBranchModal(int id)
         {
@@ -149,11 +157,35 @@ namespace FlexHR.Web.Controllers
             }
         }
         [HttpPost]
-        public bool AddRole(AddRoleDto model)
+        public async Task<bool> AddRole(AddRoleDto model)
         {
             try
             {
-                _appRoleService.Add(_mapper.Map<AppRole>(model));
+                var temp=_appRoleService.Get(x => x.Name == model.Name).FirstOrDefault();
+                if (temp != null && temp.IsActive==false){
+                    temp.IsActive = true;
+                    temp.Description = model.Description;
+                    temp.AuthorizeTypeGeneralSubTypeId = model.AuthorizeTypeGeneralSubTypeId;
+                    try
+                    {
+                        _appRoleService.Update(temp);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+
+                        return false;
+                    }
+                    
+                    
+                }
+                else if(temp != null && temp.IsActive == true)
+                {
+                    return false;
+                }
+
+                var x= await _roleManager.CreateAsync(_mapper.Map<AppRole>(model));
+                
                 return true;
             }
             catch (Exception)
@@ -197,10 +229,14 @@ namespace FlexHR.Web.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public IActionResult UpdateRole(ListRoleDto model)
+        public async Task<IActionResult> UpdateRole(ListRoleDto model)
         {
             model.IsActive = true;
-            _appRoleService.Update(_mapper.Map<AppRole>(model));
+            var appRoleDb = _appRoleService.GetById(model.Id);
+            var approle = _mapper.Map<AppRole>(model);
+            approle.NormalizedName = model.Name.ToUpper();
+            approle.ConcurrencyStamp = appRoleDb.ConcurrencyStamp;
+            await _roleManager.UpdateAsync(approle);
             TempData["GeneralSubTypeUpdateStatus"] = "true";
             return RedirectToAction("Index");
         }
@@ -322,8 +358,14 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetRoleList()
         {
-            var result = _appRoleService.GetAll();
-            return PartialView("_GetRoleTable", _mapper.Map<List<ListRoleDto>>(result));
+
+            var temp = _mapper.Map<List<ListRoleDto>>(_appRoleService.GetAll());
+            ViewBag.AuthorizeTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.AuthorizeType), "GeneralSubTypeId", "Description");
+            foreach (var item in temp)
+            {
+                item.AuthorizeType= _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.AuthorizeTypeGeneralSubTypeId);
+            }
+            return PartialView("_GetRoleTable", _mapper.Map<List<ListRoleDto>>(temp));
         }
         public IActionResult GetCompanyBranchList()
         {

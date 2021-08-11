@@ -18,10 +18,10 @@
         <!--end::Info-->
         <div class="d-flex align-items-center">
             <!--begin::Actions-->
-            <form  method="post">
+            <form method="post">
                 <div class="form-group row my-auto ">
                     <div class="input-group rounded">
-                        <input type="text" id="StaffSearchBar" onchange="StaffSearch();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"  class="form-control rounded" placeholder="Çalışan Ara" aria-label="Search" aria-describedby="search-addon"  autocomplete="off"/>
+                        <input type="text" id="StaffSearchBar" onchange="StaffSearch();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" class="form-control rounded" placeholder="Çalışan Ara" aria-label="Search" aria-describedby="search-addon" autocomplete="off" />
                         <button id="btnStaffSearch" onclick="StaffSearch()" type="button" class="btn btn-primary">
                             <i class="fas fa-search"></i>
                         </button>
@@ -54,7 +54,7 @@
             </div>
         </div>
         <!--end::Header-->
-       
+
         <div id="staffCardList" class="container-fluid">
             <!--begin::Body-->
             <div class="row">
@@ -177,30 +177,21 @@
                                                     <div class="form-group row justify-content-center">
                                                         <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü *</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <select id="ContractTypeSelect" name="ContractTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
+                                                            <select id="ContractTypeSelect" name="ContractTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
                                                                 <option value="">Seçiniz</option>
 
                                                             </select>
                                                         </div>
                                                     </div>
-
                                                     <div class="form-group row justify-content-center">
-                                                        <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
+                                                        <label class="col-xl-4 col-lg-3 col-form-label pb-0 mb-0">Sistemi Kullanacak mı ?</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="JobFinishDate" name="JobFinishDate" type="datetime" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
-                                                                <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
-                                                                    <span class="input-group-text">
-                                                                        <i class="ki ki-calendar"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row justify-content-center" hidden id="dvUserName">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label ">Kullanıcı Adı</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input name="UserName" id="UserName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Kullanıcı Adı" />
+                                                            <span class="switch switch-primary">
+                                                                <label>
+                                                                    <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="1" />
+                                                                    <span></span>
+                                                                </label>
+                                                            </span>
                                                         </div>
                                                     </div>
 
@@ -253,7 +244,31 @@
                                                         </div>
                                                     </div>
 
+
                                                     <div class="form-group row justify-content-center">
+                                                        <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                                <input id="JobFinishDate" name="JobFinishDate" type="datetime" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                                    <span class="input-group-text">
+                                                                        <i class="ki ki-calendar"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>                                              
+                                                </div>
+
+                                          
+                                                <div class="col-md-6">
+                                                    <div class="form-group row justify-content-center" hidden id="dvUserName">
+                                                        <label class="col-xl-4 col-lg-3 col-form-label ">Kullanıcı Adı</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <input name="UserName" id="UserName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Kullanıcı Adı" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row justify-content-center" hidden id="dvAccessType">
                                                         <label class="col-xl-4 col-lg-3 col-form-label">Erişim Türü *</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select class="form-control form-control-solid form-control-lg" name="RoleId" id="RoleId" asp-items="ViewBag.Roles">
@@ -261,17 +276,8 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label pb-0 mb-0">Sistemi Kullanacak mı ?</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <span class="switch switch-primary">
-                                                                <label>
-                                                                    <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="1" />
-                                                                    <span></span>
-                                                                </label>
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
                                                     <div class="form-group row justify-content-center" hidden id="dvPassword">
                                                         <label class="col-xl-4 col-lg-3 col-form-label ">Şifre</label>
                                                         <div class="col-lg-9 col-xl-6">
@@ -279,21 +285,32 @@
                                                         </div>
                                                     </div>
 
+                                                   
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row justify-content-center" hidden id="dvRoles">
+                                                        <label class="col-xl-2 col-lg-2 col-form-label ">Ekran Yetkileri</label>
+                                                        <div class="col-lg-9 col-xl-9">
+                                                            <select class="form-control select2" id="pageRoles" name="pageRoles" multiple="multiple" style="min-width:100px !important" asp-items="ViewBag.PageRoles">
+                                                               
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <!--end::Body-->
                                         </div>
-                                        <!--end::Body-->
+
+
                                     </div>
 
-
+                                    <!--end::Form-->
                                 </div>
-
-                                <!--end::Form-->
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                            <button type="button" onclick="staffAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                                <button type="button" onclick="staffAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -319,7 +336,7 @@
             $.ajax({
                 method: 'Post',
                 url: '/Staff/StaffSearchWithAjax',
-                data: formData, 
+                data: formData,
             }).done(function (content) {
                 var strContent = content.toString();
                 if (strContent.includes("<img")) {
@@ -403,19 +420,22 @@
             fv.validate().then(function (status) {
                 // Update the login button content based on the validation status
                 if (status == 'Valid') {
+                    console.log($("#ContractTypeSelect").val());
                     var formData = {
                         NameSurname: $("#NameSurname").val(),
                         EmailJob: $("#EmailJob").val(),
                         PhoneJob: $("#PhoneJob").val(),
                         EmailPersonal: $("#EmailPersonal").val(),
                         PhonePersonal: $("#PhonePersonal").val(),
-                        ContractTypeId: $("#ContractTypeSelect").val(),
+                        ContractTypeGeneralSubTypeId: $("#ContractTypeSelect").val(),
                         JobFinishDate: $("#JobFinishDate").val(),
                         JobJoinDate: $("#JobJoinDate").val(),
                         UserName: $("#UserName").val(),
-                        WillUseSystem: $("#WillUseSystem").val(),
+                        WillUseSystem: $("#WillUseSystem")[0].checked,
                         RoleId: $("#RoleId").val(),
                         Password: $("#Password").val(),
+                        PageRoles: $("#pageRoles").val(),
+
                     };
                     $.ajax({
                         method: 'post',
@@ -427,6 +447,15 @@
                                     title: "Eklendi!",
                                     text: "Kaydınız eklendi.",
                                     icon: "success",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            } else {
+
+                                Swal.fire({
+                                    title: "Başarısız!",
+                                    text: "Kullanıcı adı zaten var.",
+                                    icon: "error",
                                 }).then(function () {
                                     window.location.reload()
                                 })
@@ -464,12 +493,24 @@
             if ($('#WillUseSystem').is(":checked")) {
                 $("#dvPassword").attr("hidden", false);
                 $("#dvUserName").attr("hidden", false);
+                $("#dvRoles").attr("hidden", false);
+                $("#dvAccessType").attr("hidden", false);
             }
             else {
                 $("#dvPassword").attr("hidden", true);
                 $("#dvUserName").attr("hidden", true);
-
+                $("#dvRoles").attr("hidden", true);
+                $("#dvAccessType").attr("hidden", true);
             }
         })
     </script>
+    <script src="assets/js/pages/crud/forms/widgets/select2.js"></script>
+    <script>
+        $('#pageRoles').select2({
+            closeOnSelect: false,
+            width: '100%' 
+          
+        });
+    </script>
+
 }

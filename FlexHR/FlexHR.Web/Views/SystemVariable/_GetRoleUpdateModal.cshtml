@@ -33,16 +33,28 @@
                                             <div class="form-group row">
                                                 <label>Rol Adı*</label>
                                                 <div class="input-group">
-                                                    <input asp-for="Name" id="Name" class="form-control form-control-lg form-control-solid" type="text" placeholder="Rol Adı" />
+                                                    <input asp-for="Name"  class="form-control form-control-lg form-control-solid" type="text" placeholder="Rol Adı" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5">
                                             <div class="form-group row">
+                                                <label>Ücret Tipi</label>
+                                                <div class="input-group">
+                                                    <select  class="form-control form-control-solid form-control-lg" asp-for="AuthorizeTypeGeneralSubTypeId" asp-items="ViewBag.AuthorizeTypes">
+                                                        <option value="">Seçiniz</option>
+
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
                                                 <label>Açıklama*</label>
                                                 <div class="input-group">
-                                                    <input asp-for="Description" id="Description" class="form-control form-control-lg form-control-solid" type="text" placeholder="Açıklama" />
+                                                    <input asp-for="Description"  class="form-control form-control-lg form-control-solid" type="text" placeholder="Açıklama" />
                                                 </div>
                                             </div>
                                         </div>
@@ -90,6 +102,13 @@
                         }
                     }
                 },
+                AuthorizeTypeGeneralSubTypeId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Yetki Tipi boş geçilemez '
+                        }
+                    }
+                }
 
             },
             plugins: {
