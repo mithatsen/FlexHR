@@ -4,6 +4,7 @@ using FlexHR.Entity.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -39,7 +40,7 @@ namespace FlexHR.Web
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
                 opt.Lockout.MaxFailedAccessAttempts = 3;
             }).AddEntityFrameworkStores<FlexHRContext>();
-            services.AddDbContext<FlexHRContext>();
+            services.AddDbContext<FlexHRContext>() ;
             services.AddContainerWithDependencies();
             services.AddAutoMapper(typeof(Startup));
             services.AddRazorPages();

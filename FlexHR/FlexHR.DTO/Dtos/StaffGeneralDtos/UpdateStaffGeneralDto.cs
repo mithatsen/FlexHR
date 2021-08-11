@@ -1,12 +1,10 @@
-﻿using FlexHR.DTO.Dtos.AppUserDtos;
-using FlexHR.Entity.Concrete;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FlexHR.DTO.Dtos.StaffGeneralDtos
 {
-    public class ListStaffGeneralDto
+    public class UpdateStaffGeneralDto
     {
         public int StaffId { get; set; }
         public string NameSurname { get; set; }
@@ -17,12 +15,7 @@ namespace FlexHR.DTO.Dtos.StaffGeneralDtos
         public DateTime JobJoinDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
         public int ContractTypeGeneralSubTypeId { get; set; }
-        public int RoleId { get; set; }
-        public bool IsActive { get; set; } = true; 
+        public bool IsActive { get; set; } = true;
         public bool WillUseSystem { get; set; }
-
-        public ListAppUserDto AppUser { get; set; }
-
-
     }
 }
