@@ -16,6 +16,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         public EfGenericRepository(FlexHRContext context)
         {
             _context = context;
+            //_context.Entry(T).State = EntityState.Modified;
         }
         public void Delete(int id)
         {
