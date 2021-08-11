@@ -15,20 +15,39 @@
             </div>
             <div class="modal-body">
                 <table class='table table-responsive table-secondary mx-auto'>
-                    <tr class='table table-primary '>
-                        <th class='w-75'></th>
-                        <th>Fiş Adı</th>
-                        <th>KDV(%)</th>
-                        <th>Tutar</th>
+                    <tr class='table bg-dark text-white'>
+                        <th width="10%"></th>
+                        <th width="60%">Fiş Adı</th>
+                        <th width="15%">KDV(%)</th>
+                        <th width="15%">Tutar</th>
                     </tr>
                     @foreach (var item in Model)
                     {
-
                         <tr>
-                            <td>  <img style="width: 200px; height: 200px;" src="/img/@item.FileFullPath@item.FileName" alt="item.FileName" /></td>
+                            @*<td>  <img style="width: 150px; height: 150px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.FileName" /></td>*@
+                            <td>
+                                <div class="gallery">
+                                    @if (item.FileName != "")
+                                    {
+
+                                        <a href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
+                                            <i style="cursor:pointer" class="fas fa-eye text-secondary p-2 "></i>
+                                        </a>
+
+                                    }
+                                    else
+                                    {
+                                        @*<a href="~/assets/media/svg/icons/General/receipt.svg" title="Fatura" data-toggle="tooltip" data-lightbox="my-gallery">
+                                                <i style="cursor:pointer" class="fas fa-eye text-danger p-2 "></i>
+                                            </a>*@
+                                        <p class="ml-3">-</p>
+                                    }
+                                </div>
+                            </td>
+
                             <td>@item.Name</td>
                             <td>@item.Vat</td>
-                            <td>@item.ReceiptAmount</td>
+                            <td>@item.Amount</td>
                         </tr>
 
                     }

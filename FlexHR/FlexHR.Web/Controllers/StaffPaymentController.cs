@@ -74,8 +74,6 @@ namespace FlexHR.Web.Controllers
 
         public async Task<IActionResult> AddStaffPaymentWithAjax(IFormCollection data, int id)   // buraya dto oluşturulacak gelen veriler maplenerek veritanına atılacak 
         {
-
-
             if (ModelState.IsValid)
             {
                 string amount = data["Amount"];
@@ -140,7 +138,7 @@ namespace FlexHR.Web.Controllers
                                 Amount = Convert.ToDecimal(temp[2]),
                                 FileName = "",
                                 FileFullPath = "",
-
+                                IsActive=true
                             };
                             receipts.Add(receipt);
                         }

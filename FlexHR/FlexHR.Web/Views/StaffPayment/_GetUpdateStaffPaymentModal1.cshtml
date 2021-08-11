@@ -1,11 +1,13 @@
 ﻿@model ListStaffPaymentDto
+
+
 <div class="modal fade" id="UpdatePaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 id="PaymentAddModalHeader" class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Ödeme Güncelle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Ödeme Düzenle
                     </h3>
 
                 </div>
@@ -53,23 +55,73 @@
                                                         <label>Tutar</label>
                                                         <div class="input-group"><input type="text" asp-for="@item.Amount" name="ReceiptAmount" class="form-control form-control-solid form-control-lg " /></div>
                                                     </div>
-                                                    <div class="form-group col-md-2 ">
-                                                        <label></label>
+                                                    <div class="form-group my-auto col-md-2">
                                                         <div class="input-group justify-content-center">
                                                             @*download=" /img/@item.FileFullPath@item.FileName"*@
                                                             <input type="hidden" name="File" value="@item.FileFullPath@item.FileName" />
 
+                                                            @if (item.FileName != "")
+                                                            {
+                                                                <div class="gallery">
+                                                                    <a href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
+                                                                        <img style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
+                                                                    </a>
+                                                                    @*<a href="/img/@item.FileFullPath@item.FileName" target="_blank">
+                                                                            <img style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
+                                                                        </a>*@
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="my-auto pt-1" for="@imgId">
+                                                                    <i id="upload_icon_update" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i>
+                                                                </label>
+                                                                <input id="@imgId" onchange="fileInputUpdateChange(@item.Id)" type="file" name="File" style="display: none;" />
+                                                            }
 
-                                                            <a href="/img/@item.FileFullPath@item.FileName" target="_blank">
-                                                                <img style="width:70px; height:50px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
-                                                            </a>
-                                                            <input type="file" id="@imgId" name="UpdateFile" />
+
                                                         </div>
                                                     </div>
-                                                    <div class="form-group col-md-1">
+                                                    <div class="form-group my-auto col-md-1">
                                                         @*<label></label> <button type="button" onclick="DeleteReceipt("db_'+s+'")" id="" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button>*@
-                                                        <label></label> <button type="button" onclick="DeleteReceipt2(@item.Id)" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button>
+                                                        <div class="card-toolbar">
+                                                            <div class="dropdown dropdown-inline">
+                                                                <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="ki ki-bold-more-ver"></i>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left">
+                                                                    <!--begin::Naviigation-->
+                                                                    <ul class="navi">
+
+                                                                        <li class="navi-item">
+                                                                            <input type="hidden" name="File" value="@item.FileFullPath@item.FileName" />
+                                                                            <a class="navi-link image-upload">
+                                                                                <label for="@imgId">
+                                                                                    <span class="navi-icon">
+                                                                                        <i style="width:21px !important" class="fas fa-folder"></i>
+                                                                                    </span>
+                                                                                    <span class="navi-text">Dosya Seç</span>
+                                                                                    @*download=" /img/@item.FileFullPath@item.FileName"*@
+                                                                                </label>
+
+                                                                                <input type="file" id="@imgId" name="UpdateFile" style="display:none" />
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="navi-item">
+                                                                            <a onclick="DeleteReceipt2(@item.Id)" class="navi-link">
+                                                                                <span class="navi-icon">
+                                                                                    <i class="fas fa-trash-alt"></i>
+                                                                                </span>
+                                                                                <span class="navi-text">Fişi Sil</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <!--end::Naviigation-->
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                             }
 
@@ -142,13 +194,47 @@
 
 </div>
 <script>
+
+    function DeleteReceiptUpdateFile(id) {
+        debugger;
+        var fileAddId = "#fileAddId" + id;
+        $(fileAddId).val("");
+        fileInputAddChange(id);
+    }
+    function fileInputAddChange(id) {
+        debugger;
+        var fileAddId = "#fileAddId" + id;
+        var upload_icon_add = "#upload_icon_add" + id;
+        if ($(fileAddId).val() != "") {
+            $(upload_icon_add).removeClass("fas fa-upload text-danger");
+            $(upload_icon_add).addClass(" fas fa-image text-info");
+        } else {
+            $(upload_icon_add).removeClass("fas fa-image text-info");
+            $(upload_icon_add).addClass(" fas fa-upload text-danger");
+        }
+    }
+    function fileInputUpdateChange(id) {
+        debugger;
+        var imgId = "UpdateReceiptImageFile" + id;
+        if ($(imgId).val() != "") {
+            $("#upload_icon_update").removeClass("fas fa-upload text-danger");
+            $("#upload_icon_update").addClass(" fas fa-image text-info");
+        } else {
+            $("#upload_icon_update").removeClass("fas fa-image text-info");
+            $("#upload_icon_update").addClass(" fas fa-upload text-danger");
+        }
+    }
+
+
     let counter2 = 0;
     function AddUpdateReceipt() {
         counter2++;
         var divUpdateId = "receipt" + counter2;
         var deleteUpdateId = "delete" + counter2;
+        var deleteUpdateFileId = "deleteUpdateFile" + counter2;
+        var fileAddId = "fileAddId" + counter2;
 
-        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"><input type="hidden" value="0" name="Id"/> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button type="button" onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '"   class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <input type="hidden" value="0" name="Id"/> <div class="form-group col-md-5 pl-0"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group my-auto col-md-2"> <div class="input-group justify-content-center"> <label class="my-auto pt-1" for="' + fileAddId + '"> <i id="upload_icon_add' + counter2 + '" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileAddId + '" onchange="fileInputAddChange(' + counter2 + ')" type="file" name="File" style="display: none;"/> </div></div><div class="form-group my-auto col-md-1">  <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptUpdateFile(' + counter2 + ')" id="' + deleteUpdateFileId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a> </li> <li class="navi-item"> <a onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> </a> </li></ul> </div></div></div></div></div>')
     }
     function fncAddReceiptOnUpdatePage() {
         var formdata = new FormData();
@@ -245,6 +331,7 @@
         });
 
     }
+
     function DeleteReceipt(counter) {
 
         Swal.fire({

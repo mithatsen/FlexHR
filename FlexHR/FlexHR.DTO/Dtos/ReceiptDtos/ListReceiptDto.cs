@@ -8,7 +8,7 @@ namespace FlexHR.DTO.Dtos.ReceiptDtos
     {
         public string Name { get; set; }
         public decimal Vat { get; set; }
-        public decimal ReceiptAmount { get; set; }
+        public decimal Amount { get; set; }
         public string FileFullPath { get; set; }
         public string FileName { get; set; }
         public bool IsActive { get; set; }
