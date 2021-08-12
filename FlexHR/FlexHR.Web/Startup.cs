@@ -70,7 +70,7 @@ namespace FlexHR.Web
                 RequestPath="/img"
             });
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

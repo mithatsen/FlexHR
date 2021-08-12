@@ -47,28 +47,34 @@ namespace FlexHR.Web.Controllers
             foreach (var item in formData.Users)
             {
                 var user = _appUserService.GetById(item);
-                foreach (var roleType in formData.Roles)
+                if (formData.Roles != null)
                 {
-                    var appRole = _appRoleService.GetById(roleType);                    
-                    var isInRole = await _userManager.IsInRoleAsync(user, appRole.Name);
-                    if (!isInRole)
+                    foreach (var roleType in formData.Roles)
                     {
-                        await _userManager.AddToRoleAsync(user, appRole.Name);
-                    }
-                }
-                foreach (var authorizeRole in formData.AuthorizeTypes)
-                {
-                    var authorizeType = _appRoleService.GetById(authorizeRole);
-                    var isInRole = await _userManager.IsInRoleAsync(user, authorizeType.Name);
-                    if (!isInRole)
-                    {
-                        await _userManager.AddToRoleAsync(user, authorizeType.Name);
+                        var appRole = _appRoleService.GetById(roleType);
+                        var isInRole = await _userManager.IsInRoleAsync(user, appRole.Name);
+                        if (!isInRole)
+                        {
+                            await _userManager.AddToRoleAsync(user, appRole.Name);
+                        }
                     }
 
+                }
+                if (formData.AuthorizeTypes != null)
+                {
+                    foreach (var authorizeRole in formData.AuthorizeTypes)
+                    {
+                        var authorizeType = _appRoleService.GetById(authorizeRole);
+                        var isInRole = await _userManager.IsInRoleAsync(user, authorizeType.Name);
+                        if (!isInRole)
+                        {
+                            await _userManager.AddToRoleAsync(user, authorizeType.Name);
+                        }
+                    }
                 }
             }
 
-            return View();
+            return Json("true");
         }
     }
 }
