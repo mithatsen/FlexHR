@@ -197,18 +197,22 @@
                                     <span class="menu-text">Anasayfa</span>
                                 </a>
                             </li>
+                            @{ 
+                                var x = User.IsInRole("ViewPersonalsPage");
+                            }
+                            @if (User.IsInRole("ViewPersonalsPage"))
+                            {
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a asp-controller="Staff" asp-action="Index" class="menu-link">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-users"></i>
+                                        </span>
+                                        <span class="menu-text">Çalışanlar</span>
 
+                                    </a>
 
-                            <li class="menu-item" aria-haspopup="true">
-                                <a asp-controller="Staff" asp-action="Index" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="fas fa-users"></i>
-                                    </span>
-                                    <span class="menu-text">Çalışanlar</span>
-
-                                </a>
-
-                            </li>
+                                </li>
+                            }
                             <li class="menu-item menu-item-submenu " aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -323,7 +327,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            
+
                             <li class="menu-item" aria-haspopup="true">
                                 <a asp-controller="RoleAssign" asp-action="Index" class="menu-link">
                                     <span class="svg-icon menu-icon">
@@ -333,7 +337,7 @@
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
-                                <a asp-controller="Auth" asp-action="Index" class="menu-link">
+                                <a asp-controller="Auth" asp-action="LogOut" class="menu-link">
                                     <span class="svg-icon menu-icon">
                                         <i class="fas fa-sign-out-alt"></i>
                                     </span>
@@ -501,7 +505,7 @@
     <script src="~/Croppie-2.6.4/croppie.js"></script>
 
     <script>
-        
+
         function getPaymentRequestModal() {
 
             var modelContent = $("#RequestStaffModalDiv")

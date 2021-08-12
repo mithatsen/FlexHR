@@ -52,24 +52,31 @@ namespace FlexHR.Web.Controllers
         {
             var user = _appUserService.Get(x => x.StaffId == model.StaffId).FirstOrDefault();                  
             await _userManager.RemoveFromRolesAsync(user,await _userManager.GetRolesAsync(user));
-            foreach (var item in model.Roles)
+            if (model.Roles!=null)
             {
-                var role = _appRoleService.Get(x => x.Id == item).FirstOrDefault().Name;
-                var isInRole = await _userManager.IsInRoleAsync(user, role);
-                if (!isInRole)
+                foreach (var item in model.Roles)
                 {
-                    await _userManager.AddToRoleAsync(user, role);
+                    var role = _appRoleService.Get(x => x.Id == item).FirstOrDefault().Name;
+                    var isInRole = await _userManager.IsInRoleAsync(user, role);
+                    if (!isInRole)
+                    {
+                        await _userManager.AddToRoleAsync(user, role);
+                    }
                 }
             }
-            foreach (var item in model.Permissions)
+            if (model.Permissions!=null)
             {
-                var role = _appRoleService.Get(x => x.Id == item).FirstOrDefault().Name;
-                var isInRole = await _userManager.IsInRoleAsync(user, role);
-                if (!isInRole)
+                foreach (var item in model.Permissions)
                 {
-                    await _userManager.AddToRoleAsync(user, role);
+                    var role = _appRoleService.Get(x => x.Id == item).FirstOrDefault().Name;
+                    var isInRole = await _userManager.IsInRoleAsync(user, role);
+                    if (!isInRole)
+                    {
+                        await _userManager.AddToRoleAsync(user, role);
+                    }
                 }
             }
+           
             return RedirectToAction("Index", new { id = model.StaffId });
         }
     }

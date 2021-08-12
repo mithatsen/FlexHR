@@ -37,7 +37,7 @@
                 <!--begin::Body-->
                 <div class="card-body pt-2">
 
-                    @if (Model.StaffPayments != null)
+                    @if (Model.StaffPayments.Count > 0)
                     {
 
                         @foreach (var item in Model.StaffPayments)
@@ -67,9 +67,27 @@
                                     <span class="text-muted font-weight-bold">@item.CreationDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
-                                <a onclick=getStaffPaymentApproveModal(@item.StaffPaymentId) class="cursor-pointer" ><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                                <a onclick=getStaffPaymentApproveModal(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
                             </div>
                         }
+                    }
+                    else
+                    {
+
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-white pl-0">
+                                <span >
+                                    <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                                  </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 ml-2">
+                                <span> Ödeme talebi bulunmamaktadır</span>
+                            </div>
+                            <!--end::Text-->
+                        </div>
                     }
 
                 </div>
@@ -92,7 +110,7 @@
                 <div class="card-body pt-2">
                     <!--begin::Item-->
 
-                    @if (Model.StaffShifts != null)
+                    @if (Model.StaffShifts.Count > 0)
                     {
 
                         @foreach (var item in Model.StaffShifts)
@@ -127,6 +145,25 @@
                         }
 
                     }
+                    else
+                    {
+
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-white pl-0">
+                                <span>
+                                    <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 ml-2">
+                                <span> Mesai talebi bulunmamaktadır</span>
+                            </div>
+                            <!--end::Text-->
+                        </div>
+                    }
+
 
                 </div>
                 <!--end::Body-->
@@ -147,7 +184,7 @@
                 <!--begin::Body-->
                 <div class="card-body pt-2">
 
-                    @if (Model.StaffLeaves != null)
+                    @if (Model.StaffLeaves.Count > 0)
                     {
 
                         @foreach (var item in Model.StaffLeaves)
@@ -177,10 +214,29 @@
                                     <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
-                                <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> <a onclick="getStaffLeaveApproveModal(@item.StaffLeaveId)" class="cursor-pointer" >Detay</a></span>
+                                <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> <a onclick="getStaffLeaveApproveModal(@item.StaffLeaveId)" class="cursor-pointer">Detay</a></span>
                             </div>
                         }
                     }
+                    else
+                    {
+
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-white pl-0">
+                                <span>
+                                    <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 ml-2">
+                                <span> İzin talebi bulunmamaktadır</span>
+                            </div>
+                            <!--end::Text-->
+                        </div>
+                    }
+
                 </div>
                 <!--end::Body-->
             </div>
@@ -195,36 +251,56 @@
                     <h3 class="card-title font-weight-bolder text-success">Yaklaşan İzinler</h3>
 
                 </div>
-
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body pt-2">
-                    @foreach (var item in Model.UpcomingLeaves)
+                    @if (Model.StaffLeaves.Count > 0)
                     {
+                        @foreach (var item in Model.UpcomingLeaves)
+                        {
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50 symbol-light mr-5">
+                                    <span class="symbol-label">
+                                        @if (item.GenderGeneralSubTypeId == 52)
+                                        {
+                                            <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
+                                        }
+                                        else if (item.GenderGeneralSubTypeId == 53)
+                                        {
+                                            <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
+                                        }
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 mr-2">
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+
                         <div class="d-flex align-items-center flex-wrap mb-5">
                             <!--begin::Symbol-->
-                            <div class="symbol symbol-50 symbol-light mr-5">
-                                <span class="symbol-label">
-                                    @if (item.GenderGeneralSubTypeId == 52)
-                                    {
-                                        <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                    }
-                                    else if (item.GenderGeneralSubTypeId == 53)
-                                    {
-                                        <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
-                                    }
+                            <div class="symbol symbol-50 symbol-white pl-0">
+                                <span>
+                                    <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
                                 </span>
                             </div>
                             <!--end::Symbol-->
                             <!--begin::Text-->
-                            <div class="d-flex flex-column flex-grow-1 mr-2">
-                                <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
-                                <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
+                            <div class="d-flex flex-column flex-grow-1 ml-2">
+                                <span> Yaklaşan izin bulunmamaktadır</span>
                             </div>
+                            <!--end::Text-->
                         </div>
                     }
 
@@ -247,7 +323,7 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body pt-2">
-                    @if (Model.BirtDates != null)
+                    @if (Model.BirtDates.Count > 0)
                     {
 
 
@@ -269,6 +345,25 @@
                             </div>
                         }
                     }
+                    else
+                    {
+
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-white pl-0">
+                                <span>
+                                    <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 ml-2">
+                                <span> Doğum günü bulunmamaktadır</span>
+                            </div>
+                            <!--end::Text-->
+                        </div>
+                    }
+
                     <!--end::Item-->
 
 
@@ -283,7 +378,7 @@
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
                 <div class="card-header border-0">
-                    <h3 class="card-title font-weight-bolder text-success"><a class="text-success" asp-controller="Event" asp-action="Index">Etkinlikler</a></h3>
+                    <h3 class="card-title font-weight-bolder text-success "><a class="text-success" asp-controller="Event" asp-action="Index">Etkinlikler</a></h3>
 
                 </div>
 
@@ -291,7 +386,7 @@
                 <!--begin::Body-->
                 <div class="card-body pt-2">
 
-                    @if (Model.Events != null)
+                    @if (Model.Events.Count > 0)
                     {
 
 
@@ -313,6 +408,25 @@
                             </div>
                         }
                     }
+                    else
+                    {
+
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-white pl-0">
+                                <span>
+                                    <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 ml-2">
+                                <span> Yaklaşan etkinlik bulunmamaktadır</span>
+                            </div>
+                            <!--end::Text-->
+                        </div>
+                    }
+
                 </div>
                 <!--end::Body-->
             </div>
@@ -331,7 +445,7 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body pt-2">
-                    @if (Model.PublicDays != null)
+                    @if (Model.PublicDays.Count > 0)
                     {
 
 
@@ -353,6 +467,25 @@
                             </div>
                         }
                     }
+                    else
+                    {
+
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-white pl-0">
+                                <span>
+                                    <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 ml-2">
+                                <span> Resmi tatil bulunmamaktadır</span>
+                            </div>
+                            <!--end::Text-->
+                        </div>
+                    }
+
                 </div>
                 <!--end::Body-->
             </div>
@@ -433,5 +566,5 @@
         }
 
     </script>
-   
+
 }
