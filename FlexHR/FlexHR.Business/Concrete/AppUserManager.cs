@@ -9,8 +9,17 @@ namespace FlexHR.Business.Concrete
 {
     public class AppUserManager : GenericManager<AppUser>, IAppUserService
     {
-        public AppUserManager(IGenericDal<AppUser> genericDal) : base(genericDal)
+        private readonly IAppUserDal _appUserDal;
+
+   
+        public AppUserManager(IAppUserDal appUserDal) : base(appUserDal)
         {
+            _appUserDal = appUserDal;
+        }
+
+        public List<AppRole> GetAppRolesByStaffId(int id)
+        {
+            return _appUserDal.GetAppRolesByStaffId(id);
         }
     }
     

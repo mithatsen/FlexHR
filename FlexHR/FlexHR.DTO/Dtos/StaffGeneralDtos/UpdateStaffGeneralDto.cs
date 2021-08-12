@@ -16,6 +16,5 @@ namespace FlexHR.DTO.Dtos.StaffGeneralDtos
         public DateTime? JobFinishDate { get; set; }
         public int ContractTypeGeneralSubTypeId { get; set; }
         public bool IsActive { get; set; } = true;
-        public bool WillUseSystem { get; set; }
     }
 }
