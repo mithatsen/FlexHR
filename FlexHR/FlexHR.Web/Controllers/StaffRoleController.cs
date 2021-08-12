@@ -30,23 +30,32 @@ namespace FlexHR.Web.Controllers
             ViewBag.Id = id;
             var roles = _appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125 && x.IsActive == true).ToList();
             var permissions = _appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 126 && x.IsActive == true).ToList();
-
-            var userAllRoles = _appUserService.GetAppRolesByStaffId(id);
-            List<AppRole> userRoles = new List<AppRole>();
-            List<AppRole> userPermissions = new List<AppRole>();
-            foreach (var item in userAllRoles)
+            var user = _appUserService.Get(x => x.StaffId == id && x.IsActive==true).FirstOrDefault();
+            bool isUser = user != null ? true : false;
+            if (user != null){
+                var userAllRoles = _appUserService.GetAppRolesByStaffId(id);
+                List<AppRole> userRoles = new List<AppRole>();
+                List<AppRole> userPermissions = new List<AppRole>();
+                foreach (var item in userAllRoles)
+                {
+                    if (item.AuthorizeTypeGeneralSubTypeId == 125)
+                    {
+                        userRoles.Add(item);
+                    }
+                    else
+                    {
+                        userPermissions.Add(item);
+                    }
+                }
+                var model = new ListRolesWithSelectedStaffRole { Permissions = permissions, Roles = roles, UserRoles = userRoles, UserPermissions = userPermissions, IsUser = isUser };
+                return View(model);
+            }
+            else
             {
-                if (item.AuthorizeTypeGeneralSubTypeId == 125)
-                {
-                    userRoles.Add(item);
-                }
-                else
-                {
-                    userPermissions.Add(item);
-                }
-            }         
-            var model = new ListRolesWithSelectedStaffRole { Permissions = permissions, Roles = roles, UserRoles = userRoles, UserPermissions = userPermissions };
-            return View(model);
+                var model = new ListRolesWithSelectedStaffRole { Permissions = permissions, Roles = roles,IsUser= isUser,UserPermissions=new List<AppRole>(), UserRoles=new List<AppRole>() };
+                return View(model);
+            }
+          
         }
         public async Task<IActionResult> AddRole(AddMultipleRoleToStaffDto model)
         {

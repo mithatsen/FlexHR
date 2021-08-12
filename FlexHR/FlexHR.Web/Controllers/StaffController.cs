@@ -34,10 +34,11 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffFileService _staffFileService;
         protected readonly UserManager<AppUser> _userManager;
         protected readonly RoleManager<AppRole> _roleManager;
+        private readonly IAppUserService _appUserService;
 
         public StaffController(IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffPersonelInfoService staffPersonelInfoService,
                                       IAppRoleService appRoleService, IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService, UserManager<AppUser> userManager,
-                                       RoleManager<AppRole> roleManager)
+                                       RoleManager<AppRole> roleManager, IAppUserService appUserService)
         {
             _staffService = staffService;
             _mapper = mapper;
@@ -49,6 +50,7 @@ namespace FlexHR.Web.Controllers
             _staffOtherInfoService = staffOtherInfoService;
             _staffFileService = staffFileService;
             _roleManager = roleManager;
+            _appUserService = appUserService;
 
         }
 
@@ -92,6 +94,17 @@ namespace FlexHR.Web.Controllers
                 item.PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null;
             }
             return PartialView("_GetStaffCardBySearch", models);
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemoveUser(int id)
+        {
+            var user =_appUserService.Get(x => x.StaffId == id).FirstOrDefault();
+            user.IsActive = false;
+            _appUserService.Update(user);
+            await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+
+            return Json("true");
+
         }
         [HttpPost]
         public async Task<IActionResult> AddStaffWithAjax(AddStaffDto modal)

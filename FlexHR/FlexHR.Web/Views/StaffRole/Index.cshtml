@@ -48,23 +48,9 @@
                                     <div class="card-body">
 
                                         <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group row ">
-                                                    <label class="col-xl-5 col-lg-5 col-form-label">Personel Sistemi Kullanacak mı ?</label>
-                                                    <div class="col-lg-9 col-xl-4">
-                                                        <span class="switch switch-primary">
-                                                            <label>
-                                                                <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="1" />
-                                                                <span></span>
-                                                            </label>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                            </div>
-                                            <div class="col-md-6" id="rolesDiv">
-                                                <div class="form-group row " >
                                                     <label class="col-xl-4 col-lg-3 col-form-label">Roller</label>
                                                     <div class="col-lg-9 col-xl-9">
                                                         <select class="form-control selectpicker" data-live-search="true" multiple name="Roles">
@@ -84,7 +70,7 @@
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-6" id="permissionsDiv">
+                                            <div class="col-md-6">
                                                 <div class="form-group row pt-5">
                                                     <label class="pl-4 col-lg-10 col-xl-10 ">Sayfa Yetkileri</label>
                                                     <div class="col-lg-10 col-xl-10 col-sm-12">
@@ -140,21 +126,9 @@
             if (@ViewBag.StaffGeneralUpdateStatus == true) {
                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
             }
+
         });
     </script>
-    <script>
-        $('#WillUseSystem').on('change', function () {
 
-            if ($('#WillUseSystem').is(":checked")) {
-                $("#rolesDiv").attr("hidden", false);
-                $("#permissionsDiv").attr("hidden", false);
-                
-            }
-            else {
-                $("#rolesDiv").attr("hidden", true);
-                $("#permissionsDiv").attr("hidden", true);              
-            }
-        })
-    </script>
 
 }
