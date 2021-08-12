@@ -58477,7 +58477,9 @@ code {
     padding: 0.65rem 1rem; }
 
 .select2-container--default .select2-results__options {
-  padding: 0.65rem 0; }
+    padding: 0.65rem 0;
+    max-height: 200px !important;
+}
 
 .select2-container--default .select2-results__option {
   padding: 0.65rem 1rem; }

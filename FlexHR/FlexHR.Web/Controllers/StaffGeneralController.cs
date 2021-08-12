@@ -37,39 +37,21 @@ namespace FlexHR.Web.Controllers
         }
         public async Task<IActionResult> Index(int id)
         {
-            int roleId = -1;
             var staff = _staffService.GetById(id);
-            var user = _appUserService.Get(x => x.StaffId == id).FirstOrDefault();
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var item in roles)
-            {
-                var role = await _roleManager.FindByNameAsync(item);
-                if (role.AuthorizeTypeGeneralSubTypeId == 125)
-                {
-                    roleId = role.Id;
-                }
-            }
-            ViewBag.Roles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125), "Id", "Description");
-            ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
-            var appUserList = _mapper.Map<ListAppUserDto>(_appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault());
-            ListStaffGeneralDto listStaffGeneralDto = new ListStaffGeneralDto
-            {
-                ContractTypeGeneralSubTypeId = staff.ContractTypeGeneralSubTypeId,
-                EmailJob = staff.EmailJob,
-                StaffId = staff.StaffId,
-                EmailPersonal = staff.EmailPersonal,
-                JobJoinDate = staff.JobJoinDate,
-                NameSurname = staff.NameSurname,
-                PhoneJob = staff.PhoneJob,
-                PhonePersonal = staff.PhonePersonal,
-                JobFinishDate = staff.JobFinishDate,
-                AppUser = appUserList,
-                WillUseSystem = staff.WillUseSystem,
-                RoleId = roleId
-
-            };
+            //var user = _appUserService.Get(x => x.StaffId == id).FirstOrDefault();
+            //var roles = await _userManager.GetRolesAsync(user);
+            //foreach (var item in roles)
+            //{
+            //    var role = await _roleManager.FindByNameAsync(item);
+            //    if (role.AuthorizeTypeGeneralSubTypeId == 125)
+            //    {
+            //        roleId = role.Id;
+            //    }
+            //}
+            //ViewBag.Roles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125), "Id", "Description");
+            ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");              
             ViewBag.StaffGeneralUpdateStatus = TempData["StaffGeneralUpdateStatus"];
-            return View(listStaffGeneralDto);
+            return View(_mapper.Map<ListStaffGeneralDto>(staff));
         }
         [HttpPost]
         public IActionResult UpdateStaffGeneral(UpdateStaffGeneralDto model)
