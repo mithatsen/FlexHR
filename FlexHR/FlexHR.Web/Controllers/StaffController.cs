@@ -96,44 +96,50 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddStaffWithAjax(AddStaffDto modal)
         {
-            var appUser = await _userManager.FindByNameAsync(modal.UserName);
-            if (appUser != null)
-            {
-                return Json("false");
-            }
             var staffResult = new Staff();
-            if (modal.WillUseSystem == false)
+            if (modal.WillUseSystem != false)
             {
-                staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
-            }
-            else
-            {
-                staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
-                AppUser user = new AppUser()
+                var appUser = await _userManager.FindByNameAsync(modal.UserName);
+                if (appUser != null)
                 {
-                    UserName = modal.UserName,
-                    Email = modal.EmailPersonal,
-                    StaffId = staffResult.StaffId,
-                    IsActive = true
-                };
-
-                await _userManager.CreateAsync(user, modal.Password);              
-                var role = _appRoleService.Get(x => x.Id == modal.RoleId).FirstOrDefault().Name;
-
-                var dene = await _userManager.AddToRoleAsync(user, role);
-
-                foreach (var item in modal.PageRoles)
+                    return Json("false");
+                }
+                else
                 {
-                    var rolePage = _appRoleService.Get(x => x.Id == item).FirstOrDefault().Name;
-                    var isInRole = await _userManager.IsInRoleAsync(user, rolePage);
-                    if (!isInRole)
+                    staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
+                    AppUser user = new AppUser()
                     {
-                        await _userManager.AddToRoleAsync(user, rolePage);
+                        UserName = modal.UserName,
+                        Email = modal.EmailPersonal,
+                        StaffId = staffResult.StaffId,
+                        IsActive = true
+                    };
+
+                    await _userManager.CreateAsync(user, modal.Password);
+                    if (modal.RoleId > 0)
+                    {
+                        var role = _appRoleService.Get(x => x.Id == modal.RoleId).FirstOrDefault().Name;
+                        var dene = await _userManager.AddToRoleAsync(user, role);
                     }
-                    await _userManager.AddToRoleAsync(user, rolePage);
+
+                    if (modal.PageRoles != null)
+                    {
+                        foreach (var item in modal.PageRoles)
+                        {
+                            var rolePage = _appRoleService.Get(x => x.Id == item).FirstOrDefault().Name;
+                            var isInRole = await _userManager.IsInRoleAsync(user, rolePage);
+                            if (!isInRole)
+                            {
+                                await _userManager.AddToRoleAsync(user, rolePage);
+                            }
+                            await _userManager.AddToRoleAsync(user, rolePage);
+                        }
+                    }
+
                 }
             }
 
+            staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
             var staffId = staffResult.StaffId;
 
             _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });

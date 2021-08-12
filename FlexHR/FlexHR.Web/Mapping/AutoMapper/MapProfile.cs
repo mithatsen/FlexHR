@@ -103,6 +103,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #endregion
             #region Role
             CreateMap<ListRoleDto, AppRole>().ReverseMap();
+            CreateMap<ListScreenDto, AppRole>().ReverseMap();
             CreateMap<AddRoleDto, AppRole>().ReverseMap();
             #endregion
             #region Company Branch

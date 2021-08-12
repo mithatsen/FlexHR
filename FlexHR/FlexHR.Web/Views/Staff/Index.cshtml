@@ -265,7 +265,7 @@
                                                     <div class="form-group row justify-content-center" hidden id="dvUserName">
                                                         <label class="col-xl-4 col-lg-3 col-form-label ">Kullanıcı Adı</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input name="UserName" id="UserName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Kullanıcı Adı" />
+                                                            <input name="UserNameAddStaff"  id="UserName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Kullanıcı Adı" />
                                                         </div>
                                                     </div>
                                                     <div class="form-group row justify-content-center" hidden id="dvAccessType">
@@ -281,7 +281,7 @@
                                                     <div class="form-group row justify-content-center" hidden id="dvPassword">
                                                         <label class="col-xl-4 col-lg-3 col-form-label ">Şifre</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input name="Password" id="Password" class="form-control form-control-lg form-control-solid" type="text" placeholder="Şifre" />
+                                                            <input name="PasswordAddStaff" id="Password"  class="form-control form-control-lg form-control-solid" type="text" placeholder="Şifre" />
                                                         </div>
                                                     </div>
 
@@ -352,7 +352,7 @@
     <script>
 
         // Create a FormValidation instance
-        const fv = FormValidation.formValidation(document.getElementById('addStaffFormModal29'),
+        var fvAddStaff = FormValidation.formValidation(document.getElementById('addStaffFormModal29'),
             {
                 fields: {
                     NameSurname: {
@@ -398,14 +398,8 @@
                             },
 
                         }
-                    },
-                    RoleId: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Erişim türü seçiniz'
-                            }
-                        }
-                    },
+                    }
+                  
 
                 },
                 plugins: {
@@ -416,7 +410,8 @@
                 }
             });
         function staffAddClickFunction() {
-            fv.validate().then(function (status) {
+            debugger;
+            fvAddStaff.validate().then(function (status) {
                 // Update the login button content based on the validation status
                 if (status == 'Valid') {
                     console.log($("#ContractTypeSelect").val());
