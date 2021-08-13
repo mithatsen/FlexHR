@@ -261,6 +261,8 @@ namespace FlexHR.Web.Controllers
         [HttpGet]
         public IActionResult GetPaymentRequestModal()
         {
+            int userId = Convert.ToInt32(_userManager.GetUserId(HttpContext.User));
+            ViewBag.StaffId = _appUserService.Get(x => x.Id == userId).FirstOrDefault().StaffId;
             ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
             ViewBag.Staffs = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
             return PartialView("_GetPaymentRequestModal");

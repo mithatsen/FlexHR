@@ -54,37 +54,45 @@
     <div class="card-header card-header-tabs-line">
         <div class="card-toolbar">
             <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
-
-                <li class="nav-item mr-3">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-clock"></i>
+                @if ((User.IsInRole("ViewLeaveRequestPendingApprovalLeavesTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-clock"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Onay Bekleyenler</span>
-                    </a>
-                </li>
-                <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-check"></i>
+                            <span class="nav-text font-weight-bold">Onay Bekleyenler</span>
+                        </a>
+                    </li>
+                }
+                @if ((User.IsInRole("ViewLeaveRequestApprovalLeavesTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-check"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Onaylananlar</span>
-                    </a>
-                </li>
-                <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-times"></i>
+                            <span class="nav-text font-weight-bold">Onaylananlar</span>
+                        </a>
+                    </li>
+                }
+                @if ((User.IsInRole("ViewLeaveRequestRejectedLeavesTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-times"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Reddedilenler</span>
-                    </a>
-                </li>
+                            <span class="nav-text font-weight-bold">Reddedilenler</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
@@ -104,7 +112,10 @@
                                 <th>Süre</th>
                                 <th>İzin Türü</th>
                                 <th>Açıklama</th>
-                                <th>İşlemler</th>
+                                @if ((User.IsInRole("ApproveLeave") || (User.IsInRole("RejectLeave")) || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                {
+                                    <th>İşlemler</th>
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -117,10 +128,20 @@
                                     <td>@item.TotalDay Gün</td>
                                     <td>@item.LeaveType</td>
                                     <td>@item.Description</td>
+
+
                                     <td>
-                                        <a class="btn btn-hover-bg-light btn-sm" onclick="approveLeave(@item.StaffLeaveId)"><span><i class="fas fa-check text-success"></i></span></a>
-                                        <a class="btn btn-hover-bg-light btn-sm" onclick="rejectLeave(@item.StaffLeaveId)"><span><i class="fas fa-times text-danger"></i></span></a>
+                                        @if ((User.IsInRole("ApproveLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="btn btn-hover-bg-light btn-sm" onclick="approveLeave(@item.StaffLeaveId)"><span><i class="fas fa-check text-success"></i></span></a>
+                                        }
+                                        @if ((User.IsInRole("RejectLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="btn btn-hover-bg-light btn-sm" onclick="rejectLeave(@item.StaffLeaveId)"><span><i class="fas fa-times text-danger"></i></span></a>
+                                        }
                                     </td>
+
+
                                 </tr>
                             }
                         </tbody>
@@ -144,17 +165,17 @@
                         <tbody>
                             @foreach (var item in Model.ApprovedLeaves)
                             {
-                            <tr>
-                                <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                <tr>
+                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
 
-                                <td>@item.LeaveStartDate.ToString("d")</td>
+                                    <td>@item.LeaveStartDate.ToString("d")</td>
 
-                                <td>@item.LeaveEndDate.ToString("d")</td>
+                                    <td>@item.LeaveEndDate.ToString("d")</td>
 
-                                <td>@item.TotalDay Gün</td>
-                                <td>@item.LeaveType</td>
-                                <td>@item.Description</td>
-                            </tr>
+                                    <td>@item.TotalDay Gün</td>
+                                    <td>@item.LeaveType</td>
+                                    <td>@item.Description</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -175,17 +196,17 @@
                         <tbody>
                             @foreach (var item in Model.RejectedLeaves)
                             {
-                            <tr>
-                                <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                <tr>
+                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
 
-                                <td>@item.LeaveStartDate.ToString("d")</td>
+                                    <td>@item.LeaveStartDate.ToString("d")</td>
 
-                                <td>@item.LeaveEndDate.ToString("d")</td>
+                                    <td>@item.LeaveEndDate.ToString("d")</td>
 
-                                <td>@item.TotalDay Gün</td>
-                                <td>@item.LeaveType</td>
-                                <td>@item.Description</td>
-                            </tr>
+                                    <td>@item.TotalDay Gün</td>
+                                    <td>@item.LeaveType</td>
+                                    <td>@item.Description</td>
+                                </tr>
 
                             }
                         </tbody>

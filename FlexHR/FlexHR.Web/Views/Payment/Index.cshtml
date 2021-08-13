@@ -55,42 +55,48 @@
     <div class="card-header card-header-tabs-line">
         <div class="card-toolbar">
             <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
-
-                <li class="nav-item mr-3">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-clock"></i>
+                @if ((User.IsInRole("ViewPaymentRequestPendingApprovalPaymentsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-clock"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Onay Bekleyenler</span>
-                    </a>
-                </li>
-                <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-check"></i>
+                            <span class="nav-text font-weight-bold">Onay Bekleyenler</span>
+                        </a>
+                    </li>
+                }
+                @if ((User.IsInRole("ViewPaymentRequestApprovedPaymentsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-check"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Onaylananlar</span>
-                    </a>
-                </li>
-                <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-times"></i>
+                            <span class="nav-text font-weight-bold">Onaylananlar</span>
+                        </a>
+                    </li>
+                }
+                @if ((User.IsInRole("ViewPaymentRequestRejectedPaymentsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-times"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Reddedilenler</span>
-                    </a>
-                </li>
+                            <span class="nav-text font-weight-bold">Reddedilenler</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
-
-
     <div class="card card-custom">
         <div class="card-body  ">
             <div class="tab-content pt-5">
@@ -106,7 +112,10 @@
                                 <th width="25%">Açıklama</th>
                                 <th width="10%">Tutar</th>
                                 <th>Oluştrulma Tarihi</th>
-                                <th width="12%">Onaylama İşlemi</th>
+                                @if ((User.IsInRole("ApprovePayment") || (User.IsInRole("RejectPayment")) || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                {
+                                    <th width="12%">Onaylama İşlemi</th>
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -122,9 +131,14 @@
                                     @*<td>@item.IsPaid</td>*@
 
                                     <td>
-                                        <a class="btn btn-hover-bg-light btn-sm" onclick="approvePayment(@item.StaffPaymentId)"><span><i class="fas fa-check text-success"></i></span></a>
-                                        <a class="btn btn-hover-bg-light btn-sm" onclick="rejectPayment(@item.StaffPaymentId)"><span><i class="fas fa-times text-danger"></i></span></a>
-
+                                        @if ((User.IsInRole("ApprovePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="btn btn-hover-bg-light btn-sm" onclick="approvePayment(@item.StaffPaymentId)"><span><i class="fas fa-check text-success"></i></span></a>
+                                        }
+                                        @if ((User.IsInRole("RejectPayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="btn btn-hover-bg-light btn-sm" onclick="rejectPayment(@item.StaffPaymentId)"><span><i class="fas fa-times text-danger"></i></span></a>
+                                        }
                                     </td>
 
                                 </tr>

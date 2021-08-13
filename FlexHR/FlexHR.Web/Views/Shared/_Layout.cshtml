@@ -187,17 +187,18 @@
                                 </div>
                             </li>
 
-
-                            <li class="menu-item menu-item-active" aria-haspopup="true">
-                                <a asp-controller="Home" asp-action="Index" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="fas fa-home"></i>
-                                    </span>
-                                    <span class="menu-text">Anasayfa</span>
-                                </a>
-                            </li>
-                        
-                            @if ((User.IsInRole("ViewPersonalsPage")|| User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            @if ((User.IsInRole("ViewAdminDashboard") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item menu-item-active" aria-haspopup="true">
+                                    <a asp-controller="Home" asp-action="Index" class="menu-link">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-home"></i>
+                                        </span>
+                                        <span class="menu-text">Anasayfa</span>
+                                    </a>
+                                </li>
+                            }
+                            @if ((User.IsInRole("ViewPersonalsPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
                                 <li class="menu-item" aria-haspopup="true">
                                     <a asp-controller="Staff" asp-action="Index" class="menu-link">
@@ -210,46 +211,56 @@
 
                                 </li>
                             }
-                            <li class="menu-item menu-item-submenu " aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="fas fa-tasks"></i>
-                                    </span>
-                                    <span class="menu-text">Talepler</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu" kt-hidden-height="80" style="">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a asp-controller="Leave" asp-action="Index" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text"> İzin Talepleri</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a asp-controller="Payment" asp-action="Index" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Ödeme Talepleri</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a asp-controller="Shift" asp-action="Index" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Mesai Talepleri</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-
+                            @if ((User.IsInRole("ViewRequestSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item menu-item-submenu " aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-tasks"></i>
+                                        </span>
+                                        <span class="menu-text">Talepler</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu" kt-hidden-height="80" style="">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            @if ((User.IsInRole("ViewLeaveRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a asp-controller="Leave" asp-action="Index" class="menu-link">
+                                                        <i class="menu-bullet menu-bullet-dot">
+                                                            <span></span>
+                                                        </i>
+                                                        <span class="menu-text"> İzin Talepleri</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            @if ((User.IsInRole("ViewPaymentRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a asp-controller="Payment" asp-action="Index" class="menu-link">
+                                                        <i class="menu-bullet menu-bullet-dot">
+                                                            <span></span>
+                                                        </i>
+                                                        <span class="menu-text">Ödeme Talepleri</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            @if ((User.IsInRole("ViewShiftRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a asp-controller="Shift" asp-action="Index" class="menu-link">
+                                                        <i class="menu-bullet menu-bullet-dot">
+                                                            <span></span>
+                                                        </i>
+                                                        <span class="menu-text">Mesai Talepleri</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
 
                             <li class="menu-item menu-item-submenu " aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
