@@ -17,34 +17,42 @@
         </div>
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
-            <!--begin::Actions-->
-            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_1" asp-controller="Leave" asp-action="Index" asp-route-id="@Model">
-                <span class="nav-icon mr-2">
-                    <span class="svg-icon mr-3">
-                        <i class="fas fa-plane-departure"></i>
+            @if ((User.IsInRole("ViewLeaveRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <!--begin::Actions-->
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_1" asp-controller="Leave" asp-action="Index" asp-route-id="@Model">
+                    <span class="nav-icon mr-2">
+                        <span class="svg-icon mr-3">
+                            <i class="fas fa-plane-departure"></i>
+                        </span>
                     </span>
-                </span>
-                <span class="nav-text font-weight-bold">İzinler </span>
-            </a>
-
-            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Payment" asp-action="Index" asp-route-id="@Model">
-                <span class="nav-icon mr-2">
-                    <span class="svg-icon mr-3">
-                        <i class="fas fa-chart-bar"></i>
+                    <span class="nav-text font-weight-bold">İzinler </span>
+                </a>
+            }
+            @if ((User.IsInRole("ViewPaymentRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Payment" asp-action="Index" asp-route-id="@Model">
+                    <span class="nav-icon mr-2">
+                        <span class="svg-icon mr-3">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
                     </span>
-                </span>
-                <span class="nav-text font-weight-bold">Ödemeler</span>
-            </a>
-            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 active" id="tab_2" asp-controller="Shift" asp-action="Index" asp-route-id="@Model">
-                <span class="nav-icon mr-2">
-                    <span class="svg-icon mr-3">
-                        <i class="fas fa-chart-bar"></i>
+                    <span class="nav-text font-weight-bold">Ödemeler</span>
+                </a>
+            }
+            @if ((User.IsInRole("ViewShiftRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 active" id="tab_2" asp-controller="Shift" asp-action="Index" asp-route-id="@Model">
+                    <span class="nav-icon mr-2">
+                        <span class="svg-icon mr-3">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
                     </span>
-                </span>
-                <span class="nav-text font-weight-bold">Mesailer</span>
-            </a>
-            <!--end::Actions-->
-        </div>
+                    <span class="nav-text font-weight-bold">Mesailer</span>
+                </a>
+                <!--end::Actions-->
+            }
+            </div>
         <!--end::Toolbar-->
     </div>
 </div>
@@ -54,36 +62,45 @@
     <div class="card-header card-header-tabs-line">
         <div class="card-toolbar">
             <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
-                <li class="nav-item mr-3">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-clock"></i>
+                @if ((User.IsInRole("ViewShiftRequestPendingApprovalShiftsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-clock"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Onay Bekleyenler</span>
-                    </a>
-                </li>
-                <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-check"></i>
+                            <span class="nav-text font-weight-bold">Onay Bekleyenler</span>
+                        </a>
+                    </li>
+                }
+                @if ((User.IsInRole("ViewShiftRequestApprovalShiftsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-check"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Onaylananler</span>
-                    </a>
-                </li>
-                <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-user-times"></i>
+                            <span class="nav-text font-weight-bold">Onaylananler</span>
+                        </a>
+                    </li>
+                }
+                @if ((User.IsInRole("ViewShiftRequestRejectedShiftsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-user-times"></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Reddedilenler</span>
-                    </a>
-                </li>
+                            <span class="nav-text font-weight-bold">Reddedilenler</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
@@ -103,7 +120,10 @@
                                 <th width="15%">Başlangıç</th>
                                 <th width="10%">Süre(saat)</th>
                                 <th width="55%">Açıklama</th>
-                                <th width="10%">İşlemler</th>
+                                @if ((User.IsInRole("ApproveShift") || (User.IsInRole("RejectShift")) || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                {
+                                    <th width="10%">İşlemler</th>
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -116,8 +136,14 @@
                                     <td>@item.Description</td>
 
                                     <td>
-                                        <a class="btn btn-hover-bg-light btn-sm" onclick="approveShift(@item.StaffShiftId)"><span><i class="fas fa-check text-success"></i></span></a>
-                                        <a class="btn btn-hover-bg-light btn-sm" onclick="rejectShift(@item.StaffShiftId)"><span><i class="fas fa-times text-danger"></i></span></a>
+                                        @if ((User.IsInRole("ApproveShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="btn btn-hover-bg-light btn-sm" onclick="approveShift(@item.StaffShiftId)"><span><i class="fas fa-check text-success"></i></span></a>
+                                        }
+                                        @if ((User.IsInRole("RejectShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="btn btn-hover-bg-light btn-sm" onclick="rejectShift(@item.StaffShiftId)"><span><i class="fas fa-times text-danger"></i></span></a>
+                                        }
                                     </td>
                                 </tr>
                             }

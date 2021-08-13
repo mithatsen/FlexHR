@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
+
     public class StaffShiftController : Controller
     {
         private readonly IMapper _mapper;
@@ -31,7 +33,11 @@ namespace FlexHR.Web.Controllers
             _userManager = userManager;
             _appUserService = appUserService;
         }
+<<<<<<< HEAD
         [Authorize(Roles = "ViewStaffShiftPage,Manager")]
+=======
+        [Authorize(Roles ="ViewStaffShiftPage")]
+>>>>>>> aff50c1d492aaa09e5b0a1ab754695581ae74383
         public IActionResult Index(int id)
         {
            
