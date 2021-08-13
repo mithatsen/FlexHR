@@ -38,9 +38,12 @@
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Button-->
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffCareerAddModal">
-                                            Pozisyon Ekle
-                                        </button>
+                                        @if ((User.IsInRole("AddStaffCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffCareerAddModal">
+                                                Pozisyon Ekle
+                                            </button>
+                                        }
                                         <!--end::Button-->
                                     </div>
                                 </div>
@@ -57,7 +60,10 @@
                                                 <th>Şube</th>
                                                 <th>Departman</th>
                                                 <th>Unvan</th>
-                                                <th>İşlemler</th>
+                                                @if ((User.IsInRole("UpdateDeleteCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                {
+                                                    <th>İşlemler</th>
+                                                }
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -80,15 +86,17 @@
                                                     <td>@item.BranchName</td>
                                                     <td>@item.DepartmantName</td>
                                                     <td>@item.Title</td>
-                                                    <td>
-                                                        <a id="CareerUpdateBtn" onclick="CareerUpdate(@item.StaffCareerId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
-                                                            <i class="la la-edit text-warning"></i>
-                                                        </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCareer(@item.StaffCareerId)">
-
-                                                            <i class="la la-trash text-danger"></i>
-                                                        </a>
-                                                    </td>
+                                                    @if ((User.IsInRole("UpdateDeleteCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                    {
+                                                        <td>
+                                                            <a id="CareerUpdateBtn" onclick="CareerUpdate(@item.StaffCareerId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                                                <i class="la la-edit text-warning"></i>
+                                                            </a>
+                                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCareer(@item.StaffCareerId)">
+                                                                <i class="la la-trash text-danger"></i>
+                                                            </a>
+                                                        </td>
+                                                    }
                                                 </tr>
 
                                             }

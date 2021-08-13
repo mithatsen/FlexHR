@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -28,6 +29,7 @@ namespace FlexHR.Web.Controllers
             _mapper = mapper;
             _companyBranchService = companyBranchService;
         }
+        [Authorize(Roles = "ViewStaffCareerPage,Manager")]
         public IActionResult Index(int id)
         {
 

@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.LeaveDtos;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.DTO.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,7 @@ namespace FlexHR.Web.Controllers
             _leaveTypeService = leaveTypeService;
             _leaveRuleService = leaveRuleService;
         }
+        [Authorize(Roles = "ViewLeaveRequestPage,Manager")]
         public IActionResult Index()
 
         {

@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.DTO.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace FlexHR.Web.Controllers
             _mapper = mapper;
             _staffPaymentService = staffPaymentService;
         }
+        [Authorize(Roles = "ViewPaymentRequestPage,Manager")]
         public IActionResult Index()
         {
             var approvedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());

@@ -33,9 +33,12 @@
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Genel bilgilerini düzenleyin</span>
                                     </div>
                                     <div class="card-toolbar">
-                                        <button class="btn btn-primary mr-2">Kaydet</button>
-                                        <a class="btn btn-secondary">Geri</a>
-                                    </div>
+                                        @if ((User.IsInRole("UpdateStaffGeneralInfo") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <button class="btn btn-primary mr-2">Kaydet</button>
+                                        }
+                                            <a class="btn btn-secondary">Geri</a>
+                                        </div>
                                 </div>
                                 <!--end::Header-->
 

@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.DashboardDtos;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.DTO.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ namespace FlexHR.Web.Controllers
             _generalSubTypeService = generalSubTypeService;
         }
     
+        [Authorize(Roles= "ViewAdminDashboard,Manager")]
         public IActionResult Index()
         {
             var shifts = _mapper.Map<List<ListStaffShiftOnDashboardDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff")).Take(4).ToList();

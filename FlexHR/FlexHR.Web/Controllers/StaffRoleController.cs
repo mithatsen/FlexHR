@@ -2,6 +2,7 @@
 using FlexHR.DTO.Dtos.RoleDtos;
 using FlexHR.DTO.ViewModels;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,6 +26,7 @@ namespace FlexHR.Web.Controllers
             _appRoleService = appRoleService;
             _appUserService = appUserService;
         }
+        [Authorize(Roles = "ViewStaffRolePage,Manager")]
         public IActionResult Index(int id)
         {
             ViewBag.Id = id;

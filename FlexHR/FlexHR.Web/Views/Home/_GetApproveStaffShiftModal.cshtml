@@ -29,8 +29,11 @@
                 </div>
                 <div class="modal-footer" style="background-color:#181c32">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="approveShiftDash(@Model.StaffShiftId)" class="btn btn-primary font-weight-bold">Onayla</button>
-                </div>
+                    @if ((User.IsInRole("ApprovePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                    {
+                        <button type="button" onclick="approveShiftDash(@Model.StaffShiftId)" class="btn btn-primary font-weight-bold">Onayla</button>
+                    }
+                    </div>
             </div>
         </div>
     </form>

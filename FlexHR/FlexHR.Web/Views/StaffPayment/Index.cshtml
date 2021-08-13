@@ -48,12 +48,14 @@
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Button-->
-
-                                        <select id="kt_select2_1" onchange="PaymentTypeChange()" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.PaymentTypeList">
-                                            <option value="-1" disabled selected hidden>Ödeme Ekle</option>
-                                        </select>
-                                        <!--end::Button-->
-                                    </div>
+                                        @if ((User.IsInRole("AddStaffPayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <select id="kt_select2_1" onchange="PaymentTypeChange()" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.PaymentTypeList">
+                                                <option value="-1" disabled selected hidden>Ödeme Ekle</option>
+                                            </select>
+                                            <!--end::Button-->
+                                        }
+                                        </div>
 
                                 </div>
                                 <div class="card-body">
@@ -68,8 +70,11 @@
                                                 <th>Durum</th>
                                                 <th>Oluştrulma Tarihi</th>
                                                 <th>Ödendi</th>
-                                                <th width="12%">İşlemler</th>
-                                            </tr>
+                                                @if ((User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("UpdateDeletePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                {
+                                                    <th width="12%">İşlemler</th>
+                                                }
+                                                </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var item in Model)
@@ -94,22 +99,24 @@
                                                     <td>@item.CreationDate.ToShortDateString()</td>
                                                     <td>@item.IsPaid</td>
                                                     <td class="text-left">
-                                                        @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count > 0)
+                                                        @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count > 0 && User.IsInRole("ViewStaffPaymentInfo"))
                                                         {
                                                             <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="details">
                                                                 <i class="la la-info text-info"></i>
                                                             </a>
                                                         }
+                                                        @if ((User.IsInRole("UpdateDeletePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                        {
+                                                            <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal">
+                                                                <i class="la la-edit text-warning"></i>
+                                                            </a>
+                                                            <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffPayment(@item.StaffPaymentId)" title="Sil">
 
-                                                        <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal">
-                                                            <i class="la la-edit text-warning"></i>
-                                                        </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffPayment(@item.StaffPaymentId)" title="Sil">
+                                                                <i class="la la-trash text-danger"></i>
+                                                            </a>
+                                                        }
 
-                                                            <i class="la la-trash text-danger"></i>
-                                                        </a>
-
-                                                    </td>
+                                                        </td>
                                                 </tr>
 
                                             }

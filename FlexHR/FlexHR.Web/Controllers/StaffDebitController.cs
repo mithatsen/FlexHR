@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffDebitDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -24,6 +25,7 @@ namespace FlexHR.Web.Controllers
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
         }
+        [Authorize(Roles = "ViewStaffDebitPage,Manager")]
         public IActionResult Index(int id)
         {
             ViewBag.StaffId = id;

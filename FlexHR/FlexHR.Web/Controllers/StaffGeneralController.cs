@@ -4,6 +4,7 @@ using FlexHR.DTO.Dtos.AppUserDtos;
 using FlexHR.DTO.Dtos.StaffGeneralDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,20 +36,11 @@ namespace FlexHR.Web.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
+        [Authorize(Roles = "ViewStaffGeneralPage,Manager")]
         public async Task<IActionResult> Index(int id)
         {
             var staff = _staffService.GetById(id);
-            //var user = _appUserService.Get(x => x.StaffId == id).FirstOrDefault();
-            //var roles = await _userManager.GetRolesAsync(user);
-            //foreach (var item in roles)
-            //{
-            //    var role = await _roleManager.FindByNameAsync(item);
-            //    if (role.AuthorizeTypeGeneralSubTypeId == 125)
-            //    {
-            //        roleId = role.Id;
-            //    }
-            //}
-            //ViewBag.Roles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125), "Id", "Description");
+            
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");              
             ViewBag.StaffGeneralUpdateStatus = TempData["StaffGeneralUpdateStatus"];
             return View(_mapper.Map<ListStaffGeneralDto>(staff));

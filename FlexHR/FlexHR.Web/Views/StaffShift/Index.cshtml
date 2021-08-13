@@ -38,9 +38,12 @@
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Button-->
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
-                                            Mesai Kaydı Ekle
-                                        </button>
+                                        @if ((User.IsInRole("AddStaffShift")  || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
+                                                Mesai Kaydı Ekle
+                                            </button>
+                                        }
                                         <!--end::Button-->
                                     </div>
 
@@ -54,7 +57,10 @@
                                                 <th width="10%">Süre(saat)</th>
                                                 <th width="55%">Açıklama</th>
                                                 <th width="10%">Durum</th>
-                                                <th width="10%">İşlemler</th>
+                                                @if ((User.IsInRole("UpdateDeleteShift")  || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                {
+                                                    <th width="10%">İşlemler</th>
+                                                }
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -69,17 +75,19 @@
                                                     <td>@item.Description</td>
                                                     <td>@item.GeneralStatusGeneralSubTypeId</td>
 
+                                                    @if ((User.IsInRole("UpdateDeleteShift")  || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                    {
+                                                        <td>
+                                                            <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
+                                                                <i class="la la-edit text-warning"></i>
+                                                            </a>
+                                                            <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffShift(@item.StaffShiftId)" title="Sil">
 
-                                                    <td>
-                                                        <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
-                                                            <i class="la la-edit text-warning"></i>
-                                                        </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffShift(@item.StaffShiftId)" title="Sil">
+                                                                <i class="la la-trash text-danger"></i>
+                                                            </a>
 
-                                                            <i class="la la-trash text-danger"></i>
-                                                        </a>
-                                                    
-                                                    </td>
+                                                        </td>
+                                                    }
                                                 </tr>
 
                                             }

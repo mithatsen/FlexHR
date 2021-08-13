@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.DTO.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace FlexHR.Web.Controllers
             _mapper = mapper;
             _staffShiftService = staffShiftService;
         }
+        
+        [Authorize(Roles = "ViewShiftRequestPage,Manager")]
         public IActionResult Index()
         {
             var approvedShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());

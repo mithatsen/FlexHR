@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffOtherInfoDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -30,6 +31,7 @@ namespace FlexHR.Web.Controllers
             _townService = townService;
             _cityService = cityService;
         }
+        [Authorize(Roles = "ViewStaffOtherInfoPage,Manager")]
         public IActionResult Index(int id)
         {
             TownHelper cityIdAndCountryId = new TownHelper();

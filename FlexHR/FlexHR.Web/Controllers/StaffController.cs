@@ -9,6 +9,7 @@ using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +54,7 @@ namespace FlexHR.Web.Controllers
             _appUserService = appUserService;
 
         }
-
+        [Authorize(Roles = "ViewPersonalsPage,Manager")]
         public IActionResult Index()
         {
             var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");

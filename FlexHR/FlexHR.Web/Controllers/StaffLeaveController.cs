@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,6 +36,7 @@ namespace FlexHR.Web.Controllers
             _leaveRuleService = leaveRuleService;
             _staffService = staffService;
         }
+        [Authorize(Roles = "ViewStaffLeavePage,Manager")]
         public IActionResult Index(int id)
         {
             ViewBag.StaffId = id;

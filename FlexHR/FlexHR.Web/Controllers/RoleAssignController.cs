@@ -37,7 +37,13 @@ namespace FlexHR.Web.Controllers
         {
             ViewBag.Roles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125), "Id", "Description");
             ViewBag.PageRoles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 126), "Id", "Description");
-            ViewBag.UserList = new SelectList(_appUserService.GetAll(), "Id", "UserName");
+            var userList = _appUserService.GetAll();
+            List<GetUserWithStaffName> users = new List<GetUserWithStaffName>();
+            foreach (var item in userList)
+            {
+               users.Add(new GetUserWithStaffName {Id=item.Id,Name= _staffService.Get(x => x.StaffId == item.StaffId).FirstOrDefault().NameSurname }) ;
+            }
+            ViewBag.UserList = new SelectList(users, "Id", "Name");
 
             return View();
         }

@@ -55,11 +55,14 @@
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Button-->
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
-                                            İzin Ekle
-                                        </button>
-                                        <!--end::Button-->
-                                    </div>
+                                        @if ((User.IsInRole("AddStaffLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
+                                                İzin Ekle
+                                            </button>
+                                        }
+                                            <!--end::Button-->
+                                        </div>
 
                                 </div>
                                 <div class="card-body">
@@ -73,22 +76,27 @@
                                                 <th>İzin Türü</th>
                                                 <th width="35%">Açıklama</th>
                                                 <th>Durum</th>
-                                                <th>İşlemler</th>
-                                            </tr>
+                                                @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                {
+                                                    <th>İşlemler</th>
+                                                }
+                                                </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var item in Model)
                                             {
-                                                <tr>
+                                            <tr>
 
-                                                    <td>@item.LeaveStartDate.ToString("d")</td>
+                                                <td>@item.LeaveStartDate.ToString("d")</td>
 
-                                                    <td>@item.LeaveEndDate.ToString("d")</td>
+                                                <td>@item.LeaveEndDate.ToString("d")</td>
 
-                                                    <td>@item.TotalDay Gün</td>
-                                                    <td>@item.LeaveType</td>
-                                                    <td>@item.Description</td>
-                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                <td>@item.TotalDay Gün</td>
+                                                <td>@item.LeaveType</td>
+                                                <td>@item.Description</td>
+                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                {
                                                     <td>
                                                         <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
                                                             <i class="la la-edit text-warning"></i>
@@ -98,6 +106,7 @@
                                                             <i class="la la-trash text-danger"></i>
                                                         </a>
                                                     </td>
+                                                }
                                                 </tr>
 
                                             }

@@ -33,7 +33,10 @@
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Kişisel bilgileri düzenleyin</span>
                                     </div>
                                     <div class="card-toolbar">
-                                        <button class="btn btn-primary mr-2">Kaydet</button>
+                                        @if ((User.IsInRole("UpdateStaffPersonalInfo") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <button class="btn btn-primary mr-2">Kaydet</button>
+                                        }
                                         <a class="btn btn-secondary">Geri</a>
                                     </div>
                                 </div>

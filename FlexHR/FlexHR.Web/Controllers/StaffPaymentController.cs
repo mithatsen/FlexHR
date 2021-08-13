@@ -5,6 +5,7 @@ using FlexHR.DTO.Dtos.ReceiptDtos;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,7 @@ namespace FlexHR.Web.Controllers
             _appUserService = appUserService;
             _userManager = userManager;
         }
+        [Authorize(Roles = "ViewStaffPaymentInfo,Manager")]
         public IActionResult Index(int id)
         {
 

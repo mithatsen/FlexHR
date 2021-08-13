@@ -48,7 +48,7 @@
                         <div class="form-group row pt-5">
                             <label class="pl-4 col-lg-10 col-xl-10 ">Personeller</label>
                             <div class="col-lg-10 col-xl-10 col-sm-12">
-                                <select class="form-control selectpicker" id="users" multiple name="UserId" asp-items="ViewBag.UserList">
+                                <select class="form-control selectpicker" id="users" multiple data-live-search="true" name="UserId" asp-items="ViewBag.UserList">
                                 </select>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                         <div class="form-group row pt-5">
                             <label class="pl-4 col-lg-10 col-xl-10 ">Roller</label>
                             <div class="col-lg-10 col-xl-10 col-sm-12">
-                                <select class="form-control selectpicker" id="roles" multiple name="RoleId" asp-items="ViewBag.Roles">
+                                <select class="form-control selectpicker" id="roles" multiple data-live-search="true" name="RoleId" asp-items="ViewBag.Roles">
                                 </select>
                             </div>
                         </div>

@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -23,6 +24,7 @@ namespace FlexHR.Web.Controllers
             _mapper = mapper;
             _staffPersonelInfoService = staffPersonelInfoService;
         }
+        [Authorize(Roles = "ViewStaffPersonalInfoPage,Manager")]
         public IActionResult Index(int id)
         {
            

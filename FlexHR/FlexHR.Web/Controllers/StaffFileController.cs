@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffFileDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -38,6 +39,7 @@ namespace FlexHR.Web.Controllers
             var unaccentedText = String.Join("", text.Normalize(NormalizationForm.FormD).Where(c => char.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.NonSpacingMark));
             return unaccentedText.Replace("ı", "i");
         }
+        [Authorize(Roles = "ViewStaffFilePage,Manager")]
         public IActionResult Index(int id)
         {
             ViewBag.StaffId = id;
