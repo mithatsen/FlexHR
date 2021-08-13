@@ -71,17 +71,25 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <label>Personel *</label>
-                                                <div class="input-group">
-                                                    <select id="personal_select2" onchange="staffChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
-                                                        <option value="">Personel Seçiniz</option>
-                                                    </select>
+                                            @if ((User.IsInRole("CreateRequestAbilityToEveryone") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <div class="form-group row">
+                                                    <label>Personel *</label>
+                                                    <div class="input-group">
+                                                        <select id="personal_select2" onchange="staffChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                           
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            }
+                                            else
+                                            {
+                                                <input id="staffAutoId" type="hidden" value="@ViewBag.StaffId" />
 
-                                          
+                                            }
+                                        </div>
+                                            
+
                                     </div>
                                 </div>
                                 <!--end::Body-->
@@ -179,14 +187,6 @@
 
                     }
                 },
-                StaffId: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Personel seçiniz'
-                        },
-
-                    }
-                },
                 Description: {
                     validators: {
                         stringLength: {
@@ -212,6 +212,7 @@
     function fncAddRequestReceipt() {
         fvRequest.validate().then(function (status) {
             if (status == 'Valid') {
+                var staffIdFd = $('#personal_select2').val() !== undefined ? $('#personal_select2').val() : $('#staffAutoId').val()
                 var formdata = new FormData();
                 $('.receiptdiv').each(function (i, obj) {
 
@@ -241,7 +242,7 @@
                 formdata.append("SmDescription", $('#txtSmDescription').val());
                 formdata.append("LgDescription", $('#txtLgDescription').val());
                 formdata.append("CurrencyType", $('#currencyType').val());
-                formdata.append("StaffId", $('#personal_select2').val());
+                formdata.append("StaffId", staffIdFd);
                 $.ajax({
                     url: "/StaffPayment/AddStaffPaymentWithAjax/" + 99,
                     type: "POST",
