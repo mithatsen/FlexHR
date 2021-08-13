@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-
     public class StaffShiftController : Controller
     {
         private readonly IMapper _mapper;
@@ -33,28 +32,24 @@ namespace FlexHR.Web.Controllers
             _userManager = userManager;
             _appUserService = appUserService;
         }
-<<<<<<< HEAD
         [Authorize(Roles = "ViewStaffShiftPage,Manager")]
-=======
-        [Authorize(Roles ="ViewStaffShiftPage")]
->>>>>>> aff50c1d492aaa09e5b0a1ab754695581ae74383
         public IActionResult Index(int id)
         {
-           
+
             ViewBag.StaffId = id;
             var staffShiftList = _staffShiftService.Get(p => p.StaffId == id && p.IsActive == true);
             var shiftModels = new List<ListStaffShiftDto>();
             foreach (var item in staffShiftList)
-            {                        
+            {
                 shiftModels.Add(_mapper.Map<ListStaffShiftDto>(item));
             }
-            ViewBag.StaffShiftUpdateStatus=TempData["StaffShiftUpdateStatus"];
+            ViewBag.StaffShiftUpdateStatus = TempData["StaffShiftUpdateStatus"];
             return View(shiftModels);
         }
         [HttpGet]
         public IActionResult GetUpdateStaffShiftModal(int id)
         {
-            var staffShift = _staffShiftService.GetById(id);                 
+            var staffShift = _staffShiftService.GetById(id);
             return PartialView("GetUpdateStaffShiftModal", _mapper.Map<ListStaffShiftDto>(staffShift));
 
         }
@@ -74,10 +69,10 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStaffShift(ListStaffShiftDto model)
         {
-            model.IsActive = true;       
+            model.IsActive = true;
             _staffShiftService.Update(_mapper.Map<StaffShift>(model));
             TempData["StaffShiftUpdateStatus"] = "true";
-            return RedirectToAction("Index",new {id=model.StaffId });
+            return RedirectToAction("Index", new { id = model.StaffId });
 
         }
         [HttpPost]

@@ -99,7 +99,7 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveUser(int id)
         {
-            var user =_appUserService.Get(x => x.StaffId == id).FirstOrDefault();
+            var user = _appUserService.Get(x => x.StaffId == id).FirstOrDefault();
             user.IsActive = false;
             _appUserService.Update(user);
             await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
@@ -149,7 +149,7 @@ namespace FlexHR.Web.Controllers
                             await _userManager.AddToRoleAsync(user, rolePage);
                         }
                     }
-
+                    return Json("true");
                 }
             }
 

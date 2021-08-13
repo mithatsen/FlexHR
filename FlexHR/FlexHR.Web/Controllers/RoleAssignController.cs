@@ -4,6 +4,7 @@ using FlexHR.DTO.Dtos.RoleDtos;
 using FlexHR.DTO.Dtos.StaffDtos;
 using FlexHR.DTO.ViewModels;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,9 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class RoleAssignController : Controller
-    {
-
+    {       
         private readonly IAppRoleService _appRoleService;
         private readonly IAppUserService _appUserService;
         private readonly IStaffService _staffService;
@@ -33,6 +34,7 @@ namespace FlexHR.Web.Controllers
             _userManager = userManager;
             _appUserService = appUserService;
         }
+        [Authorize(Roles = "ViewRoleAssignPage,Manager")]
         public IActionResult Index()
         {
             ViewBag.Roles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125), "Id", "Description");

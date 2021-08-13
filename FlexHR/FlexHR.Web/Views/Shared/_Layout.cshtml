@@ -301,15 +301,7 @@
                                     </a>
                                 </li>
                             }
-                            <li class="menu-item" aria-haspopup="true">
-                                <a asp-controller="SystemVariable" asp-action="Index" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="fas fa-cog"></i>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-text">Sistem Değişkenleri</span>
-                                </a>
-                            </li>
+
                             <li class="menu-item menu-item-submenu " aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -342,15 +334,30 @@
                                     </ul>
                                 </div>
                             </li>
+                            @if ((User.IsInRole("ViewRoleAssignPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
 
-                            <li class="menu-item" aria-haspopup="true">
-                                <a asp-controller="RoleAssign" asp-action="Index" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="fas fa-user-tag"></i>
-                                    </span>
-                                    <span class="menu-text">Rol Atama</span>
-                                </a>
-                            </li>
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a asp-controller="RoleAssign" asp-action="Index" class="menu-link">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-user-tag"></i>
+                                        </span>
+                                        <span class="menu-text">Rol Atama</span>
+                                    </a>
+                                </li>
+                            }
+                            @if ((User.IsInRole("ViewSystemVariablePage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a asp-controller="SystemVariable" asp-action="Index" class="menu-link">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-cog"></i>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-text">Ayarlar</span>
+                                    </a>
+                                </li>
+                            }
                             <li class="menu-item" aria-haspopup="true">
                                 <a asp-controller="Auth" asp-action="LogOut" class="menu-link">
                                     <span class="svg-icon menu-icon">

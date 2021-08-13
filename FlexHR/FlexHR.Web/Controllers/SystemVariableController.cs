@@ -8,6 +8,7 @@ using FlexHR.DTO.Dtos.LeaveTypeDtos;
 using FlexHR.DTO.Dtos.RoleDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -19,8 +20,10 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class SystemVariableController : Controller
     {
+        
         private readonly IGeneralTypeService _generalTypeService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly ILeaveTypeService _leaveTypeService;
@@ -44,7 +47,7 @@ namespace FlexHR.Web.Controllers
             _companyBranchService = companyBranchService;
             _roleManager = roleManager;
         }
-
+        [Authorize(Roles = "ViewRoleAssignPage,Manager")]
         public IActionResult Index()
         {
             ViewBag.GeneralTypeList = new SelectList(_generalTypeService.Get(p => p.IsActive == true), "GeneralTypeId", "Description");

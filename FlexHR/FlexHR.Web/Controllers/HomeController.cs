@@ -3,7 +3,9 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.DashboardDtos;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.DTO.ViewModels;
+using FlexHR.Entity.Concrete;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,11 +26,14 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffPaymentService _staffPaymentService;
         private readonly ILeaveRuleService _leaveRuleService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
-        public HomeController(IMapper mapper, IStaffShiftService staffShiftService, IStaffPersonelInfoService staffPersonelInfoService,IStaffLeaveService staffLeaveService,
+        private readonly IAppUserService _appUserService;
+        private readonly UserManager<AppUser> _userManager;
+        public HomeController(IMapper mapper, IStaffShiftService staffShiftService, IAppUserService appUserService, IStaffPersonelInfoService staffPersonelInfoService,IStaffLeaveService staffLeaveService,
             IStaffPaymentService staffPaymentService, IEventService eventService, IPublicHolidayService publicHolidayService, ILeaveRuleService leaveRuleService,
-            IStaffService staffService, IGeneralSubTypeService generalSubTypeService)
+            IStaffService staffService, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager)
         {
             _mapper = mapper;
+            _appUserService = appUserService;
             _publicHolidayService = publicHolidayService;
             _eventService = eventService;
             _staffShiftService = staffShiftService;
@@ -38,11 +43,15 @@ namespace FlexHR.Web.Controllers
             _leaveRuleService = leaveRuleService;
             _staffService = staffService;
             _generalSubTypeService = generalSubTypeService;
+            _userManager = userManager;
         }
     
         [Authorize(Roles= "ViewAdminDashboard,Manager")]
         public IActionResult Index()
         {
+            int userId = Convert.ToInt32(_userManager.GetUserId(HttpContext.User));
+            var staffId = _appUserService.Get(x => x.Id == userId).FirstOrDefault().StaffId;
+            ViewBag.StaffName = _staffService.Get(x => x.StaffId == staffId).FirstOrDefault().NameSurname;
             var shifts = _mapper.Map<List<ListStaffShiftOnDashboardDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff")).Take(4).ToList();
             var payments = _mapper.Map<List<ListStaffPaymentOnDashboardDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff").Take(4).ToList());
             var leaves = _mapper.Map<List<ListStaffLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff,LeaveType").Take(4).ToList());

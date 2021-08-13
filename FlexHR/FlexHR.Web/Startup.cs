@@ -40,7 +40,7 @@ namespace FlexHR.Web
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
                 opt.Lockout.MaxFailedAccessAttempts = 3;
             }).AddEntityFrameworkStores<FlexHRContext>();
-            services.AddDbContext<FlexHRContext>() ;
+            services.AddDbContext<FlexHRContext>();
             services.AddContainerWithDependencies();
             services.AddAutoMapper(typeof(Startup));
             services.AddRazorPages();
@@ -57,7 +57,6 @@ namespace FlexHR.Web
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -67,7 +66,7 @@ namespace FlexHR.Web
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(Configuration.GetValue<string>("FullPath:DefaultPath")),
-                RequestPath="/img"
+                RequestPath = "/img"
             });
             app.UseRouting();
             app.UseAuthentication();
@@ -77,7 +76,7 @@ namespace FlexHR.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Auth}/{action=Index}/{id?}");
             });
         }
     }
