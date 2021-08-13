@@ -16,13 +16,14 @@ namespace FlexHR.Web.Controllers
     public class StaffLeaveController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IAppUserService _appUserService;
         private readonly IStaffLeaveService _staffLeaveService;
         private readonly IStaffService _staffService;
         private readonly ILeaveTypeService _leaveTypeService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
         private readonly ILeaveRuleService _leaveRuleService;
-        private readonly IAppUserService _appUserService;
+     
         public StaffLeaveController(IStaffLeaveService staffLeaveService, UserManager<AppUser> userManager, IAppUserService appUserService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,IStaffService staffService)
         {
             _appUserService = appUserService;
