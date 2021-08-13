@@ -36,14 +36,18 @@
                     <h3 class="card-label">Etkinlikler</h3>
                 </div>
                 <div class="card-toolbar">
-
-                    <a data-toggle="modal" data-target="#publicHolidayAddModal" class="btn btn-light-primary font-weight-bold mr-3">
-                        <i class="ki ki-plus icon-md mr-2"></i>Resmi Tatil Ekle
-                    </a>
-                    <a data-toggle="modal" data-target="#eventAddModal" class="btn btn-light-danger font-weight-bold">
-                        <i class="ki ki-plus icon-md mr-2"></i>Etkinlik Ekle
-                    </a>
-
+                    @if ((User.IsInRole("AddPublicHoliday") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                    {
+                        <a data-toggle="modal" data-target="#publicHolidayAddModal" class="btn btn-light-primary font-weight-bold mr-3">
+                            <i class="ki ki-plus icon-md mr-2"></i>Resmi Tatil Ekle
+                        </a>
+                    }
+                    @if ((User.IsInRole("AddEvent") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                    {
+                        <a data-toggle="modal" data-target="#eventAddModal" class="btn btn-light-danger font-weight-bold">
+                            <i class="ki ki-plus icon-md mr-2"></i>Etkinlik Ekle
+                        </a>
+                    }
                 </div>
             </div>
             <div class="card-body">
@@ -57,375 +61,387 @@
 </div>
 
 
-@*add event modal*@
-<div class="modal fade" id="eventAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Etkinlik Ekle
-                    </h3>
-                </div>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <form id="modalAddEventForm" asp-controller="Event" asp-action="AddEvent" method="post">
-
-                <div class="modal-body">
-                    <div class="flex-row-fluid ">
-                        <!--begin::Form-->
-                        <!--begin::Card-->
-                        <div class="card card-custom card-stretch">
-                            <!--begin::Header-->
-                            <!--end::Header-->
-                            <div class="container ">
-                                <!--begin::Body-->
-                                <div class="card-body mx-auto">
-                                    <div class="row">
-
-                                        <div class="col-md-5">
-                                            <div class="form-group row">
-                                                <label>Başlık</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Title" placeholder="Başlık">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <label>Açıklama</label>
-                                                <div class="input-group">
-                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-5">
-                                            <div class="form-group row ">
-                                                <label>Başlangıç Tarihi </label>
-                                                <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_18" data-target-input="nearest">
-                                                        <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_18" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_18" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row ">
-                                                <label>Bitiş Tarihi </label>
-                                                <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_20" data-target-input="nearest">
-                                                        <input name="End" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_20" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_20" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end::Body-->
-                        </div>
-
-
+@if ((User.IsInRole("AddEvent") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+{
+    @*add event modal*@
+    <div class="modal fade" id="eventAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="card-title align-items-start flex-column">
+                        <h3 class="card-label font-weight-bolder text-dark">
+                            <i class="fas fa-address-book mr-2 text-dark"></i>Etkinlik Ekle
+                        </h3>
                     </div>
-
-                    <!--end::Form-->
+                    <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
+                <form id="modalAddEventForm" asp-controller="Event" asp-action="AddEvent" method="post">
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnAddEvent" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@*add public holiday modal*@
-<div class="modal fade" id="publicHolidayAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Resmi Tatil Ekle
-                    </h3>
-                </div>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <form id="modalAddPublicHolidayForm" asp-controller="Event" asp-action="AddPublicHoliday" method="post">
+                    <div class="modal-body">
+                        <div class="flex-row-fluid ">
+                            <!--begin::Form-->
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <!--end::Header-->
+                                <div class="container ">
+                                    <!--begin::Body-->
+                                    <div class="card-body mx-auto">
+                                        <div class="row">
 
-                <div class="modal-body">
-                    <div class="flex-row-fluid ">
-                        <!--begin::Form-->
-                        <!--begin::Card-->
-                        <div class="card card-custom card-stretch">
-                            <!--begin::Header-->
-                            <!--end::Header-->
-                            <div class="container ">
-                                <!--begin::Body-->
-                                <div class="card-body mx-auto">
-                                    <div class="row">
-
-                                        <div class="col-md-5">
-                                            <div class="form-group row">
-                                                <label>Başlık</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Title" placeholder="Başlık">
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label>Başlık</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-lg form-control-solid" name="Title" placeholder="Başlık">
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-group row">
-                                                <label>Açıklama</label>
-                                                <div class="input-group">
-                                                    <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-5">
-                                            <div class="form-group row ">
-                                                <label>Tarih </label>
-                                                <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_16" data-target-input="nearest">
-                                                        <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_16" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_16" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
+                                                <div class="form-group row">
+                                                    <label>Açıklama</label>
+                                                    <div class="input-group">
+                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-5">
+                                                <div class="form-group row ">
+                                                    <label>Başlangıç Tarihi </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_18" data-target-input="nearest">
+                                                            <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_18" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_18" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-
-                                            <div class="checkbox-inline">
-                                                <label class="checkbox checkbox-success">
-                                                    <input type="checkbox" name="IsHalfDay" value="true" />
-                                                    <span></span>
-                                                    Yarım gün mü?
-                                                </label>
+                                                <div class="form-group row ">
+                                                    <label>Bitiş Tarihi </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_20" data-target-input="nearest">
+                                                            <input name="End" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_20" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_20" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!--end::Body-->
                             </div>
-                            <!--end::Body-->
+
+
                         </div>
 
-
+                        <!--end::Form-->
                     </div>
 
-                    <!--end::Form-->
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnAddEvent" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="submit" id="btnAddEvent" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+}
 
-@*update public holiday modal*@
-<div class="modal fade" id="publicHolidayUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Resmi Tatil Düzenle
-                    </h3>
+@if ((User.IsInRole("AddPublicHoliday") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+{
+    @*add public holiday modal*@
+    <div class="modal fade" id="publicHolidayAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="card-title align-items-start flex-column">
+                        <h3 class="card-label font-weight-bolder text-dark">
+                            <i class="fas fa-address-book mr-2 text-dark"></i>Resmi Tatil Ekle
+                        </h3>
+                    </div>
+                    <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <form id="modalUpdatePublicHolidayForm" asp-controller="Event" asp-action="UpdatePublicHoliday" method="post">
-                <input type="hidden" name="publicHolidayId" id="publicHolidayId" value="" />
-                <input type="hidden" name="End" id="publicHolidayEndDate" value="" />
-                <div class="modal-body">
-                    <div class="flex-row-fluid ">
-                        <!--begin::Form-->
-                        <!--begin::Card-->
-                        <div class="card card-custom card-stretch">
-                            <!--begin::Header-->
-                            <!--end::Header-->
-                            <div class="container ">
-                                <!--begin::Body-->
-                                <div class="card-body mx-auto">
-                                    <div class="row">
+                <form id="modalAddPublicHolidayForm" asp-controller="Event" asp-action="AddPublicHoliday" method="post">
 
-                                        <div class="col-md-5">
-                                            <div class="form-group row">
-                                                <label>Başlık</label>
-                                                <div class="input-group">
-                                                    <input type="text" id="publicHolidayTitle" class="form-control form-control-lg form-control-solid" name="Title" placeholder="Başlık">
-                                                </div>
-                                            </div>
+                    <div class="modal-body">
+                        <div class="flex-row-fluid ">
+                            <!--begin::Form-->
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <!--end::Header-->
+                                <div class="container ">
+                                    <!--begin::Body-->
+                                    <div class="card-body mx-auto">
+                                        <div class="row">
 
-                                            <div class="form-group row">
-                                                <label>Açıklama</label>
-                                                <div class="input-group">
-                                                    <textarea type="text" id="publicHolidayDescription" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label>Başlık</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-lg form-control-solid" name="Title" placeholder="Başlık">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-5">
-                                            <div class="form-group row ">
-                                                <label>Tarih </label>
-                                                <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_17" data-target-input="nearest">
-                                                        <input name="Start" id="publicHolidayStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_17" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_17" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
+
+                                                <div class="form-group row">
+                                                    <label>Açıklama</label>
+                                                    <div class="input-group">
+                                                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="checkbox-inline">
-                                                <label class="checkbox checkbox-success">
-                                                    <input id="publicHolidayCheck" type="checkbox" name="IsHalfDay" value="true" />
-                                                    <span></span>
-                                                    Yarım gün mü?
-                                                </label>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-5">
+                                                <div class="form-group row ">
+                                                    <label>Tarih </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_16" data-target-input="nearest">
+                                                            <input name="Start" id="eventAddStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_16" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_16" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="checkbox-inline">
+                                                    <label class="checkbox checkbox-success">
+                                                        <input type="checkbox" name="IsHalfDay" value="true" />
+                                                        <span></span>
+                                                        Yarım gün mü?
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="submit" id="btnAddEvent" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@if ((User.IsInRole("PublicHolidayUpdate") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+{
+    @*update public holiday modal*@
+    <div class="modal fade" id="publicHolidayUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="card-title align-items-start flex-column">
+                        <h3 class="card-label font-weight-bolder text-dark">
+                            <i class="fas fa-address-book mr-2 text-dark"></i>Resmi Tatil Düzenle
+                        </h3>
+                    </div>
+                    <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form id="modalUpdatePublicHolidayForm" asp-controller="Event" asp-action="UpdatePublicHoliday" method="post">
+                    <input type="hidden" name="publicHolidayId" id="publicHolidayId" value="" />
+                    <input type="hidden" name="End" id="publicHolidayEndDate" value="" />
+                    <div class="modal-body">
+                        <div class="flex-row-fluid ">
+                            <!--begin::Form-->
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <!--end::Header-->
+                                <div class="container ">
+                                    <!--begin::Body-->
+                                    <div class="card-body mx-auto">
+                                        <div class="row">
+
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label>Başlık</label>
+                                                    <div class="input-group">
+                                                        <input type="text" id="publicHolidayTitle" class="form-control form-control-lg form-control-solid" name="Title" placeholder="Başlık">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label>Açıklama</label>
+                                                    <div class="input-group">
+                                                        <textarea type="text" id="publicHolidayDescription" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-5">
+                                                <div class="form-group row ">
+                                                    <label>Tarih </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_17" data-target-input="nearest">
+                                                            <input name="Start" id="publicHolidayStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_17" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_17" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="checkbox-inline">
+                                                    <label class="checkbox checkbox-success">
+                                                        <input id="publicHolidayCheck" type="checkbox" name="IsHalfDay" value="true" />
+                                                        <span></span>
+                                                        Yarım gün mü?
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <a class="text-danger cursor-pointer " style="margin-right:370px !important" onclick="deletePublicHoliday()"><i class="fas fa-trash text-danger px-1"></i>Resmi tatili silmek ister misiniz?</a>
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="submit" id="btnUpdatePublicHoliday" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+@if ((User.IsInRole("UpdateEvent") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+{
+    @*update event modal*@
+    <div class="modal fade" id="eventUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="card-title align-items-start flex-column">
+                        <h3 class="card-label font-weight-bolder text-dark">
+                            <i class="fas fa-address-book mr-2 text-dark"></i>Etkinlik Düzenle
+                        </h3>
+                    </div>
+                    <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form id="modalAddLeaveForm" asp-controller="Event" asp-action="UpdateEvent" method="post">
+                    <input type="hidden" name="Id" id="eventId" value="" />
+                    <div class="modal-body">
+                        <div class="flex-row-fluid ">
+                            <!--begin::Form-->
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <!--end::Header-->
+                                <div class="container ">
+                                    <!--begin::Body-->
+                                    <div class="card-body mx-auto">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label>Başlık</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-lg form-control-solid" id="eventTitle" name="Title" placeholder="Başlık">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label>Açıklama</label>
+                                                    <div class="input-group">
+                                                        <textarea id="eventDescription" type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-5">
+                                                <div class="form-group row ">
+                                                    <label>Başlangıç Tarihi </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_99" data-target-input="nearest">
+                                                            <input name="Start" id="eventStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_99" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_99" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row ">
+                                                    <label>Bitiş Tarihi </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_100" data-target-input="nearest">
+                                                            <input name="End" id="eventEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_100" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_100" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!--end::Body-->
                             </div>
-                            <!--end::Body-->
+
+
                         </div>
 
-
+                        <!--end::Form-->
                     </div>
 
-                    <!--end::Form-->
-                </div>
-
-                <div class="modal-footer">
-
-                    <a class="text-danger cursor-pointer " style="margin-right:370px !important" onclick="deletePublicHoliday()"><i class="fas fa-trash text-danger px-1"></i>Resmi tatili silmek ister misiniz?</a>
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnUpdatePublicHoliday" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@*update event modal*@
-<div class="modal fade" id="eventUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Etkinlik Düzenle
-                    </h3>
-                </div>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
-                </button>
+                    <div class="modal-footer">
+                        <a class="text-danger cursor-pointer " style="margin-right:385px !important" onclick="deleteEvent()"><i class="fas fa-trash text-danger px-1"></i>Etkinliği silmek ister misiniz?</a>
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="submit" id="btnUpdateEvent" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
+                </form>
             </div>
-            <form id="modalAddLeaveForm" asp-controller="Event" asp-action="UpdateEvent" method="post">
-                <input type="hidden" name="Id" id="eventId" value="" />
-                <div class="modal-body">
-                    <div class="flex-row-fluid ">
-                        <!--begin::Form-->
-                        <!--begin::Card-->
-                        <div class="card card-custom card-stretch">
-                            <!--begin::Header-->
-                            <!--end::Header-->
-                            <div class="container ">
-                                <!--begin::Body-->
-                                <div class="card-body mx-auto">
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <div class="form-group row">
-                                                <label>Başlık</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control form-control-lg form-control-solid" id="eventTitle" name="Title" placeholder="Başlık">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <label>Açıklama</label>
-                                                <div class="input-group">
-                                                    <textarea id="eventDescription" type="text" class="form-control form-control-lg form-control-solid" name="Description" placeholder="Açıklama"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-5">
-                                            <div class="form-group row ">
-                                                <label>Başlangıç Tarihi </label>
-                                                <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_99" data-target-input="nearest">
-                                                        <input name="Start" id="eventStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_99" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_99" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row ">
-                                                <label>Bitiş Tarihi </label>
-                                                <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_100" data-target-input="nearest">
-                                                        <input name="End" id="eventEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_100" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_100" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end::Body-->
-                        </div>
-
-
-                    </div>
-
-                    <!--end::Form-->
-                </div>
-
-                <div class="modal-footer">
-                    <a class="text-danger cursor-pointer " style="margin-right:385px !important" onclick="deleteEvent()"><i class="fas fa-trash text-danger px-1"></i>Etkinliği silmek ister misiniz?</a>
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnUpdateEvent" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
+}
+    @section Scripts{
+        <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
 
-@section Scripts{
-    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
-
-    <script>
+        <script>
 
         $(document).ready(function () {
 
@@ -438,494 +454,494 @@
         });
 
 
-    </script>
+        </script>
 
-    <script>
-        function deletePublicHoliday() {
-            var id = $("#publicHolidayId").val();
-            Swal.fire({
-                title: "Silmek istediğinize emin misiniz ?",
-                text: "Bunu geri alamazsınız!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Evet, sil!",
-                cancelButtonText: "Hayır, iptal et!",
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
+        <script>
+            function deletePublicHoliday() {
+                var id = $("#publicHolidayId").val();
+                Swal.fire({
+                    title: "Silmek istediğinize emin misiniz ?",
+                    text: "Bunu geri alamazsınız!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Evet, sil!",
+                    cancelButtonText: "Hayır, iptal et!",
+                    reverseButtons: true
+                }).then(function (result) {
+                    if (result.value) {
 
-                    $.ajax({
-                        method: "POST",
-                        url: "/Event/DeletePublicHoliday/" + id,
-                    }).done(function (result) {
-                        if (result == true) {
-                            Swal.fire({
-                                title: "Silindi!",
-                                text: "Kaydınız silindi.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
+                        $.ajax({
+                            method: "POST",
+                            url: "/Event/DeletePublicHoliday/" + id,
+                        }).done(function (result) {
+                            if (result == true) {
+                                Swal.fire({
+                                    title: "Silindi!",
+                                    text: "Kaydınız silindi.",
+                                    icon: "success",
+                                    showCancelButton: false
+                                }).then(function () {
+                                    window.location.reload();
+                                })
 
-                        } else {
-                            Swal.fire(
-                                "Hata",
-                                "Kaydınız silinemedi",
-                                "hata"
-                            )
-                        }
+                            } else {
+                                Swal.fire(
+                                    "Hata",
+                                    "Kaydınız silinemedi",
+                                    "hata"
+                                )
+                            }
 
-                    })
-                } else if (result.dismiss === "cancel") {
-                    Swal.fire({
-                        title: "İptal Edildi",
-                        text: "Kaydınız silinmedi",
-                        icon: "error",
-                        showCancelButton: false
-                    })
+                        })
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire({
+                            title: "İptal Edildi",
+                            text: "Kaydınız silinmedi",
+                            icon: "error",
+                            showCancelButton: false
+                        })
 
+                    }
+                });
+
+            }
+            function deleteEvent() {
+                var id = $("#eventId").val();
+                Swal.fire({
+                    title: "Silmek istediğinize emin misiniz ?",
+                    text: "Bunu geri alamazsınız!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Evet, sil!",
+                    cancelButtonText: "Hayır, iptal et!",
+                    reverseButtons: true
+                }).then(function (result) {
+                    if (result.value) {
+
+                        $.ajax({
+                            method: "POST",
+                            url: "/Event/DeleteEvent/" + id,
+                        }).done(function (result) {
+                            if (result == true) {
+                                Swal.fire({
+                                    title: "Silindi!",
+                                    text: "Kaydınız silindi.",
+                                    icon: "success",
+                                    showCancelButton: false
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+
+                            } else {
+                                Swal.fire(
+                                    "Hata",
+                                    "Kaydınız silinemedi",
+                                    "hata"
+                                )
+                            }
+
+                        })
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire({
+                            title: "İptal Edildi",
+                            text: "Kaydınız silinmedi",
+                            icon: "error",
+                            showCancelButton: false
+                        })
+
+                    }
+                });
+
+            }
+        </script>
+        <script>
+            function FullCalenderProcessPublicHoliday(calEvent) {
+                $("#publicHolidayId").val(calEvent.event.id)
+                $("#publicHolidayDescription").val(calEvent.event.extendedProps.description)
+                var ds = calEvent.event.start.toString();
+                var date = moment(new Date(ds.substr(0, 25)));
+                console.log(calEvent.event);
+                if (calEvent.event.end != null) {
+                    var ds2 = calEvent.event.end.toString();
+                    var date2 = moment(new Date(ds2.substr(0, 25)));
+                    $("#publicHolidayEndDate").val(date2.format("DD.MM.YYYY"))
                 }
-            });
+                $("#publicHolidayStartDate").val(date.format("DD.MM.YYYY"))
 
-        }
-        function deleteEvent() {
-            var id = $("#eventId").val();
-            Swal.fire({
-                title: "Silmek istediğinize emin misiniz ?",
-                text: "Bunu geri alamazsınız!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Evet, sil!",
-                cancelButtonText: "Hayır, iptal et!",
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
+                $("#publicHolidayTitle").val(calEvent.event.title);
+                var temp = !calEvent.event.allDay;
+                $("#publicHolidayCheck").prop('checked', temp);
 
-                    $.ajax({
-                        method: "POST",
-                        url: "/Event/DeleteEvent/" + id,
-                    }).done(function (result) {
-                        if (result == true) {
-                            Swal.fire({
-                                title: "Silindi!",
-                                text: "Kaydınız silindi.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
+            }
 
-                        } else {
-                            Swal.fire(
-                                "Hata",
-                                "Kaydınız silinemedi",
-                                "hata"
-                            )
-                        }
+            function FullCalenderProcess(calEvent) {
 
-                    })
-                } else if (result.dismiss === "cancel") {
-                    Swal.fire({
-                        title: "İptal Edildi",
-                        text: "Kaydınız silinmedi",
-                        icon: "error",
-                        showCancelButton: false
-                    })
-
-                }
-            });
-
-        }
-    </script>
-    <script>
-        function FullCalenderProcessPublicHoliday(calEvent) {
-            $("#publicHolidayId").val(calEvent.event.id)
-            $("#publicHolidayDescription").val(calEvent.event.extendedProps.description)
-            var ds = calEvent.event.start.toString();
-            var date = moment(new Date(ds.substr(0, 25)));
-            console.log(calEvent.event);
-            if (calEvent.event.end != null) {
+                $("#eventId").val(calEvent.event.id)
+                $("#eventDescription").val(calEvent.event.extendedProps.description)
+                var ds = calEvent.event.start.toString();
+                var date = moment(new Date(ds.substr(0, 25)));
+                console.log(calEvent.event);
                 var ds2 = calEvent.event.end.toString();
                 var date2 = moment(new Date(ds2.substr(0, 25)));
-                $("#publicHolidayEndDate").val(date2.format("DD.MM.YYYY"))
+                $("#eventStartDate").val(date.format("DD.MM.YYYY HH:mm"))
+                $("#eventEndDate").val(date2.format("DD.MM.YYYY HH:mm"))
+                $("#eventTitle").val(calEvent.event.title)
+
             }
-            $("#publicHolidayStartDate").val(date.format("DD.MM.YYYY"))
+            var KTCalendarListView = function () {
 
-            $("#publicHolidayTitle").val(calEvent.event.title);
-            var temp = !calEvent.event.allDay;
-            $("#publicHolidayCheck").prop('checked', temp);
+                return {
+                    //main function to initiate the module
+                    init: function () {
+                        var todayDate = moment().startOf('day');
+                        var YM = todayDate.format('YYYY-MM');
+                        var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+                        var TODAY = todayDate.format('YYYY-MM-DD');
+                        var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
 
-        }
+                        var calendarEl = document.getElementById('kt_calendar');
+                        var calendar = new FullCalendar.Calendar(calendarEl, {
+                            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+                            locale: 'TR',
+                            isRTL: KTUtil.isRTL(),
+                            header: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                            },
 
-        function FullCalenderProcess(calEvent) {
+                            height: 800,
+                            contentHeight: 750,
+                            aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
 
-            $("#eventId").val(calEvent.event.id)
-            $("#eventDescription").val(calEvent.event.extendedProps.description)
-            var ds = calEvent.event.start.toString();
-            var date = moment(new Date(ds.substr(0, 25)));
-            console.log(calEvent.event);
-            var ds2 = calEvent.event.end.toString();
-            var date2 = moment(new Date(ds2.substr(0, 25)));
-            $("#eventStartDate").val(date.format("DD.MM.YYYY HH:mm"))
-            $("#eventEndDate").val(date2.format("DD.MM.YYYY HH:mm"))
-            $("#eventTitle").val(calEvent.event.title)
+                            views: {
+                                dayGridMonth: { buttonText: 'Ay' },
+                                timeGridWeek: { buttonText: 'Hafta' },
+                                timeGridDay: { buttonText: 'Gün' },
+                                listDay: { buttonText: 'Liste' },
+                                listWeek: { buttonText: 'Liste' }
+                            },
 
-        }
-        var KTCalendarListView = function () {
+                            defaultView: 'dayGridMonth',
+                            defaultDate: TODAY,
 
-            return {
-                //main function to initiate the module
-                init: function () {
-                    var todayDate = moment().startOf('day');
-                    var YM = todayDate.format('YYYY-MM');
-                    var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-                    var TODAY = todayDate.format('YYYY-MM-DD');
-                    var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+                            editable: true,
 
-                    var calendarEl = document.getElementById('kt_calendar');
-                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                        plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-                        locale: 'TR',
-                        isRTL: KTUtil.isRTL(),
-                        header: {
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                        },
+                            eventLimit: true, // allow "more" link when too many events
+                            navLinks: true,
+                            events: "Event/GetAllEvents",
+                            eventDrop: function (calEvent) {
+                                if ($(calEvent.el).hasClass("fc-event-primary")) {
+                                    FullCalenderProcessPublicHoliday(calEvent);
+                                    $("#btnUpdatePublicHoliday").trigger("click");
+                                }
+                                else if ($(calEvent.el).hasClass("fc-event-danger")) {
+                                    FullCalenderProcess(calEvent);
+                                    $("#btnUpdateEvent").trigger("click");
+                                }
+                            },
+                            eventResize: function (calEvent) {
+                                if ($(calEvent.el).hasClass("fc-event-primary")) {
+                                    console.log("dkdkdk");
+                                    console.log(calEvent);
+                                    $("#publicHolidayEndDate").val(calEvent.event.end);
+                                    FullCalenderProcessPublicHoliday(calEvent);
+                                    $("#btnUpdatePublicHoliday").trigger("click");
+                                }
+                                else if ($(calEvent.el).hasClass("fc-event-danger")) {
+                                    console.log(calEvent);
+                                    FullCalenderProcess(calEvent);
+                                    $("#btnUpdateEvent").trigger("click");
+                                }
 
-                        height: 800,
-                        contentHeight: 750,
-                        aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
+                            },
+                            eventClick: function (calEvent) {
 
-                        views: {
-                            dayGridMonth: { buttonText: 'Ay' },
-                            timeGridWeek: { buttonText: 'Hafta' },
-                            timeGridDay: { buttonText: 'Gün' },
-                            listDay: { buttonText: 'Liste' },
-                            listWeek: { buttonText: 'Liste' }
-                        },
-
-                        defaultView: 'dayGridMonth',
-                        defaultDate: TODAY,
-
-                        editable: true,
-
-                        eventLimit: true, // allow "more" link when too many events
-                        navLinks: true,
-                        events: "Event/GetAllEvents",
-                        eventDrop: function (calEvent) {
-                            if ($(calEvent.el).hasClass("fc-event-primary")) {
-                                FullCalenderProcessPublicHoliday(calEvent);
-                                $("#btnUpdatePublicHoliday").trigger("click");
-                            }
-                            else if ($(calEvent.el).hasClass("fc-event-danger")) {
-                                FullCalenderProcess(calEvent);
-                                $("#btnUpdateEvent").trigger("click");
-                            }
-                        },
-                        eventResize: function (calEvent) {
-                            if ($(calEvent.el).hasClass("fc-event-primary")) {
-                                console.log("dkdkdk");
-                                console.log(calEvent);
-                                $("#publicHolidayEndDate").val(calEvent.event.end);
-                                FullCalenderProcessPublicHoliday(calEvent);
-                                $("#btnUpdatePublicHoliday").trigger("click");
-                            }
-                            else if ($(calEvent.el).hasClass("fc-event-danger")) {
-                                console.log(calEvent);
-                                FullCalenderProcess(calEvent);
-                                $("#btnUpdateEvent").trigger("click");
-                            }
-
-                        },
-                        eventClick: function (calEvent) {
-
-                            if ($(calEvent.el).hasClass("fc-event-primary")) {
-                                FullCalenderProcessPublicHoliday(calEvent);
-                                $("#publicHolidayUpdateModal").modal("show");
-                            }
-                            else if ($(calEvent.el).hasClass("fc-event-danger")) {
-                                FullCalenderProcess(calEvent);
-                                $("#eventUpdateModal").modal("show");
-                            }
+                                if ($(calEvent.el).hasClass("fc-event-primary")) {
+                                    FullCalenderProcessPublicHoliday(calEvent);
+                                    $("#publicHolidayUpdateModal").modal("show");
+                                }
+                                else if ($(calEvent.el).hasClass("fc-event-danger")) {
+                                    FullCalenderProcess(calEvent);
+                                    $("#eventUpdateModal").modal("show");
+                                }
 
 
-                        },
-                        dateClick: function (info) {
-                            console.log(info.date.toString());
-                            var ds2 = info.date.toString();
-                            var date2 = moment(new Date(ds2.substr(0, 25)));
-                            $("#eventAddStartDate").val(date2.format("DD.MM.YYYY HH:mm"))
-                            $("#eventAddModal").modal("show");
+                            },
+                            dateClick: function (info) {
+                                console.log(info.date.toString());
+                                var ds2 = info.date.toString();
+                                var date2 = moment(new Date(ds2.substr(0, 25)));
+                                $("#eventAddStartDate").val(date2.format("DD.MM.YYYY HH:mm"))
+                                $("#eventAddModal").modal("show");
 
-                        },
-                        eventRender: function (info) {
-                            var element = $(info.el);
+                            },
+                            eventRender: function (info) {
+                                var element = $(info.el);
 
-                            if (info.event.extendedProps && info.event.extendedProps.description) {
-                                if (element.hasClass('fc-day-grid-event')) {
-                                    element.data('content', info.event.extendedProps.description);
-                                    element.data('placement', 'top');
-                                    KTApp.initPopover(element);
-                                } else if (element.hasClass('fc-time-grid-event')) {
-                                    element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                                } else if (element.find('.fc-list-item-title').lenght !== 0) {
-                                    element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                                if (info.event.extendedProps && info.event.extendedProps.description) {
+                                    if (element.hasClass('fc-day-grid-event')) {
+                                        element.data('content', info.event.extendedProps.description);
+                                        element.data('placement', 'top');
+                                        KTApp.initPopover(element);
+                                    } else if (element.hasClass('fc-time-grid-event')) {
+                                        element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                                    } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                                        element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                                    }
+                                }
+                            },
+                        });
+
+                        calendar.render();
+
+                    }
+                };
+            }();
+
+            jQuery(document).ready(function () {
+                KTCalendarListView.init();
+            });
+
+        </script>
+        <script>
+            FormValidation.formValidation(
+                document.getElementById('modalAddEventForm'),
+                {
+                    fields: {
+
+                        Description: {
+                            validators: {
+                                stringLength: {
+                                    max: 1999,
+                                    message: '2000 karakterden az girin'
                                 }
                             }
                         },
-                    });
 
-                    calendar.render();
-
-                }
-            };
-        }();
-
-        jQuery(document).ready(function () {
-            KTCalendarListView.init();
-        });
-
-    </script>
-    <script>
-        FormValidation.formValidation(
-            document.getElementById('modalAddEventForm'),
-            {
-                fields: {
-
-                    Description: {
-                        validators: {
-                            stringLength: {
-                                max: 1999,
-                                message: '2000 karakterden az girin'
+                        Title: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Başlık alanı boş geçilemez'
+                                },
+                                stringLength: {
+                                    max: 100,
+                                    message: '100 karakterden az girin'
+                                }
                             }
-                        }
+                        },
+                        Start: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Tarih alanı boş geçilemez'
+                                },
+                                date: {
+                                    format: 'DD.MM.YYYY HH:mm',
+                                    message: 'Geçerli bir tarih girin'
+                                }
+                            }
+                        },
+                        End: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Tarih alanı boş geçilemez'
+                                },
+                                date: {
+                                    format: 'DD.MM.YYYY HH:mm',
+                                    message: 'Geçerli bir tarih girin'
+                                }
+                            }
+                        },
                     },
 
-                    Title: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Başlık alanı boş geçilemez'
-                            },
-                            stringLength: {
-                                max: 100,
-                                message: '100 karakterden az girin'
-                            }
-                        }
-                    },
-                    Start: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
-                            date: {
-                                format: 'DD.MM.YYYY HH:mm',
-                                message: 'Geçerli bir tarih girin'
-                            }
-                        }
-                    },
-                    End: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
-                            date: {
-                                format: 'DD.MM.YYYY HH:mm',
-                                message: 'Geçerli bir tarih girin'
-                            }
-                        }
-                    },
-                },
-
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    // Validate fields when clicking the Submit button
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // Submit the form when all fields are valid
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                }
-            }
-        );
-
-        
-    </script>
-    <script>
-        FormValidation.formValidation(
-            document.getElementById('modalAddLeaveForm'),
-            {
-                fields: {
-
-                    Description: {
-                        validators: {
-                            stringLength: {
-                                max: 1999,
-                                message: '2000 karakterden az girin'
-                            }
-                        }
-                    },
-
-                    Title: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Başlık alanı boş geçilemez'
-                            },
-                            stringLength: {
-                                max: 100,
-                                message: '100 karakterden az girin'
-                            }
-                        }
-                    },
-                    Start: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
-                            date: {
-                                format: 'DD.MM.YYYY HH:mm',
-                                message: 'Geçerli bir tarih girin'
-                            }
-                        }
-                    },
-                    End: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
-                            date: {
-                                format: 'DD.MM.YYYY HH:mm',
-                                message: 'Geçerli bir tarih girin'
-                            }
-                        }
-                    },
-                },
-
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    // Validate fields when clicking the Submit button
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // Submit the form when all fields are valid
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                }
-            }
-        );
-
-    </script>
-    <script>
-        
-        FormValidation.formValidation(
-            document.getElementById('modalAddPublicHolidayForm'),
-            {
-                fields: {
-
-                    Description: {
-                        validators: {
-                            stringLength: {
-                                max: 1999,
-                                message: '2000 karakterden az girin'
-                            }
-                        }
-                    },
-
-                    Title: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Başlık alanı boş geçilemez'
-                            },
-                            stringLength: {
-                                max: 100,
-                                message: '100 karakterden az girin'
-                            }
-                        }
-                    },
-                    Start: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
-                            date: {
-                                format: 'DD.MM.YYYY',
-                                message: 'Geçerli bir tarih girin'
-                            }
-                        }
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger(),
+                        // Bootstrap Framework Integration
+                        bootstrap: new FormValidation.plugins.Bootstrap(),
+                        // Validate fields when clicking the Submit button
+                        submitButton: new FormValidation.plugins.SubmitButton(),
+                        // Submit the form when all fields are valid
+                        defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
                     }
-                },
-
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    // Validate fields when clicking the Submit button
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // Submit the form when all fields are valid
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
                 }
-            }
-        );
+            );
 
-    </script> 
-<script>
-        
-        FormValidation.formValidation(
-            document.getElementById('modalUpdatePublicHolidayForm'),
-            {
-                fields: {
 
-                    Description: {
-                        validators: {
-                            stringLength: {
-                                max: 1999,
-                                message: '2000 karakterden az girin'
+        </script>
+        <script>
+            FormValidation.formValidation(
+                document.getElementById('modalAddLeaveForm'),
+                {
+                    fields: {
+
+                        Description: {
+                            validators: {
+                                stringLength: {
+                                    max: 1999,
+                                    message: '2000 karakterden az girin'
+                                }
                             }
-                        }
+                        },
+
+                        Title: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Başlık alanı boş geçilemez'
+                                },
+                                stringLength: {
+                                    max: 100,
+                                    message: '100 karakterden az girin'
+                                }
+                            }
+                        },
+                        Start: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Tarih alanı boş geçilemez'
+                                },
+                                date: {
+                                    format: 'DD.MM.YYYY HH:mm',
+                                    message: 'Geçerli bir tarih girin'
+                                }
+                            }
+                        },
+                        End: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Tarih alanı boş geçilemez'
+                                },
+                                date: {
+                                    format: 'DD.MM.YYYY HH:mm',
+                                    message: 'Geçerli bir tarih girin'
+                                }
+                            }
+                        },
                     },
 
-                    Title: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Başlık alanı boş geçilemez'
-                            },
-                            stringLength: {
-                                max: 100,
-                                message: '100 karakterden az girin'
-                            }
-                        }
-                    },
-                    Start: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
-                            date: {
-                                format: 'DD.MM.YYYY',
-                                message: 'Geçerli bir tarih girin'
-                            }
-                        }
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger(),
+                        // Bootstrap Framework Integration
+                        bootstrap: new FormValidation.plugins.Bootstrap(),
+                        // Validate fields when clicking the Submit button
+                        submitButton: new FormValidation.plugins.SubmitButton(),
+                        // Submit the form when all fields are valid
+                        defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
                     }
-                },
-
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    // Validate fields when clicking the Submit button
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // Submit the form when all fields are valid
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
                 }
-            }
-        );
+            );
 
-    </script>
-    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
-    <script src="~/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js" charset="windows-1254"></script>
-    <!--end::Page Vendors-->
-    <!--begin::Page Scripts(used by this page)-->
-    @*<script src="~/assets/js/pages/features/calendar/list-view.js"></script>*@
-    <!--end::Page Scripts-->
+        </script>
+        <script>
 
-}
+            FormValidation.formValidation(
+                document.getElementById('modalAddPublicHolidayForm'),
+                {
+                    fields: {
+
+                        Description: {
+                            validators: {
+                                stringLength: {
+                                    max: 1999,
+                                    message: '2000 karakterden az girin'
+                                }
+                            }
+                        },
+
+                        Title: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Başlık alanı boş geçilemez'
+                                },
+                                stringLength: {
+                                    max: 100,
+                                    message: '100 karakterden az girin'
+                                }
+                            }
+                        },
+                        Start: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Tarih alanı boş geçilemez'
+                                },
+                                date: {
+                                    format: 'DD.MM.YYYY',
+                                    message: 'Geçerli bir tarih girin'
+                                }
+                            }
+                        }
+                    },
+
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger(),
+                        // Bootstrap Framework Integration
+                        bootstrap: new FormValidation.plugins.Bootstrap(),
+                        // Validate fields when clicking the Submit button
+                        submitButton: new FormValidation.plugins.SubmitButton(),
+                        // Submit the form when all fields are valid
+                        defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                    }
+                }
+            );
+
+        </script>
+        <script>
+
+            FormValidation.formValidation(
+                document.getElementById('modalUpdatePublicHolidayForm'),
+                {
+                    fields: {
+
+                        Description: {
+                            validators: {
+                                stringLength: {
+                                    max: 1999,
+                                    message: '2000 karakterden az girin'
+                                }
+                            }
+                        },
+
+                        Title: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Başlık alanı boş geçilemez'
+                                },
+                                stringLength: {
+                                    max: 100,
+                                    message: '100 karakterden az girin'
+                                }
+                            }
+                        },
+                        Start: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Tarih alanı boş geçilemez'
+                                },
+                                date: {
+                                    format: 'DD.MM.YYYY',
+                                    message: 'Geçerli bir tarih girin'
+                                }
+                            }
+                        }
+                    },
+
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger(),
+                        // Bootstrap Framework Integration
+                        bootstrap: new FormValidation.plugins.Bootstrap(),
+                        // Validate fields when clicking the Submit button
+                        submitButton: new FormValidation.plugins.SubmitButton(),
+                        // Submit the form when all fields are valid
+                        defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                    }
+                }
+            );
+
+        </script>
+        <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
+        <script src="~/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js" charset="windows-1254"></script>
+        <!--end::Page Vendors-->
+        <!--begin::Page Scripts(used by this page)-->
+        @*<script src="~/assets/js/pages/features/calendar/list-view.js"></script>*@
+        <!--end::Page Scripts-->
+
+    }

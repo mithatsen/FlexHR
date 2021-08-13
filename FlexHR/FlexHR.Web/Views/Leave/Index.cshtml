@@ -12,38 +12,46 @@
             <!--begin::Actions-->
             <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
             <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">İzin Talepleri</h5>
-            <!--end::Actions-->
+
+            <!--end::Info-->
         </div>
-        <!--end::Info-->
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
-            <!--begin::Actions-->
-            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 active" id="tab_1" asp-controller="Leave" asp-action="Index" asp-route-id="@Model">
-                <span class="nav-icon mr-2">
-                    <span class="svg-icon mr-3">
-                        <i class="fas fa-plane-departure"></i>
+            @if ((User.IsInRole("ViewLeaveRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <!--begin::Actions-->
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 active" id="tab_1" asp-controller="Leave" asp-action="Index" asp-route-id="@Model">
+                    <span class="nav-icon mr-2">
+                        <span class="svg-icon mr-3">
+                            <i class="fas fa-plane-departure"></i>
+                        </span>
                     </span>
-                </span>
-                <span class="nav-text font-weight-bold">İzinler </span>
-            </a>
-
-            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Payment" asp-action="Index" asp-route-id="@Model">
-                <span class="nav-icon mr-2">
-                    <span class="svg-icon mr-3">
-                        <i class="fas fa-chart-bar"></i>
+                    <span class="nav-text font-weight-bold">İzinler </span>
+                </a>
+            }
+            @if ((User.IsInRole("ViewPaymentRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Payment" asp-action="Index" asp-route-id="@Model">
+                    <span class="nav-icon mr-2">
+                        <span class="svg-icon mr-3">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
                     </span>
-                </span>
-                <span class="nav-text font-weight-bold">Ödemeler</span>
-            </a>
-            <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Shift" asp-action="Index" asp-route-id="@Model">
-                <span class="nav-icon mr-2">
-                    <span class="svg-icon mr-3">
-                        <i class="fas fa-chart-bar"></i>
+                    <span class="nav-text font-weight-bold">Ödemeler</span>
+                </a>
+            }
+            @if ((User.IsInRole("ViewShiftRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Shift" asp-action="Index" asp-route-id="@Model">
+                    <span class="nav-icon mr-2">
+                        <span class="svg-icon mr-3">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
                     </span>
-                </span>
-                <span class="nav-text font-weight-bold">Mesailer</span>
-            </a>
-            <!--end::Actions-->
+                    <span class="nav-text font-weight-bold">Mesailer</span>
+                </a>
+                <!--end::Actions-->
+            }
         </div>
         <!--end::Toolbar-->
     </div>

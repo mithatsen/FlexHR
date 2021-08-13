@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
+
     public class StaffShiftController : Controller
     {
         private readonly IMapper _mapper;
@@ -30,6 +33,7 @@ namespace FlexHR.Web.Controllers
             _userManager = userManager;
             _appUserService = appUserService;
         }
+        [Authorize(Roles ="ViewStaffShiftPage")]
         public IActionResult Index(int id)
         {
            
