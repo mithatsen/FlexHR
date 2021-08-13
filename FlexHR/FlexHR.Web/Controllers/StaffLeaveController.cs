@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -14,15 +15,19 @@ namespace FlexHR.Web.Controllers
 {
     public class StaffLeaveController : Controller
     {
+        private readonly UserManager<AppUser> _userManager;
         private readonly IStaffLeaveService _staffLeaveService;
         private readonly IStaffService _staffService;
         private readonly ILeaveTypeService _leaveTypeService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
         private readonly ILeaveRuleService _leaveRuleService;
-        public StaffLeaveController(IStaffLeaveService staffLeaveService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,IStaffService staffService)
+        private readonly IAppUserService _appUserService;
+        public StaffLeaveController(IStaffLeaveService staffLeaveService, UserManager<AppUser> userManager, IAppUserService appUserService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,IStaffService staffService)
         {
+            _appUserService = appUserService;
             _staffLeaveService = staffLeaveService;
+            _userManager = userManager;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _leaveTypeService = leaveTypeService;
@@ -31,9 +36,6 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult Index(int id)
         {
-      
-
-
             ViewBag.StaffId = id;
 
             var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
@@ -84,7 +86,8 @@ namespace FlexHR.Web.Controllers
         [HttpGet]
         public IActionResult GetLeaveRequestModal()
         {
-           
+            int userId = Convert.ToInt32(_userManager.GetUserId(HttpContext.User));
+            ViewBag.StaffId = _appUserService.Get(x => x.Id == userId).FirstOrDefault().StaffId;
             ViewBag.LeaveTypes = _leaveTypeService.GetAll();
             ViewBag.Staffs = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
             return PartialView("_GetLeaveRequestModal");

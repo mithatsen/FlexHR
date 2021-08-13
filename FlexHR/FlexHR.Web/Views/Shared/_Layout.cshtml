@@ -149,7 +149,6 @@
                                 <div class="menu-submenu" kt-hidden-height="80" style="">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
-
                                         <li class="menu-item" aria-haspopup="true">
                                             <a onclick="getLeaveRequestModal()" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -197,10 +196,8 @@
                                     <span class="menu-text">Anasayfa</span>
                                 </a>
                             </li>
-                            @{ 
-                                var x = User.IsInRole("ViewPersonalsPage");
-                            }
-                            @if (User.IsInRole("ViewPersonalsPage"))
+                        
+                            @if ((User.IsInRole("ViewPersonalsPage")|| User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
                                 <li class="menu-item" aria-haspopup="true">
                                     <a asp-controller="Staff" asp-action="Index" class="menu-link">

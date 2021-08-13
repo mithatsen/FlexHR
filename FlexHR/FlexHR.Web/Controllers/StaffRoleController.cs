@@ -30,9 +30,10 @@ namespace FlexHR.Web.Controllers
             ViewBag.Id = id;
             var roles = _appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125 && x.IsActive == true).ToList();
             var permissions = _appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 126 && x.IsActive == true).ToList();
-            var user = _appUserService.Get(x => x.StaffId == id && x.IsActive==true).FirstOrDefault();
+            var user = _appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault();
             bool isUser = user != null ? true : false;
-            if (user != null){
+            if (user != null)
+            {
                 var userAllRoles = _appUserService.GetAppRolesByStaffId(id);
                 List<AppRole> userRoles = new List<AppRole>();
                 List<AppRole> userPermissions = new List<AppRole>();
@@ -52,16 +53,16 @@ namespace FlexHR.Web.Controllers
             }
             else
             {
-                var model = new ListRolesWithSelectedStaffRole { Permissions = permissions, Roles = roles,IsUser= isUser,UserPermissions=new List<AppRole>(), UserRoles=new List<AppRole>() };
+                var model = new ListRolesWithSelectedStaffRole { Permissions = permissions, Roles = roles, IsUser = isUser, UserPermissions = new List<AppRole>(), UserRoles = new List<AppRole>() };
                 return View(model);
             }
-          
+
         }
         public async Task<IActionResult> AddRole(AddMultipleRoleToStaffDto model)
         {
-            var user = _appUserService.Get(x => x.StaffId == model.StaffId).FirstOrDefault();                  
-            await _userManager.RemoveFromRolesAsync(user,await _userManager.GetRolesAsync(user));
-            if (model.Roles!=null)
+            var user = _appUserService.Get(x => x.StaffId == model.StaffId).FirstOrDefault();
+            await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+            if (model.Roles != null)
             {
                 foreach (var item in model.Roles)
                 {
@@ -73,7 +74,7 @@ namespace FlexHR.Web.Controllers
                     }
                 }
             }
-            if (model.Permissions!=null)
+            if (model.Permissions != null)
             {
                 foreach (var item in model.Permissions)
                 {
@@ -85,7 +86,7 @@ namespace FlexHR.Web.Controllers
                     }
                 }
             }
-           
+
             return RedirectToAction("Index", new { id = model.StaffId });
         }
     }
