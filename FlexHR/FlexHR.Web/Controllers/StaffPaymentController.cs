@@ -6,6 +6,7 @@ using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,11 @@ namespace FlexHR.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IConfiguration _configuration;
-        public StaffPaymentController(IStaffPaymentService staffPaymentService, IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IConfiguration configuration, IReceiptService receiptService)
+        private readonly IAppUserService _appUserService;
+        private readonly UserManager<AppUser> _userManager;
+        public StaffPaymentController(IStaffPaymentService staffPaymentService, IStaffService staffService, IMapper mapper,
+            IGeneralSubTypeService generalSubTypeService, IConfiguration configuration, IReceiptService receiptService,
+             IAppUserService appUserService, UserManager<AppUser> userManager)
         {
             _staffPaymentService = staffPaymentService;
             _mapper = mapper;
@@ -33,6 +38,8 @@ namespace FlexHR.Web.Controllers
             _configuration = configuration;
             _receiptService = receiptService;
             _staffService = staffService;
+            _appUserService = appUserService;
+            _userManager = userManager;
         }
         public IActionResult Index(int id)
         {
@@ -83,6 +90,7 @@ namespace FlexHR.Web.Controllers
                 string currencyType = data["CurrencyType"];
                 string feeType = data["FeeType"];
                 string installment = data["Installment"];
+                var idddd = Convert.ToInt32(data["staffId"]);
                 if (id == 99)
                 {
 
@@ -178,7 +186,7 @@ namespace FlexHR.Web.Controllers
                         IsPaid = false,
                         IsSentForApproval = false,
                         PaymentTypeGeneralSubTypeId = id,
-                        Installment = Convert.ToInt32(installment),
+                        Installment =installment!=null ? Convert.ToInt32(installment) : -1,
                     };
                     _staffPaymentService.Add(m);
                 }
@@ -215,6 +223,8 @@ namespace FlexHR.Web.Controllers
 
             ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
             ViewBag.Staffs = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
+            int userId = Convert.ToInt32(_userManager.GetUserId(HttpContext.User));
+            ViewBag.StaffId = _appUserService.Get(x => x.Id == userId).FirstOrDefault().StaffId;
             return PartialView("_GetAdvancePaymentRequestModal");
 
         }

@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -17,12 +18,17 @@ namespace FlexHR.Web.Controllers
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IStaffShiftService _staffShiftService;
         private readonly IStaffService _staffService;
-        public StaffShiftController(IStaffShiftService staffShiftService, IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IAppUserService _appUserService;
+        public StaffShiftController(IStaffShiftService staffShiftService, IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService,
+            UserManager<AppUser> userManager, IAppUserService appUserService)
         {
             _staffShiftService = staffShiftService;
             _staffService = staffService;
             _mapper = mapper;
             _generalSubTypeService = generalSubTypeService;
+            _userManager = userManager;
+            _appUserService = appUserService;
         }
         public IActionResult Index(int id)
         {
@@ -85,7 +91,8 @@ namespace FlexHR.Web.Controllers
         public IActionResult GetShiftRequestModal()
         {
             ViewBag.Staffs = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
-
+            int userId = Convert.ToInt32(_userManager.GetUserId(HttpContext.User));
+            ViewBag.StaffId = _appUserService.Get(x => x.Id == userId).FirstOrDefault().StaffId;
             return PartialView("_GetShiftRequestModal");
         }
     }
