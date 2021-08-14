@@ -5,7 +5,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
         var table = $('#kt_datatable');
 
         // begin first table
-    
+
         table.DataTable({
             responsive: true,
             paging: true,
@@ -15,7 +15,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
                     targets: 0,
                     title: '#',
                     width: '20px',
-                   
+
                     render: function (data, type, full, meta) {
                         var status = {
                             'True': {
@@ -136,7 +136,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
                         else {
                             return '<span class="mr-2"><i class="fas fa-times text-' + status[data].state + '"></i></span>'
                         }
-                       
+
                         // + '<span class="font-weight-bold text-' + status[data].state + '">' + status[data].title + '</span>';
                     },
                 },
@@ -178,8 +178,8 @@ var KTDatatablesAdvancedColumnRendering = function () {
 
             ],
         });
-    
-       
+
+
         var table = $('#kt_datatable_5');
 
         // begin first table
@@ -340,7 +340,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
         table.DataTable({
             responsive: true,
             paging: true,
-           
+
         });
         var table = $('#kt_datatable_10');
         // begin first table
@@ -381,7 +381,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
         });
 
         var table = $('#kt_datatable_11');
-       // begin first table
+        // begin first table
         table.DataTable({
             responsive: true,
             paging: true,
@@ -499,7 +499,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
         table.DataTable({
             responsive: true,
             paging: true,
-           
+
         });
         var table = $('#kt_datatable_15');
 
@@ -507,7 +507,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
         table.DataTable({
             responsive: true,
             paging: true,
-           
+
         });
         var table = $('#kt_datatable_16');
 
@@ -515,26 +515,95 @@ var KTDatatablesAdvancedColumnRendering = function () {
         table.DataTable({
             responsive: true,
             paging: true,
-           
+
         });
-$('#kt_datatable_search_status').on('change', function () {
-    datatable.search($(this).val().toLowerCase(), 'Status');
-});
 
-$('#kt_datatable_search_type').on('change', function () {
-    datatable.search($(this).val().toLowerCase(), 'Type');
-});
+        var table = $('#kt_datatable_17');
 
-$('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+
+            columnDefs: [
+                {
+                    targets: 0,
+                    title: 'Ad Soyad',
+                    render: function (data, type, full, meta) {
+                        var user_img = full[0];
+                        var stringSplitted = user_img.split("~");
+
+                        debugger;
+                        var output;
+                        if (stringSplitted[0] != "-") {
+                            output = `
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-50 flex-shrink-0">
+                                        <img src="/img/` + stringSplitted[0] + `" alt="photo">
+                                    </div>
+                                    <div class="ml-3">
+                                         <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
+                                         <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
+                                    </div>
+                                </div>`;
+                        }
+
+                        else {
+                            var stateNo = KTUtil.getRandomInt(0, 6);
+                            var states = [
+                                'success',
+                                'danger',
+                                'success',
+                                'warning',
+                                'dark',
+                                'primary',
+                                'info'];
+
+                            var state = states[stateNo];
+
+                            output = `
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-50 symbol-light-` + state + `" flex-shrink-0">
+                                        <div class="symbol-label font-size-h5">` + stringSplitted[2].substring(0, 1) + `</div>
+                                    </div>
+                                    <div class="ml-3">
+                                       <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
+                                         <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
+                                    </div>
+                                </div>`;
+                        }
+
+                        return output;
+                    },
+                },
+                {
+                    targets: 1,
+                    render: function (data, type, full, meta) {
+                        return '<a class="text-dark-50 text-hover-primary" href="mailto:' + data + '">' + data + '</a>';
+                    },
+                },
+
+            ],
+        });
+
+        $('#kt_datatable_search_status').on('change', function () {
+            datatable.search($(this).val().toLowerCase(), 'Status');
+        });
+
+        $('#kt_datatable_search_type').on('change', function () {
+            datatable.search($(this).val().toLowerCase(), 'Type');
+        });
+
+        $('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
     };
 
-return {
+    return {
 
-    //main function to initiate the module
-    init: function () {
-        init();
-    }
-};
+        //main function to initiate the module
+        init: function () {
+            init();
+        }
+    };
 }();
 
 jQuery(document).ready(function () {

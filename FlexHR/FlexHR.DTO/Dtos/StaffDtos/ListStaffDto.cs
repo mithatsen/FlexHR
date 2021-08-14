@@ -18,6 +18,9 @@ namespace FlexHR.DTO.Dtos.StaffDtos
         public DateTime? JobFinishDate { get; set; }
         public bool IsActive { get; set; }
         public string PictureUrl { get; set; }
+        public string? Title { get; set; }
+        public string? DepartmantName { get; set; }
+        public string? BranchName { get; set; }
         public List<StaffFile> StaffFile { get; set; }
        
 

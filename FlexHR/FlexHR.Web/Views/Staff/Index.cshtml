@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+
 <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <!--begin::Info-->
@@ -33,298 +39,360 @@
 
     </div>
 </div>
+
+
+
+
 <div class="flex-row-fluid ml-lg-8">
     <!--begin::Form-->
     <!--begin::Card-->
     <div class="card card-custom card-stretch">
-        <!--begin::Header-->
-        <div class="card-header py-3">
-            <div class="card-title align-items-start flex-column">
-                <h3 class="card-label font-weight-bolder text-dark">
-                    <i class="fas fa-address-book mr-2 text-dark"></i>Çalışanlar
-                </h3>
-                @*<span class="text-muted font-weight-bold font-size-sm mt-1">selam mami</span>*@
+        <div class="card card-custom">
+            <!--begin::Header-->
+            <div class="card-header ">
+                <div class="card-title my-auto align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Çalışanlar
+                    </h3>
+                </div>
+
+                <div class="card-toolbar ">
+                    <div class="card-header card-header-tabs-line">
+                        <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-2x " role="tablist">
+                            <li class="nav-item mr-3">
+                                <a class=" nav-link active  mr-2" data-toggle="tab" href="#kt_apps_contacts_view_tab_2" aria-haspopup="true" aria-expanded="false">
+                                    <span class="svg-icon svg-icon-md mr-0">
+                                        <i class="fas  fa-2x  fa-th-list" style="font-size:25px"></i>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item mr-3">
+                                <a class=" nav-link   mr-2" data-toggle="tab" href="#kt_apps_contacts_view_tab_3" aria-haspopup="true" aria-expanded="false">
+                                    <span class="svg-icon svg-icon-md mr-0">
+                                        <i class="fas fa-th-large" style="font-size:25px"></i>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staticBackdrop">
+                        Yeni Çalışan Ekle
+                    </button>
+                </div>
+                <!--end::Header-->
             </div>
-            <div class="card-toolbar">
-                <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staticBackdrop">
-                    Yeni Çalışan Ekle
-                </button>
+            <div class="tab-content pt-5">
+                <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
+                    <div class="card-body">
+                        <!--begin: Datatable-->
+                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_17">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Şube</th>
+                                    <th>Departman</th>
+                                    <th>Telefon</th>
+                                    <th>Mail Adresi</th>
 
 
-            </div>
-        </div>
-        <!--end::Header-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.PictureUrl~@item.Title~@item.NameSurname~@item.StaffId</td>
+                                        <td>@item.BranchName</td>
+                                        <td>@item.DepartmantName</td>
+                                        <td>@item.PhonePersonal</td>
+                                        <td><a href="mailto:@item.EmailPersonal">@item.EmailPersonal</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <!--end: Datatable-->
+                    </div>
 
-        <div id="staffCardList" class="container-fluid">
-            <!--begin::Body-->
-            <div class="row">
-                @foreach (var item in Model)
-                {
-                    <!--begin::Col-->
-                    <div class="col-md-2 my-4">
-                        <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">
-                            <!--begin::Card-->
-                            <div class="card card-custom gutter-b shadow p-0 mb-1 justify-content-center">
-                                <!--begin::Body-->
-                                <div class="card-body text-center" style="padding: 0rem;">
+                </div>
+                <div class="tab-pane " id="kt_apps_contacts_view_tab_3" role="tabpanel">
+                    <div id="staffCardList" class="container-fluid">
+                        <!--begin::Body-->
+                        <div class="row">
+                            @foreach (var item in Model)
+                            {
+                                <!--begin::Col-->
+                                <div class="col-md-2 my-4">
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">
+                                        <!--begin::Card-->
+                                        <div class="card card-custom gutter-b shadow p-0 mb-1 justify-content-center">
+                                            <!--begin::Body-->
+                                            <div class="card-body text-center" style="padding: 0rem;">
 
-                                    <!--begin::User-->
-                                    <div class="mt-7">
-                                        <div class="symbol symbol-circle symbol-lg-100">
-                                            @if (item.PictureUrl != null)
-                                            {
-                                                var ppPath = item.PictureUrl;
+                                                <!--begin::User-->
+                                                <div class="mt-7">
+                                                    <div class="symbol symbol-circle symbol-lg-100">
+                                                        @if (item.PictureUrl != "-")
+                                                        {
+                                                            var ppPath = item.PictureUrl;
 
-                                                var pp = "/img/" + ppPath;
+                                                            var pp = "/img/" + ppPath;
 
-                                                <img src="@pp" alt="image" />
-                                            }
-                                            else
-                                            {
-                                                <img src="~/assets/media/users/default.jpg" />
-                                            }
+                                                            <img src="@pp" alt="image" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/assets/media/users/default.jpg" />
+                                                        }
 
+                                                    </div>
+                                                    <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
+                                                        <span class="font-size-h3 font-weight-boldest">JB</span>
+                                                    </div>
+                                                </div>
+                                                <!--end::User-->
+                                                <!--begin::Name-->
+                                                <div class="my-1">
+                                                    <h3 class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</h3>
+                                                </div>
+                                                <!--end::Name-->
+                                                <!--begin::Label-->
+                                                <span class="mt-3 label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-envelope mr-2 text-danger"></i> @item.EmailPersonal</span>
+                                                <!--end::Label-->
+                                                <!--begin::Buttons-->
+                                                <div class="mt-2 mb-6">
+                                                    <span class="label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-phone-alt mr-2 text-success"></i> @item.PhoneJob</span>
+                                                </div>
+                                                <!--end::Buttons-->
+                                            </div>
+                                            <!--end::Body-->
                                         </div>
-                                        <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
-                                            <span class="font-size-h3 font-weight-boldest">JB</span>
-                                        </div>
-                                    </div>
-                                    <!--end::User-->
-                                    <!--begin::Name-->
-                                    <div class="my-1">
-                                        <h3 class="text-dark font-weight-bold text-hover-primary font-size-h6">@item.NameSurname</h3>
-                                    </div>
-                                    <!--end::Name-->
-                                    <!--begin::Label-->
-                                    <span class="mt-3 label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-envelope mr-2 text-danger"></i> @item.EmailPersonal</span>
-                                    <!--end::Label-->
-                                    <!--begin::Buttons-->
-                                    <div class="mt-2 mb-6">
-                                        <span class="label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-phone-alt mr-2 text-success"></i> @item.PhoneJob</span>
-                                    </div>
-                                    <!--end::Buttons-->
+                                        <!--end::Card-->
+                                    </a>
+
                                 </div>
-                                <!--end::Body-->
-                            </div>
-                            <!--end::Card-->
-                        </a>
-
-                    </div>
-                    <!--end::Col-->
-                }
-            </div>
-            <!--end::Body-->
-        </div>
-        @*add staff modal*@
-        <div class="modal fade" id="staticBackdrop" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="card-title align-items-start flex-column">
-                            <h3 class="card-label font-weight-bolder text-dark">
-                                <i class="fas fa-address-book mr-2 text-dark"></i>Yeni Çalışan Ekle
-                            </h3>
-
+                                <!--end::Col-->
+                            }
                         </div>
-                        <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
-                        </button>
+                        <!--end::Body-->
                     </div>
-                    <form id="addStaffFormModal29">
-                        <div class="modal-body">
-                            <div class="flex-row-fluid ">
-                                <!--begin::Form-->
-                                <!--begin::Card-->
-                                <div class="card card-custom card-stretch">
-                                    <div class="container ">
-                                        <!--begin::Body-->
-                                        <div class="card-body mx-auto">
-                                            <div class="row">
-                                                <div class="col-md-6 ">
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label ">Ad Soyad *</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input name="NameSurname" id="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (İş)</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <div class="input-group input-group-lg input-group-solid">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-at"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input name="EmailJob" id="EmailJob" type="email" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (İş)" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                </div>
 
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Telefon (İş) </label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <div class="input-group input-group-lg input-group-solid">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-phone"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input name="PhoneJob" id="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" />
-                                                            </div>
 
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü *</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <select id="ContractTypeSelect" name="ContractTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
-                                                                <option value="">Seçiniz</option>
+            </div>
+        </div>
+        <!--end::Form-->
+    </div>
 
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label pb-0 mb-0">Sistemi Kullanacak mı ?</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <span class="switch switch-primary">
-                                                                <label>
-                                                                    <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="1" />
-                                                                    <span></span>
-                                                                </label>
+</div>
+
+@*add staff modal*@
+<div class="modal fade" id="staticBackdrop" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Yeni Çalışan Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="addStaffFormModal29">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+                                        <div class="col-md-6 ">
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label ">Ad Soyad *</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <input name="NameSurname" id="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (İş)</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group input-group-lg input-group-solid">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="la la-at"></i>
                                                             </span>
                                                         </div>
-                                                    </div>
-
-
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label ">İşe Başlama Tarihi *</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                                                <input type="text" name="JobJoinDate" id="JobJoinDate" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
-                                                                <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
-                                                                    <span class="input-group-text">
-                                                                        <i class="ki ki-calendar"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (Kişisel) *</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <div class="input-group input-group-lg input-group-solid">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-at"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="email" name="EmailPersonal" id="EmailPersonal" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (Kişisel)" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group row justify-content-center">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Telefon (Kişisel) *</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <div class="input-group input-group-lg input-group-solid">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-phone"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" name="PhonePersonal" id="PhonePersonal" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group row justify-content-center">
-                                                        <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="JobFinishDate" name="JobFinishDate" type="datetime" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
-                                                                <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
-                                                                    <span class="input-group-text">
-                                                                        <i class="ki ki-calendar"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <input name="EmailJob" id="EmailJob" type="email" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (İş)" />
                                                     </div>
                                                 </div>
+                                            </div>
 
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group row justify-content-center" hidden id="dvUserName">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label ">Kullanıcı Adı</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input name="UserNameAddStaff"  id="UserName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Kullanıcı Adı" />
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Telefon (İş) </label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group input-group-lg input-group-solid">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="la la-phone"></i>
+                                                            </span>
                                                         </div>
+                                                        <input name="PhoneJob" id="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" />
                                                     </div>
-                                                    <div class="form-group row justify-content-center" hidden id="dvAccessType">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Erişim Türü *</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <select class="form-control form-control-solid form-control-lg" name="RoleId" id="RoleId" asp-items="ViewBag.Roles">
-                                                                <option value="">Seçiniz</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row justify-content-center" hidden id="dvPassword">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label ">Şifre</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input name="PasswordAddStaff" id="Password"  class="form-control form-control-lg form-control-solid" type="text" placeholder="Şifre" />
-                                                        </div>
-                                                    </div>
-
 
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group row justify-content-center" hidden id="dvRoles">
-                                                        <label class="col-xl-2 col-lg-2 col-form-label ">Ekran Yetkileri</label>
-                                                        <div class="col-lg-9 col-xl-9">
-                                                            <select class="form-control select2" id="pageRoles" name="pageRoles" multiple="multiple" style="min-width:100px !important" asp-items="ViewBag.PageRoles">
-                                                            </select>
+                                            </div>
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü *</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <select id="ContractTypeSelect" name="ContractTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
+                                                        <option value="">Seçiniz</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label pb-0 mb-0">Sistemi Kullanacak mı ?</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <span class="switch switch-primary">
+                                                        <label>
+                                                            <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="1" />
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label ">İşe Başlama Tarihi *</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
+                                                        <input type="text" name="JobJoinDate" id="JobJoinDate" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                                        <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--end::Body-->
+
+
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (Kişisel) *</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group input-group-lg input-group-solid">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="la la-at"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input type="email" name="EmailPersonal" id="EmailPersonal" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (Kişisel)" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Telefon (Kişisel) *</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group input-group-lg input-group-solid">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="la la-phone"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" name="PhonePersonal" id="PhonePersonal" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group row justify-content-center">
+                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
+                                                        <input id="JobFinishDate" name="JobFinishDate" type="datetime" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
 
+                                        <div class="col-md-6">
+                                            <div class="form-group row justify-content-center" hidden id="dvUserName">
+                                                <label class="col-xl-4 col-lg-3 col-form-label ">Kullanıcı Adı</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <input name="UserNameAddStaff" id="UserName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Kullanıcı Adı" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row justify-content-center" hidden id="dvAccessType">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Erişim Türü *</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <select class="form-control form-control-solid form-control-lg" name="RoleId" id="RoleId" asp-items="ViewBag.Roles">
+                                                        <option value="">Seçiniz</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row justify-content-center" hidden id="dvPassword">
+                                                <label class="col-xl-4 col-lg-3 col-form-label ">Şifre</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <input name="PasswordAddStaff" id="Password" class="form-control form-control-lg form-control-solid" type="text" placeholder="Şifre" />
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row justify-content-center" hidden id="dvRoles">
+                                                <label class="col-xl-2 col-lg-2 col-form-label ">Ekran Yetkileri</label>
+                                                <div class="col-lg-9 col-xl-9">
+                                                    <select class="form-control select2" id="pageRoles" name="pageRoles" multiple="multiple" style="min-width:100px !important" asp-items="ViewBag.PageRoles">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <!--end::Form-->
+                                    <!--end::Body-->
                                 </div>
+
+
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                                <button type="button" onclick="staffAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
-                            </div>
+
+                            <!--end::Form-->
                         </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="button" onclick="staffAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
-
     </div>
-
-    <!--end::Form-->
 </div>
-
-
-
-
 @section Scripts{
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
     <script>
         function StaffSearch() {
@@ -399,7 +467,7 @@
 
                         }
                     }
-                  
+
 
                 },
                 plugins: {

@@ -36,10 +36,11 @@ namespace FlexHR.Web.Controllers
         protected readonly UserManager<AppUser> _userManager;
         protected readonly RoleManager<AppRole> _roleManager;
         private readonly IAppUserService _appUserService;
+        private readonly IStaffCareerService _staffCareerService;
 
         public StaffController(IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffPersonelInfoService staffPersonelInfoService,
                                       IAppRoleService appRoleService, IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService, UserManager<AppUser> userManager,
-                                       RoleManager<AppRole> roleManager, IAppUserService appUserService)
+                                       RoleManager<AppRole> roleManager, IAppUserService appUserService, IStaffCareerService staffCareerService)
         {
             _staffService = staffService;
             _mapper = mapper;
@@ -52,7 +53,7 @@ namespace FlexHR.Web.Controllers
             _staffFileService = staffFileService;
             _roleManager = roleManager;
             _appUserService = appUserService;
-
+            _staffCareerService = staffCareerService;
         }
         [Authorize(Roles = "ViewPersonalsPage,Manager")]
         public IActionResult Index()
@@ -67,9 +68,27 @@ namespace FlexHR.Web.Controllers
             var models = _mapper.Map<List<ListStaffDto>>(result);
             foreach (var item in models)
             {
+                //***************************************************************************
+                var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList();
+
+                if (careerResult.Count > 0)
+                {
+                    var activeCareer = careerResult.First();
+
+                    item.DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(activeCareer.DepartmantGeneralSubTypeId);
+                    item.BranchName = activeCareer.CompanyBranch != null ? activeCareer.CompanyBranch.BranchName : "-";
+                    item.Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(activeCareer.TitleGeneralSubTypeId);
+                }
+                else
+                {
+                    item.DepartmantName = "-";
+                    item.BranchName = "-";
+                    item.Title = "-";
+                }
+                //***************************************************************************
                 var picture = _staffFileService.Get(x => x.StaffId == item.StaffId && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x => x.StaffFileId).FirstOrDefault();
 
-                item.PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null;
+                item.PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : "-";
             }
 
             return View(models);
