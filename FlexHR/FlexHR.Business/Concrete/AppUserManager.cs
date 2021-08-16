@@ -21,6 +21,11 @@ namespace FlexHR.Business.Concrete
         {
             return _appUserDal.GetAppRolesByStaffId(id);
         }
+
+        public List<AppRole> GetAppRolesByUserId(int id)
+        {
+            return _appUserDal.GetAppRolesByUserId(id);
+        }
     }
     
 }

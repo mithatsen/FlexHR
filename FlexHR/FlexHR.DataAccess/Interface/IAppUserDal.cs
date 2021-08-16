@@ -8,5 +8,6 @@ namespace FlexHR.DataAccess.Interface
     public interface IAppUserDal : IGenericDal<AppUser>
     {
         List<AppRole> GetAppRolesByStaffId(int id);
+        List<AppRole> GetAppRolesByUserId(int id);
     }
 }

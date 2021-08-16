@@ -1,0 +1,237 @@
+﻿@model ListRolesWithSelectedStaffRole
+@using System.Linq
+
+<div class="container">
+    <!--begin::Notice-->
+    <!--end::Notice-->
+    <!--begin::Card-->
+    <div class="card card-custom">
+        <div class="card-header flex-wrap py-5">
+            <div class="card-title">
+                <i class="fas fa-user-tag text-dark mr-2"></i>
+                <h3 class="card-label">
+                    Personel Rol Düzenleme
+
+                </h3>
+            </div>
+            <div class="card-toolbar">
+                <!--begin::Button-->
+                @if ((User.IsInRole("AddStaffRole") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffRoleAddModal">
+                        Rol Ata
+                    </button>
+                }
+                <!--end::Button-->
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin: Datatable-->
+            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_14">
+                <thead>
+                    <tr>
+
+                        <th>Rol Adı</th>
+                        <th>İşlemler</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UserRoles)
+                    {
+                        <tr>
+
+                            <td>@item.Description</td>
+                            <td>
+                                <a class="btn btn-sm btn-clean btn-icon" title="Sil" onclick="DeleteRole(@item.Id)">
+                                    <i class="la la-trash text-danger"></i>
+                                </a>
+                            </td>
+
+
+                        </tr>
+                    }
+                    @foreach (var item in Model.UserPermissions)
+                    {
+                        <tr>
+
+                            <td>@item.Description</td>
+                            <td>
+                                <a class="btn btn-sm btn-clean btn-icon" title="Sil" onclick="DeleteRole(@item.Id)">
+                                    <i class="la la-trash text-danger"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+
+
+
+
+
+
+                </tbody>
+            </table>
+            <!--end: Datatable-->
+        </div>
+    </div>
+    <!--end::Card-->
+</div>
+@* add role modal*@
+<div class="modal fade" id="staffRoleAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Rol Ata
+                    </h3>
+
+                </div>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="card-body">
+                <!--begin::Profile Personal Information-->
+
+                <form id="generalForm" class="form" asp-action="AddRole" asp-controller="RoleAssign" method="post">
+                    <input type="hidden" name="StaffId" id="StaffId" value="@ViewBag.Id" />
+                    <!--begin::Card-->
+                    <div class="container">
+                        <!--begin::Body-->
+                        <div class="card-body">
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row ">
+                                        <label class="col-xl-4 col-lg-3 col-form-label">Roller</label>
+
+                                        <select class="form-control select2" multiple name="Roles" style="min-width:100px !important" id="s2roles">
+
+                                            @foreach (var item in Model.Roles)
+                                            {
+                                                if (Model.UserRoles.Any(x => x.Name == item.Name))
+                                                {
+                                                    <option selected value="@item.Id">@item.Description</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.Id">@item.Description</option>
+                                                }
+                                            }
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group row pt-5">
+                                        <label class="pl-4 col-lg-10 col-xl-10 ">Sayfa Yetkileri</label>
+
+
+                                        <select class="form-control select2" multiple name="Permissions" style="min-width:100px !important" id="s2permissions">
+                                            @foreach (var item in Model.Permissions)
+                                            {
+                                                if (Model.UserPermissions.Any(x => x.Name == item.Name))
+                                                {
+                                                    <option selected value="@item.Id">@item.Description</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.Id">@item.Description</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
+
+                </form>
+                <!--end::Form-->
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    $('.selectpicker').selectpicker();
+</script>
+<script>
+    $('#s2permissions').select2({
+        closeOnSelect: false,
+        width: '100%'
+    });
+    $('#s2roles').select2({
+        closeOnSelect: false,
+        width: '100%'
+    });
+</script>
+<script>
+    function DeleteRole(id) {
+        var formData = {
+            userId: @ViewBag.Id,
+            roleId: id
+        }
+
+        Swal.fire({
+            title: "Rolü silmek istediğinize emin misiniz ?",
+            text: "Bunu geri alamazsınız!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet!",
+            cancelButtonText: "Hayır!",
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+
+                $.ajax({
+                    method: "POST",
+                    url: "/RoleAssign/DeleteRole/",
+                    data:formData
+                }).done(function (result) {
+                    if (result == true) {
+                        Swal.fire({
+                            title: "Silindi!",
+                            text: "Kaydınız silindi.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })
+
+                    } else {
+                        Swal.fire(
+                            "Hata",
+                            "Kaydınız silinemedi",
+                            "hata"
+                        )
+                    }
+
+                })
+            } else if (result.dismiss === "cancel") {
+                Swal.fire({
+                    title: "İptal Edildi",
+                    text: "Kaydınız silinmedi",
+                    icon: "error",
+                    showCancelButton: false
+                })
+            }
+        });
+
+
+    }
+
+
+</script>
