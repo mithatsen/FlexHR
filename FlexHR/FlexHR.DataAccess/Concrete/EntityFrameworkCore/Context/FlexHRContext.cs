@@ -53,6 +53,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<Receipt> Receipt { get; set; }
         public virtual DbSet<LeaveType> LeaveType { get; set; }
         public virtual DbSet<FileColumn> FileColumn { get; set; }
+        public virtual DbSet<CompanyFile> CompanyFile { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
