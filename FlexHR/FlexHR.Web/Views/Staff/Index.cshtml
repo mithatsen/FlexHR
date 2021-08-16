@@ -9,6 +9,9 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+@{ Random rand = new Random();
+    List<string> colors = new List<string> {"success","danger","info","primary","warning" };
+}
 
 <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -22,25 +25,35 @@
             <!--end::Actions-->
         </div>
         <!--end::Info-->
+        <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
-            <!--begin::Actions-->
-            <form method="post">
-                <div class="form-group row my-auto ">
-                    <div class="input-group rounded">
-                        <input type="text" id="StaffSearchBar" onchange="StaffSearch();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" class="form-control rounded" placeholder="Çalışan Ara" aria-label="Search" aria-describedby="search-addon" autocomplete="off" />
-                        <button id="btnStaffSearch" onclick="StaffSearch()" type="button" class="btn btn-primary">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                    <!--end::Actions-->
-                </div>
-            </form>
-        </div>
+            <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-2x " role="tablist">
+                <li class="nav-item mr-3">
+                    <a class=" nav-link active  mr-2" data-toggle="tab" href="#kt_apps_contacts_view_tab_2" aria-haspopup="true" aria-expanded="false">
+                        <span class="svg-icon svg-icon-md mr-0">
+                            <i class="fas  fa-2x  fa-th-list" style="font-size:25px"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </a>
+                </li>
 
+                <li class="nav-item mr-3">
+                    <a class=" nav-link   mr-2" data-toggle="tab" href="#kt_apps_contacts_view_tab_3" aria-haspopup="true" aria-expanded="false">
+                        <span class="svg-icon svg-icon-md mr-0">
+                            <i class="fas fa-th-large" style="font-size:25px"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <button type="button" class="btn btn-primary mr-2  ml-4" data-toggle="modal" data-target="#staticBackdrop">
+                Yeni Çalışan Ekle
+            </button>
+            <!--begin::Actions-->
+        </div>
+        <!--end::Toolbar-->
     </div>
 </div>
-
-
 
 
 <div class="flex-row-fluid ml-lg-8">
@@ -49,41 +62,7 @@
     <div class="card card-custom card-stretch">
         <div class="card card-custom">
             <!--begin::Header-->
-            <div class="card-header ">
-                <div class="card-title my-auto align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Çalışanlar
-                    </h3>
-                </div>
-
-                <div class="card-toolbar ">
-                    <div class="card-header card-header-tabs-line">
-                        <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-2x " role="tablist">
-                            <li class="nav-item mr-3">
-                                <a class=" nav-link active  mr-2" data-toggle="tab" href="#kt_apps_contacts_view_tab_2" aria-haspopup="true" aria-expanded="false">
-                                    <span class="svg-icon svg-icon-md mr-0">
-                                        <i class="fas  fa-2x  fa-th-list" style="font-size:25px"></i>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item mr-3">
-                                <a class=" nav-link   mr-2" data-toggle="tab" href="#kt_apps_contacts_view_tab_3" aria-haspopup="true" aria-expanded="false">
-                                    <span class="svg-icon svg-icon-md mr-0">
-                                        <i class="fas fa-th-large" style="font-size:25px"></i>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staticBackdrop">
-                        Yeni Çalışan Ekle
-                    </button>
-                </div>
-                <!--end::Header-->
-            </div>
+        
             <div class="tab-content pt-5">
                 <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
                     <div class="card-body">
@@ -144,7 +123,10 @@
                                                         }
                                                         else
                                                         {
-                                                            <img src="~/assets/media/users/default.jpg" />
+                                                            <div class="symbol symbol-50 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
+                                                                <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
+                                                            </div>
+
                                                         }
 
                                                     </div>
@@ -159,11 +141,11 @@
                                                 </div>
                                                 <!--end::Name-->
                                                 <!--begin::Label-->
-                                                <span class="mt-3 label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-envelope mr-2 text-danger"></i> @item.EmailPersonal</span>
+                                                <span class="mt-2 label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-envelope mr-2 text-danger"></i> @item.EmailPersonal</span>
                                                 <!--end::Label-->
                                                 <!--begin::Buttons-->
-                                                <div class="mt-2 mb-6">
-                                                    <span class="label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-phone-alt mr-2 text-success"></i> @item.PhoneJob</span>
+                                                <div class="mt-1 mb-3">
+                                                    <span class="label label-inline label-lg label-light-primary btn-sm font-weight-bold"><i class="fas fa-phone-alt mr-2 text-success"></i> @item.PhonePersonal</span>
                                                 </div>
                                                 <!--end::Buttons-->
                                             </div>

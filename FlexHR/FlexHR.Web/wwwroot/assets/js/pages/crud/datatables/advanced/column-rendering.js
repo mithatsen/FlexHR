@@ -458,6 +458,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
         var table = $('#kt_datatable_13');
         // begin first table
         table.DataTable({
+           
             responsive: true,
             paging: true,
             columnDefs: [
@@ -524,7 +525,8 @@ var KTDatatablesAdvancedColumnRendering = function () {
         table.DataTable({
             responsive: true,
             paging: true,
-
+            scrollY: "500px",
+            scrollCollapse: true,
             columnDefs: [
                 {
                     targets: 0,

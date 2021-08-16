@@ -3,6 +3,9 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{ Random rand = new Random();
+    List<string> colors = new List<string> { "success", "danger", "info", "primary", "warning" };
+}
 <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <!--begin::Info-->
@@ -44,21 +47,8 @@
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
-                                        @if (item.GenderGeneralSubTypeId == 52)
-                                        {
-                                            <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                        }
-                                        else if (item.GenderGeneralSubTypeId == 53)
-                                        {
-                                            <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                        }
-                                        else
-                                        {
-                                            <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
-                                        }
-                                    </span>
+                                <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
+                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
@@ -77,9 +67,9 @@
                         <div class="d-flex align-items-center flex-wrap mb-5">
                             <!--begin::Symbol-->
                             <div class="symbol symbol-50 symbol-white pl-0">
-                                <span >
+                                <span>
                                     <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
-                                  </span>
+                                </span>
                             </div>
                             <!--end::Symbol-->
                             <!--begin::Text-->
@@ -117,21 +107,8 @@
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
-                                        @if (item.GenderGeneralSubTypeId == 52)
-                                        {
-                                            <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                        }
-                                        else if (item.GenderGeneralSubTypeId == 53)
-                                        {
-                                            <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                        }
-                                        else
-                                        {
-                                            <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
-                                        }
-                                    </span>
+                                <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
+                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
@@ -191,21 +168,8 @@
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
-                                        @if (item.GenderGeneralSubTypeId == 52)
-                                        {
-                                            <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                        }
-                                        else if (item.GenderGeneralSubTypeId == 53)
-                                        {
-                                            <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                        }
-                                        else
-                                        {
-                                            <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
-                                        }
-                                    </span>
+                                <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
+                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
@@ -260,21 +224,8 @@
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
-                                        @if (item.GenderGeneralSubTypeId == 52)
-                                        {
-                                            <img src="~/user_avatar/man.png" class="h-50 align-self-center" alt="" />
-                                        }
-                                        else if (item.GenderGeneralSubTypeId == 53)
-                                        {
-                                            <img src="~/user_avatar/woman.png" class="h-50 align-self-center" alt="" />
-                                        }
-                                        else
-                                        {
-                                            <img src="~/assets/media/users/default.jpg" class="h-50 align-self-center" alt="" />
-                                        }
-                                    </span>
+                                <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
+                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
