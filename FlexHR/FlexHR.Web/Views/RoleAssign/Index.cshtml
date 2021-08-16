@@ -2,6 +2,9 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{ 
+
+}
 <div class="card card-custom">
     <div class="card-header card-header-tabs-line">
         <div class="card-toolbar">
@@ -9,7 +12,7 @@
                 @if ((User.IsInRole("ViewLeaveRequestPendingApprovalLeavesTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
-                        <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                        <a class="nav-link" id="multipleAssignBtn" data-toggle="tab" href="#multipleAssignTab" onclick="localStorage.RoleAssignTabId = 1">
                             <span class="nav-icon mr-2">
                                 <span class="svg-icon mr-3">
                                     <i class="fas fa-users"></i>
@@ -22,7 +25,7 @@
                 @if ((User.IsInRole("ViewLeaveRequestApprovalLeavesTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
-                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                        <a class="nav-link" id="singleAssignBtn" data-toggle="tab" href="#singleAssignTab" onclick="localStorage.RoleAssignTabId = 2">
                             <span class="nav-icon mr-2">
                                 <span class="svg-icon mr-3">
                                     <i class="fas fa-user-tag"></i>
@@ -42,7 +45,7 @@
         <div class="card-body  ">
             <div class="tab-content pt-5">
                 @*Toplu Rol Atama*@
-                <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
+                <div class="tab-pane" id="multipleAssignTab" role="tabpanel">
                     <div class="flex-row-fluid ml-lg-8">
 
                         <form id="AddAuthorizeForm" class="form" method="post">
@@ -108,7 +111,7 @@
 
                 @*Bireysel Rol Atama*@
 
-                <div class="tab-pane" id="kt_apps_contacts_view_tab_3" role="tabpanel">
+                <div class="tab-pane" id="singleAssignTab" role="tabpanel">
                     <div class="flex-row-fluid ml-lg-8">
                         <div class="card card-custom card-stretch">
                             <div class="card-header py-3">
@@ -182,6 +185,26 @@
 @section Scripts{
     <script src="~/Croppie-2.6.4/demo/demo.js"></script>
     <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            debugger;
+            if (localStorage.RoleAssignTabId == 2) {
+                $("#singleAssignTab").addClass("active");
+                $("#singleAssignBtn").addClass("active");
+            }
+            else {               
+                $("#multipleAssignTab").addClass("active");
+                $("#multipleAssignBtn").addClass("active");
+            }
+            if (localStorage.SingleRoleAssignUserId != "0" && localStorage.SingleRoleAssignUserId != null) {
+                $('#kt_select2_1').val(Number(localStorage.SingleRoleAssignUserId));
+                $('#kt_select2_1').select2().trigger('change');
+                userChange();
+            }
+          
+        });
+    </script>
 
     @*Modal Add Staff*@
     <script>
@@ -252,7 +275,10 @@
         }
 
         function userChange() {
+      
             var id = document.getElementById("kt_select2_1").value;
+            localStorage.SingleRoleAssignUserId = $("#kt_select2_1").val();
+
             var modelContent = $("#staffRoleTable")
             $("#staffRoleTable").empty();
             if (id > 0) {
@@ -265,6 +291,7 @@
 
                     if (content != null) {
                         modelContent.html(content);
+                        localStorage.SingleRoleAssignUserId = id;
                     }
                 }).fail(function (error) {
                     alert(error);
