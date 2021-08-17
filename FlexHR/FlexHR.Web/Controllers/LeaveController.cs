@@ -90,7 +90,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult StaffLeaveRemainInfo()
         {
-            TempData["Active"] = TempdataInfo.Leave;
+            TempData["Active"] = TempdataInfo.Report;
 
             List<ListLeaveInfoAllStaffDto> models = new List<ListLeaveInfoAllStaffDto>();
             var staffs = _staffService.GetAll();
@@ -122,7 +122,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult StaffLeaveMonthlyInfo(DateTime dateTime)
         {
-            TempData["Active"] = TempdataInfo.Leave;
+            TempData["Active"] = TempdataInfo.Report;
 
             List<ListLeaveInfoMonthlyDto> models = new List<ListLeaveInfoMonthlyDto>();
             var staffs = _staffService.GetAll();

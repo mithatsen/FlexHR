@@ -38,7 +38,7 @@ namespace FlexHR.Web.Controllers
         } 
         public IActionResult Refectory()
         {
-            TempData["Active"] = TempdataInfo.FileProcess;
+            TempData["Active"] = TempdataInfo.Refectory;
             ViewBag.FileGeneralUpdateStatus = TempData["FileGeneralUpdateStatus"];
             return View();
         }

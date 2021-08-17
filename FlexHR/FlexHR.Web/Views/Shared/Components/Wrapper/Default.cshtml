@@ -90,7 +90,7 @@
             }
             @if ((User.IsInRole("ViewRequestSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="menu-item menu-item-submenu @(active=="request"?"menu-item-active":" ") " aria-haspopup="true" data-menu-toggle="hover">
+                <li class="menu-item menu-item-submenu @(active=="leave"?"menu-item-active menu-item-open":" ") @(active=="payment"?"menu-item-active menu-item-open":" ") @(active=="shift"?"menu-item-active menu-item-open":" ")" aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
                         <span class="svg-icon menu-icon">
                             <i class="fas fa-tasks"></i>
@@ -103,7 +103,7 @@
                         <ul class="menu-subnav">
                             @if ((User.IsInRole("ViewLeaveRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
-                                <li class="menu-item" aria-haspopup="true">
+                                <li class="menu-item @(active=="leave"?"menu-item-active":" ")" aria-haspopup="true">
                                     <a asp-controller="Leave" asp-action="Index" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
@@ -114,7 +114,7 @@
                             }
                             @if ((User.IsInRole("ViewPaymentRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
-                                <li class="menu-item" aria-haspopup="true">
+                                <li class="menu-item @(active=="payment"?"menu-item-active":" ")" aria-haspopup="true">
                                     <a asp-controller="Payment" asp-action="Index" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
@@ -125,7 +125,7 @@
                             }
                             @if ((User.IsInRole("ViewShiftRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
-                                <li class="menu-item" aria-haspopup="true">
+                                <li class="menu-item @(active=="shift"?"menu-item-active":" ")" aria-haspopup="true">
                                     <a asp-controller="Shift" asp-action="Index" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
@@ -140,7 +140,7 @@
             }
             @if ((User.IsInRole("ViewReportSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="menu-item menu-item-submenu @(active=="report"?"menu-item-active":" ") " aria-haspopup="true" data-menu-toggle="hover">
+                <li class="menu-item menu-item-submenu @(active=="report"?"menu-item-active menu-item-open":" ") " aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
                         <span class="svg-icon menu-icon">
                             <i class="fas fa-chart-bar"></i>
@@ -153,7 +153,7 @@
                         <ul class="menu-subnav">
                             @if ((User.IsInRole("ViewLeaveReportPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
-                                <li class="menu-item" aria-haspopup="true">
+                                <li class="menu-item @(active=="report"?"menu-item-active":" ")" aria-haspopup="true">
                                     <a asp-controller="Leave" asp-action="StaffLeaveRemainInfo" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
@@ -179,7 +179,7 @@
                 </li>
             }
 
-            <li class="menu-item menu-item-submenu  @(active=="fileProcess"?"menu-item-active":" ") " aria-haspopup="true" data-menu-toggle="hover">
+            <li class="menu-item menu-item-submenu  @(active=="fileProcess"?"menu-item-active menu-item-open":" ")  @(active=="refectory"?"menu-item-active menu-item-open":" ") " aria-haspopup="true" data-menu-toggle="hover">
                 <a href="javascript:;" class="menu-link menu-toggle">
                     <span class="svg-icon menu-icon">
                         <i class="fas fa-file-upload"></i>
@@ -191,7 +191,7 @@
                     <i class="menu-arrow"></i>
                     <ul class="menu-subnav">
 
-                        <li class="menu-item" aria-haspopup="true">
+                        <li class="menu-item  @(active=="fileProcess"?"menu-item-active":" ")" aria-haspopup="true">
                             <a asp-controller="UploadFile" asp-action="Index" class="menu-link">
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span>
@@ -199,7 +199,7 @@
                                 <span class="menu-text">Personel Takip</span>
                             </a>
                         </li>
-                        <li class="menu-item" aria-haspopup="true">
+                        <li class="menu-item @(active=="refectory"?"menu-item-active":" ") " aria-haspopup="true">
                             <a asp-controller="UploadFile" asp-action="Refectory" class="menu-link">
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span>

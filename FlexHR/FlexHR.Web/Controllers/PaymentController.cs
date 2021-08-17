@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -27,6 +28,7 @@ namespace FlexHR.Web.Controllers
         [Authorize(Roles = "ViewPaymentRequestPage,Manager")]
         public IActionResult Index()
         {
+            TempData["Active"] = TempdataInfo.Payment;
             var approvedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());
             var pendingApprovalPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff").ToList());
             var rejectedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff").ToList());

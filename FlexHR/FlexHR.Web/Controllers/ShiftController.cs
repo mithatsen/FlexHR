@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -24,6 +25,8 @@ namespace FlexHR.Web.Controllers
         [Authorize(Roles = "ViewShiftRequestPage,Manager")]
         public IActionResult Index()
         {
+            TempData["Active"] = TempdataInfo.Shift;
+
             var approvedShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());
             var pendingApprovalShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true,null, "Staff").ToList());
             var rejectedShifts = _mapper.Map<List<ListStaffShiftDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true,null, "Staff").ToList());
