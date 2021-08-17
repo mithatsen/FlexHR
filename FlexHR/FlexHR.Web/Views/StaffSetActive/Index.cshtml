@@ -2,7 +2,486 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var y = 5 + 8;
+    var x = @ViewBag.UserName;
 }
 
-<h1>Index</h1>
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+@await Component.InvokeAsync("StaffSubHeader", new { id = @ViewBag.StaffId })
+<div class="card card-custom">
+    @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
+    <div class="card-body">
+        <!--begin::Profile Personal Information-->
+        <div class="d-flex flex-row">
+            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
+            <div class="tab-content w-100">
+                <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        <!--begin::Container-->
+                        <div class="container">
+                            <!--begin::Notice-->
+                            <!--end::Notice-->
+                            <!--begin::Card-->
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap py-5">
+                                    <div class="card-title">
+                                        <i class="fas fa-business-time text-dark mr-2"></i>
+                                        <h3 class="card-label">
+                                            Personel Sistemi Kullanıyor mu?
 
+                                        </h3>
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="text-center">
+                                        <div class="form-group row justify-content-center p-5">
+                                            <label class="col-xl-4 col-lg-3 col-form-label ">Personel Sistemi Kullanıyor mu ?</label>
+                                            <div class="col-lg-6 col-xl-6">
+
+                                                <span class="switch switch-primary">
+                                                    <label>
+                                                        <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="@ViewBag.IsUser" onchange="changeSystemUse()" />
+                                                        <span></span>
+                                                    </label>
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <form id="registerForm" method="POST">
+                                        <div class="form-group row justify-content-center mt-5" id="dvUserName">
+                                            <label class="col-xl-4 col-lg-3 col-form-label ">Kullanıcı Adı</label>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <input name="UserNameAddStaff" id="UserName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Kullanıcı Adı" value="@ViewBag.UserName" />
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row justify-content-center" id="dvPassword">
+                                            <label class="col-xl-4 col-lg-3 col-form-label ">Şifre</label>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <input name="PasswordAddStaff" id="Password" class="form-control form-control-lg form-control-solid" type="text" placeholder="Şifre" />
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row justify-content-center">
+                                            <label class="col-xl-4 col-lg-3 col-form-label "></label>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <button type="button" onclick="SignUpUser()" id="dvAdd" class="btn float-right btn-light-skype">Kaydet</button>
+                                                <a id="dvReset" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#resetPasswordModal"> Şifreyi Sıfırla</a>
+                                            </div>
+
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Container-->
+            </div>
+            <!--end::Entry-->
+        </div>
+    </div>
+</div>
+
+<!--Reset Password Modal -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Parolayı Sıfırla</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="flex-row-fluid ml-lg-8">
+                    <!--begin::Form-->
+                    <form class="form" method="post" id="ResetPasswordForm">
+                        <!--begin::Card-->
+                        <div class="card card-custom">
+
+
+                            <div class="card-body">
+
+                                <div class="form-group row">
+                                    <label>
+                                        Yeni Parola
+                                    </label>
+                                    <div class="col-lg-9 col-xl-9 input-group">
+                                        <input type="password"
+                                               class="form-control form-control-lg form-control-solid"
+                                               name="passwordReset" id="passwordReset" placeholder="Yeni parola" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label>
+                                        Parola Onayı
+                                    </label>
+                                    <div class="col-lg-9 col-xl-9 input-group">
+                                        <input type="password"
+                                               class="form-control form-control-lg form-control-solid"
+                                               name="confirmPasswordReset" id="confirmPasswordReset" placeholder="Parola onayı" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    <!--end::Form-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onclick="resetPasswordClickFunction()" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+
+    <script>
+
+        $(document).ready(function () {
+            $("#tab_10").addClass("active");
+        });
+        var isUser = @Html.Raw(Json.Serialize(@ViewBag.IsUser));
+        var isExist = @Html.Raw(Json.Serialize(@ViewBag.IsExist));
+
+        if (isUser) {
+            $('#WillUseSystem').attr('checked', true);
+            $('#dvPassword').hide()
+            $('#dvAdd').attr('hidden', false);
+        }
+        else {
+            $('#dvUserName').attr('hidden', true);
+            $('#dvPassword').attr('hidden', true);
+            $('#dvAdd').attr('hidden', true);
+            $('#dvReset').attr('hidden', true);
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            if (@ViewBag.StaffGeneralUpdateStatus == true) {
+                Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+            }
+        });
+    </script>
+    <script>
+
+        var fvRegister1 = FormValidation.formValidation(document.getElementById('registerForm'),
+            {
+                fields: {
+                    UserNameAddStaff: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kullanıcı adı alanı boş geçilemez'
+                            }
+                        }
+                    },
+                    PasswordAddStaff: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Şifre alanı boş geçilemez'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+
+                }
+            });
+        var fvRegister2 = FormValidation.formValidation(document.getElementById('registerForm'),
+            {
+                fields: {
+                    UserNameAddStaff: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kullanıcı adı alanı boş geçilemez'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+
+                }
+            });
+        function SignUpUser() {
+            var isUpdate = $('#dvPassword').css('display') == 'none';
+            debugger;
+            if (isUpdate == false) {
+                fvRegister1.validate().then(function (status) {
+                    if (status == 'Valid') {
+
+                        var formData = {
+                            userName: $("#UserName").val(),
+                            password: $("#Password").val()
+                        };
+
+
+                        $.ajax({
+                            method: 'POST',
+                            url: '/Auth/Register/' +@ViewBag.StaffId,
+                            data: formData,
+
+                        }).done(function (data) {
+                            if (data == "true") {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            }
+                            else {
+                                Swal.fire({
+                                    title: "Başarısız!",
+                                    text: "Kullanıcı adı zaten var.",
+                                    icon: "error",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            }
+                        });
+
+
+                    }
+                });
+            }
+            else {
+                fvRegister2.validate().then(function (status) {
+                    if (status == 'Valid') {
+
+                        var formData2 = {
+                            userName: $("#UserName").val(),
+                        };
+                        $.ajax({
+                            method: 'POST',
+                            url: '/Auth/UpdateUserName/' +@ViewBag.StaffId,
+                            data: formData2,
+
+                        }).done(function (data) {
+                  
+                            if (data == true) {
+                                Swal.fire({
+                                    title: "Başarılı!",
+                                    text: "Kullanıcı Adınız Güncellendi",
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            }
+                            else {
+                                Swal.fire({
+                                    title: "Başarısız!",
+                                    text: "Kullanıcı adı zaten var.",
+                                    icon: "error",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            }
+
+
+                        });
+                    }
+                });
+
+            }
+        }
+    </script>
+    @*confirm password okey*@
+    <script>
+
+
+            const form = document.getElementById('ResetPasswordForm');
+            var fvReset = FormValidation.formValidation(
+                form,
+                {
+                    fields: {
+                        passwordReset: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The password is required'
+                                }
+                            }
+                        },
+                        confirmPasswordReset: {
+                            validators: {
+                                identical: {
+                                    compare: function () {
+                                        return form.querySelector('[name="passwordReset"]').value;
+                                    },
+                                    message: 'Girmiş olduğunuz iki şifre birbirine uyuşmuyor'
+                                }
+                            }
+                        },
+                    },
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger(),
+                        //// Bootstrap Framework Integration
+                        bootstrap: new FormValidation.plugins.Bootstrap(),
+                        //// Validate fields when clicking the Submit button
+
+                    },
+                }
+            );
+
+            // Revalidate the confirmation password when changing the password
+            form.querySelector('[name="passwordReset"]').addEventListener('input', function () {
+                fvReset.revalidateField('confirmPasswordReset');
+            });
+
+
+        function resetPasswordClickFunction() {
+            fvReset.validate().then(function (status) {
+                if (status == 'Valid') {
+                    var formData = {
+                        password: $("#passwordReset").val(),
+                        confirmPassword: $("#confirmPasswordReset").val(),
+
+                    };
+                    $.ajax({
+                        method: "POST",
+                        url: "/Auth/ResetPassword/" + @ViewBag.StaffId,
+                        data:formData,
+                    }).done(function (result) {
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Başarılı!",
+                                text: "Şifre değiştirildi",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "İşlem Başarısız",
+                                "hata"
+                            )
+                        }
+
+                    })
+                }
+
+            });
+        }
+    </script>
+    <script>
+        function changeSystemUse() {
+            if ($('#WillUseSystem').is(":checked") == false) {
+                Swal.fire({
+                    title: "Sistemden çıkarmak istediğinize emin misiniz ?",
+                    text: "Bunu geri alamazsınız!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Evet!",
+                    cancelButtonText: "Hayır!",
+                    reverseButtons: true,
+                    allowOutsideClick: false
+                }).then(function (result) {
+                    if (result.value) {
+                        $.ajax({
+                            method: "POST",
+                            url: "/StaffSetActive/DeleteUser/" + @ViewBag.StaffId,
+                        }).done(function (result) {
+                            if (result == true) {
+                                Swal.fire({
+                                    title: "Silindi!",
+                                    text: "Kaydınız silindi.",
+                                    icon: "success",
+                                    showCancelButton: false
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+
+                            } else {
+                                Swal.fire(
+                                    "Hata",
+                                    "Kaydınız silinemedi",
+                                    "hata"
+                                )
+                                window.location.reload();
+                            }
+
+                        })
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire({
+                            title: "İptal Edildi",
+                            text: "Kaydınız silinmedi",
+                            icon: "error",
+                            showCancelButton: false
+                        })
+                        window.location.reload();
+
+                    }
+                });
+            }
+            else {
+
+                if (isExist == true) {
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffSetActive/IsExistBefore/' +@ViewBag.StaffId,
+                        success: function (data) {
+
+                            if (data == true) {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız Aktifleştirildi.",
+                                    icon: "success",
+                                }).then(function () {
+                                    //$('#dvUserName').attr('hidden', false);
+                                    $('#dvReset').attr('hidden', false);
+                                    $('#dvAdd').attr('hidden', false);
+                                    $('#dvUserName').hide();
+
+                                    window.location.reload();
+                                })
+                            }
+                        }
+
+                    });
+                }
+                else {
+                    $('#dvUserName').attr('hidden', false);
+                    $('#dvPassword').attr('hidden', false);
+                                
+                    $('#dvAdd').attr('hidden', false);
+                    $('#dvReset').attr('hidden', true);
+
+                }
+            }
+
+        }
+
+    </script>
+
+
+}
