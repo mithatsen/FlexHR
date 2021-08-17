@@ -535,7 +535,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
                         var user_img = full[0];
                         var stringSplitted = user_img.split("~");
 
-                        debugger;
+          
                         var output;
                         if (stringSplitted[0] != "-") {
                             output = `

@@ -47,7 +47,7 @@ namespace FlexHR.Web.Controllers
             _userManager = userManager;
         }
     
-        [Authorize(Roles= "ViewAdminDashboard,Manager")]
+   
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.Home;
