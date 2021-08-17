@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -31,14 +32,17 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult Index()
         {
-           
+            TempData["Active"] = TempdataInfo.FileProcess;
+            ViewBag.FileGeneralUpdateStatus = TempData["FileGeneralUpdateStatus"];
             return View();
         } 
         public IActionResult Refectory()
         {
-            
+            TempData["Active"] = TempdataInfo.FileProcess;
+            ViewBag.FileGeneralUpdateStatus = TempData["FileGeneralUpdateStatus"];
             return View();
         }
+
         public static string ClearTurkishCharacter(string _dirtyText)
         {
             var text = _dirtyText;
@@ -92,7 +96,16 @@ namespace FlexHR.Web.Controllers
                                 await model.file.CopyToAsync(stream);
                             }
                         }
-                        return RedirectToAction("Index");
+                        TempData["FileGeneralUpdateStatus"] = "true";
+                        if (model.CategoryId == 127)
+                        {
+                            return RedirectToAction("Refectory");
+                        }
+                        else if (model.CategoryId == 129)
+                        {
+                            return RedirectToAction("Index");
+                        }
+                        
 
                     }
                 }
@@ -125,8 +138,10 @@ namespace FlexHR.Web.Controllers
                         await model.file.CopyToAsync(stream);
                     }
                 }
+                TempData["FileGeneralUpdateStatus"] = "true";
                 return RedirectToAction("Index");
             }
+            TempData["FileGeneralUpdateStatus"] = "false";
             return View("Index");
         }
     }

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -58,6 +59,7 @@ namespace FlexHR.Web.Controllers
         [Authorize(Roles = "ViewPersonalsPage,Manager")]
         public IActionResult Index()
         {
+            TempData["Active"] = TempdataInfo.Staff;
             var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");
 
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
@@ -130,6 +132,9 @@ namespace FlexHR.Web.Controllers
         public async Task<IActionResult> AddStaffWithAjax(AddStaffDto modal)
         {
             var staffResult = new Staff();
+            staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
+            var staffId = staffResult.StaffId;
+            
             if (modal.WillUseSystem != false)
             {
                 var appUser = await _userManager.FindByNameAsync(modal.UserName);
@@ -168,12 +173,16 @@ namespace FlexHR.Web.Controllers
                             await _userManager.AddToRoleAsync(user, rolePage);
                         }
                     }
+                    staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
+                    staffId = staffResult.StaffId;
+                    _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
+                    _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });
                     return Json("true");
                 }
             }
 
             staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
-            var staffId = staffResult.StaffId;
+            staffId = staffResult.StaffId;
 
             _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
             _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });

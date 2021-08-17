@@ -1,0 +1,252 @@
+﻿@{ 
+    string active = string.Empty;
+    @if (TempData["Active"] != null)
+    {
+        active = TempData["Active"].ToString();
+    }
+}
+
+
+<!--begin::Aside Menu-->
+<div class="aside-menu-wrapper flex-column-fluid " id="kt_aside_menu_wrapper">
+    <!--begin::Menu Container-->
+    <div id="kt_aside_menu" class="aside-menu my-4 bg-dark" data-menu-vertical="1" data-menu-scroll="1"
+         data-menu-dropdown-timeout="500">
+        <!--begin::Menu Nav-->
+        <ul class="menu-nav">
+
+            <li class="menu-item menu-item-submenu " aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle">
+                    <span class="svg-icon menu-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </span>
+                    <span class="menu-text">Talep Oluştur</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu" kt-hidden-height="80" style="">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
+                        <li class="menu-item" aria-haspopup="true">
+                            <a onclick="getLeaveRequestModal()" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text"> İzin </span>
+                            </a>
+                        </li>
+
+                        <li class="menu-item" aria-haspopup="true">
+                            <a onclick="getPaymentRequestModal()" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Ödeme</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-item" aria-haspopup="true">
+                            <a onclick="getAdvancePaymentRequestModal()" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Avans</span>
+                            </a>
+                        </li>
+                        <li class="menu-item" aria-haspopup="true">
+                            <a onclick="getShiftRequestModal()" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Mesai</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            @if ((User.IsInRole("ViewAdminDashboard") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item @(active=="home"?"menu-item-active":" ")" aria-haspopup="true">
+                    <a asp-controller="Home" asp-action="Index" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-home"></i>
+                        </span>
+                        <span class="menu-text">Anasayfa</span>
+                    </a>
+                </li>
+            }
+            @if ((User.IsInRole("ViewPersonalsPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item @(active=="staff"?"menu-item-active":" ")" aria-haspopup="true">
+                    <a asp-controller="Staff" asp-action="Index" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-users"></i>
+                        </span>
+                        <span class="menu-text">Çalışanlar</span>
+
+                    </a>
+
+                </li>
+            }
+            @if ((User.IsInRole("ViewRequestSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item menu-item-submenu @(active=="request"?"menu-item-active":" ") " aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-tasks"></i>
+                        </span>
+                        <span class="menu-text">Talepler</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu" kt-hidden-height="80" style="">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            @if ((User.IsInRole("ViewLeaveRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a asp-controller="Leave" asp-action="Index" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text"> İzin Talepleri</span>
+                                    </a>
+                                </li>
+                            }
+                            @if ((User.IsInRole("ViewPaymentRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a asp-controller="Payment" asp-action="Index" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Ödeme Talepleri</span>
+                                    </a>
+                                </li>
+                            }
+                            @if ((User.IsInRole("ViewShiftRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a asp-controller="Shift" asp-action="Index" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Mesai Talepleri</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+            }
+            @if ((User.IsInRole("ViewReportSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item menu-item-submenu @(active=="report"?"menu-item-active":" ") " aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
+                        <span class="menu-text">Raporlar</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu" kt-hidden-height="80" style="">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            @if ((User.IsInRole("ViewLeaveReportPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a asp-controller="Leave" asp-action="StaffLeaveRemainInfo" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">İzin Raporları</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+            }
+            @if ((User.IsInRole("ViewEventPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
+                    <a asp-controller="Event" asp-action="Index" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-text">Etkinlikler</span>
+                    </a>
+                </li>
+            }
+
+            <li class="menu-item menu-item-submenu  @(active=="fileProcess"?"menu-item-active":" ") " aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle">
+                    <span class="svg-icon menu-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </span>
+                    <span class="menu-text"> Dosya İşlemleri </span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu" kt-hidden-height="80" style="">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
+
+                        <li class="menu-item" aria-haspopup="true">
+                            <a asp-controller="UploadFile" asp-action="Index" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Personel Takip</span>
+                            </a>
+                        </li>
+                        <li class="menu-item" aria-haspopup="true">
+                            <a asp-controller="UploadFile" asp-action="Refectory" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Yemekhane Takip</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
+            @if ((User.IsInRole("ViewRoleAssignPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+
+                <li class="menu-item @(active=="assignRole"?"menu-item-active":" ")" aria-haspopup="true">
+                    <a asp-controller="RoleAssign" asp-action="Index" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-user-tag"></i>
+                        </span>
+                        <span class="menu-text">Rol Atama</span>
+                    </a>
+                </li>
+            }
+            @if ((User.IsInRole("ViewSystemVariablePage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item @(active=="config"?"menu-item-active":" ")" aria-haspopup="true">
+                    <a asp-controller="SystemVariable" asp-action="Index" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-cog"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-text">Ayarlar</span>
+                    </a>
+                </li>
+            }
+            <li class="menu-item" aria-haspopup="true">
+                <a asp-controller="Auth" asp-action="LogOut" class="menu-link">
+                    <span class="svg-icon menu-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                    <span class="menu-text">Çıkış Yap</span>
+                </a>
+            </li>
+
+        </ul>
+        <!--end::Menu Nav-->
+    </div>
+    <!--end::Menu Container-->
+</div>
+<!--end::Aside Menu-->

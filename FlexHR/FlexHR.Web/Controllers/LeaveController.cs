@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -40,8 +41,8 @@ namespace FlexHR.Web.Controllers
         }
         [Authorize(Roles = "ViewLeaveRequestPage,Manager")]
         public IActionResult Index()
-
         {
+            TempData["Active"] = TempdataInfo.Leave;
             var approvedLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null, "Staff,LeaveType").ToList());
             var pendingApprovalLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff,LeaveType").ToList());
             var rejectedLeaves = _mapper.Map<List<ListStaffLeaveDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff,LeaveType").ToList());
@@ -89,6 +90,8 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult StaffLeaveRemainInfo()
         {
+            TempData["Active"] = TempdataInfo.Leave;
+
             List<ListLeaveInfoAllStaffDto> models = new List<ListLeaveInfoAllStaffDto>();
             var staffs = _staffService.GetAll();
 
@@ -119,6 +122,8 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult StaffLeaveMonthlyInfo(DateTime dateTime)
         {
+            TempData["Active"] = TempdataInfo.Leave;
+
             List<ListLeaveInfoMonthlyDto> models = new List<ListLeaveInfoMonthlyDto>();
             var staffs = _staffService.GetAll();
             DateTime date = dateTime.Year != 0001 ? dateTime : DateTime.Now;

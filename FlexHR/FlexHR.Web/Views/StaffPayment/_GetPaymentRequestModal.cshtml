@@ -116,11 +116,31 @@
         counterRequest++;
         var divId = "receipt" + counterRequest;
         var deleteId = "delete" + counterRequest;
-        $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counterRequest + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
+        var fileInputId = "file" + counterRequest;
+        var deleteFileId = "deleteFile" + counterRequest;
+        $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"><div class="form-group col-md-5 pl-0"> <label>Fiş Adı</label><div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg" /></div></div><div class="form-group col-md-2"> <label>KDV(%)</label><div class="input-group"><input required type="text" name="Vat" class="form-control form-control-solid form-control-lg" /></div></div><div class="form-group col-md-2"> <label>Tutar</label><div class="input-group"><input type="text" name="ReceiptAmount" required class="form-control form-control-solid form-control-lg" /></div></div><div class="form-group my-auto col-md-1"> <label class="my-auto pt-1" for="' + fileInputId + '"> <i id="upload_icon' + counterRequest + '" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileInputId + '" onchange="fileInputChange(' + counterRequest + ')" type="file" name="File" style="display:none" /></div><div class="form-group my-auto col-md-1"><div class="card-toolbar"><div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a><div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"><ul class="navi"><li class="navi-item"> <a onclick="DeleteReceiptFile(' + counterRequest + ')" id="' + deleteFileId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a></li><li class="navi-item"> <a onclick="DeleteReceipt(' + counterRequest + ')" id="' + deleteId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> <span class="navi-label"> </span> </a></li></ul></div></div></div></div></div>')
     }
     function DeleteReceipt(counterRequest) {
         var divId = "#receipt" + counterRequest;
         $(divId).remove();
+    }
+    function DeleteReceiptFile(id) {
+        debugger;
+        var fileInputId = "#file" + id;
+        $(fileInputId).val("");
+        fileInputChange(id);
+    }
+    function fileInputChange(id) {
+        debugger;
+        var fileInputId = "#file" + id;
+        var uploadIcon = "#upload_icon" + id;
+        if ($(fileInputId).val() != "") {
+            $(uploadIcon).removeClass("fas fa-upload text-danger");
+            $(uploadIcon).addClass(" fas fa-image text-info");
+        } else {
+            $(uploadIcon).removeClass("fas fa-image text-info");
+            $(uploadIcon).addClass(" fas fa-upload text-danger");
+        }
     }
 </script>
 <script>
@@ -320,19 +340,19 @@
     }
 </script>
 
-<script>
+@*<script>
     let counter = 0;
     function AddReceipt() {
         counter++;
         var divId = "receipt" + counter;
         var deleteId = "delete" + counter;
-        $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0"> <label>Fiş Adı</label> <div class="input-group "><input type="text" name="Name" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group col-md-4"> <label>Dosya Ekle</label> <div class="custom-file"><input type="file" class="custom-file-input " name="File"/> <label class="custom-file-label" for="customFile"></label></div></div><div class="form-group col-md-1"> <label></label> <button onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button> </div></div>')
-    }
+        $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"><div class="form-group col-md-5 pl-0"> <label>Fiş Adı</label><div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg" /></div></div><div class="form-group col-md-2"> <label>KDV(%)</label><div class="input-group"><input required type="text" name="Vat" class="form-control form-control-solid form-control-lg" /></div></div><div class="form-group col-md-2"> <label>Tutar</label><div class="input-group"><input type="text" name="ReceiptAmount" required class="form-control form-control-solid form-control-lg" /></div></div><div class="form-group my-auto col-md-1"> <label class="my-auto pt-1" for="' + fileInputId + '"> <i id="upload_icon' + counter + '" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileInputId + '" onchange="fileInputChange(' + counter + ')" type="file" name="File" style="display:none" /></div><div class="form-group my-auto col-md-1"><div class="card-toolbar"><div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a><div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"><ul class="navi"><li class="navi-item"> <a onclick="DeleteReceiptFile(' + counterRequest + ')" id="' + deleteFileId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a></li><li class="navi-item"> <a onclick="DeleteReceipt(' + counterRequest + ')" id="' + deleteId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> <span class="navi-label"> </span> </a></li></ul></div></div></div></div></div>')
+     }
     function DeleteReceipt(counter) {
         var divId = "#receipt" + counter;
         $(divId).remove();
     }
-</script>
+</script>*@
 
 <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
 

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -27,6 +28,7 @@ namespace FlexHR.Web.Controllers
 
         public IActionResult Index()
         {
+            TempData["Active"] = TempdataInfo.Event;
             ViewBag.EventUpdateStatus = TempData["EventUpdateStatus"] != null ? TempData["EventUpdateStatus"] : "false";
             ViewBag.EventAddStatus = TempData["EventAddStatus"] != null ? TempData["EventAddStatus"] : "false";
             return View();
