@@ -71,7 +71,7 @@
         </div>
         <!--end::Login-->
     </div>
-   
+
     <!--end::Main-->
     <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
     <!--begin::Global Config(global config for global JS scripts)-->
@@ -84,7 +84,25 @@
     <!--end::Global Theme Bundle-->
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/custom/login/login-general.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            debugger;
+            if (@ViewBag.LoginMessage!= null) {
+                if (@ViewBag.LoginMessage== false) {
+                    Swal.fire({
+                        title: "Başarısız!",
+                        text: "Kullanıcı adı veya şifre hatalı",
+                        icon: "warning",
+                    }).then(function () {
+                       
+                    })
+                }
+              
+            }
+        });
+    </script>
+   
+    ViewBag.LoginMessage = "true";
 
     <script>
         FormValidation.formValidation(

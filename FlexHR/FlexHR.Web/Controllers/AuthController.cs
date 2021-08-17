@@ -35,10 +35,12 @@ namespace FlexHR.Web.Controllers
                 var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
                 if (signInResult.Succeeded)
                 {
+                    ViewBag.LoginMessage = "true";
                     return RedirectToAction( "Index","Home");
                 }
-                ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı");
+               
             }
+            ViewBag.LoginMessage = "false";
             return View("Index", model);
         }
         public async Task<IActionResult> LogOut()
