@@ -1,44 +1,34 @@
 ﻿@model ListStaffLeaveOnDashboardDto
-<div class="modal fade" id="staffLeaveApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <form id="approveStaffLeave" method="post">
-        <div class="modal-dialog modal-dialog-centered modal-lg p-5 " role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:#181c32">
-                    <div class="card-title align-items-start flex-column">
-                        <h3 class="card-label font-weight-bolder text-light">
-                            <i class="fas fa-address-book mr-2 text-light"></i>İzin Bilgisi
-                        </h3>
 
-                    </div>
-                    <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
-                    </button>
+<div class="modal fade" id="staffLeaveApprove" tabindex="-1" role="dialog" aria-labelledby="staffLeaveApprove" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h3 class="card-label font-weight-bolder text-white">
+                    <i class="fas fa-address-book mr-2 "></i>İzin Detay
+                </h3>
+                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <h4 >@Model.NameSurname <span class="text-warning"> @Model.LeaveType </span> talebinde bulunmuştur.</h4>
+                <h4 class="card-title "> Tarih Aralığı :@Model.LeaveStartDate.ToShortDateString() - @Model.LeaveEndDate.ToShortDateString()  ( @Model.TotalDay gün ) </h4>
+                <p class="card-title "> <h4>Açıklama: @Model.Description </h4></p>
+                <div class=" text-warning">
+                    <h4>Kalan Yıllık İzin Hakkı: @Model.TotalRemainingDay Gün</h4>
                 </div>
-                <div class="card text-center">
-                    <div class="card-header" style="background-color:#181c32">
-                        <h4 class="text-light">@Model.NameSurname <span class="text-warning"> @Model.LeaveType </span> talebinde bulunmuştur.</h4>
-                    </div>
-                    <div class="card-body" style="background-color:#181c32">
-                        <h4 class="card-title text-light "> Tarih Aralığı :@Model.LeaveStartDate.ToShortDateString() - @Model.LeaveEndDate.ToShortDateString()  ( @Model.TotalDay gün ) </h4>
-                        <p class="card-title "> <h4 class="text-light">Açıklama: @Model.Description </h4></p>
-                        <div class="card-footer text-warning" style="background-color:#181c32">
-                           
-                            <h4 >Kalan Yıllık İzin Hakkı: @Model.TotalRemainingDay Gün</h4>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="modal-footer" style="background-color:#181c32">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    @if ((User.IsInRole("ApproveLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                    {
-                        <button type="button" onclick="approveLeaveDash(@Model.StaffLeaveId)" class="btn btn-primary font-weight-bold">Onayla</button>
-                    }
-                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                @if ((User.IsInRole("ApproveLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <button type="button" onclick="approveLeaveDash(@Model.StaffLeaveId)" class="btn btn-primary font-weight-bold">Onayla</button>
+                }
             </div>
         </div>
-    </form>
+    </div>
 </div>
+
 
 <script>
     function approveLeaveDash(id) {

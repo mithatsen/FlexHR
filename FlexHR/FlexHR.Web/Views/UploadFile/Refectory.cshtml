@@ -143,4 +143,14 @@
     </div>
 </div>
 
+@section Scripts{
+    @*dosya ekleme başarılı için sweet alert*@
+    <script>
+        $(document).ready(function () {
 
+            if (@ViewBag.FileGeneralUpdateStatus == true) {
+                Swal.fire("Yüklendi!", "Dosya yükleme işlemi başarılı!", "success");
+            }
+        });
+    </script>
+}
