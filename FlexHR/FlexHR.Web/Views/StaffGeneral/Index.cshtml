@@ -6,7 +6,6 @@
 @section Styles{
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-
     <!--end::Page Vendors Styles-->
 }
 @await Component.InvokeAsync("StaffSubHeader", new { id = @Model.StaffId })
@@ -198,9 +197,10 @@
     <script src="~/Croppie-2.6.4/demo/demo.js"></script>
 
     <script>
-
         $(document).ready(function () {
             $("#tab_1").addClass("active");
+            if (@ViewBag.FileUpdateStatus == true)
+                    Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
         });
     </script>
     <script>

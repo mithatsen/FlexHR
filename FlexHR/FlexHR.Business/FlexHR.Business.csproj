@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FlexHR.DataAccess\FlexHR.DataAccess.csproj" />
-    <ProjectReference Include="..\FlexHR.DTO\FlexHR.DTO.csproj" />
   </ItemGroup>
 
 </Project>

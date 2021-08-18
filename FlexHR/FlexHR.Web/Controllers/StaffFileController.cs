@@ -43,18 +43,18 @@ namespace FlexHR.Web.Controllers
         public IActionResult Index(int id)
         {
             ViewBag.StaffId = id;
-            ViewBag.FileTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType), "GeneralSubTypeId", "Description");
+            ViewBag.FileTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType), "GeneralSubTypeId", "Description").Take(7);
             var models = new List<FileHelper>();
-            var fileTypes = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType);
-           
+            var fileTypes = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType).Take(7);
+
             foreach (var item in fileTypes)
             {
                 var temp = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == item.GeneralSubTypeId && x.IsActive == true);
 
-                FileHelper model = new FileHelper { TypeId = item.GeneralSubTypeId, Name = item.Description, Count = temp.Count()};
+                FileHelper model = new FileHelper { TypeId = item.GeneralSubTypeId, Name = item.Description, Count = temp.Count() };
                 models.Add(model);
             }
-           
+
             return View(models);
         }
 
@@ -139,7 +139,7 @@ namespace FlexHR.Web.Controllers
             return Json(fileList);
         }
         [HttpPost]
-        public int StaffFileRemove(IFormFile file, int fileId,int typeId,int staffId)
+        public int StaffFileRemove(IFormFile file, int fileId, int typeId, int staffId)
         {
             if (fileId > 0)
             {
@@ -148,7 +148,7 @@ namespace FlexHR.Web.Controllers
                     var result = _staffFileService.Get(x => x.StaffFileId == fileId).FirstOrDefault();
                     result.IsActive = false;
                     _staffFileService.Update(result);
-                    var x= _staffFileService.Get(x => x.StaffId == staffId && x.IsActive == true && x.FileGeneralSubTypeId == typeId).Count();
+                    var x = _staffFileService.Get(x => x.StaffId == staffId && x.IsActive == true && x.FileGeneralSubTypeId == typeId).Count();
                     return x;
                 }
                 catch (Exception)
@@ -156,7 +156,7 @@ namespace FlexHR.Web.Controllers
 
                     return -1;
                 }
-                
+
             }
             return _staffFileService.GetAll().Count();
         }
@@ -165,6 +165,79 @@ namespace FlexHR.Web.Controllers
         {
             var picture = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x => x.StaffFileId).FirstOrDefault();
             return picture != null ? picture.FileFullPath + picture.FileName : null;
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfilePhoto(IFormCollection formdata, int id)
+        {
+            var result = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 3 && x.IsActive == true).FirstOrDefault();
+            var staffName = "Staff_" + id;
+            string categoryNameFolder = "Profil Fotografi";
+            var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
+            var folderPath = Path.Combine(fullPath, staffName);
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            var filePath = Path.Combine(folderPath, categoryNameFolder + "/");
+            if (!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+            if (result != null)
+            {
+
+                foreach (var item in formdata.Files)
+                {
+                    var staffFile = new StaffFile()
+                    {
+                        FileName = item.FileName,
+                        FileFullPath = Path.Combine(staffName, categoryNameFolder + "/"),
+                        IsActive = true,
+                        FileGeneralSubTypeId = 3,
+                        StaffFileId = result.StaffFileId,
+                        StaffId = id
+                    };
+                    _staffFileService.Update(staffFile);
+                    var imagePath = Path.Combine(filePath + item.FileName);
+                    if (item.Length > 0)
+                    {
+                        //dosyamızı kaydediyoruz.
+
+                        using (var stream = new FileStream(imagePath, FileMode.Create))
+                        {
+                            await item.CopyToAsync(stream);
+                        }
+                    }
+                }
+                return RedirectToAction("Index","StaffGeneral", new { id = id });
+            }
+            foreach (var item in formdata.Files)
+            {
+                var staffFile = new StaffFile()
+                {
+                    FileName = item.FileName,
+                    FileFullPath = Path.Combine(staffName, categoryNameFolder + "/"),
+                    IsActive = true,
+                    FileGeneralSubTypeId = 3,
+                    StaffId = id
+                };
+                _staffFileService.Add(staffFile);
+                var imagePath = Path.Combine(filePath + item.FileName);
+                if (item.Length > 0)
+                {
+                    //dosyamızı kaydediyoruz.
+
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        await item.CopyToAsync(stream);
+                    }
+                }
+            }
+            return RedirectToAction("Index", "StaffGeneral", new { id = id });
+
+        }
+        [HttpPost]
+        public bool RemoveProfilePhoto(int id)
+        {
+            _staffFileService.Delete(id);
+            return true;
         }
     }
 }

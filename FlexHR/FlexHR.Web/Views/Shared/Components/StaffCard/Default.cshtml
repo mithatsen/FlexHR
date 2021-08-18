@@ -32,34 +32,42 @@
             <div class="d-flex align-items-center">
                 <!--begin::Card-->
 
-                <form>
+                <form method="post" enctype="multipart/form-data">
                     <div class="card-body">
                         <div class="form-group row">
-
                             <div class="col-lg-9 col-xl-6">
-                                <div class="image-input image-input-outline" id="kt_image_4">
-                                    <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center position-relative">
-                                        <div class="symbol symbol-label symbol-lg-100">
-                                            @if (Model.PictureUrl != null)
-                                            {
-                                                var pp = "/img/" + @Model.PictureUrl;
-                                                <img id="photo45" value="@pp" src ="@pp" alt="image" />
-                                            }
-                                            else
-                                            {
-                                                <img id="photo45"  src="~/assets/media/users/default.jpg" />
-                                            }
+                                @{
+                                    var pp = "";
+                                    if (Model.PictureUrl != null)
+                                    {
+                                        pp = "/img/" + @Model.PictureUrl;
 
-                                        </div>
-                                        <i class="symbol-badge bg-success"></i>
-                                        <a class="btn btn-xs btn-icon btn-circle btn-hover-warning btn-shadow position-absolute btn-white" data-toggle="modal" data-target="#staffPpChangeModal" style="bottom:-6px;right:-6px;">
-                                            <i class="  fa fa-pen icon-sm "></i>
-                                        </a>
+                                    }
+                                    else
+                                    {
+                                        pp = "/assets/media/users/default.jpg";
+                                    }
+                                }
+
+                                <div class="image-input image-input-outline" id="kt_profile_avatar" style="background-image: url(@pp) ">
+                                    <div class="image-input-wrapper">
+                                        <img id="profilePhoto" style="width:100%; height:100%;" src="@pp" />
                                     </div>
-
+                                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow xyz" data-action="change" data-toggle="tooltip" title="" data-original-title="Fotoğrafı Güncelle">
+                                        <i id="updateProfilePhoto" onclick="UpdateProfilePhotoClick()" class="fa fa-pen icon-sm text-muted"></i>
+                                        <input type="file" name="profile_avatar" onchange="profileAvatarChange()" id="profile_avatar" accept=".png, .jpg, .jpeg" />
+                                        <input type="hidden" name="profile_avatar_remove" />
+                                    </label>
+                                    <a onclick="removeProfilePhoto(@Model.StaffFileId)">
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Fotoğrafı Sil">
+                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" id="StaffId" value="@ViewBag.StaffId" />
+                        <button hidden id="saveButton" onclick="saveButtonClick()" class="btn btn-sm bg-primary text-white px-5 ml-5">Kaydet</button>
                     </div>
                 </form>
                 <div>
@@ -124,24 +132,24 @@
                 <div class="modal-body ">
                     <div>
                         <div>
-                            <div id="main-cropper"></div>                      
+                            <div id="main-cropper"></div>
                             <a class="button actionSelect">
                                 <input class="actionUpload dropzone-select btn btn-light-primary font-weight-bold btn-lg" type="file" id="select" value="Choose Image" accept="image/*">
                             </a>
 
                         </div>
                     </div>
-                      
-                                @*@if (Model.PictureUrl != null)
-                                {
-                                    var pp = "/img/" + @Model.PictureUrl;
-                                    <img src="@pp" alt="image" />
-                                }
-                                else
-                                {
-                                    <img id="deneme45" src="~/assets/media/users/default.jpg" />
-                                }*@
-                           
+
+                    @*@if (Model.PictureUrl != null)
+                        {
+                            var pp = "/img/" + @Model.PictureUrl;
+                            <img src="@pp" alt="image" />
+                        }
+                        else
+                        {
+                            <img id="deneme45" src="~/assets/media/users/default.jpg" />
+                        }*@
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
@@ -152,3 +160,116 @@
     </div>
 </div>
 
+<!--begin::Page Scripts(used by this page)-->
+<script src="~/assets/js/pages/widgets.js"></script>
+<script src="~/assets/js/pages/custom/profile/profile.js"></script>
+<!--end::Page Scripts-->
+<script>
+
+    function UpdateProfilePhotoClick() {
+        $("#saveButton").attr('hidden', false);
+    }
+    function profileAvatarChange() {
+        if ($("#profile_avatar").val() != "") {
+            $(".image-input-wrapper img").remove();
+        }
+    }
+    function removeProfilePhoto(id) {
+        Swal.fire({
+            title: "Silmek istediğinize emin misiniz ?",
+            text: "Bunu geri alamazsınız!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet, sil!",
+            cancelButtonText: "Hayır, iptal et!",
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+
+                $.ajax({
+                    method: "POST",
+                    url: "/StaffFile/RemoveProfilePhoto/" + id,
+                }).done(function (result) {
+                    if (result == true) {
+                        Swal.fire({
+                            title: "Silindi!",
+                            text: "Kaydınız silindi.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })
+
+                    } else {
+                        Swal.fire(
+                            "Hata",
+                            "Kaydınız silinemedi",
+                            "hata"
+                        )
+                    }
+
+                })
+            } else if (result.dismiss === "cancel") {
+                Swal.fire({
+                    title: "İptal Edildi",
+                    text: "Kaydınız silinmedi",
+                    icon: "error",
+                    showCancelButton: false
+                })
+            }
+        });
+
+
+    }
+    function saveButtonClick() {
+        var formdata = new FormData();
+        $('.xyz').each(function (i, obj) {
+            debugger;
+            var myKey = "1";
+            var file;
+            var itemId = "#profile_avatar";
+            $(this).find('input').each(function (j, obj2) {
+                if ($(obj2).attr("name") == "profile_avatar" && $(itemId).prop('files') != null) {
+                    file = $(itemId).prop('files');
+                }
+
+            });
+            console.log(file);
+            if (file.length != 0) {
+                formdata.append(myKey, file[0]);
+            }
+        });
+        debugger;
+        var id = $("#StaffId").val();
+        $.ajax({
+            method: 'Post',
+            url: '/StaffFile/UpdateProfilePhoto/' + id,
+            data: formdata,
+            contentType: false,
+            cache: false,
+            processData: false,
+
+        }).done(function (result) {
+            debugger;
+            if (result == true) {
+                Swal.fire({
+                    title: "Silindi!",
+                    text: "Kaydınız silindi.",
+                    icon: "success",
+                    showCancelButton: false
+                }).then(function () {
+                    window.location.reload();
+                })
+
+            } else {
+                Swal.fire(
+                    "Hata",
+                    "Kaydınız silinemedi",
+                    "hata"
+                )
+            }
+        });
+        window.location.reload();
+    }
+
+</script>

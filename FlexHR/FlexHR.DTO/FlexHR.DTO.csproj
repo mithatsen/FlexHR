@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FlexHR.DataAccess\FlexHR.DataAccess.csproj" />
+    <ProjectReference Include="..\FlexHR.Entity\FlexHR.Entity.csproj" />
   </ItemGroup>
 
 </Project>

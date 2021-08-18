@@ -37,13 +37,15 @@ namespace FlexHR.Web.Controllers
         protected readonly UserManager<AppUser> _userManager;
         protected readonly RoleManager<AppRole> _roleManager;
         private readonly IAppUserService _appUserService;
+        private readonly IFileColumnService _fileColumnService;
         private readonly IStaffCareerService _staffCareerService;
 
         public StaffController(IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffPersonelInfoService staffPersonelInfoService,
                                       IAppRoleService appRoleService, IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService, UserManager<AppUser> userManager,
-                                       RoleManager<AppRole> roleManager, IAppUserService appUserService, IStaffCareerService staffCareerService)
+                                       RoleManager<AppRole> roleManager, IAppUserService appUserService, IStaffCareerService staffCareerService, IFileColumnService fileColumnService)
         {
             _staffService = staffService;
+            _fileColumnService = fileColumnService;
             _mapper = mapper;
             _userManager = userManager;
             //_staffRoleService = staffRoleService;
@@ -59,6 +61,7 @@ namespace FlexHR.Web.Controllers
         [Authorize(Roles = "ViewPersonalsPage,Manager")]
         public IActionResult Index()
         {
+            //_fileColumnService.ReadCompanyExcelFile("C:\\FlexHRFiles\\Excel\\StaffTracking", "16.08.2021_StaffTracking.xlsx");
             TempData["Active"] = TempdataInfo.Staff;
             var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");
 
@@ -94,6 +97,7 @@ namespace FlexHR.Web.Controllers
             }
 
             return View(models);
+            
 
         }
 

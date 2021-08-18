@@ -37,10 +37,9 @@ namespace FlexHR.Web.Controllers
             _roleManager = roleManager;
         }
         [Authorize(Roles = "ViewStaffGeneralPage,Manager")]
-        public async Task<IActionResult> Index(int id)
+        public IActionResult Index(int id)
         {
-            var staff = _staffService.GetById(id);
-            
+            var staff = _staffService.GetById(id);            
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");              
             ViewBag.StaffGeneralUpdateStatus = TempData["StaffGeneralUpdateStatus"];
             return View(_mapper.Map<ListStaffGeneralDto>(staff));

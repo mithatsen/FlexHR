@@ -12,8 +12,6 @@ namespace FlexHR.Web.Controllers
     public class StaffSetActiveController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<AppRole> _roleManager;
-        private readonly IAppRoleService _appRoleService;
         private readonly IAppUserService _appUserService;
         public StaffSetActiveController(IAppUserService appUserService, UserManager<AppUser> userManager)
         {

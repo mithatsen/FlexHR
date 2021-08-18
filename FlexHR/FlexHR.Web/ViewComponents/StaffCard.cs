@@ -29,13 +29,15 @@ namespace FlexHR.Web.ViewComponents
         }
         public IViewComponentResult Invoke(int id)
         {
-            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null,"CompanyBranch").OrderByDescending(p=>p.JobStartDate).ToList();
+
+            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList();
             var staff = _staffService.GetById(id);
             var picture = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true && x.FileGeneralSubTypeId == 3).OrderByDescending(x => x.StaffFileId).FirstOrDefault();
-
+            ViewBag.StaffId = id;
             StaffCardDto staffCardDto;
             if (careerResult.Count > 0)
             {
+
                 var activeCareer = careerResult.First();
                 staffCardDto = new StaffCardDto
                 {
@@ -43,8 +45,8 @@ namespace FlexHR.Web.ViewComponents
                     BranchName = activeCareer.CompanyBranch != null ? activeCareer.CompanyBranch.BranchName : "-",
                     CompanyName = _companyService.GetCompanyNameByCompanyId(activeCareer.CompanyId),
                     Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(activeCareer.TitleGeneralSubTypeId),
-                    PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null
-
+                    PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null,
+                    StaffFileId = picture != null ? picture.StaffFileId : -1
                 };
             }
             else
@@ -55,7 +57,8 @@ namespace FlexHR.Web.ViewComponents
                     BranchName = "-",
                     CompanyName = "-",
                     Title = "-",
-                    PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null
+                    PictureUrl = picture != null ? picture.FileFullPath + picture.FileName : null,
+                    StaffFileId = picture != null ? picture.StaffFileId : -1
                 };
             }
             staffCardDto.JobJoinDate = staff.JobJoinDate;

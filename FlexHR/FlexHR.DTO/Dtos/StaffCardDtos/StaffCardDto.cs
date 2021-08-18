@@ -7,6 +7,7 @@ namespace FlexHR.DTO.Dtos.StaffCardDtos
 {
     public class StaffCardDto
     {
+        public int? StaffFileId { get; set; } 
         public DateTime JobJoinDate { get; set; }
         public string NameSurname { get; set; }
         public string EmailJob { get; set; }
