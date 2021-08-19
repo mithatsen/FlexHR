@@ -86,5 +86,18 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 return query.ToList();
             }
         }
+
+        internal bool ExecuteSqlCommand(string query)
+        {
+            try
+            {
+                _context.Database.ExecuteSqlRaw(query);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

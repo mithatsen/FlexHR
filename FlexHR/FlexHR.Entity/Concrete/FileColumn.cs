@@ -8,6 +8,7 @@ namespace FlexHR.Entity.Concrete
     public class FileColumn:ITable
     {
         public int Id { get; set; }
+        public int FileTypeId { get; set; }
         public int CompanyFileTypeGeneralSubTypeId { get; set; }
         public string ColumnName { get; set; }
         public string ColumnDescription { get; set; }

@@ -458,7 +458,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
         var table = $('#kt_datatable_13');
         // begin first table
         table.DataTable({
-           
+
             responsive: true,
             paging: true,
             columnDefs: [
@@ -535,7 +535,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
                         var user_img = full[0];
                         var stringSplitted = user_img.split("~");
 
-          
+
                         var output;
                         if (stringSplitted[0] != "-") {
                             output = `
@@ -587,7 +587,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
 
             ],
         });
-       
+
         var table = $('#kt_datatable_18');
         // begin first table
         table.DataTable({
@@ -597,7 +597,6 @@ var KTDatatablesAdvancedColumnRendering = function () {
             paging: true,
 
         });
-        table.destroy();
         $('#kt_datatable_search_status').on('change', function () {
             datatable.search($(this).val().toLowerCase(), 'Status');
         });

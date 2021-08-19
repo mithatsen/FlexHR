@@ -17,7 +17,7 @@
         <!--end::Info-->
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
-           
+
         </div>
         <!--end::Toolbar-->
     </div>
@@ -29,7 +29,7 @@
         <div class="card-toolbar">
             <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
                 <li class="nav-item mr-3">
-                    <a class="nav-link " asp-controller="Leave" asp-action="StaffLeaveRemainInfo" >
+                    <a class="nav-link " asp-controller="Leave" asp-action="StaffLeaveRemainInfo">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="far fa-calendar-alt"></i>
@@ -39,7 +39,7 @@
                     </a>
                 </li>
                 <li class="nav-item mr-3">
-                    <a class="nav-link active" asp-controller="Leave" asp-action="StaffLeaveMonthlyInfo" >
+                    <a class="nav-link active" asp-controller="Leave" asp-action="StaffLeaveMonthlyInfo">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
                                 <i class="fas fa-user-clock"></i>
@@ -72,7 +72,7 @@
                                     <div class="col-md-4"></div>
                                     <div class="input-group d-inline col-md-5">
                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_78" data-target-input="nearest">
-                                            <input name="dateTime"  type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_78" autocomplete="off" />
+                                            <input name="dateTime" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_78" autocomplete="off" />
                                             <div class="input-group-append" data-target="#kt_datetimepicker_78" data-toggle="datetimepicker">
                                                 <span class="input-group-text">
                                                     <i class="ki ki-calendar"></i>
@@ -90,15 +90,15 @@
                             </form>
                             <!--begin: Datatable-->
                             @*<div class="input-group">
-            <div class="input-group date input-group-solid" id="kt_datetimepicker_78" data-target-input="nearest">
-                <input name="LeaveStartDate" onchange="ChangeDate()" id="staffLeaveMonthlyDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_78" autocomplete="off" />
-                <div class="input-group-append" data-target="#kt_datetimepicker_78" data-toggle="datetimepicker">
-                    <span class="input-group-text">
-                        <i class="ki ki-calendar"></i>
-                    </span>
-                </div>
-            </div>
-        </div>*@
+                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_78" data-target-input="nearest">
+                                        <input name="LeaveStartDate" onchange="ChangeDate()" id="staffLeaveMonthlyDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_78" autocomplete="off" />
+                                        <div class="input-group-append" data-target="#kt_datetimepicker_78" data-toggle="datetimepicker">
+                                            <span class="input-group-text">
+                                                <i class="ki ki-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>*@
                         </div>
                     </div>
 
@@ -148,29 +148,7 @@
 </div>
 
 @section Scripts{
-    <script>
-        function ChangeDate() {
-            var dateTime = $("#staffLeaveMonthlyDate").val();
-            $.ajax({
-                method: 'get',
-                url: '/Leave/StaffLeaveMonthlyInfo',
-                data: dateTime,
-                success: function (data) {
-                    if (data == "true") {
-                        Swal.fire({
-                            title: "Eklendi!",
-                            text: "Kaydınız eklendi.",
-                            icon: "success",
-                        }).then(function () {
-                            window.location.reload()
-                        })
-                    }
-
-                }
-
-            })
-        }
-    </script>
+    <script src="~/js/staffLeaveMonthlyInfo.js"></script>
     <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>

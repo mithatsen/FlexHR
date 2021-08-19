@@ -8,6 +8,7 @@ namespace FlexHR.Business.Interface
 {
    public  interface IFileColumnService : IGenericService<FileColumn>
     {
-        GenericResultViewModel ReadCompanyExcelFile(string xlsPath, string xlsFileName);
+        GenericResultViewModel LoadDataFromExcel(FileUploadViewModel fuvm);
+        GenericResultViewModel ReadExcelFile(FileUploadViewModel fuvm);
     }
 }

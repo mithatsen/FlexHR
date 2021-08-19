@@ -53,8 +53,8 @@
                                     <div class="image-input-wrapper">
                                         <img id="profilePhoto" style="width:100%; height:100%;" src="@pp" />
                                     </div>
-                                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow xyz" data-action="change" data-toggle="tooltip" title="" data-original-title="Fotoğrafı Güncelle">
-                                        <i id="updateProfilePhoto" onclick="UpdateProfilePhotoClick()" class="fa fa-pen icon-sm text-muted"></i>
+                                    <label onclick="UpdateProfilePhotoClick()" class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow xyz" data-action="change" data-toggle="tooltip" title="" data-original-title="Fotoğrafı Güncelle">
+                                        <i id="updateProfilePhoto"  class="fa fa-pen icon-sm text-muted"></i>
                                         <input type="file" name="profile_avatar" onchange="profileAvatarChange()" id="profile_avatar" accept=".png, .jpg, .jpeg" />
                                         <input type="hidden" name="profile_avatar_remove" />
                                     </label>
@@ -125,7 +125,7 @@
                     </h3>
 
                 </div>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <form id="" method="POST">

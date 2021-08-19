@@ -8,7 +8,7 @@
                 <h3 class="card-label font-weight-bolder text-white">
                     <i class="fas fa-user-clock mr-2 "></i>Mesai Detay
                 </h3>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body text-center">
@@ -29,53 +29,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    function approveShiftDash(id) {
-        Swal.fire({
-            title: "Onaylamak ister misiniz ?",
-            text: "Bunu geri alamazsınız!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Evet",
-            cancelButtonText: "Hayır",
-            reverseButtons: true
-        }).then(function (result) {
-            if (result.value) {
-                $.ajax({
-                    method: "POST",
-                    url: "/Shift/ApproveShift/" + id,
-                }).done(function (result) {
-                    debugger;
-                    if (result == true) {
-                        Swal.fire({
-                            title: "Onaylandı!",
-                            text: "Talep Onaylandı.",
-                            icon: "success",
-                            showCancelButton: false
-                        }).then(function () {
-                            window.location.reload();
-                        })
-
-                    } else {
-                        Swal.fire(
-                            "Hata",
-                            "Kaydınız onaylanmadı",
-                            "hata"
-                        )
-                    }
-
-                })
-            } else if (result.dismiss === "cancel") {
-                Swal.fire({
-                    title: "İptal Edildi",
-                    text: "Kaydınız onaylanmadı",
-                    icon: "error",
-                    showCancelButton: false
-                })
-            }
-        });
-
-    }
-
-</script>
+<script src="~/js/_getApproveStaffShiftModal.js"></script>

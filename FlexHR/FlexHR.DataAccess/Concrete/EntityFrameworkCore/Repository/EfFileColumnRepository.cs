@@ -3,13 +3,16 @@ using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context;
 using FlexHR.DataAccess.Interface;
 using FlexHR.DTO.ViewModels;
 using FlexHR.Entity.Concrete;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 {
@@ -21,8 +24,9 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _context = context;
         }
 
-        // Excell Dosyasını okuma işlemi
-        public GenericResultViewModel ReadCompanyExcelFile(string xlsPath, string xlsFileName)
+
+        // 1-> (Ana Metod) - Excelden veri yükleme
+        public GenericResultViewModel LoadDataFromExcel(FileUploadViewModel fuvm)
         {
             try
             {
@@ -32,12 +36,53 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                     Message = "",
                 };
 
-                var columnList = _context.FileColumn.Where(x => x.IsActive && x.CompanyFileTypeGeneralSubTypeId == 132).OrderBy(x => x.ColumnSequence).ToList();
+                var readExcelFileResult = ReadExcelFile(fuvm);
 
+                if (readExcelFileResult.IsSuccess)
+                {
+                    result = NewDataValidateExcelData(fuvm);
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Message = readExcelFileResult.Message;
+                    File.Delete(fuvm.xlsPath);
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new GenericResultViewModel()
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                };
+            }
+        }
+
+        // 2-> Excell Dosyasını okuma işlemi
+        public GenericResultViewModel ReadExcelFile(FileUploadViewModel fuvm)
+        {
+            try
+            {
+                var result = new GenericResultViewModel()
+                {
+                    IsSuccess = true,
+                    Message = "",
+                };
                 var rows = new List<string[]>();
                 var dataObj = new string[] { };
 
-                var fileName = xlsPath + "/" + xlsFileName;
+                #region Colunm Count
+
+                int columnListCount = _context.FileColumn.Where(x => x.IsActive && x.CompanyFileTypeGeneralSubTypeId == fuvm.fileUploadTypeID).OrderBy(x => x.ColumnSequence).ToList().Count;
+
+                #endregion
+
+                #region Read Excel                
+
+                var fileName = fuvm.xlsPath;
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
                 using (var stream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read))
@@ -50,26 +95,26 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                         while (reader.Read())
                         {
                             // Excel Validation - (Column Difference Count)
-                            if (index == 0 && reader.FieldCount != columnList.Count)
+                            if (index == 0 && reader.FieldCount != columnListCount)
                             {
                                 result.IsSuccess = false;
                                 int columnDifferenceCount = 0;
-                                if (reader.FieldCount > columnList.Count)
+                                if (reader.FieldCount > columnListCount)
                                 {
-                                    columnDifferenceCount = reader.FieldCount - columnList.Count;
+                                    columnDifferenceCount = reader.FieldCount - columnListCount;
                                     result.Message = "Yüklenen dosyada " + columnDifferenceCount + " adet fazla kolon bulunmaktadır!";
                                 }
-                                else if (reader.FieldCount < columnList.Count)
+                                else if (reader.FieldCount < columnListCount)
                                 {
-                                    columnDifferenceCount = columnList.Count - reader.FieldCount;
+                                    columnDifferenceCount = columnListCount - reader.FieldCount;
                                     result.Message = "Yüklenen dosyada " + columnDifferenceCount + " adet eksik kolon bulunmaktadır!";
                                 }
                             }
 
                             // Excel Read
-                            if (index > 0 && reader.FieldCount == columnList.Count)
+                            if (index > 0 && reader.FieldCount == columnListCount)
                             {
-                                for (int i = 0; i < columnList.Count; i++)
+                                for (int i = 0; i < columnListCount; i++)
                                 {
                                     value = (reader.GetValue(i) == null) ? "" : reader.GetValue(i).ToString();
                                     dataObj = dataObj.Concat(new string[] { value }).ToArray();
@@ -88,10 +133,16 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                     }
                 }
 
+                #endregion
+
+                #region Insert Read Data
+
                 if (result.IsSuccess && rows.Count() > 0)
                 {
-                    //result = AddOrUpdateExcelData(rows);
+                    fuvm.rows = rows;
                 }
+
+                #endregion
 
                 return result;
             }
@@ -104,138 +155,175 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 };
             }
         }
-        // "WorkOrderFormData" Ekleme/Güncelleme İşlemleri
-        //public GenericResultViewModel AddOrUpdateExcelData(List<string[]> rows)
-        //{
-        //    try
-        //    {
 
-        //        var result = new GenericResultViewModel()
-        //        {
-        //            IsSuccess = true,
-        //            Message = "İşlem Başarılı",
-        //        };
+        // 3-> Excel'deki yeni data validasyonu ve db'deki eski dataların silinmesi
+        public GenericResultViewModel NewDataValidateExcelData(FileUploadViewModel fuvm)
+        {
+            try
+            {
+                var result = new GenericResultViewModel()
+                {
+                    IsSuccess = true,
+                    Message = "İşlem Başarılı",
+                };
 
-        //        var isCreatedTable = CreateWorkOrderFormDataTable();
+                fuvm.columnList = _context.FileColumn.Where(x => x.IsActive && x.CompanyFileTypeGeneralSubTypeId == fuvm.fileUploadTypeID).OrderBy(x => x.ColumnSequence).ToList();
 
-        //        if (isCreatedTable)
-        //        {
-        //            var workOrderColumnList = GetWorkOrderColumnList();
-        //            var excelUniqColumnsCount = workOrderColumnList.Count(x => x.IsExistControl);
-        //            var readList = new Dictionary<string, List<string>>();
+                var isCreatedTable = CreateGenericSqlTable(fuvm);
 
-        //            for (int t = 0; t < rows.Count; t++)
-        //            {
-        //                #region Excel'de mükerrer kayıt kontrolü
+                if (isCreatedTable)
+                {
+                    var readList = new Dictionary<string, List<string>>();
 
-        //                if (excelUniqColumnsCount > 0)
-        //                {
-        //                    for (int c = 0; c < workOrderColumnList.Count; c++)
-        //                    {
-        //                        if (workOrderColumnList[c].IsExistControl)
-        //                        {
-        //                            if (readList.ContainsKey(workOrderColumnList[c].ColumnName))
-        //                            {
-        //                                if (readList.FirstOrDefault(x => x.Key == workOrderColumnList[c].ColumnName).Value.Any(x => x.Equals($"{rows[t][c]}")))
-        //                                {
-        //                                    return new GenericResultViewModel()
-        //                                    {
-        //                                        IsSuccess = false,
-        //                                        Message = $"Dosyanın {t + 2}. satırında mükerrer kayıt bulundu! Mükerrer kayıt : {workOrderColumnList[c].ColumnDescription}",
-        //                                    };
-        //                                }
-        //                                else
-        //                                {
-        //                                    readList.FirstOrDefault(x => x.Key == workOrderColumnList[c].ColumnName).Value.Add($"{rows[t][c]}");
-        //                                }
-        //                            }
-        //                            else
-        //                            {
-        //                                readList.Add(workOrderColumnList[c].ColumnName, new List<string> { $"{rows[t][c]}" });
-        //                            }
-        //                        }
-        //                    }
-        //                }
+                    for (int t = 0; t < fuvm.rows.Count; t++)
+                    {
+                        #region Excel'de mükerrer kayıt kontrolü
 
-        //                #endregion
-        //            }
+                        if (fuvm.columnCount > 0)
+                        {
+                            for (int c = 0; c < fuvm.columnCount; c++)
+                            {
+                                //if (fuvm.columnList[c].FileUploadColumn_FileUploadColumnProperties.Any(x => x.FileUploadColumnPropertiesId == EnumFileUploadColumnProperties.IsExistControl.GetHashCode()))
+                                if (false)
+                                {
+                                    if (readList.ContainsKey(fuvm.columnList[c].ColumnName))
+                                    {
+                                        if (readList.FirstOrDefault(x => x.Key == fuvm.columnList[c].ColumnName).Value.Any(x => x.Equals($"{fuvm.rows[t][c]}")))
+                                        {
+                                            return new GenericResultViewModel()
+                                            {
+                                                IsSuccess = false,
+                                                Message = $"Dosyanın {t + 2}. satırında mükerrer kayıt bulundu! Mükerrer kayıt : {fuvm.columnList[c].ColumnDescription}",
+                                            };
+                                        }
+                                        else
+                                        {
+                                            readList.FirstOrDefault(x => x.Key == fuvm.columnList[c].ColumnName).Value.Add($"{fuvm.rows[t][c]}");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        readList.Add(fuvm.columnList[c].ColumnName, new List<string> { $"{fuvm.rows[t][c]}" });
+                                    }
+                                }
+                            }
+                        }
 
-        //            // Remove Query
-        //            var removeQuery = "DELETE FROM WorkOrderFormData";
-        //            var removeResult = ExecuteSqlCommand(removeQuery);
+                        #endregion
+                    }
 
-        //            if (removeResult)
-        //            {
-        //                // Bulk Insert    
-        //                result = SubmitWorkOrderFormData(rows, workOrderColumnList);
-        //            }
-        //            else
-        //            {
-        //                result = new GenericResultViewModel()
-        //                {
-        //                    IsSuccess = false,
-        //                    Message = "Eski veriler silinemedi!",
-        //                };
-        //            }
-        //        }
-        //        return result;
+                    // Bulk Insert    
+                    result = SubmitWorkOrderFormData(fuvm);
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new GenericResultViewModel()
-        //        {
-        //            IsSuccess = false,
-        //            Message = ex.Message,
-        //        };
-        //    }
-        //}
-        // "WorkOrderFormData" Tablosu Oluşturma
-        //public bool CreateWorkOrderFormDataTable()
-        //{
-        //    try
-        //    {
+                }
+                return result;
 
-        //        var dynamicFields = "";
-        //        var workOrderColumns = GetWorkOrderColumnList();
-        //        foreach (var item in workOrderColumns)
-        //        {
-        //            dynamicFields += item.ColumnName.Trim().Replace(" ", "_") + " nvarchar(MAX) NULL,";
-        //        }
+            }
+            catch (Exception ex)
+            {
+                return new GenericResultViewModel()
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                };
+            }
+        }
 
-        //        var hasCreateTable = CheckSQLTableExists("WorkOrderFormData");
+        // 4-> Generic Excel Tablosu Oluşturma
+        public bool CreateGenericSqlTable(FileUploadViewModel fuvm)
+        {
+            try
+            {
+                var dynamicFields = "";
 
-        //        if (!hasCreateTable)
-        //        {
-        //            var query = "CREATE TABLE WorkOrderFormData " +
-        //                        "(" +
-        //                        "Id int IDENTITY(1,1) NOT NULL," +
-        //                        dynamicFields +
-        //                        "IsActive bit NULL," +
-        //                        ")";
+                foreach (var item in fuvm.columnList)
+                {
+                    dynamicFields += item.ColumnName.Trim().Replace(" ", "_") + " nvarchar(MAX) NULL,";
+                }
 
-        //            ExecuteSqlCommand(query);
-        //        }
-        //        return true;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
+                //var hasCreateTable = CheckSQLTableExists($"{fuvm.tableName}");
+                var hasCreateTable = false;
 
-        //}
-        //public async Task<bool> CheckSQLTableExists(string tableName)
-        //{           
-        //    try
-        //    {
-        //        var query = $"SELECT Count(*) as Result FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = '{tableName}'";
-        //        var r =await _context.Abcd.FromSqlRaw(query).FirstOrDefaultAsync();
-        //        return (r==null) ? true : false;
-        //    }
-        //    catch (Exception )
-        //    {
-        //        return false;
-        //    }
-        //}
+                if (!hasCreateTable)
+                {
+                    var query = $"CREATE TABLE {fuvm.tableName} " +
+                                "(" +
+                                "Id int IDENTITY(1,1) NOT NULL," +
+                                dynamicFields +
+                                "IsActive bit NULL DEFAULT 1 " +
+                                ")";
+
+                    ExecuteSqlCommand(query);
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        // 5-> Excel Data Bulk Insert işlemi
+        public GenericResultViewModel SubmitWorkOrderFormData(FileUploadViewModel fuvm)
+        {
+            var result = new GenericResultViewModel()
+            {
+                IsSuccess = true,
+                Message = "İşlem Başarılı",
+            };
+            var index = 0;
+            try
+            {
+                DataTable dt = new DataTable();
+                SqlConnection cn = new SqlConnection("Data Source=DESKTOP-GRI9IBK\\SQLEXPRESS;Initial Catalog=FlexHR;Integrated Security= True");
+                using (SqlConnection con = new SqlConnection(cn.ConnectionString))
+                {
+                    foreach (var column in fuvm.columnList)
+                    {
+                        dt.Columns.Add(column.ColumnName);
+                    }
+
+                    for (int i = 0; i < fuvm.rows.Count; i++)
+                    {
+                        index++;
+                        DataRow dr = dt.NewRow();
+
+                        for (int k = 0; k < fuvm.columnList.Count; k++)
+                        {
+                            var key = fuvm.columnList[k].ColumnName;
+                            var value = fuvm.rows[i][k].ToString();
+                            dr[$"{key}"] = $"{value}";
+                        }
+                        dt.Rows.Add(dr);
+                    }
+
+                    SqlBulkCopy objbulk = new SqlBulkCopy(con);
+                    objbulk.DestinationTableName = $"{fuvm.tableName}";
+                    for (int u = 0; u < fuvm.columnList.Count; u++)
+                    {
+                        objbulk.ColumnMappings.Add($"{fuvm.columnList[u].ColumnName}", $"{fuvm.columnList[u].ColumnName}");
+                    }
+
+                    con.Open();
+                    objbulk.WriteToServer(dt);
+                    con.Close();
+                }
+                result = new GenericResultViewModel()
+                {
+                    IsSuccess = true,
+                    Message = $"{fuvm.rows.Count} adet kayıt sisteme eklendi",
+                };
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new GenericResultViewModel()
+                {
+                    IsSuccess = false,
+                    Message = "Veriler kaydedilemedi!",
+                };
+            }
+        }
+
     }
 }

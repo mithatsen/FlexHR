@@ -119,7 +119,7 @@
                     </h3>
 
                 </div>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <form id="modalAddDebitForm" method="POST">
@@ -218,213 +218,19 @@
 <div id="staffDebitUpdateDiv"></div>
 
 @section Scripts{
-    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
-
     <script>
-
         $(document).ready(function () {
             $("#tab_9").addClass("active");
         });
     </script>
-    @*Modal Add Career*@
-    <script>
-
-        // Create a FormValidation instance
-        const fv = FormValidation.formValidation(document.getElementById('modalAddDebitForm'), {
-            fields: {
-                IssueDate: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Tarih alanı boş geçilemez'
-                        },
-                        date: {
-                            format: 'DD.MM.YYYY',
-                            message: 'Geçerli bir tarih girin'
-                        }
-
-                    }
-                },
-                ReturnDate: {
-                    validators: {
-
-                        date: {
-                            format: 'DD.MM.YYYY',
-                            message: 'Geçerli bir tarih girin'
-                        }
-
-                    }
-                },
-                DebitGeneralSubTypeId: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Kategori alanı boş geçilemez'
-                        }
-                    }
-                },
-                Description: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Açıklama alanı boş geçilemez'
-                        },
-                        stringLength: {
-                            max: 499,
-                            message: '500 karakterden az girin'
-                        }
-                    }
-                },
-                SerialNumber: {
-                    validators: {
-                        stringLength: {
-                            max: 499,
-                            message: 'Seri numarası 50 karakterden az olmalı'
-                        }
-                    }
-                },
-            },
-
-            plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                // Bootstrap Framework Integration
-                bootstrap: new FormValidation.plugins.Bootstrap(),
-                // Validate fields when clicking the Submit button
-                // submitButton: new FormValidation.plugins.SubmitButton(),
-                // Submit the form when all fields are valid
-                // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-            }
-        });
-        function debitClickFunction() {
-            debugger;
-            fv.validate().then(function (status) {
-                // Update the login button content based on the validation status
-                if (status == 'Valid') {
-                    debugger;
-                    var formData = {
-                        DebitGeneralSubTypeId: $("#DebitGeneralSubTypeId").val(),
-                        IssueDate: $("#IssueDate").val(),
-                        SerialNumber: $("#SerialNumber").val(),
-                        ReturnDate: $("#ReturnDate").val(),
-                        Description: $("#Description").val(),
-                        StaffId: $("#StaffId").val(),
-                    };
-
-                    $.ajax({
-                        method: 'post',
-                        url: '/StaffDebit/AddStaffDebitWithAjax',
-                        data: formData,
-                        success: function (data) {
-                            debugger;
-
-                            if (data == true) {
-                                Swal.fire({
-                                    title: "Eklendi!",
-                                    text: "Kaydınız eklendi.",
-                                    icon: "success",
-                                }).then(function () {
-                                    window.location.reload()
-                                })
-                            }
-
-                        }
-
-                    })
-                }
-            });
-        }
-    </script>
-
-
-    @*//update staff debit*@
-    <script>
-        function DebitUpdate(id) {
-            console.log(id);
-            var modelContent = $("#staffDebitUpdateDiv")
-            $("#staffDebitUpdateDiv").empty();
-
-            $.ajax({
-                method: "GET",
-                url: "/StaffDebit/GetUpdateStaffDebitModal/" + id,
-                dataType: "html",
-                cache: false,
-            }).done(function (content) {
-
-                if (content != null) {
-                    modelContent.html(content);
-                }
-                $("#staffDebitUpdateModal").modal("show");
-
-
-
-            }).fail(function (error) {
-                alert(error);
-            });
-        }
-
-
-    </script>
-
-
-    @*Delete Debit with sweet alert*@
-    <script>
-        function DeleteStaffDebit(id) {
-            Swal.fire({
-                title: "Silmek istediğinize emin misiniz ?",
-                text: "Bunu geri alamazsınız!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Evet, sil!",
-                cancelButtonText: "Hayır, iptal et!",
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-
-                    $.ajax({
-                        method: "POST",
-                        url: "/StaffDebit/DeleteDebit/" + id,
-                    }).done(function (result) {
-                        if (result == true) {
-                            Swal.fire({
-                                title: "Silindi!",
-                                text: "Kaydınız silindi.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
-
-                        } else {
-                            Swal.fire(
-                                "Hata",
-                                "Kaydınız silinemedi",
-                                "hata"
-                            )
-                        }
-
-                    })
-                } else if (result.dismiss === "cancel") {
-                    Swal.fire({
-                        title: "İptal Edildi",
-                        text: "Kaydınız silinmedi",
-                        icon: "error",
-                        showCancelButton: false
-                    })
-
-                }
-            });
-
-
-        }
-
-
-    </script>
-    @*Staff Debit Güncellendi için sweet alert*@
     <script>
         $(document).ready(function () {
-
             if (@ViewBag.StaffDebitUpdateStatus == true) {
                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
             }
         });
-
     </script>
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+    <script src="~/js/staffDebit.js"></script>
 }

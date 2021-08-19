@@ -3,11 +3,11 @@
 <div class="modal fade" id="staffLeaveApprove" tabindex="-1" role="dialog" aria-labelledby="staffLeaveApprove" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark">
-                <h3 class="card-label font-weight-bolder text-white">
+            <div class="modal-header " >
+                <h3 class="card-label font-weight-bolder ">
                     <i class="fas fa-umbrella-beach mr-2 "></i>İzin Detay
                 </h3>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body text-center">
@@ -29,98 +29,4 @@
     </div>
 </div>
 
-
-<script>
-    function approveLeaveDash(id) {
-            Swal.fire({
-                title: "Onaylamak ister misiniz ?",
-                text: "Bunu geri alamazsınız!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Evet",
-                cancelButtonText: "Hayır",
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    $.ajax({
-                        method: "POST",
-                        url: "/Leave/ApproveLeave/" + id,
-                    }).done(function (result) {
-                        debugger;
-                        if (result == true) {
-                            Swal.fire({
-                                title: "Onaylandı!",
-                                text: "Talep Onaylandı.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
-
-                        } else {
-                            Swal.fire(
-                                "Hata",
-                                "Kaydınız onaylanmadı",
-                                "hata"
-                            )
-                        }
-
-                    })
-                } else if (result.dismiss === "cancel") {
-                    Swal.fire({
-                        title: "İptal Edildi",
-                        text: "Kaydınız onaylanmadı",
-                        icon: "error",
-                        showCancelButton: false
-                    })
-                }
-            });
-
-        }
-        function rejectLeave(id) {
-            Swal.fire({
-                title: "Talebi Reddetmek İster Misiniz ?",
-                text: "Bunu geri alamazsınız!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Evet",
-                cancelButtonText: "Hayır",
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    $.ajax({
-                        method: "POST",
-                        url: "/Leave/RejectLeave/" + id,
-                    }).done(function (result) {
-                        debugger;
-                        if (result == true) {
-                            Swal.fire({
-                                title: "Başarılı!",
-                                text: "Talep Reddedildi.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
-
-                        } else {
-                            Swal.fire(
-                                "Hata",
-                                "İşlem Başarısız",
-                                "hata"
-                            )
-                        }
-
-                    })
-                } else if (result.dismiss === "cancel") {
-                    Swal.fire({
-                        title: "İptal Edildi",
-                        text: "Kaydınız onaylanmadı",
-                        icon: "error",
-                        showCancelButton: false
-                    })
-                }
-            });
-
-        }
-</script>
+<script src="~/js/_getApproveStaffLeaveModal.js"></script>

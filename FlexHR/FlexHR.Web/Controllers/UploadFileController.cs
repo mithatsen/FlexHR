@@ -23,19 +23,21 @@ namespace FlexHR.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly ICompanyFileService _companyFileService;
-        public UploadFileController(IConfiguration configuration, IMapper mapper, ICompanyFileService companyFileService, IGeneralSubTypeService generalSubTypeService)
+        private readonly IFileColumnService _fileColumnService;
+        public UploadFileController(IFileColumnService fileColumnService, IConfiguration configuration, IMapper mapper, ICompanyFileService companyFileService, IGeneralSubTypeService generalSubTypeService)
         {
             _configuration = configuration;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _companyFileService = companyFileService;
+            _fileColumnService = fileColumnService;
         }
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.FileProcess;
             ViewBag.FileGeneralUpdateStatus = TempData["FileGeneralUpdateStatus"];
             return View();
-        } 
+        }
         public IActionResult Refectory()
         {
             TempData["Active"] = TempdataInfo.Refectory;
@@ -55,6 +57,8 @@ namespace FlexHR.Web.Controllers
 
             if (model.file != null)
             {
+                #region mami
+
                 string fileName = "";
                 if (model.CategoryId == 127)
                 {
@@ -105,7 +109,7 @@ namespace FlexHR.Web.Controllers
                         {
                             return RedirectToAction("Index");
                         }
-                        
+
 
                     }
                 }
@@ -139,6 +143,18 @@ namespace FlexHR.Web.Controllers
                     }
                 }
                 TempData["FileGeneralUpdateStatus"] = "true";
+                #endregion
+                var asdasda = _fileColumnService.LoadDataFromExcel(
+                    new FileUploadViewModel
+                    {
+                        file = model.file,
+                        xlsFileName = model.file.FileName,
+                        fileUploadTypeID = 132,
+                        folderName = $"{categoryNameFolder}",
+                        tableName = "StaffTrackingData",
+                        xlsPath = $"{excelPath}"
+                    });
+
                 return RedirectToAction("Index");
             }
             TempData["FileGeneralUpdateStatus"] = "false";

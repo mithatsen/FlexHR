@@ -335,7 +335,7 @@
                                     compare: function () {
                                         return form.querySelector('[name="passwordReset"]').value;
                                     },
-                                    message: 'Girmiş olduğunuz iki şifre birbirine uyuşmuyor'
+                                    message: 'Girdiğiniz şifreler aynı olmalıdır'
                                 }
                             }
                         },
@@ -398,7 +398,7 @@
             if ($('#WillUseSystem').is(":checked") == false) {
                 Swal.fire({
                     title: "Sistemden çıkarmak istediğinize emin misiniz ?",
-                    text: "Bunu geri alamazsınız!",
+                    text: "Bu işlem geri alınamaz!",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonText: "Evet!",

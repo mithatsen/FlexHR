@@ -8,6 +8,7 @@ namespace FlexHR.DataAccess.Interface
 {
     public interface IFileColumnDal : IGenericDal<FileColumn>
     {
-        GenericResultViewModel ReadCompanyExcelFile(string xlsPath, string xlsFileName);
+        GenericResultViewModel LoadDataFromExcel(FileUploadViewModel fuvm);
+        GenericResultViewModel ReadExcelFile(FileUploadViewModel fuvm);
     }
 }

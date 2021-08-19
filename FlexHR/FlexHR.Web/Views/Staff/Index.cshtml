@@ -10,7 +10,7 @@
     <!--end::Page Vendors Styles-->
 }
 @{ Random rand = new Random();
-    List<string> colors = new List<string> {"success","danger","info","primary","warning" };
+    List<string> colors = new List<string> { "success", "danger", "info", "primary", "warning" };
 }
 
 <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -62,7 +62,7 @@
     <div class="card card-custom card-stretch">
         <div class="card card-custom">
             <!--begin::Header-->
-        
+
             <div class="tab-content pt-5">
                 <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
                     <div class="card-body">
@@ -181,7 +181,7 @@
                     </h3>
 
                 </div>
-                <button type="button" class="link-2" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <form id="addStaffFormModal29">
@@ -371,190 +371,11 @@
     </div>
 </div>
 @section Scripts{
+    <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
     <!--begin::Page Vendors(used by this page)-->
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Page Vendors-->
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
-    <script>
-        function StaffSearch() {
-            var modelContent = $("#staffCardList");
-            modelContent.html("");
-            var formData = $("#StaffSearchBar").val().toString();
-            console.log(formData);
-            $.ajax({
-                method: 'Post',
-                url: '/Staff/StaffSearchWithAjax',
-                data: formData,
-            }).done(function (content) {
-                var strContent = content.toString();
-                if (strContent.includes("<img")) {
-                    modelContent.html(content);
-                } else {
-                    modelContent.html('<div class= "card card-custom py-5" ><h3 class="text-center mt-5 mb-5 lead">Sonuç bulunamadı</h3></div>');
-                }
-            }).fail(function (error) {
-                alert(error);
-            });
-        }
-    </script>
-    @*Modal Add Staff*@
-    <script>
-
-        // Create a FormValidation instance
-        var fvAddStaff = FormValidation.formValidation(document.getElementById('addStaffFormModal29'),
-            {
-                fields: {
-                    NameSurname: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Ad soyad alanı boş geçilemez'
-                            }
-                        }
-                    },
-                    EmailPersonal: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Email alanı boş geçilemez'
-                            },
-                            emailaddress: {
-                                message: 'Geçerli bir email adresi girin'
-                            }
-                        }
-                    },
-                    PhonePersonal: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Telefon alanı boş geçilemez'
-                            },
-                            phone: {
-                                country: 'US',
-                                message: 'Geçerli bir numara girin'
-                            }
-                        }
-                    },
-                    JobJoinDate: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Tarih alanı boş geçilemez'
-                            },
-
-                        }
-                    },
-                    ContractTypeId: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Sözleşme türü seçiniz'
-                            },
-
-                        }
-                    }
-
-
-                },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-
-                }
-            });
-        function staffAddClickFunction() {
-            debugger;
-            fvAddStaff.validate().then(function (status) {
-                // Update the login button content based on the validation status
-                if (status == 'Valid') {
-                    console.log($("#ContractTypeSelect").val());
-                    var formData = {
-                        NameSurname: $("#NameSurname").val(),
-                        EmailJob: $("#EmailJob").val(),
-                        PhoneJob: $("#PhoneJob").val(),
-                        EmailPersonal: $("#EmailPersonal").val(),
-                        PhonePersonal: $("#PhonePersonal").val(),
-                        ContractTypeGeneralSubTypeId: $("#ContractTypeSelect").val(),
-                        JobFinishDate: $("#JobFinishDate").val(),
-                        JobJoinDate: $("#JobJoinDate").val(),
-                        UserName: $("#UserName").val(),
-                        WillUseSystem: $("#WillUseSystem")[0].checked,
-                        RoleId: $("#RoleId").val(),
-                        Password: $("#Password").val(),
-                        PageRoles: $("#pageRoles").val(),
-
-                    };
-                    $.ajax({
-                        method: 'post',
-                        url: '/Staff/AddStaffWithAjax',
-                        data: formData,
-                        success: function (data) {
-                            if (data == "true") {
-                                Swal.fire({
-                                    title: "Eklendi!",
-                                    text: "Kaydınız eklendi.",
-                                    icon: "success",
-                                }).then(function () {
-                                    window.location.reload()
-                                })
-                            } else {
-
-                                Swal.fire({
-                                    title: "Başarısız!",
-                                    text: "Kullanıcı adı zaten var.",
-                                    icon: "error",
-                                }).then(function () {
-                                    window.location.reload()
-                                })
-                            }
-
-                        }
-
-                    })
-                }
-            });
-        }
-    </script>
-
-    @*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı*@
-    <script type="text/javascript">
-
-        $('#ContractTypeSelect').on('change', function () {
-            var id = document.getElementById("ContractTypeSelect").value;
-            if (id == 1) {
-                $("#JobFinishDate").attr("disabled", false);
-                $("#JobFinishDate").removeClass("text-muted");
-                $("#jobFinishDateLbl").removeClass("text-muted");
-            }
-            else {
-                $("#JobFinishDate").attr("disabled", true);
-                $("#JobFinishDate").addClass("text-muted");
-                $("#jobFinishDateLbl").addClass("text-muted");
-            }
-        });
-    </script>
-
-    <script>
-        $('#WillUseSystem').on('change', function () {
-
-            if ($('#WillUseSystem').is(":checked")) {
-                $("#dvPassword").attr("hidden", false);
-                $("#dvUserName").attr("hidden", false);
-                $("#dvRoles").attr("hidden", false);
-                $("#dvAccessType").attr("hidden", false);
-            }
-            else {
-                $("#dvPassword").attr("hidden", true);
-                $("#dvUserName").attr("hidden", true);
-                $("#dvRoles").attr("hidden", true);
-                $("#dvAccessType").attr("hidden", true);
-            }
-        })
-    </script>
-    <script src="assets/js/pages/crud/forms/widgets/select2.js"></script>
-    <script>
-        $('#pageRoles').select2({
-            closeOnSelect: false,
-            width: '100%'
-
-        });
-    </script>
-
+    <script src="~/js/staff.js"></script>
 }

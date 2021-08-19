@@ -60,8 +60,7 @@ namespace FlexHR.Web.Controllers
         }
         [Authorize(Roles = "ViewPersonalsPage,Manager")]
         public IActionResult Index()
-        {
-            //_fileColumnService.ReadCompanyExcelFile("C:\\FlexHRFiles\\Excel\\StaffTracking", "16.08.2021_StaffTracking.xlsx");
+        {            
             TempData["Active"] = TempdataInfo.Staff;
             var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");
 

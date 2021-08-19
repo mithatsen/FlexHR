@@ -36,7 +36,7 @@
     <div class="d-flex flex-column flex-root">
         <!--begin::Login-->
         <div class="login login-6 login-signin-on login-signin-on d-flex flex-column-fluid" id="kt_login">
-            <div class="d-flex flex-column flex-lg-row flex-row-fluid text-center" style="background-image: url(assets/media/bg/HR2.jpg);">
+            <div class="d-flex flex-column flex-lg-row flex-row-fluid text-center" style="background-image: url(assets/media/bg/HR2.jpg); ">
                 <!--begin:Aside-->
                 <div class="d-flex w-100 flex-center p-15">
 
@@ -94,56 +94,16 @@
                         text: "Kullanıcı adı veya şifre hatalı",
                         icon: "warning",
                     }).then(function () {
-                       
+
                     })
                 }
-              
+
             }
         });
     </script>
-   
-    
-    <script>
-        FormValidation.formValidation(
-            document.getElementById('signInForm'),
-            {
-                fields: {
-                    UserName: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Kullanıcı adı alanı boş geçilemez'
-                            },
-                            stringLength: {
-                                max: 100,
-                                message: '100 karakterden az girin'
-                            }
-                        }
-                    },
-                    Password: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Şifre alanı boş geçilemez'
-                            },
-                            stringLength: {
-                                max: 100,
-                                message: '100 karakterden az girin'
-                            }
-                        }
-                    }
 
-                },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    // Bootstrap Framework Integration
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    // Validate fields when clicking the Submit button
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // Submit the form when all fields are valid
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                }
-            }
-        );
-    </script>
+    <script src="~/js/auth.js"></script>
+ 
 </body>
 <!--end::Body-->
 </html>
