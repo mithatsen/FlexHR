@@ -153,7 +153,7 @@
                                                 <label id="jobFinishDateLbl">Ödeme Tarihi</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="ContractStartDatePartial" asp-for="PaymentDate" value="@Model.PaymentDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <input id="ContractStartDatePartial"  asp-for="PaymentDate" value="@Model.PaymentDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -202,7 +202,6 @@
         fileInputAddChange(id);
     }
     function fileInputAddChange(id) {
-        debugger;
         var fileAddId = "#fileAddId" + id;
         var upload_icon_add = "#upload_icon_add" + id;
         if ($(fileAddId).val() != "") {
@@ -233,8 +232,8 @@
         var deleteUpdateId = "delete" + counter2;
         var deleteUpdateFileId = "deleteUpdateFile" + counter2;
         var fileAddId = "fileAddId" + counter2;
-
-        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <input type="hidden" value="0" name="Id"/> <div class="form-group col-md-5 pl-0"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg u_rcptAmnt"/></div></div><div class="form-group my-auto col-md-2"> <div class="input-group justify-content-center"> <label class="my-auto pt-1" for="' + fileAddId + '"> <i id="upload_icon_add' + counter2 + '" class="fas fa-upload text-danger cursor-pointer" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileAddId + '" onchange="fileInputAddChange(' + counter2 + ')" type="file" name="File" style="display: none;"/> </div></div><div class="form-group my-auto col-md-1">  <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptUpdateFile(' + counter2 + ')" id="' + deleteUpdateFileId + '" class="navi-link cursor-pointer"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a> </li> <li class="navi-item cursor-pointer"> <a onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> </a> </li></ul> </div></div></div></div></div>')
+        
+        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <input type="hidden" value="0" name="Id"/> <div class="form-group col-md-5 pl-0"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" onkeyup="NewReceiptAdded(this); this.oldvalue = this.value"  class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group my-auto col-md-2"> <div class="input-group justify-content-center"> <label class="my-auto pt-1" for="' + fileAddId + '"> <i id="upload_icon_add' + counter2 + '" class="fas fa-upload text-danger cursor-pointer" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileAddId + '" onchange="fileInputAddChange(' + counter2 + ')" type="file" name="File" style="display: none;"/> </div></div><div class="form-group my-auto col-md-1">  <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptUpdateFile(' + counter2 + ')" id="' + deleteUpdateFileId + '" class="navi-link cursor-pointer"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a> </li> <li class="navi-item cursor-pointer"> <a onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> </a> </li></ul> </div></div></div></div></div>')
     }
     function fncAddReceiptOnUpdatePage() {
         var formdata = new FormData();
@@ -492,17 +491,29 @@
             }
         }
     );
+    const totalAmount =  Number(0);
+    var y = Number(0); 
+    $(".u_rcptAmnt").each(function () { var temp = $(this).val(); temp = temp.replace(/,/g, '.');  y +=Number(temp); });
+    $("#txtAmountPartial").val(y);
 
     $('.u_rcptAmnt').on('input', function () {
-
-        var x = 0;
-        console.log(Number($(this).val()));
-        $(".u_rcptAmnt").each(function () { x += Number($(this).val()); })
-        console.log(x);
-        $("#txtAmountPartial").val(x); 
-
-
-           
+        var x = Number(0);
+        $(".u_rcptAmnt").each(function () { var temp = $(this).val(); temp = temp.replace(/,/g, '.');  x += Number(temp); })
+        $("#txtAmountPartial").val(x);
     });
-    
+    function NewReceiptAdded(event) {
+        debugger;
+        var total = Number($("#txtAmountPartial").val());
+        var old = event.oldvalue;
+        if( old != null) {
+            old = old.replace(/,/g, '.');
+            total -= Number(old);
+        }    
+        var newVal = $(event).val();
+        newVal = newVal.replace(/,/g, '.');
+        total += Number(newVal);
+        $("#txtAmountPartial").val(total);
+        
+    }
+
 </script>
