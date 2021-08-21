@@ -41,7 +41,7 @@
 
                                     <div class="form-group">
                                         <div></div>
-                                        <div class="custom-file">
+                                        <div id="fileDiv" class="custom-file">
                                             <input type="file" class="custom-file-input" name="file" id="customFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                             <label class="custom-file-label" for="customFile">Dosya Seç</label>
                                         </div>
@@ -61,7 +61,8 @@
                                     </div>
                                 </div>
                                 <div class=" justify-content-center">
-                                    <button id="uploadButton" type="submit" class="btn btn-primary btn-block btn-lg mt-2 ">Kaydet </button>
+                                    <button id="uploadButton" type="submit" class="btn btn-success btn-lg mt-2 px-15 ">Yükle </button>
+                                    <button id="uploadUpdateButton" onclick="addUpdateButtonClick()" type="button" class="btn btn-primary btn-lg mt-2 ">Yükle ve Güncelle </button>
                                 </div>
                             </form>
                         </div>
@@ -145,10 +146,85 @@
     @*dosya ekleme başarılı için sweet alert*@
     <script>
         $(document).ready(function () {
-
-            if (@ViewBag.FileGeneralUpdateStatus == true) {
-                Swal.fire("Yüklendi!", "Dosya yükleme işlemi başarılı!", "success");
+            debugger;
+            var json = '@Html.Raw(@ViewBag.FileGeneralUpdateStatus)';
+            json=$.parseJSON(json)
+            if (json != null) {
+                Swal.fire(json.IsSuccess == true ? "Yüklendi!":"Yüklenemedi", json.Message, json.IsSuccess == true ? "success" : "error");
             }
         });
+    </script>
+    <script>
+        function addUpdateButtonClick() {
+            Swal.fire({
+                title: "Bu tarihe ait yüklediğiniz eski kayıtlar silinecektir ?",
+                text: "Bunu geri alamazsınız!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Evet",
+                cancelButtonText: "Hayır",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    //asdfsgdhngmh
+                    var formdata = new FormData();
+                    $('#fileDiv').each(function (i, obj) {
+                        debugger;
+                        var myKey = "1";
+                        var file;
+                        var itemId = "#customFile";
+                        $(this).find('input').each(function (j, obj2) {
+                            if ($(obj2).attr("name") == "file" && $(itemId).prop('files') != null) {
+                                file = $(itemId).prop('files');
+                            }
+
+                        });
+                        console.log(file);
+                        if (file.length != 0) {
+                            formdata.append(myKey, file[0]);
+                        }
+                    });
+                    debugger;
+                    var id = $("#StaffId").val();
+                    $.ajax({
+                        method: 'Post',
+                        url: '/UploadFile/AddUpdateExcelFile/' + id,
+                        data: formdata,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+
+                    }).done(function (result) {
+                        debugger;
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Eklendi!",
+                                text: "Excel Dosyanız Eklendi.",
+                                icon: "success",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Swal.fire(
+                                "Hata",
+                                "Excel Dosyanız Hatalı",
+                                "hata"
+                            )
+                        }
+                    });
+
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire({
+                        title: "İptal Edildi",
+                        text: "",
+                        icon: "error",
+                        showCancelButton: false
+                    })
+                }
+            });
+
+        }
     </script>
 }

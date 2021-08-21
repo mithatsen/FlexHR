@@ -248,6 +248,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                     var query = $"CREATE TABLE {fuvm.tableName} " +
                                 "(" +
                                 "Id int IDENTITY(1,1) NOT NULL," +
+                                "UploadDate datetime NOT NULL," +
                                 dynamicFields +
                                 "IsActive bit NULL DEFAULT 1 " +
                                 ")";
@@ -277,6 +278,8 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 SqlConnection cn = new SqlConnection("Data Source=DESKTOP-GRI9IBK\\SQLEXPRESS;Initial Catalog=FlexHR;Integrated Security= True");
                 using (SqlConnection con = new SqlConnection(cn.ConnectionString))
                 {
+                    dt.Columns.Add("UploadDate");
+                    
                     foreach (var column in fuvm.columnList)
                     {
                         dt.Columns.Add(column.ColumnName);
@@ -286,7 +289,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                     {
                         index++;
                         DataRow dr = dt.NewRow();
-
+                        dr["UploadDate"] = fuvm.UploadDate;
                         for (int k = 0; k < fuvm.columnList.Count; k++)
                         {
                             var key = fuvm.columnList[k].ColumnName;
@@ -298,6 +301,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
                     SqlBulkCopy objbulk = new SqlBulkCopy(con);
                     objbulk.DestinationTableName = $"{fuvm.tableName}";
+                    objbulk.ColumnMappings.Add("UploadDate", "UploadDate");
                     for (int u = 0; u < fuvm.columnList.Count; u++)
                     {
                         objbulk.ColumnMappings.Add($"{fuvm.columnList[u].ColumnName}", $"{fuvm.columnList[u].ColumnName}");
@@ -329,7 +333,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         // Excel Dosyasını dosya sistemine kaydetme işlemi
         public string FileUploadCreateFolder(FileUploadViewModel fuvm)
         {
-            var dateAndTime = fuvm.Date;
+            var dateAndTime = fuvm.UploadDate;
             int year = dateAndTime.Year;
             int month = dateAndTime.Month;
             int day = dateAndTime.Day;

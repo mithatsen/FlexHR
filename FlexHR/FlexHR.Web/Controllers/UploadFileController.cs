@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -56,7 +57,6 @@ namespace FlexHR.Web.Controllers
         {
             if (model.file != null)
             {
-
                 string fileName = "";
                 if (model.CategoryId == EnumFileType.RefectoryFile.GetHashCode())
                 {
@@ -71,24 +71,54 @@ namespace FlexHR.Web.Controllers
                 string categoryNameFolder = "Excel";
                 string categoryTypeFolder = categoryNameFolder + "/" + fileName;
                 var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
-                var result = _companyFileService.Get(x => x.FileFullPath == categoryTypeFolder + "/" + model.file.FileName);
-                if (result.Count() > 0)
+                var path = _fileColumnService.FileUploadCreateFolder(new FileUploadViewModel
+                {
+                    folderName = categoryTypeFolder,
+                    UploadDate = model.Date,
+                    xlsFileName = model.file.FileName,
+                    xlsPath = fullPath
+                });
+                var result = _companyFileService.Get(x => x.FileFullPath == path + "/" + model.file.FileName).FirstOrDefault();
+                if (result != null)
                 {
                     //update
+                    if (model.file.Length > 0)
+                    {
+                        //dosyamızı kaydediyoruz.
+                        using (var stream = new FileStream(result.FileFullPath, FileMode.Create))
+                        {
+                            await model.file.CopyToAsync(stream);
+                        }
+                    }
+                    //eski dataya nasıl ulaşcaz servisi yok generic tablonun
+                    var fileUploadResult = _fileColumnService.LoadDataFromExcel(new FileUploadViewModel
+                    {
+                        file = model.file,
+                        xlsFileName = model.file.FileName,
+                        folderName = categoryNameFolder,
+                        xlsPath = result.FileFullPath,
+                        fileUploadTypeID = model.CategoryId,
+                        tableName = fileName,
+                        UploadDate = model.Date
+                    });
+                    if (!fileUploadResult.IsSuccess)
+                    {
+                        //databsaeden de sil exceli
+                        System.IO.File.Delete(path + "/" + model.file.FileName);
+                    }
+                    GenericResultViewModel genericResultView = new GenericResultViewModel()
+                    {
+                        IsSuccess = fileUploadResult.IsSuccess,
+                        Message = fileUploadResult.Message
+                    };
+                    TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
                 }
                 else
                 {
                     //add
-                    var path = _fileColumnService.FileUploadCreateFolder(new FileUploadViewModel
-                    {
-                        folderName = categoryTypeFolder,
-                        Date = model.Date,
-                        xlsFileName = model.file.FileName,
-                        xlsPath = fullPath
-                    });
                     _companyFileService.Add(new CompanyFile()
                     {
-                        FileFullPath = path,
+                        FileFullPath = path + "/" + model.file.FileName,
                         FileName = model.file.FileName,
                         FileGeneralSubTypeId = model.CategoryId,
                         IsActive = true,
@@ -108,15 +138,20 @@ namespace FlexHR.Web.Controllers
                         folderName = categoryNameFolder,
                         xlsPath = path + "/" + model.file.FileName,
                         fileUploadTypeID = model.CategoryId,
-                        tableName = "StaffTrackingData"
+                        tableName = fileName,
+                        UploadDate = model.Date
                     });
                     if (!fileUploadResult.IsSuccess)
                     {
                         //databsaeden de sil exceli
-
-
-                        System.IO.File.Delete(fullPath);
+                        System.IO.File.Delete(path + "/" + model.file.FileName);
                     }
+                    GenericResultViewModel genericResultView = new GenericResultViewModel()
+                    {
+                        IsSuccess = fileUploadResult.IsSuccess,
+                        Message = fileUploadResult.Message
+                    };
+                    TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
                 }
 
 
@@ -160,13 +195,8 @@ namespace FlexHR.Web.Controllers
                 //            return RedirectToAction("Index");
                 //        }
 
-
                 //    }
                 //}
-
-
-
-
                 ////Flex > Files klasörü oluşturuldu
                 //var folderPath = Path.Combine(fullPath);
                 //if (!Directory.Exists(folderPath))
