@@ -53,7 +53,7 @@
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label>Tutar</label>
-                                                        <div class="input-group"><input type="text" asp-for="@item.Amount" name="ReceiptAmount" class="form-control form-control-solid form-control-lg " /></div>
+                                                        <div class="input-group"><input type="text" asp-for="@item.Amount" name="ReceiptAmount" class="form-control form-control-solid form-control-lg u_rcptAmnt " /></div>
                                                     </div>
                                                     <div class="form-group my-auto col-md-2">
                                                         <div class="input-group justify-content-center">
@@ -234,7 +234,7 @@
         var deleteUpdateFileId = "deleteUpdateFile" + counter2;
         var fileAddId = "fileAddId" + counter2;
 
-        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <input type="hidden" value="0" name="Id"/> <div class="form-group col-md-5 pl-0"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group my-auto col-md-2"> <div class="input-group justify-content-center"> <label class="my-auto pt-1" for="' + fileAddId + '"> <i id="upload_icon_add' + counter2 + '" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileAddId + '" onchange="fileInputAddChange(' + counter2 + ')" type="file" name="File" style="display: none;"/> </div></div><div class="form-group my-auto col-md-1">  <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptUpdateFile(' + counter2 + ')" id="' + deleteUpdateFileId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a> </li> <li class="navi-item"> <a onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> </a> </li></ul> </div></div></div></div></div>')
+        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <input type="hidden" value="0" name="Id"/> <div class="form-group col-md-5 pl-0"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" class="form-control form-control-solid form-control-lg u_rcptAmnt"/></div></div><div class="form-group my-auto col-md-2"> <div class="input-group justify-content-center"> <label class="my-auto pt-1" for="' + fileAddId + '"> <i id="upload_icon_add' + counter2 + '" class="fas fa-upload text-danger cursor-pointer" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileAddId + '" onchange="fileInputAddChange(' + counter2 + ')" type="file" name="File" style="display: none;"/> </div></div><div class="form-group my-auto col-md-1">  <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptUpdateFile(' + counter2 + ')" id="' + deleteUpdateFileId + '" class="navi-link cursor-pointer"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a> </li> <li class="navi-item cursor-pointer"> <a onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> </a> </li></ul> </div></div></div></div></div>')
     }
     function fncAddReceiptOnUpdatePage() {
         var formdata = new FormData();
@@ -319,7 +319,7 @@
                 if (data == "true") {
                     Swal.fire({
                         title: "Eklendi!",
-                        text: "Kaydınız eklendi.",
+                        text: "Kaydınız Güncellendi.",
                         icon: "success",
                         showCancelButton: false
                     }).then(function () {
@@ -339,8 +339,8 @@
             text: "Bunu geri alamazsınız!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Evet, sil!",
-            cancelButtonText: "Hayır, iptal et!",
+            confirmButtonText: "Evet!",
+            cancelButtonText: "Hayır!",
             reverseButtons: true
         }).then(function (result) {
             if (result.value) {
@@ -373,8 +373,8 @@
             text: "Bunu geri alamazsınız!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Evet, sil!",
-            cancelButtonText: "Hayır, iptal et!",
+            confirmButtonText: "Evet!",
+            cancelButtonText: "Hayır!",
             reverseButtons: true
         }).then(function (result) {
             if (result.value) {
@@ -492,4 +492,17 @@
             }
         }
     );
+
+    $('.u_rcptAmnt').on('input', function () {
+
+        var x = 0;
+        console.log(Number($(this).val()));
+        $(".u_rcptAmnt").each(function () { x += Number($(this).val()); })
+        console.log(x);
+        $("#txtAmountPartial").val(x); 
+
+
+           
+    });
+    
 </script>

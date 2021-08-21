@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHR.DataAccess.Migrations
 {
     [DbContext(typeof(FlexHRContext))]
-    [Migration("20210820071648_FileTablesAdded")]
-    partial class FileTablesAdded
+    [Migration("20210821103813_ExcelFiles")]
+    partial class ExcelFiles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

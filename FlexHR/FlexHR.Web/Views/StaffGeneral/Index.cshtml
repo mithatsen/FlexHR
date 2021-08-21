@@ -199,9 +199,11 @@
     <script>
         $(document).ready(function () {
             $("#tab_1").addClass("active");
+           
             if (@ViewBag.FileUpdateStatus == true)
                     Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
         });
+    
     </script>
     <script>
         FormValidation.formValidation(

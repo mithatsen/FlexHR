@@ -135,8 +135,8 @@ function DeleteStaffDebit(id) {
         text: "Bunu geri alamazsınız!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Evet, sil!",
-        cancelButtonText: "Hayır, iptal et!",
+        confirmButtonText: "Evet!",
+        cancelButtonText: "Hayır!",
         reverseButtons: true
     }).then(function (result) {
         if (result.value) {

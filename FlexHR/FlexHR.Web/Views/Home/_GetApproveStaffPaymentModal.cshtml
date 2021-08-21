@@ -9,47 +9,48 @@
                         <i class="fas fa-wallet mr-2 "></i>Ödeme Detay
                     </h3>
                 </div>
-                    <button type="button" class="link-2 text-white bg-danger " data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <h4>@Model.NameSurname <span class="text-warning"> @Model.PaymentType </span> talebinde bulunmuştur.</h4>
-                    <h4 class="card-title "><span class="text-warning"> Tarih : </span>@Model.CreationDate.ToShortDateString()  </h4>
-                    <p class="card-title "> <h4><span class="text-warning"> Açıklama :  </span> @Model.Description </h4></p>
-                    @if (Model.Receipts.Count > 0)
-                    {
-                        <table class="table table-lg mt-4 ">
-                            <tr class="table  bg-secondary">
-                                <th>Fiş Adı</th>
-                                <th>KDV </th>
-                                <th>Miktar (@Model.CurrencyType) </th>
-                                <th>Dosya </th>
+                <button type="button" class="link-2 text-white bg-danger " data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+
+            <div class="modal-body text-center">
+                <h4>@Model.NameSurname <span class="text-warning"> @Model.PaymentType </span> talebinde bulunmuştur.</h4>
+                <h4 class="card-title "><span class="text-warning"> Tarih : </span>@Model.CreationDate.ToShortDateString()  </h4>
+                <p class="card-title "> <h4><span class="text-warning"> Açıklama :  </span> @Model.Description </h4></p>
+                @if (Model.Receipts.Count > 0)
+                {
+                    <table class="table table-lg mt-4 ">
+                        <tr class="table  bg-secondary">
+                            <th>Fiş Adı</th>
+                            <th>KDV </th>
+                            <th>Miktar (@Model.CurrencyType) </th>
+                            <th>Dosya </th>
+                        </tr>
+                        @foreach (var item in Model.Receipts)
+                        {
+                            <tr>
+
+                                <td>@item.Name</td>
+                                <td>@item.Vat</td>
+                                <td>@item.Amount @Model.CurrencyType</td>
+                                <td> <a href="/img/@item.FileFullPath@item.FileName" download title="@item.FileName"><i class="fas fa-image text-warning"></i></a></td>
+
+
                             </tr>
-                            @foreach (var item in Model.Receipts)
-                            {
-                                <tr>
-
-                                    <td>@item.Name</td>
-                                    <td>@item.Vat</td>
-                                    <td>@item.Amount @Model.CurrencyType</td>
-                                    <td> <a href="/img/@item.FileFullPath@item.FileName" download title="@item.FileName"><i class="fas fa-image text-warning"></i></a></td>
-
-
-                                </tr>
-                            }
-                        </table>
-                    }
+                        }
+                    </table>
+                }
 
                 <h4> <span class="text-warning">Talep Edilen Toplam @Model.PaymentType Tutarı : </span>@Model.Amount @Model.CurrencyType</h4>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    @if ((User.IsInRole("ApprovePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                    {
-                        <button type="button" onclick="approveShiftDash(@Model.StaffPaymentId)" class="btn btn-primary font-weight-bold">Onayla</button>
-                    }
-                </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                @if ((User.IsInRole("ApprovePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <button type="button" onclick="approveShiftDash(@Model.StaffPaymentId)" class="btn btn-primary font-weight-bold">Onayla</button>
+                }
+            </div>
+        </div>
     </div>
 </div>
 

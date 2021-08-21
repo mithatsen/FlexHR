@@ -40,8 +40,12 @@ namespace FlexHR.Web.Controllers
         public bool DeleteUser(int id)
         {
             var user = _appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault();
-            user.IsActive = false;
-            _appUserService.Update(user);
+            if (user != null)
+            {
+                user.IsActive = false;
+                _appUserService.Update(user);
+            }
+      
             return true;
 
         }

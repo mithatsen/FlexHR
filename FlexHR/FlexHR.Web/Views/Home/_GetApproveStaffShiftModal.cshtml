@@ -4,19 +4,22 @@
 <div class="modal fade" id="staffShiftApprove" tabindex="-1" role="dialog" aria-labelledby="staffShiftApprove" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark">
-                <h3 class="card-label font-weight-bolder text-white">
-                    <i class="fas fa-user-clock mr-2 "></i>Mesai Detay
-                </h3>
-                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder ">
+                        <i class="fas fa-wallet mr-2 "></i>Mesai Detay
+                    </h3>
+                </div>
+                <button type="button" class="link-2 text-white bg-danger " data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
+ 
             <div class="modal-body text-center">
                 <h4>@Model.NameSurname <span class="text-warning"> Mesai </span> talebinde bulunmuştur.</h4>
-                <h4 class="card-title "> Tarih :@Model.StartDate  </h4>
-                <p class="card-title "> <h4>Açıklama: @Model.Description </h4></p>
-                <div class="text-warning">
-                    <h4>  Toplam yapılan Mesai Saati: @Model.Duration Saat  </h4>
+                <h4 class="card-title "><span class="text-warning">  Tarih : </span>@Model.StartDate  </h4>
+                <p class="card-title "> <h4> <span class="text-warning"> Açıklama: </span>@Model.Description </h4></p>
+                <div>
+                    <h4> <span class="text-warning">  Toplam yapılan Mesai Saati: </span> @Model.Duration Saat  </h4>
                 </div>
             </div>
             <div class="modal-footer">
