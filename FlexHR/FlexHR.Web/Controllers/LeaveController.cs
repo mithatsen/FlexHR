@@ -105,7 +105,7 @@ namespace FlexHR.Web.Controllers
                 {
                     StaffId = item.StaffId,
                     NameSurname = item.NameSurname,
-                    IdNumber = staffPersonel.IdNumber != null ? staffPersonel.IdNumber :"-",
+                    IdNumber = staffPersonel != null ? staffPersonel.IdNumber :"-",
                     CompanyName = staffCareer!=null ? _companyService.GetCompanyNameByCompanyId(staffCareer.CompanyId) : "-",
                     CompanyBranchName = (staffCareer!=null)?( staffCareer.CompanyBranch != null ? staffCareer.CompanyBranch.BranchName : "-"): "-",
                     DepartmantName = staffCareer != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(staffCareer.DepartmantGeneralSubTypeId) : "-",

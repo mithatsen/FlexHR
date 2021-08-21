@@ -152,6 +152,15 @@ namespace FlexHR.Web.Controllers
                         Message = fileUploadResult.Message
                     };
                     TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
+                    if (fileName== "StaffTracking")
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Refectory");
+                    }
+                    
                 }
 
 
@@ -237,7 +246,7 @@ namespace FlexHR.Web.Controllers
 
                 //    System.IO.File.Delete(excelPath);
                 //}
-                return RedirectToAction("Index");
+                
             }
             TempData["FileGeneralUpdateStatus"] = "false";
             return View("Index");

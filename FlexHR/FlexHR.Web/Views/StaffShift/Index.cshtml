@@ -38,7 +38,7 @@
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Button-->
-                                        @if ((User.IsInRole("AddStaffShift")  || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        @if ((User.IsInRole("AddStaffShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                         {
                                             <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
                                                 Mesai Kaydı Ekle
@@ -57,7 +57,7 @@
                                                 <th width="10%">Süre(saat)</th>
                                                 <th width="55%">Açıklama</th>
                                                 <th width="10%">Durum</th>
-                                                @if ((User.IsInRole("UpdateDeleteShift")  || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                @if ((User.IsInRole("UpdateDeleteShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                                 {
                                                     <th width="10%">İşlemler</th>
                                                 }
@@ -75,7 +75,7 @@
                                                     <td>@item.Description</td>
                                                     <td>@item.GeneralStatusGeneralSubTypeId</td>
 
-                                                    @if ((User.IsInRole("UpdateDeleteShift")  || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                    @if ((User.IsInRole("UpdateDeleteShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                                     {
                                                         <td>
                                                             <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
@@ -204,182 +204,11 @@
     <!--<script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>-->
     <!--end::Page Scripts-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>-->
-
+    <script src="~/js/staffShift.js"></script>
     <script>
 
         $(document).ready(function () {
             $("#tab_7").addClass("active");
-        });
-    </script>
-    @*//add staff shift*@
-    <script>
-        //  document.addEventListener('DOMContentLoaded', function (e) {
-
-        const fv = FormValidation.formValidation(document.getElementById('modalAddShift'), {
-            fields: {
-                StartDate: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Tarih alanı boş geçilemez'
-                        },
-                        date: {
-                            format: 'DD.MM.YYYY HH:mm',
-                            message: 'Geçerli bir tarih girin'
-                        }
-
-                    }
-                },
-                Duration: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Süre alanı boş geçilemez',
-                        },
-                        greaterThan: {
-                            min: 1,
-                            message: 'Süre alanı 0 olamaz',
-                        }
-
-                    }
-                },
-                Description: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Açıklama alanı boş geçilemez'
-                        },
-                        stringLength: {
-                            max: 499,
-                            message: '500 karakterden az girin'
-                        }
-                    }
-                },
-            },
-            plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                // Bootstrap Framework Integration
-                bootstrap: new FormValidation.plugins.Bootstrap(),
-                // Validate fields when clicking the Submit button
-                // submitButton: new FormValidation.plugins.SubmitButton(),
-                // Submit the form when all fields are valid
-                // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-            },
-        });
-        function shiftClickFunction() {
-
-            fv.validate().then(function (status) {
-                // Update the login button content based on the validation status
-                if (status == 'Valid') {
-
-                    var formData = {
-                        StaffId: $("#StaffId").val(),
-                        StartDate: $("#StartDate").val(),
-                        Duration: $("#kt_touchspin_1").val(),
-                        Description: $("#Description").val()
-                    };
-                    console.log(formData);
-                    $.ajax({
-                        method: 'post',
-                        url: '/StaffShift/AddStaffShiftWithAjax',
-                        data: formData,
-                        success: function (data) {
-                            if (data == 'true') {
-                                Swal.fire({
-                                    title: "Eklendi!",
-                                    text: "Kaydınız eklendi.",
-                                    icon: "success",
-                                }).then(function () {
-                                    window.location.reload()
-                                })
-                            }
-
-                        }
-
-                    })
-                }
-            });
-        }
-
-    </script>
-    @*//update staff shift*@
-    <script>
-        function ShiftUpdate(id) {
-
-            var modelContent = $("#UpdateStaffShiftModalDiv")
-            $("#UpdateStaffShiftModalDiv").empty();
-
-            $.ajax({
-                method: "GET",
-                url: "/StaffShift/GetUpdateStaffShiftModal/" + id,
-                dataType: "html",
-                cache: false,
-            }).done(function (content) {
-                if (content != null) {
-                    modelContent.html(content);
-                }
-                $("#staffShiftUpdateModal").modal("show");
-
-                //CompanyChangeUpdate();
-
-            }).fail(function (error) {
-
-            });
-        }
-    </script>
-    @*Delete Staff Shift*@
-    <script>
-        function DeleteStaffShift(id) {
-            Swal.fire({
-                title: "Silmek istediğinize emin misiniz ?",
-                text: "Bunu geri alamazsınız!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Evet!",
-                cancelButtonText: "Hayır!",
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-
-                    $.ajax({
-                        method: "POST",
-                        url: "/StaffShift/DeleteStaffShift/" + id,
-                    }).done(function (result) {
-                        if (result == true) {
-                            Swal.fire({
-                                title: "Silindi!",
-                                text: "Kaydınız silindi.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
-
-                        } else {
-                            Swal.fire(
-                                "Hata",
-                                "Kaydınız silinemedi",
-                                "hata"
-                            )
-                        }
-
-                    })
-                } else if (result.dismiss === "cancel") {
-                    Swal.fire({
-                        title: "İptal Edildi",
-                        text: "Kaydınız silinmedi",
-                        icon: "error",
-                        showCancelButton: false
-                    })
-                }
-            });
-
-
-        }
-
-
-    </script>
-    <script>
-        $('#kt_datetimepicker_18').datetimepicker({
-            locale: 'tr',
-            format: 'DD.MM.YYYY HH:mm'
         });
     </script>
     @*Staff Career Güncellendi için sweet alert*@
@@ -391,6 +220,8 @@
             }
         });
     </script>
+
+    
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>

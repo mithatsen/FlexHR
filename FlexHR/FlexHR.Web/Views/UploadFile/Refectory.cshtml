@@ -37,7 +37,7 @@
                         <div class=" align-items-center">
                             <!--begin::Card-->
 
-                            <form method="post" asp-action="AddExcelWithAjax" asp-controller="UploadFile" enctype="multipart/form-data">
+                            <form id="uploadExcelFileForm" method="post" asp-action="AddExcelWithAjax" asp-controller="UploadFile" enctype="multipart/form-data">
                                 <div>
                                     <input type="hidden" name="categoryId" value="2" />
 
@@ -145,12 +145,16 @@
 
 @section Scripts{
     @*dosya ekleme başarılı için sweet alert*@
+    <script src="~/js/refectory.js"></script>
     <script>
-        $(document).ready(function () {
-
-            if (@ViewBag.FileGeneralUpdateStatus == true) {
-                Swal.fire("Yüklendi!", "Dosya yükleme işlemi başarılı!", "success");
+       $(document).ready(function () {
+            debugger;
+            var json = '@Html.Raw(@ViewBag.FileGeneralUpdateStatus)';
+            json=$.parseJSON(json)
+            if (json != null) {
+                Swal.fire(json.IsSuccess == true ? "Yüklendi!":"Yüklenemedi", json.Message, json.IsSuccess == true ? "success" : "error");
             }
         });
     </script>
+
 }

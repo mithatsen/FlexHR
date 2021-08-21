@@ -36,8 +36,8 @@
                                         {
                                             <button class="btn btn-primary mr-2">Kaydet</button>
                                         }
-                                            <a class="btn btn-secondary">Geri</a>
-                                        </div>
+                                        <a class="btn btn-secondary">Geri</a>
+                                    </div>
                                 </div>
                                 <!--end::Header-->
 
@@ -194,16 +194,10 @@
 </div>
 
 @section Scripts{
-    <script src="~/Croppie-2.6.4/demo/demo.js"></script>
-
     <script>
         $(document).ready(function () {
             $("#tab_1").addClass("active");
-           
-            if (@ViewBag.FileUpdateStatus == true)
-                    Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
         });
-    
     </script>
     <script>
         FormValidation.formValidation(
@@ -220,10 +214,10 @@
                     EmailPersonal: {
                         validators: {
                             notEmpty: {
-                                message: 'Email alanı boş geçilemez'
+                                message: 'E-posta alanı boş geçilemez'
                             },
                             emailAddress: {
-                                message: 'Geçerli bir email adresi girin'
+                                message: 'Geçerli bir E-posta adresi girin'
                             }
                         }
                     },
@@ -231,7 +225,7 @@
                         validators: {
 
                             emailAddress: {
-                                message: 'Geçerli bir email adresi girin'
+                                message: 'Geçerli bir E-posta adresi girin'
                             }
                         }
                     },
@@ -321,50 +315,7 @@
         });
     </script>
 
-    @*<script>
-        var srcc = $("#photo45").attr("src");
-
-       var basic = $('#main-cropper').croppie({
-           viewport: { width: 200, height:200 },
-           boundary: { width: 300, height: 300 },
-           url:srcc,
-           showZoomer: true,
-           enableOrientation: true,
-           maxZoomedCropWidth: 40,
-
-        });
-
-        function readFile(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#main-cropper').croppie('bind', {
-                        url: e.target.result
-                    });
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $('.actionSelect input').on('change', function () { readFile(this); });
-        $('.actionUpload').on('click', function() {
-            basic.croppie('result','blob').then(function(blob) {
-                var formData = new FormData();
-                formData.append('filename', 'testFileName.png');
-                formData.append('blob', blob);
-                var MyAppUrlSettings = {
-                    MyUsefulUrl: '@Url.Action("GetImage","Create")'
-                }
-
-                var request = new XMLHttpRequest();
-                request.open('POST', MyAppUrlSettings.MyUsefulUrl);
-                request.send(formData);
-            });
-        });
-    </script>*@
-    <!--begin::Page Scripts(used by this page)-->
+   
     <!--<script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>-->
     <!--end::Page Scripts-->
 }

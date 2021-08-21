@@ -1,23 +1,4 @@
-﻿function StaffSearch() {
-    var modelContent = $("#staffCardList");
-    modelContent.html("");
-    var formData = $("#StaffSearchBar").val().toString();
-    console.log(formData);
-    $.ajax({
-        method: 'Post',
-        url: '/Staff/StaffSearchWithAjax',
-        data: formData,
-    }).done(function (content) {
-        var strContent = content.toString();
-        if (strContent.includes("<img")) {
-            modelContent.html(content);
-        } else {
-            modelContent.html('<div class= "card card-custom py-5" ><h3 class="text-center mt-5 mb-5 lead">Sonuç bulunamadı</h3></div>');
-        }
-    }).fail(function (error) {
-        alert(error);
-    });
-}
+﻿
 //Modal Add Staff 
 
 // Create a FormValidation instance
@@ -33,11 +14,20 @@ var fvAddStaff = FormValidation.formValidation(document.getElementById('addStaff
             },
             EmailPersonal: {
                 validators: {
-                    notEmpty: {
-                        message: 'Email alanı boş geçilemez'
+                    emailAddress: {
+                        message: 'Geçerli bir E-posta adresi girin'
                     },
-                    emailaddress: {
-                        message: 'Geçerli bir email adresi girin'
+                    notEmpty: {
+                        message: 'E-posta alanı boş geçilemez'
+                    }
+                    
+                }
+            },
+            EmailJob: {
+                validators: {
+
+                    emailAddress: {
+                        message: 'Geçerli bir E-posta adresi girin'
                     }
                 }
             },
@@ -46,6 +36,14 @@ var fvAddStaff = FormValidation.formValidation(document.getElementById('addStaff
                     notEmpty: {
                         message: 'Telefon alanı boş geçilemez'
                     },
+                    phone: {
+                        country: 'US',
+                        message: 'Geçerli bir numara girin'
+                    }
+                }
+            },
+            PhoneJob: {
+                validators: {
                     phone: {
                         country: 'US',
                         message: 'Geçerli bir numara girin'

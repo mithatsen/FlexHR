@@ -588,15 +588,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
             ],
         });
 
-        var table = $('#kt_datatable_18');
-        // begin first table
-        table.DataTable({
-            scrollY: "500px",
-            scrollCollapse: true,
-            responsive: true,
-            paging: true,
-
-        });
+       
         $('#kt_datatable_search_status').on('change', function () {
             datatable.search($(this).val().toLowerCase(), 'Status');
         });
