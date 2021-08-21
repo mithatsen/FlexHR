@@ -10,5 +10,7 @@ namespace FlexHR.Entity.Concrete
         public string PropertyName { get; set; }
         public string PropertyDesc { get; set; }
         public bool IsActive { get; set; }
+        public List<FileColumn_FileColumnProperties> FileColumn_FileColumnProperties { get; set; }
+
     }
 }

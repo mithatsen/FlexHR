@@ -54,107 +54,159 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddExcelWithAjax(AddExcelViewModel model)
         {
-
             if (model.file != null)
             {
-                #region mami
 
                 string fileName = "";
-                if (model.CategoryId == 127)
+                if (model.CategoryId == EnumFileType.RefectoryFile.GetHashCode())
                 {
                     fileName = "Refectory";
                 }
-                else if (model.CategoryId == 129)
+                else if (model.CategoryId == EnumFileType.StaffTrackingFile.GetHashCode())
                 {
                     fileName = "StaffTracking";
                 }
+                //dosyanın uzantısını aldık
                 string extension = Path.GetExtension(model.file.FileName);
-                string categoryTypeFolder;
                 string categoryNameFolder = "Excel";
-                categoryTypeFolder = fileName;
-
+                string categoryTypeFolder = categoryNameFolder + "/" + fileName;
                 var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
-                var fileNameUpdate = model.Date.ToString("d") + "_" + fileName + extension;
-                var result = _companyFileService.GetAll();
-                foreach (var item in result)
+                var result = _companyFileService.Get(x => x.FileFullPath == categoryTypeFolder + "/" + model.file.FileName);
+                if (result.Count() > 0)
                 {
-                    if (fileNameUpdate == item.FileName)
-                    {
-                        var folderPathUpdate = Path.Combine(fullPath);
-                        if (!Directory.Exists(folderPathUpdate))
-                            Directory.CreateDirectory(folderPathUpdate);
-                        //Excel klasörü oluşturuldu
-                        var filePathUpdate = Path.Combine(folderPathUpdate, categoryNameFolder + "/");
-                        if (!Directory.Exists(filePathUpdate))
-                            Directory.CreateDirectory(filePathUpdate);
-                        //
-                        filePathUpdate = Path.Combine(filePathUpdate, categoryTypeFolder + "/");
-                        if (!Directory.Exists(filePathUpdate))
-                            Directory.CreateDirectory(filePathUpdate);
-                        var excelPathUpdate = Path.Combine(filePathUpdate + model.Date.ToString("d") + "_" + fileName + extension);
-                        if (model.file.Length > 0)
-                        {
-                            //dosyamızı kaydediyoruz.
-                            using (var stream = new FileStream(excelPathUpdate, FileMode.Create))
-                            {
-                                await model.file.CopyToAsync(stream);
-                            }
-                        }
-                        TempData["FileGeneralUpdateStatus"] = "true";
-                        if (model.CategoryId == 127)
-                        {
-                            return RedirectToAction("Refectory");
-                        }
-                        else if (model.CategoryId == 129)
-                        {
-                            return RedirectToAction("Index");
-                        }
-
-
-                    }
+                    //update
                 }
-                _companyFileService.Add(new CompanyFile()
+                else
                 {
-                    FileFullPath = Path.Combine(categoryNameFolder + "/" + model.Date.ToString("d") + "_" + fileName + extension),
-                    FileName = model.Date.ToString("d") + "_" + fileName + extension,
-                    FileGeneralSubTypeId = model.CategoryId,
-                    IsActive = true,
-                });
-
-                //Flex > Files klasörü oluşturuldu
-                var folderPath = Path.Combine(fullPath);
-                if (!Directory.Exists(folderPath))
-                    Directory.CreateDirectory(folderPath);
-                //Excel klasörü oluşturuldu
-                var filePath = Path.Combine(folderPath, categoryNameFolder + "/");
-                if (!Directory.Exists(filePath))
-                    Directory.CreateDirectory(filePath);
-                //
-                filePath = Path.Combine(filePath, categoryTypeFolder + "/");
-                if (!Directory.Exists(filePath))
-                    Directory.CreateDirectory(filePath);
-                var excelPath = Path.Combine(filePath + model.Date.ToString("d") + "_" + fileName + extension);
-                if (model.file.Length > 0)
-                {
-                    //dosyamızı kaydediyoruz.
-                    using (var stream = new FileStream(excelPath, FileMode.Create))
+                    //add
+                    var path = _fileColumnService.FileUploadCreateFolder(new FileUploadViewModel
                     {
-                        await model.file.CopyToAsync(stream);
+                        folderName = categoryTypeFolder,
+                        Date = model.Date,
+                        xlsFileName = model.file.FileName,
+                        xlsPath = fullPath
+                    });
+                    _companyFileService.Add(new CompanyFile()
+                    {
+                        FileFullPath = path,
+                        FileName = model.file.FileName,
+                        FileGeneralSubTypeId = model.CategoryId,
+                        IsActive = true,
+                    });
+                    if (model.file.Length > 0)
+                    {
+                        //dosyamızı kaydediyoruz.
+                        using (var stream = new FileStream(path + "/" + model.file.FileName, FileMode.Create))
+                        {
+                            await model.file.CopyToAsync(stream);
+                        }
                     }
-                }
-                TempData["FileGeneralUpdateStatus"] = "true";
-                #endregion
-                var asdasda = _fileColumnService.LoadDataFromExcel(
-                    new FileUploadViewModel
+                    var fileUploadResult = _fileColumnService.LoadDataFromExcel(new FileUploadViewModel
                     {
                         file = model.file,
                         xlsFileName = model.file.FileName,
-                        fileUploadTypeID = 132,
-                        folderName = $"{categoryNameFolder}",
-                        tableName = "StaffTrackingData",
-                        xlsPath = $"{excelPath}"
+                        folderName = categoryNameFolder,
+                        xlsPath = path + "/" + model.file.FileName,
+                        fileUploadTypeID = model.CategoryId,
+                        tableName = "StaffTrackingData"
                     });
+                    if (!fileUploadResult.IsSuccess)
+                    {
+                        //databsaeden de sil exceli
 
+
+                        System.IO.File.Delete(fullPath);
+                    }
+                }
+
+
+
+                // var fileNameUpdate = model.Date.ToString("d") + "_" + fileName + extension;
+
+
+
+                //foreach (var item in result)
+                //{
+                //    //hatalı bak buraya
+                //    if (fileName == item.FileName)
+                //    {
+                //        var folderPathUpdate = Path.Combine(fullPath);
+                //        if (!Directory.Exists(folderPathUpdate))
+                //            Directory.CreateDirectory(folderPathUpdate);
+                //        //Excel klasörü oluşturuldu
+                //        var filePathUpdate = Path.Combine(folderPathUpdate, categoryNameFolder + "/");
+                //        if (!Directory.Exists(filePathUpdate))
+                //            Directory.CreateDirectory(filePathUpdate);
+                //        //
+                //        filePathUpdate = Path.Combine(filePathUpdate, categoryTypeFolder + "/");
+                //        if (!Directory.Exists(filePathUpdate))
+                //            Directory.CreateDirectory(filePathUpdate);
+                //        var excelPathUpdate = Path.Combine(filePathUpdate + model.Date.ToString("d") + "_" + fileName + extension);
+                //        if (model.file.Length > 0)
+                //        {
+                //            //dosyamızı kaydediyoruz.
+                //            using (var stream = new FileStream(excelPathUpdate, FileMode.Create))
+                //            {
+                //                await model.file.CopyToAsync(stream);
+                //            }
+                //        }
+                //        TempData["FileGeneralUpdateStatus"] = "true";
+                //        if (model.CategoryId == 127)
+                //        {
+                //            return RedirectToAction("Refectory");
+                //        }
+                //        else if (model.CategoryId == 129)
+                //        {
+                //            return RedirectToAction("Index");
+                //        }
+
+
+                //    }
+                //}
+
+
+
+
+                ////Flex > Files klasörü oluşturuldu
+                //var folderPath = Path.Combine(fullPath);
+                //if (!Directory.Exists(folderPath))
+                //    Directory.CreateDirectory(folderPath);
+                ////Excel klasörü oluşturuldu
+                //var filePath = Path.Combine(folderPath, categoryNameFolder + "/");
+                //if (!Directory.Exists(filePath))
+                //    Directory.CreateDirectory(filePath);
+                ////
+                //filePath = Path.Combine(filePath, categoryTypeFolder + "/");
+                //if (!Directory.Exists(filePath))
+                //    Directory.CreateDirectory(filePath);
+                //var excelPath = Path.Combine(filePath + model.Date.ToString("d") + "_" + fileName + extension);
+                //if (model.file.Length > 0)
+                //{
+                //    //dosyamızı kaydediyoruz.
+                //    using (var stream = new FileStream(excelPath, FileMode.Create))
+                //    {
+                //        await model.file.CopyToAsync(stream);
+                //    }
+                //}
+                //TempData["FileGeneralUpdateStatus"] = "true";
+                //#endregion
+                //var fileUploadResult = _fileColumnService.LoadDataFromExcel(
+                //    new FileUploadViewModel
+                //    {
+                //        file = model.file,
+                //        xlsFileName = model.file.FileName,
+                //        folderName = $"{categoryNameFolder}",
+                //        xlsPath = $"{excelPath}",
+                //        fileUploadTypeID = 132,
+                //        tableName = "StaffTrackingData"
+                //    });
+                //if (!fileUploadResult.IsSuccess)
+                //{
+                //    //databsaeden de sil exceli
+
+
+                //    System.IO.File.Delete(excelPath);
+                //}
                 return RedirectToAction("Index");
             }
             TempData["FileGeneralUpdateStatus"] = "false";

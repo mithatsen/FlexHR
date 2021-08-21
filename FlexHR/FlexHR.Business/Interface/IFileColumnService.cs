@@ -8,6 +8,7 @@ namespace FlexHR.Business.Interface
 {
    public  interface IFileColumnService : IGenericService<FileColumn>
     {
+        string FileUploadCreateFolder(FileUploadViewModel fuvm);
         GenericResultViewModel LoadDataFromExcel(FileUploadViewModel fuvm);
         GenericResultViewModel ReadExcelFile(FileUploadViewModel fuvm);
     }

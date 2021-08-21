@@ -19,6 +19,8 @@ namespace FlexHR.Entity.Concrete
         public bool IsManuellAdded { get; set; }
         public bool IsExistControl { get; set; }
         public bool IsActive { get; set; }
+        public FileType FileType { get; set; }
+        public List<FileColumn_FileColumnProperties> FileColumn_FileColumnProperties { get; set; }
 
     }
 }

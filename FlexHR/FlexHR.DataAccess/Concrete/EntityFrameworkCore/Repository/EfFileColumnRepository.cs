@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using FlexHR.Entity.Enums;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 {
@@ -76,7 +77,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
                 #region Colunm Count
 
-                int columnListCount = _context.FileColumn.Where(x => x.IsActive && x.CompanyFileTypeGeneralSubTypeId == fuvm.fileUploadTypeID).OrderBy(x => x.ColumnSequence).ToList().Count;
+                int columnListCount = _context.FileColumn.Where(x => x.IsActive && x.FileTypeId == fuvm.fileUploadTypeID).OrderBy(x => x.ColumnSequence).ToList().Count;
 
                 #endregion
 
@@ -167,7 +168,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                     Message = "İşlem Başarılı",
                 };
 
-                fuvm.columnList = _context.FileColumn.Where(x => x.IsActive && x.CompanyFileTypeGeneralSubTypeId == fuvm.fileUploadTypeID).OrderBy(x => x.ColumnSequence).ToList();
+                fuvm.columnList = _context.FileColumn.Where(x => x.IsActive && x.FileTypeId == fuvm.fileUploadTypeID).Include(x => x.FileColumn_FileColumnProperties).OrderBy(x => x.ColumnSequence).ToList();
 
                 var isCreatedTable = CreateGenericSqlTable(fuvm);
 
@@ -183,8 +184,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                         {
                             for (int c = 0; c < fuvm.columnCount; c++)
                             {
-                                //if (fuvm.columnList[c].FileUploadColumn_FileUploadColumnProperties.Any(x => x.FileUploadColumnPropertiesId == EnumFileUploadColumnProperties.IsExistControl.GetHashCode()))
-                                if (false)
+                                if (fuvm.columnList[c].FileColumn_FileColumnProperties.Any(x => x.FileColumnPropertiesId == EnumFileColumnProperties.IsExistControl.GetHashCode()))
                                 {
                                     if (readList.ContainsKey(fuvm.columnList[c].ColumnName))
                                     {
@@ -241,8 +241,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                     dynamicFields += item.ColumnName.Trim().Replace(" ", "_") + " nvarchar(MAX) NULL,";
                 }
 
-                //var hasCreateTable = CheckSQLTableExists($"{fuvm.tableName}");
-                var hasCreateTable = false;
+                var hasCreateTable = CheckSQLTableExists($"{fuvm.tableName}");
 
                 if (!hasCreateTable)
                 {
@@ -323,6 +322,29 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                     Message = "Veriler kaydedilemedi!",
                 };
             }
+        }
+
+
+
+        // Excel Dosyasını dosya sistemine kaydetme işlemi
+        public string FileUploadCreateFolder(FileUploadViewModel fuvm)
+        {
+            var dateAndTime = fuvm.Date;
+            int year = dateAndTime.Year;
+            int month = dateAndTime.Month;
+            int day = dateAndTime.Day;
+            var folderDate = string.Format("{0}{1}{2}", day.ToString().PadLeft(2, '0'), month.ToString().PadLeft(2, '0'), year);
+            var ftpRootPath = fuvm.xlsPath;
+            string root = Path.Combine(ftpRootPath, fuvm.folderName, folderDate);
+
+            if (System.IO.Directory.Exists(@"" + ftpRootPath))
+            {
+                if (!Directory.Exists(root))
+                {
+                    Directory.CreateDirectory(root);
+                }
+            }
+            return root;
         }
 
     }

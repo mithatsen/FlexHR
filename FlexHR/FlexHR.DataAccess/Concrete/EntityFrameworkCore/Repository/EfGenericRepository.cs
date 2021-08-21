@@ -1,6 +1,7 @@
 ﻿using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context;
 using FlexHR.DataAccess.Interface;
 using FlexHR.Entity.Interface;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,10 +26,10 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _context.SaveChanges();
         }
 
-    
+
         public List<T> GetAll()
         {
-           
+
             return _context.Set<T>().Where(x => x.IsActive).ToList();
         }
 
@@ -98,6 +99,22 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             {
                 return false;
             }
+        }
+        public bool CheckSQLTableExists(string tableName)
+        {
+            try
+            {
+                //  Db'de parametre olarak gelen tabloyu arar. Varsa result:1, yoksa result:0 gelir.
+                var result = _context.FileColumn_FileColumnProperties
+                     .FromSqlRaw($"SELECT Count(*) as Id, [FileColumnId] = 0, [FileColumnPropertiesId] = 0 FROM INFORMATION_SCHEMA.TABLES " +
+                                 $"WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = '{tableName}'").FirstOrDefault().Id;
+                return result == 1 ? true : false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
         }
     }
 }

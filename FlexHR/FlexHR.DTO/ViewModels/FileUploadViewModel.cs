@@ -14,6 +14,7 @@ namespace FlexHR.DTO.ViewModels
         public string xlsPath { get; set; }
         public string xlsFileName { get; set; }
         public string tableName { get; set; }
+        public DateTime Date { get; set; }
         public List<string[]> rows { get; set; }
         public List<FileColumn> columnList { get; set; }
         public int columnCount { get { return columnList.Count; } set { } }

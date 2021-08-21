@@ -54,6 +54,9 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<LeaveType> LeaveType { get; set; }
         public virtual DbSet<FileColumn> FileColumn { get; set; }
         public virtual DbSet<CompanyFile> CompanyFile { get; set; }
+        public virtual DbSet<FileColumnProperties> FileColumnProperties { get; set; }
+        public virtual DbSet<FileColumn_FileColumnProperties> FileColumn_FileColumnProperties { get; set; }
+        public virtual DbSet<FileType> FileType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -80,6 +83,9 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
             modelBuilder.ApplyConfiguration(new LeaveRuleMap());
             modelBuilder.ApplyConfiguration(new ReceiptRuleMap());
             modelBuilder.ApplyConfiguration(new FileColumnMap());
+            modelBuilder.ApplyConfiguration(new FileColumn_FileColumnPropertiesMap());
+            modelBuilder.ApplyConfiguration(new FileColumnPropertiesMap());
+            modelBuilder.ApplyConfiguration(new FileTypeMap());
             base.OnModelCreating(modelBuilder);
         }
     }

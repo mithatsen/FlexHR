@@ -9,5 +9,6 @@ namespace FlexHR.Entity.Concrete
         public int Id { get; set; }
         public string FileUploadTypeName { get; set; }
         public bool IsActive { get; set; }
+        public List<FileColumn> FileColumn { get; set; }
     }
 }

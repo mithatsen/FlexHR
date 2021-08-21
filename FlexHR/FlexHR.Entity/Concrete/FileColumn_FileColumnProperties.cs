@@ -9,5 +9,8 @@ namespace FlexHR.Entity.Concrete
         public int Id { get; set; }
         public int FileColumnId { get; set; }
         public int FileColumnPropertiesId { get; set; }
+
+        public FileColumn FileColumn { get; set; }
+        public FileColumnProperties FileColumnProperties { get; set; }
     }
 }

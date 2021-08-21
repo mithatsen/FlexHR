@@ -16,13 +16,18 @@ namespace FlexHR.Business.Concrete
             _fileColumnDal = fileColumnDal;
         }
 
+        public string FileUploadCreateFolder(FileUploadViewModel fuvm)
+        {
+            return _fileColumnDal.FileUploadCreateFolder(fuvm);
+        }
+
         public GenericResultViewModel LoadDataFromExcel(FileUploadViewModel fuvm)
         {
             return _fileColumnDal.LoadDataFromExcel(fuvm);
-        }      
+        }
         public GenericResultViewModel ReadExcelFile(FileUploadViewModel fuvm)
         {
-            return _fileColumnDal.LoadDataFromExcel(fuvm); 
+            return _fileColumnDal.LoadDataFromExcel(fuvm);
         }
     }
 }
