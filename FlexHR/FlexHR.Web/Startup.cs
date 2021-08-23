@@ -1,4 +1,5 @@
 using FlexHR.Business.DIContainer;
+using FlexHR.Business.Interface;
 using FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context;
 using FlexHR.Entity.Concrete;
 using Microsoft.AspNetCore.Builder;
@@ -50,7 +51,8 @@ namespace FlexHR.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,UserManager<AppUser> userManager,RoleManager<AppRole> roleManager, IStaffService staffService,
+            IStaffPersonelInfoService personelInfoService, IStaffOtherInfoService otherInfoService)
         {
             if (env.IsDevelopment())
             {
@@ -73,7 +75,7 @@ namespace FlexHR.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            IdentityInitializer.SeedData(userManager, roleManager,staffService,personelInfoService, otherInfoService).Wait();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

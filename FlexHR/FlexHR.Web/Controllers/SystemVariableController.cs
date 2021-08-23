@@ -306,6 +306,12 @@ namespace FlexHR.Web.Controllers
         {
             try
             {
+                var branclist=_companyBranchService.Get(x=>x.CompanyId==id).ToList();
+                foreach (var item in branclist)
+                {
+                    item.IsActive = false;
+                    _companyBranchService.Update(item);
+                }
                 var temp = _companyService.GetById(id);
                 temp.IsActive = false;
                 _companyService.Update(temp);

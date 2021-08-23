@@ -60,7 +60,7 @@ namespace FlexHR.Web.Controllers
         }
         [Authorize(Roles = "ViewPersonalsPage,Manager")]
         public IActionResult Index()
-        {            
+        {
             TempData["Active"] = TempdataInfo.Staff;
             var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");
 
@@ -96,7 +96,7 @@ namespace FlexHR.Web.Controllers
             }
 
             return View(models);
-            
+
 
         }
 
@@ -137,7 +137,7 @@ namespace FlexHR.Web.Controllers
             var staffResult = new Staff();
             staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
             var staffId = staffResult.StaffId;
-            
+
             if (modal.WillUseSystem != false)
             {
                 var appUser = await _userManager.FindByNameAsync(modal.UserName);
@@ -147,7 +147,6 @@ namespace FlexHR.Web.Controllers
                 }
                 else
                 {
-                    staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
                     AppUser user = new AppUser()
                     {
                         UserName = modal.UserName,
@@ -176,19 +175,36 @@ namespace FlexHR.Web.Controllers
                             await _userManager.AddToRoleAsync(user, rolePage);
                         }
                     }
-                    staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
-                    staffId = staffResult.StaffId;
+
                     _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
-                    _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });
+                    _staffPersonelInfoService.Add(new StaffPersonelInfo
+                    {
+                        StaffId = staffId,
+                        MaritalStatusGeneralSubTypeId = null,
+                        GenderGeneralSubTypeId = null,
+                        DegreeOfDisabilityGeneralSubTypeId = null,
+                        BloodGroupGeneralSubTypeId = null,
+                        EducationLevelGeneralSubTypeId = null,
+                        EducationStatusGeneralSubTypeId = null,
+                        IsActive = true
+                    });
                     return Json("true");
                 }
             }
 
-            staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
-            staffId = staffResult.StaffId;
 
             _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
-            _staffPersonelInfoService.Add(new StaffPersonelInfo { StaffId = staffId, IsActive = true });
+            _staffPersonelInfoService.Add(new StaffPersonelInfo
+            {
+                StaffId = staffId,
+                MaritalStatusGeneralSubTypeId = null,
+                GenderGeneralSubTypeId = null,
+                DegreeOfDisabilityGeneralSubTypeId = null,
+                BloodGroupGeneralSubTypeId = null,
+                EducationLevelGeneralSubTypeId = null,
+                EducationStatusGeneralSubTypeId = null,
+                IsActive = true
+            });
 
             return Json("true");
         }

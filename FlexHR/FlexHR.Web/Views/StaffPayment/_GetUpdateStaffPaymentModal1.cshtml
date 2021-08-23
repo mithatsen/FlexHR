@@ -36,95 +36,95 @@
                                                     <a onclick="AddUpdateReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
                                                 </div>
                                             </div>
-
-                                            @foreach (var item in Model.Receipts)
-                                            {
-                                                var imgId = "UpdateReceiptImageFile_" + item.Id;
-                                                var param = "db_" + item.Id;
-                                                <div id="dbReceipt_@item.Id" class="dbReceiptDiv justify-content-between align-items-center d-flex row">
-                                                    <input type="hidden" asp-for="@item.Id" name="Id" />
-                                                    <div class="form-group col-md-5 pl-0">
-                                                        <label>Fiş Adı</label>
-                                                        <div class="input-group"><input type="text" asp-for="@item.Name" name="Name" class="form-control form-control-solid form-control-lg " /></div>
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label>KDV(%)</label>
-                                                        <div class="input-group"><input type="text" asp-for="@item.Vat" name="Vat" class="form-control form-control-solid form-control-lg " /></div>
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label>Tutar</label>
-                                                        <div class="input-group"><input type="text" asp-for="@item.Amount" name="ReceiptAmount" class="form-control form-control-solid form-control-lg u_rcptAmnt " /></div>
-                                                    </div>
-                                                    <div class="form-group my-auto col-md-2">
-                                                        <div class="input-group justify-content-center">
-                                                            @*download=" /img/@item.FileFullPath@item.FileName"*@
-                                                            <input type="hidden" name="File" value="@item.FileFullPath@item.FileName" />
-
-                                                            @if (item.FileName != "")
-                                                            {
-                                                                <div class="gallery">
-                                                                    <a href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
-                                                                        <img style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
-                                                                    </a>
-                                                                    @*<a href="/img/@item.FileFullPath@item.FileName" target="_blank">
-                                                                            <img style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
-                                                                        </a>*@
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <label class="my-auto pt-1" for="@imgId">
-                                                                    <i id="upload_icon_update" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i>
-                                                                </label>
-                                                                <input id="@imgId" onchange="fileInputUpdateChange(@item.Id)" type="file" name="File" style="display: none;" />
-                                                            }
-
-
+                                            <div style="height: 200px; overflow-x: hidden; overflow-y: scroll;">
+                                                @foreach (var item in Model.Receipts)
+                                                {
+                                                    var imgId = "UpdateReceiptImageFile_" + item.Id;
+                                                    var param = "db_" + item.Id;
+                                                    <div id="dbReceipt_@item.Id" class="dbReceiptDiv justify-content-between align-items-center d-flex row">
+                                                        <input type="hidden" asp-for="@item.Id" name="Id" />
+                                                        <div class="form-group col-md-5  pl-0">
+                                                            <label>Fiş Adı</label>
+                                                            <div class="input-group"><input type="text" asp-for="@item.Name" name="Name" class="form-control form-control-solid form-control-lg " /></div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group my-auto col-md-1">
-                                                        @*<label></label> <button type="button" onclick="DeleteReceipt("db_'+s+'")" id="" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button>*@
-                                                        <div class="card-toolbar">
-                                                            <div class="dropdown dropdown-inline">
-                                                                <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <i class="ki ki-bold-more-ver"></i>
-                                                                </a>
-                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left">
-                                                                    <!--begin::Naviigation-->
-                                                                    <ul class="navi">
+                                                        <div class="form-group col-md-2">
+                                                            <label>KDV(%)</label>
+                                                            <div class="input-group"><input type="text" asp-for="@item.Vat" name="Vat" class="form-control form-control-solid form-control-lg " /></div>
+                                                        </div>
+                                                        <div class="form-group col-md-2">
+                                                            <label>Tutar</label>
+                                                            <div class="input-group"><input type="text" asp-for="@item.Amount" name="ReceiptAmount" class="form-control form-control-solid form-control-lg u_rcptAmnt " /></div>
+                                                        </div>
+                                                        <div class="form-group my-auto col-md-2">
+                                                            <div class="input-group justify-content-center">
+                                                                @*download=" /img/@item.FileFullPath@item.FileName"*@
+                                                                <input type="hidden" name="File" value="@item.FileFullPath@item.FileName" />
 
-                                                                        <li class="navi-item">
-                                                                            <input type="hidden" name="File" value="@item.FileFullPath@item.FileName" />
-                                                                            <a class="navi-link image-upload">
-                                                                                <label for="@imgId">
+                                                                @if (item.FileName != "")
+                                                                {
+                                                                    <div class="gallery">
+                                                                        <a href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
+                                                                            <img style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
+                                                                        </a>
+                                                                        @*<a href="/img/@item.FileFullPath@item.FileName" target="_blank">
+                                    <img style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
+                                </a>*@
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="my-auto pt-1" for="@imgId">
+                                                                        <i id="upload_icon_update" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i>
+                                                                    </label>
+                                                                    <input id="@imgId" onchange="fileInputUpdateChange(@item.Id)" type="file" name="File" style="display: none;" />
+                                                                }
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group my-auto col-md-1">
+                                                            @*<label></label> <button type="button" onclick="DeleteReceipt("db_'+s+'")" id="" class="btn"><i class="fas fa-trash-alt fa-2x text-danger"></i></button>*@
+                                                            <div class="card-toolbar">
+                                                                <div class="dropdown dropdown-inline">
+                                                                    <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <i class="ki ki-bold-more-ver"></i>
+                                                                    </a>
+                                                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left">
+                                                                        <!--begin::Naviigation-->
+                                                                        <ul class="navi">
+
+                                                                            <li class="navi-item">
+                                                                                <input type="hidden" name="File" value="@item.FileFullPath@item.FileName" />
+                                                                                <a class="navi-link image-upload">
+                                                                                    <label for="@imgId">
+                                                                                        <span class="navi-icon">
+                                                                                            <i style="width:21px !important" class="fas fa-folder"></i>
+                                                                                        </span>
+                                                                                        <span class="navi-text">Dosya Seç</span>
+                                                                                        @*download=" /img/@item.FileFullPath@item.FileName"*@
+                                                                                    </label>
+
+                                                                                    <input type="file" id="@imgId" name="UpdateFile" style="display:none" />
+                                                                                </a>
+                                                                            </li>
+                                                                            <li class="navi-item">
+                                                                                <a onclick="DeleteReceipt2(@item.Id)" class="navi-link">
                                                                                     <span class="navi-icon">
-                                                                                        <i style="width:21px !important" class="fas fa-folder"></i>
+                                                                                        <i class="fas fa-trash-alt"></i>
                                                                                     </span>
-                                                                                    <span class="navi-text">Dosya Seç</span>
-                                                                                    @*download=" /img/@item.FileFullPath@item.FileName"*@
-                                                                                </label>
-
-                                                                                <input type="file" id="@imgId" name="UpdateFile" style="display:none" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li class="navi-item">
-                                                                            <a onclick="DeleteReceipt2(@item.Id)" class="navi-link">
-                                                                                <span class="navi-icon">
-                                                                                    <i class="fas fa-trash-alt"></i>
-                                                                                </span>
-                                                                                <span class="navi-text">Fişi Sil</span>
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <!--end::Naviigation-->
+                                                                                    <span class="navi-text">Fişi Sil</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                        <!--end::Naviigation-->
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
-
-                                                </div>
-                                            }
-
+                                                }
+                                            </div>
                                         </div>
                                         <div class="col-md-12"> <hr /></div>
                                         <div class="col-md-5 ">

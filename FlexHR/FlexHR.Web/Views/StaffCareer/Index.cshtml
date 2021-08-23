@@ -147,7 +147,7 @@
                                             <div class="form-group row ">
                                                 <label>Şirket *</label>
                                                 <div class="input-group">
-                                                    <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
+                                                    <select onchange="CompanyChange()" class="form-control form-control-solid form-control-lg"  style=" width: 100% !important;" id="c_companySelect" name="CompanyId" asp-items="ViewBag.Companies">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -158,7 +158,7 @@
                                             <div class="form-group row ">
                                                 <label>Departman *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" id="DepartmantGeneralSubTypeId" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
+                                                    <select class="form-control form-control-solid form-control-lg"  style=" width: 100% !important;" id="DepartmantGeneralSubTypeId" name="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -168,7 +168,7 @@
                                             <div class="form-group row  ">
                                                 <label>Çalışma Şekli *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" id="ModeOfOperationGeneralSubTypeId" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
+                                                    <select class="form-control form-control-solid form-control-lg"  style=" width: 100% !important;" id="ModeOfOperationGeneralSubTypeId" name="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -196,7 +196,7 @@
                                             <div class="form-group row  ">
                                                 <label>Şube</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg text-muted" disabled id="c_companyBranchSelect" name="CompanyBranchId">
+                                                    <select class="form-control form-control-solid form-control-lg text-muted" style=" width: 100% !important;"  disabled id="c_companyBranchSelect" name="CompanyBranchId">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -207,7 +207,7 @@
                                             <div class="form-group row  ">
                                                 <label>Unvan *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" name="TitleGeneralSubTypeId" id="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
+                                                    <select class="form-control form-control-solid form-control-lg"  style=" width: 100% !important;" name="TitleGeneralSubTypeId" id="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -263,6 +263,23 @@
     <script>
         $(document).ready(function () {
             $("#tab_2").addClass("active");
+        });
+    </script>
+    <script>
+        $('#TitleGeneralSubTypeId').select2({
+            placeholder: 'Personel Seçiniz'
+        });
+        $('#c_companyBranchSelect').select2({
+            placeholder: 'Seçiniz'
+        });
+        $('#ModeOfOperationGeneralSubTypeId').select2({
+            placeholder: 'Seçiniz'
+        });
+        $('#DepartmantGeneralSubTypeId').select2({
+            placeholder: 'Seçiniz'
+        });
+        $('#c_companySelect').select2({
+            placeholder: 'Seçiniz'
         });
     </script>
     <script src="~/js/staffCareer.js"></script>

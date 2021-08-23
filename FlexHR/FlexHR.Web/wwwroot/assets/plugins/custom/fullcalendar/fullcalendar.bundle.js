@@ -4598,7 +4598,7 @@ Docs & License: https://fullcalendar.io/
         },
         weekLabel: 'W',
         allDayText: 'Tum Gun',
-        eventLimitText: 'more',
+        eventLimitText: 'Daha fazla',
         noEventsMessage: 'No events to display'
     };
     function parseRawLocales(explicitRawLocales) {

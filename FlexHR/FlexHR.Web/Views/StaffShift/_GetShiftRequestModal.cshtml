@@ -62,7 +62,7 @@
                                                 <div class="form-group row">
                                                     <label>Personel *</label>
                                                     <div class="input-group">
-                                                        <select id="staffSelect" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <select id="staffSelect"  class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -95,7 +95,7 @@
 </div>
 
 <script>
-    $('#personal_select2').select2({
+    $('#staffSelect').select2({
         placeholder: 'Personel Seçiniz'
     });
 </script>
