@@ -1,5 +1,6 @@
 ﻿// Modal Add Career
 
+
 var fv = FormValidation.formValidation(document.getElementById('modalAddDebitForm'), {
     fields: {
         IssueDate: {
@@ -56,14 +57,20 @@ var fv = FormValidation.formValidation(document.getElementById('modalAddDebitFor
         trigger: new FormValidation.plugins.Trigger(),
         // Bootstrap Framework Integration
         bootstrap: new FormValidation.plugins.Bootstrap(),
-        // Validate fields when clicking the Submit button
-        // submitButton: new FormValidation.plugins.SubmitButton(),
-        // Submit the form when all fields are valid
-        // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+        startEndDate: new FormValidation.plugins.StartEndDate({
+            format: 'DD.MM.YYYY',
+            startDate: {
+                field: 'IssueDate',
+                message: 'kucuk olmalı'
+            },
+            endDate: {
+                field: 'ReturnDate',
+                message: 'buyuk olöalı'
+            },
+        }),
     }
 });
 function debitClickFunction() {
-    debugger;
     fv.validate().then(function (status) {
         // Update the login button content based on the validation status
         if (status == 'Valid') {
