@@ -148,7 +148,7 @@ namespace FlexHR.Web.Controllers
                                 Amount = Convert.ToDecimal(temp[2]),
                                 FileName = "",
                                 FileFullPath = "",
-                                IsActive=true
+                                IsActive = true
                             };
                             receipts.Add(receipt);
                         }
@@ -188,7 +188,7 @@ namespace FlexHR.Web.Controllers
                         IsPaid = false,
                         IsSentForApproval = false,
                         PaymentTypeGeneralSubTypeId = id,
-                        Installment =installment!=null ? Convert.ToInt32(installment) : -1,
+                        Installment = installment != null ? Convert.ToInt32(installment) : -1,
                     };
                     _staffPaymentService.Add(m);
                 }
@@ -413,8 +413,7 @@ namespace FlexHR.Web.Controllers
                     }
                     var x = _staffPaymentService.GetById(staffPaymentId);
 
-
-                    x.Amount = Convert.ToDecimal(amount);
+                    x.Amount = decimal.Parse(amount.Replace(".", ","));
                     x.PaymentDate = Convert.ToDateTime(date);
                     x.Description = LgDescription;
                     x.CurrencyGeneralSubTypeId = Convert.ToInt32(data["CurrencyType"]);

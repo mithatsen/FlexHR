@@ -231,7 +231,8 @@
             });
         function SignUpUser() {
             var isUpdate = $('#dvPassword').css('display') == 'none';
-            debugger;
+
+
             if (isUpdate == false) {
                 fvRegister1.validate().then(function (status) {
                     if (status == 'Valid') {
