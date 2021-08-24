@@ -30,7 +30,7 @@
                                     <div class="row">
 
                                         @* fiş ekleme divi *@
-                                        <div  class="col-md-12 ">
+                                        <div class="col-md-12 ">
                                             <div class="form-group row">
                                                 <div class="input-group">
                                                     <a onclick="AddUpdateReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
@@ -62,19 +62,27 @@
 
                                                                 @if (item.FileName != "")
                                                                 {
+                                                                    var imageGalleryId = "imageGallery" + item.Id;
+                                                                    var upload_icon_update = "upload_icon_update" + item.Id;
                                                                     <div class="gallery">
                                                                         <a href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
-                                                                            <img style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
+                                                                            <img id="@imageGalleryId" style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
                                                                         </a>
                                                                         @*<a href="/img/@item.FileFullPath@item.FileName" target="_blank">
                                                                                 <img style="width:70px; height:40px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.Name" />
                                                                             </a>*@
+
                                                                     </div>
-                                                                }
-                                                                else
-                                                                {
                                                                     <label class="my-auto pt-1" for="@imgId">
-                                                                        <i id="upload_icon_update" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i>
+                                                                        <i hidden id="@upload_icon_update" class="fas fa-image text-info" style="font-size: 1.5em !important;"></i>
+                                                                    </label>
+                                                                    <input hidden id="@imgId" onchange="fileInputUpdateChange(@item.Id)" type="file" name="File" style="display: none;" />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            var upload_icon_update = "upload_icon_update" + item.Id;
+                                                                            <label class="my-auto pt-1" for="@imgId">
+                                                                        <i id="@upload_icon_update" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i>
                                                                     </label>
                                                                     <input id="@imgId" onchange="fileInputUpdateChange(@item.Id)" type="file" name="File" style="display: none;" />
                                                                 }
@@ -202,6 +210,7 @@
         fileInputAddChange(id);
     }
     function fileInputAddChange(id) {
+        debugger
         var fileAddId = "#fileAddId" + id;
         var upload_icon_add = "#upload_icon_add" + id;
         if ($(fileAddId).val() != "") {
@@ -214,14 +223,30 @@
     }
     function fileInputUpdateChange(id) {
         debugger;
-        var imgId = "UpdateReceiptImageFile" + id;
-        if ($(imgId).val() != "") {
-            $("#upload_icon_update").removeClass("fas fa-upload text-danger");
-            $("#upload_icon_update").addClass(" fas fa-image text-info");
+        var imageGallery = "#imageGallery" + id;
+        var upload_icon_update = "#upload_icon_update" + id;
+        if ($(imageGallery).attr('src') != "" &&  $(imageGallery).attr('src') !== undefined) {
+            var imgId = "#UpdateReceiptImageFile_" + id;
+            $(imageGallery).hide();
+            if ($(imgId).val() != "") {
+                $(upload_icon_update).removeClass("fas fa-upload text-danger");
+                $(upload_icon_update).addClass(" fas fa-image text-info");
+                $(upload_icon_update).attr("hidden", false);
+            } else {
+                $(upload_icon_update).removeClass("fas fa-image text-info");
+                $(upload_icon_update).addClass(" fas fa-upload text-danger");
+            }
         } else {
-            $("#upload_icon_update").removeClass("fas fa-image text-info");
-            $("#upload_icon_update").addClass(" fas fa-upload text-danger");
+            var imgId = "#UpdateReceiptImageFile" + id;
+            if ($(imgId).val() != "") {
+                $(upload_icon_update).removeClass("fas fa-upload text-danger");
+                $(upload_icon_update).addClass(" fas fa-image text-info");
+            } else {
+                $(upload_icon_update).removeClass("fas fa-image text-info");
+                $(upload_icon_update).addClass(" fas fa-upload text-danger");
+            }
         }
+      
     }
 
 
@@ -423,7 +448,7 @@
         if (fv != null) {
             fv.destroy();
         }
-        fv=FormValidation.formValidation(
+        fv = FormValidation.formValidation(
             document.getElementById('UpdateStaffPaymentModal1'),
             {
                 fields: {
