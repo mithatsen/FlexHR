@@ -59,8 +59,8 @@
                                                 İzin Ekle
                                             </button>
                                         }
-                                            <!--end::Button-->
-                                        </div>
+                                        <!--end::Button-->
+                                    </div>
 
                                 </div>
                                 <div class="card-body">
@@ -78,33 +78,33 @@
                                                 {
                                                     <th>İşlemler</th>
                                                 }
-                                                </tr>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var item in Model)
                                             {
-                                            <tr>
+                                                <tr>
 
-                                                <td>@item.LeaveStartDate.ToString("d")</td>
+                                                    <td>@item.LeaveStartDate.ToString("d")</td>
 
-                                                <td>@item.LeaveEndDate.ToString("d")</td>
+                                                    <td>@item.LeaveEndDate.ToString("d")</td>
 
-                                                <td>@item.TotalDay Gün</td>
-                                                <td>@item.LeaveType</td>
-                                                <td>@item.Description</td>
-                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
-                                                @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                                {
-                                                    <td>
-                                                        <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
-                                                            <i class="la la-edit text-warning"></i>
-                                                        </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" onclick=" DeleteStaffLeave(@item.StaffLeaveId)" title="Sil">
+                                                    <td>@item.TotalDay Gün</td>
+                                                    <td>@item.LeaveType</td>
+                                                    <td>@item.Description</td>
+                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                    @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                    {
+                                                        <td>
+                                                            <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
+                                                                <i class="la la-edit text-warning"></i>
+                                                            </a>
+                                                            <a class="btn btn-sm btn-clean btn-icon" onclick=" DeleteStaffLeave(@item.StaffLeaveId)" title="Sil">
 
-                                                            <i class="la la-trash text-danger"></i>
-                                                        </a>
-                                                    </td>
-                                                }
+                                                                <i class="la la-trash text-danger"></i>
+                                                            </a>
+                                                        </td>
+                                                    }
                                                 </tr>
 
                                             }
@@ -198,9 +198,9 @@
                                             <div class="form-group row ">
                                                 <label>Başlangıç Tarihi *</label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_14" data-target-input="nearest">
-                                                        <input name="LeaveStartDate" id="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_14" data-toggle="datetimepicker">
+                                                    <div class="input-group date" id="kt_datetimepicker_7_1" data-target-input="nearest">
+                                                        <input name="LeaveStartDate" id="LeaveStartDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_1" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_7_1" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -221,12 +221,13 @@
                                             </div>
 
 
+
                                             <div class="form-group row ">
                                                 <label>Bitiş Tarihi *</label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_15" data-target-input="nearest">
-                                                        <input name="LeaveEndDate" id="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_15" data-toggle="datetimepicker">
+                                                    <div class="input-group date" id="kt_datetimepicker_7_2" data-target-input="nearest">
+                                                        <input  name="LeaveEndDate" id="LeaveEndDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_2" />
+                                                        <div id="calenderClick" class="input-group-append" data-target="#kt_datetimepicker_7_2" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -237,6 +238,34 @@
 
                                         </div>
                                         <div class="col-md-12">
+                                            @*<div class="form-group row">
+                                                    <label >Başlangıç - Bitiş Tarihi</label>
+                                                    <div class="col-lg-12 col-md-9 col-sm-12">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="input-group date" id="kt_datetimepicker_7_1" data-target-input="nearest">
+                                                                    <input name="LeaveStartDate" id="LeaveStartDate" type="text" class="form-control datetimepicker-input"  placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_1" />
+                                                                    <div class="input-group-append" data-target="#kt_datetimepicker_7_1" data-toggle="datetimepicker">
+                                                                        <span class="input-group-text">
+                                                                            <i class="ki ki-calendar"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="input-group date" id="kt_datetimepicker_7_2" data-target-input="nearest">
+                                                                    <input name="LeaveEndDate" id="LeaveEndDate" type="text" class="form-control datetimepicker-input"  placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_2" />
+                                                                    <div class="input-group-append" data-target="#kt_datetimepicker_7_2" data-toggle="datetimepicker">
+                                                                        <span class="input-group-text">
+                                                                            <i class="ki ki-calendar"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+
                                             <div class="form-group row">
                                                 <label>Açıklama</label>
                                                 <div class="input-group">
@@ -247,7 +276,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -275,6 +304,23 @@
 
 
     <script>
+        var date = new Date();
+        $("#LeaveStartDate").val(date.getDate())
+        // Demo 7
+        $('#kt_datetimepicker_7_1').datetimepicker({
+            
+        });
+        $('#kt_datetimepicker_7_2').datetimepicker({
+            useCurrent: false
+        });
+
+        $('#kt_datetimepicker_7_1').on('change.datetimepicker', function (e) {
+            $('#kt_datetimepicker_7_2').datetimepicker('minDate', e.date);
+        });
+        $('#kt_datetimepicker_7_2').on('change.datetimepicker', function (e) {
+            $('#kt_datetimepicker_7_1').datetimepicker('maxDate', e.date);
+        });
+
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
@@ -342,7 +388,8 @@
                             },
                             date: {
                                 format: 'DD.MM.YYYY',
-                                message: 'Geçerli bir tarih girin'
+                                message: 'Geçerli bir tarih girin',
+                                max: "LeaveEndDate"
                             }
                         }
                     },
@@ -353,7 +400,8 @@
                             },
                             date: {
                                 format: 'DD.MM.YYYY',
-                                message: 'Geçerli bir tarih girin'
+                                message: 'Geçerli bir tarih girin',
+                                min: "LeaveStartDate"
                             }
                         }
                     },

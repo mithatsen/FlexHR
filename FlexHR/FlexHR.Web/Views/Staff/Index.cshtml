@@ -219,6 +219,20 @@
                                                     <input name="NameSurname" id="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" />
                                                 </div>
                                             </div>
+
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (Kişisel) *</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group input-group-lg input-group-solid">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="la la-at"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input type="email" name="EmailPersonal" id="EmailPersonal" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (Kişisel)" />
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="form-group row justify-content-center">
                                                 <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (İş)</label>
                                                 <div class="col-lg-9 col-xl-6">
@@ -233,20 +247,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Telefon (İş) </label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <div class="input-group input-group-lg input-group-solid">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="la la-phone"></i>
-                                                            </span>
-                                                        </div>
-                                                        <input name="PhoneJob" id="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" />
-                                                    </div>
-
-                                                </div>
-                                            </div>
+                                           
                                             <div class="form-group row justify-content-center">
                                                 <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü *</label>
                                                 <div class="col-lg-9 col-xl-6">
@@ -272,34 +273,6 @@
 
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label ">İşe Başlama Tarihi *</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                                        <input type="text" name="JobJoinDate" id="JobJoinDate" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
-                                                        <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
-                                                            <span class="input-group-text">
-                                                                <i class="ki ki-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (Kişisel) *</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <div class="input-group input-group-lg input-group-solid">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="la la-at"></i>
-                                                            </span>
-                                                        </div>
-                                                        <input type="email" name="EmailPersonal" id="EmailPersonal" class="form-control form-control-lg form-control-solid" placeholder="E-Posta (Kişisel)" />
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <div class="form-group row justify-content-center">
                                                 <label class="col-xl-4 col-lg-3 col-form-label">Telefon (Kişisel) *</label>
@@ -316,19 +289,46 @@
 
                                                 </div>
                                             </div>
+                                            <div class="form-group row justify-content-center">
+                                                <label class="col-xl-4 col-lg-3 col-form-label">Telefon (İş) </label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group input-group-lg input-group-solid">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="la la-phone"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input name="PhoneJob" id="PhoneJob" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (İş)" />
+                                                    </div>
 
+                                                </div>
+                                            </div>
 
                                             <div class="form-group row justify-content-center">
-                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
+                                                <label class="col-xl-4 col-lg-3 col-form-label ">İşe Başlama Tarihi *</label>
                                                 <div class="col-lg-9 col-xl-6">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                        <input id="JobFinishDate" name="JobFinishDate" type="datetime" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
+                                                    <div class="input-group date" id="kt_datetimepicker_7_1" data-target-input="nearest">
+                                                        <input name="JobJoinDate" id="JobJoinDate"  type="text" class="form-control form-control-lg form-control-solid datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_1" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_7_1" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
                                                         </div>
-                                                    </div>
+                                                    </div>                                                   
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row justify-content-center">
+                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <div class="input-group date" id="kt_datetimepicker_7_2" data-target-input="nearest">
+                                                        <input disabled id="JobFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg form-control-solid datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_2" />
+                                                        <div id="calenderClick" class="input-group-append" data-target="#kt_datetimepicker_7_2" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -389,6 +389,24 @@
     </div>
 </div>
 @section Scripts{
+    <script>
+        var date = new Date();
+        $("#JobJoinDate").val(date.getDate())
+        // Demo 7
+        $('#kt_datetimepicker_7_1').datetimepicker({
+
+        });
+        $('#kt_datetimepicker_7_2').datetimepicker({
+            useCurrent: false
+        });
+
+        $('#kt_datetimepicker_7_1').on('change.datetimepicker', function (e) {
+            $('#kt_datetimepicker_7_2').datetimepicker('minDate', e.date);
+        });
+        $('#kt_datetimepicker_7_2').on('change.datetimepicker', function (e) {
+            $('#kt_datetimepicker_7_1').datetimepicker('maxDate', e.date);
+        });
+    </script>
     <script>
         function StaffSearch() {
             var modelContent = $("#staffCardList");

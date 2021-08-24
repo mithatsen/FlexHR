@@ -54,15 +54,18 @@
                                         <img id="profilePhoto" style="width:100%; height:100%;" src="@pp" />
                                     </div>
                                     <label onclick="UpdateProfilePhotoClick()" class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow xyz" data-action="change" data-toggle="tooltip" title="" data-original-title="Fotoğrafı Güncelle">
-                                        <i id="updateProfilePhoto"  class="fa fa-pen icon-sm text-muted"></i>
+                                        <i id="updateProfilePhoto" class="fa fa-pen icon-sm text-muted"></i>
                                         <input type="file" name="profile_avatar" onchange="profileAvatarChange()" id="profile_avatar" accept=".png, .jpg, .jpeg" />
                                         <input type="hidden" name="profile_avatar_remove" />
                                     </label>
-                                    <a onclick="removeProfilePhoto(@Model.StaffFileId)">
-                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Fotoğrafı Sil">
-                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                        </span>
-                                    </a>
+                                    @if (Model.PictureUrl != null)
+                                    {
+                                        <label onclick="removeProfilePhoto(@Model.StaffFileId)" class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow mt-35" data-action="change">
+                                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-toggle="tooltip" title="Fotoğrafı Sil">
+                                                <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                            </span>
+                                        </label>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -165,14 +168,11 @@
 <script src="~/assets/js/pages/custom/profile/profile.js"></script>
 <!--end::Page Scripts-->
 <script>
-
-    function UpdateProfilePhotoClick() {
-        $("#saveButton").attr('hidden', false);
-    }
     function profileAvatarChange() {
         if ($("#profile_avatar").val() != "") {
             $(".image-input-wrapper img").remove();
         }
+        $("#saveButton").attr('hidden', false);
     }
     function removeProfilePhoto(id) {
         Swal.fire({
