@@ -219,8 +219,12 @@
                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
             }
         });
-    </script>
 
+        
+    </script>
+    <script>
+        $('input[name="StartDate"]').mask('00.00.0000 00:00');
+    </script>
     
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>

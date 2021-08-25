@@ -199,7 +199,7 @@
                                                 <label>Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date" id="kt_datetimepicker_7_1" data-target-input="nearest">
-                                                        <input name="LeaveStartDate" id="LeaveStartDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_1" />
+                                                        <input name="LeaveStartDate" id="LeaveStartDate" type="text" class="form-control form-control-lg form-control-solid datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_1" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_7_1" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -226,7 +226,7 @@
                                                 <label>Bitiş Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date" id="kt_datetimepicker_7_2" data-target-input="nearest">
-                                                        <input  name="LeaveEndDate" id="LeaveEndDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_2" />
+                                                        <input name="LeaveEndDate" class="form-control form-control-lg form-control-solid" id="LeaveEndDate" type="text" class="form-control datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_2" />
                                                         <div id="calenderClick" class="input-group-append" data-target="#kt_datetimepicker_7_2" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -302,13 +302,16 @@
 @section Scripts{
 
 
-
+    <script>
+        $('input[name="LeaveStartDate"]').mask('00.00.0000');
+        $('input[name="LeaveEndDate"]').mask('00.00.0000');
+    </script>
     <script>
         var date = new Date();
         $("#LeaveStartDate").val(date.getDate())
         // Demo 7
         $('#kt_datetimepicker_7_1').datetimepicker({
-            
+
         });
         $('#kt_datetimepicker_7_2').datetimepicker({
             useCurrent: false

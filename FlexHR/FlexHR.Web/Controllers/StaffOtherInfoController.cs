@@ -59,7 +59,9 @@ namespace FlexHR.Web.Controllers
             {
                 try
                 {
+                    model.AccountTypeGeneralSubTypeId = model.AccountTypeGeneralSubTypeId == -1 ? null : model.AccountTypeGeneralSubTypeId;
                     var staffOtherInfo = _mapper.Map<StaffOtherInfo>(model);
+                                       
                     _staffOtherInfoService.Update(staffOtherInfo);
                     TempData["StaffOtherInfoUpdateStatus"] = "true";
                     return RedirectToAction("Index", new { id = model.StaffId });

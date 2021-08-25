@@ -47,13 +47,6 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStaffGeneral(UpdateStaffGeneralDto model)
         {
-
-            //   var staffRole = _staffRoleService.GetUserRoleByStaffId(model.StaffId);             
-            //staffRole.RoleId = model.RoleId;
-            //_staffRoleService.Update(staffRole);
-            // var abc = _appUserService.Get(x => x.StaffId == model.StaffId, null, "Staff").FirstOrDefault();
-            //var role = _appRoleService.Get(x => x.Id == model.RoleId).FirstOrDefault().Name;
-            // await _userManager.AddToRoleAsync(abc, role);
             _staffService.Update(_mapper.Map<Staff>(model));
             TempData["StaffGeneralUpdateStatus"] = "true";
 

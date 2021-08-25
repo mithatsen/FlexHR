@@ -147,7 +147,10 @@
     </div>
 
 </div>
-
+<script>
+    $('input[name="LeaveStartDate"]').mask('00.00.0000');
+    $('input[name="LeaveEndDate"]').mask('00.00.0000');
+</script>
 <script>
     $('#kt_touchspin_2, #kt_touchspin_2_2').TouchSpin({
         buttondown_class: 'btn btn-secondary',
@@ -160,10 +163,10 @@
         maxboostedstep: 10,
 
     });
-    
+
     $(document).ready(function () {
-  
-       
+
+
     });
 
     FormValidation.formValidation(
