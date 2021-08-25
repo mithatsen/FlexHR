@@ -62,7 +62,7 @@
                                                 <div class="form-group row">
                                                     <label>Personel *</label>
                                                     <div class="input-group">
-                                                        <select id="staffSelect"  class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <select id="staffSelect" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -193,5 +193,7 @@
         locale: 'tr',
         format: 'DD.MM.YYYY HH:mm'
     });
+
+    $('input[name="StartDate"]').mask('00.00.0000 00:00');
 </script>
 <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>

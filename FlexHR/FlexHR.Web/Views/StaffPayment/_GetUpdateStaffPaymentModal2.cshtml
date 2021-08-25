@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 id="PaymentAddModalHeader" class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Ödeme Güncelle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Ödeme Düzenle
                     </h3>
 
                 </div>
@@ -43,7 +43,7 @@
                                             <div id="InstallmentDiv" class="form-group row  ">
                                                 <label>Taksit</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" asp-for="Installment">
+                                                    <select id="installmentSelect" style=" width: 100% !important;"  class="form-control form-control-solid form-control-lg" asp-for="Installment">
                                                         <option value=""  selected>Seçiniz</option>
                                                         @for (int i = 1; i < 13; i++)
                                                         {
@@ -109,6 +109,10 @@
 
 </div>
 <script>
+    $('#installmentSelect').select2({
+        placeholder: 'Seçiniz'
+    });
+
     FormValidation.formValidation(
         document.getElementById('UpdateStaffPaymentModal2'),
         {
@@ -157,4 +161,5 @@
             }
         }
     );
+    $('input[name="PaymentDate"]').mask('00.00.0000');
 </script>

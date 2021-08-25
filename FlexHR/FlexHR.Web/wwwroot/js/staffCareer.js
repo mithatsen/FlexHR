@@ -103,7 +103,7 @@ function careerClickFunction() {
 }
 
 function CareerUpdate(id) {
-    console.log(id);
+    debugger;
     var modelContent = $("#staffCareerUpdateDiv")
     $("#staffCareerUpdateDiv").empty();
 

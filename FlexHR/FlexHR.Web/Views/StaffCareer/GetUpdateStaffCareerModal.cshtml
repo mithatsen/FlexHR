@@ -35,7 +35,7 @@
                                             <div class="form-group row ">
                                                 <label  >Şirket *</label>
                                                 <div class="input-group">
-                                                    <select onchange="CompanyChangeUpdate()" class="form-control form-control-solid form-control-lg" id="c_companySelectUpdate" asp-for="CompanyId" asp-items="ViewBag.Companies">
+                                                    <select onchange="CompanyChangeUpdate()" class="form-control form-control-solid form-control-lg"  style=" width: 100% !important;" id="c_companySelectUpdate" asp-for="CompanyId" asp-items="ViewBag.Companies">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -48,7 +48,7 @@
                                             <div class="form-group row ">
                                                 <label  >Departman *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" asp-for="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
+                                                    <select class="form-control form-control-solid form-control-lg" id="c_DepartmentUpdate" style=" width: 100% !important;" asp-for="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -58,7 +58,7 @@
                                             <div class="form-group row ">
                                                 <label  >Çalışma Şekli *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" asp-for="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
+                                                    <select class="form-control form-control-solid form-control-lg" style=" width: 100% !important;" id="c_ModeOfOperationUpdate" asp-for="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -86,7 +86,7 @@
                                             <div class="form-group row ">
                                                 <label  >Şube</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg"  id="c_companyBranchSelectUpdate" asp-for="CompanyBranchId" asp-items="ViewBag.CompanyBranchs">
+                                                    <select class="form-control form-control-solid form-control-lg" style=" width: 100% !important;"   id="c_companyBranchSelectUpdate" asp-for="CompanyBranchId" asp-items="ViewBag.CompanyBranchs">
                                                         <option value="-1">Seçiniz</option>
 
                                                     </select>
@@ -97,7 +97,7 @@
                                             <div class="form-group row ">
                                                 <label  >Unvan *</label>
                                                 <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" asp-for="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
+                                                    <select class="form-control form-control-solid form-control-lg" style=" width: 100% !important;" id="c_TitleUpdate" asp-for="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
@@ -153,4 +153,22 @@
     </div>
 
 </div>
+<script>
+    $('#c_companyBranchSelectUpdate').select2({
+        placeholder: 'Seçiniz'
+    });
+    $('#c_companySelectUpdate').select2({
+        placeholder: 'Seçiniz'
+    });
+    $('#c_DepartmentUpdate').select2({
+        placeholder: 'Seçiniz'
+    });
+    $('#c_ModeOfOperationUpdate').select2({
+        placeholder: 'Seçiniz'
+    });
+    $('#c_TitleUpdate').select2({
+        placeholder: 'Seçiniz'
+    });
+   
+</script>
 <script src="~/js/getUpdateStaffCareerModal.js"></script>

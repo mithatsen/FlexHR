@@ -221,6 +221,7 @@
             $(upload_icon_add).addClass(" fas fa-upload text-danger");
         }
     }
+    $('input[name="PaymentDate"]').mask('00.00.0000');
     function fileInputUpdateChange(id) {
         debugger;
         var imageGallery = "#imageGallery" + id;

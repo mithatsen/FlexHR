@@ -45,6 +45,12 @@ namespace FlexHR.Web.Controllers
             if (ModelState.IsValid)
             {
 
+                model.MaritalStatusGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
+                model.DegreeOfDisabilityGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
+                model.BloodGroupGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
+                model.EducationStatusGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
+                model.EducationLevelGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
+                model.GenderGeneralSubTypeId = model.GenderGeneralSubTypeId == -1 ? null : model.GenderGeneralSubTypeId;
                 _staffPersonelInfoService.Update(_mapper.Map<StaffPersonelInfo>(model));
                 TempData["StaffPersonalInfoUpdateStatus"] = "true";
                 return RedirectToAction("Index",new {id= model.StaffId });

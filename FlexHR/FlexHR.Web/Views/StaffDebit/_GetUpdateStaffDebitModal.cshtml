@@ -6,7 +6,7 @@
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Zimmet Güncelle
+                        <i class="fas fa-address-book mr-2 text-dark"></i>Zimmet Düzenle
                     </h3>
 
                 </div>
@@ -116,3 +116,7 @@
     </div>
 </div>
 <script src="~/js/_getUpdateStaffDebitModal.js"></script>
+<script>
+    $('input[name="IssueDate"]').mask('00.00.0000');
+    $('input[name="ReturnDate"]').mask('00.00.0000');
+</script>

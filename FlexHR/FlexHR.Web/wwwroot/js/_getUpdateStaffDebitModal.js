@@ -71,3 +71,4 @@ $('#kt_datetimepicker_39').datetimepicker({
     locale: 'tr',
     format: 'DD.MM.YYYY'
 });
+

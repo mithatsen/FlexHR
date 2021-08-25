@@ -150,29 +150,29 @@
                         <!--end::Header Menu Wrapper-->
                         <!--begin::Topbar-->
                         <div class="topbar mr-5">
-                   
+
                             <div class="dropdown">
-                                <div class="topbar-item" >
+                                <div class="topbar-item">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Merhaba @User.Identity.Name
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         @*<a class="dropdown-item" href="StaffGeneral/Index/">
-                                            <i class="fas fa-user-alt mr-2 text-secondary"></i>
-                                            Profil
-                                        </a>*@
+                                                <i class="fas fa-user-alt mr-2 text-secondary"></i>
+                                                Profil
+                                            </a>*@
                                         <a class="dropdown-item" href="Auth/LogOut">
                                             <i class="fas fa-sign-out-alt mr-2 text-danger"></i>
                                             Çıkış Yap
                                         </a>
                                     </div>
-                                    </div>
-
                                 </div>
+
+                            </div>
                             <!--begin::Languages-->
                             <div class="dropdown">
                                 <!--begin::Toggle-->
-                                <div class="topbar-item" data-toggle="dropdown" >
+                                <div class="topbar-item" data-toggle="dropdown">
                                     <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
                                         <img class="h-20px w-20px rounded-sm"
                                              src="~/assets/media/svg/flags/006-turkey.svg" alt="" />
@@ -253,11 +253,13 @@
     <script src="~/assets/js/pages/features/miscellaneous/cropper.js"></script>
     <!--end::Page Scripts-->
     <!-- or even simpler -->
+
+
     @*<img class="my-image" src="~/assets/media/bg/bg-1.jpg" />
         <script>
             $('.my-image').croppie();
         </script>*@
-    <script src="~/Croppie-2.6.4/croppie.js"></script>
+
 
     <script>
 

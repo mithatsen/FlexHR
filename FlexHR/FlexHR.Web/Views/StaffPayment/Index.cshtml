@@ -169,7 +169,7 @@
                                     <div class="row">
 
                                         @* fiş ekleme divi *@
-                                        <div  class="col-md-12 ">
+                                        <div id="receiptTopDiv" class="col-md-12 ">
                                             <div class="form-group row">
                                                 <div class="input-group">
                                                     <a onclick="AddReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
@@ -179,7 +179,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-md-12"> <hr /></div>
+                                        <div class="col-md-12"> </div>
                                         <div class="col-md-5 ">
                                             <div class="form-group row">
                                                 <label>Tutar</label>
@@ -196,7 +196,7 @@
                                             <div hidden id="InstallmentDiv" class="form-group row  ">
                                                 <label>Taksit</label>
                                                 <div class="input-group">
-                                                    <select id="valInstallment" class="form-control form-control-solid form-control-lg" name="Installment">
+                                                    <select style=" width: 100% !important;" id="valInstallment" class="form-control form-control-solid form-control-lg" name="Installment">
                                                         <option value="" selected>Seçiniz</option>
                                                         @for (int i = 1; i < 13; i++)
                                                         {
@@ -211,8 +211,8 @@
                                             <div id="FeeTypeDiv" class="form-group row  ">
                                                 <label>Ücret Tipi</label>
                                                 <div class="input-group">
-                                                    <select id="valFeeType" class="form-control form-control-solid form-control-lg" name="FeeTypeGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
-                                                        <option value="-1">Seçiniz</option>
+                                                    <select style=" width: 100% !important;" id="valFeeType" class="form-control form-control-solid form-control-lg" name="FeeTypeGeneralSubTypeId" asp-items="ViewBag.FeeTypes">
+                                                        <option value="-1" selected>Seçiniz</option>
 
                                                     </select>
                                                     <input id="staffId" type="hidden" name="StaffId" value="@ViewBag.StaffId" />
@@ -292,6 +292,14 @@
         $(document).ready(function () {
             $("#tab_6").addClass("active");
         });
+    </script>    
+    <script>
+        $('#valFeeType').select2({
+            placeholder: 'Seçiniz'
+        });
+        $('#valInstallment').select2({
+            placeholder: 'Seçiniz'
+        }); 
     </script>
     <script>
         function ShowReceiptInModal(id) {
@@ -339,14 +347,57 @@
 
     @*Validation Staff Payment*@
     <script>
-        var fv;
-        function validateAddPaymentForm() {
-            console.log(fv);
+        var demoForm = document.getElementById('modalAddPaymentForm');
+        var fv = FormValidation.formValidation(
+            demoForm,
+            {
+                fields: {
+                    PaymentDate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
+                            }
 
+                        }
+                    },
+                    Amount: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tutar alanı boş geçilemez'
+                            },
+                            numeric: {
+                                message: ' Tutar rakamlardan oluşmalıdır'
+                            }
+
+                        }
+                    },
+                    Description: {
+                        validators: {
+                            stringLength: {
+                                max: 499,
+                                message: '500 karakterden az girin'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+
+                },
+
+            });
+
+        function validateAddPaymentForm() {
             if (fv != null) {
                 fv.destroy();
             }
-            const demoForm = document.getElementById('modalAddPaymentForm');
             fv = FormValidation.formValidation(
                 demoForm,
                 {
@@ -425,7 +476,7 @@
 
         }
 
-
+        $('input[name="PaymentDate"]').mask('00.00.0000');
 
         function fncAddReceipt() {
             fv.validate().then(function (status) {
@@ -546,8 +597,8 @@
             var id = document.getElementById("kt_select2_1").value;
             console.log(id);
             if (id == 99) {
-                $("#receiptDiv").removeAttr("hidden");
-                $("#receiptDiv").show();
+                $("#receiptTopDiv").removeAttr("hidden");
+                $("#receiptTopDiv").show();
                 $("#lgDescription").removeAttr("hidden");
                 $("#lgDescription").show();
                 $("#FeeTypeDiv").hide();
@@ -556,7 +607,7 @@
                 $("#txtSmDescription").prop("disabled", true);
             }
             else if (id == 100 || id == 103) {
-                $("#receiptDiv").hide();
+                $("#receiptTopDiv").hide();
                 $("#smDescription").show();
                 $("#lgDescription").hide();
                 $("#InstallmentDiv").removeAttr("hidden");
@@ -568,7 +619,7 @@
             } else {
                 $("#InstallmentDiv").hide();
                 $("#FeeTypeDiv").show();
-                $("#receiptDiv").hide();
+                $("#receiptTopDiv").hide();
                 $("#smDescription").show();
                 $("#lgDescription").hide();
                 $("#txtSmDescription").prop("disabled", false);
