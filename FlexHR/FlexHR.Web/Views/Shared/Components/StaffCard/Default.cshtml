@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         <input type="hidden" id="StaffId" value="@ViewBag.StaffId" />
-                        <button hidden id="saveButton" onclick="saveButtonClick()" class="btn btn-sm bg-primary text-white px-5 ml-5">Kaydet</button>
+                        <button hidden id="saveButton" onclick="saveButtonClick()" class="btn btn-sm bg-primary text-white px-5 ml-5" type="button">Kaydet</button>
                     </div>
                 </form>
                 <div>
@@ -118,50 +118,6 @@
     <!--end::Profile Card-->
 </div>
 <!--end::Aside-->
-<div class="modal fade" id="staffPpChangeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
-                        <i class="fas fa-address-book mr-2 text-dark"></i>Profil Resmi Değiştir
-                    </h3>
-
-                </div>
-                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <form id="" method="POST">
-                <div class="modal-body ">
-                    <div>
-                        <div>
-                            <div id="main-cropper"></div>
-                            <a class="button actionSelect">
-                                <input class="actionUpload dropzone-select btn btn-light-primary font-weight-bold btn-lg" type="file" id="select" value="Choose Image" accept="image/*">
-                            </a>
-
-                        </div>
-                    </div>
-
-                    @*@if (Model.PictureUrl != null)
-                        {
-                            var pp = "/img/" + @Model.PictureUrl;
-                            <img src="@pp" alt="image" />
-                        }
-                        else
-                        {
-                            <img id="deneme45" src="~/assets/media/users/default.jpg" />
-                        }*@
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!--begin::Page Scripts(used by this page)-->
 <script src="~/assets/js/pages/widgets.js"></script>
@@ -223,8 +179,7 @@
     }
     function saveButtonClick() {
         var formdata = new FormData();
-        $('.xyz').each(function (i, obj) {
-            debugger;
+        $('.xyz').each(function (i, obj) {        
             var myKey = "1";
             var file;
             var itemId = "#profile_avatar";
@@ -233,14 +188,13 @@
                     file = $(itemId).prop('files');
                 }
 
-            });
-            console.log(file);
+            });      
             if (file.length != 0) {
                 formdata.append(myKey, file[0]);
             }
         });
-        debugger;
         var id = $("#StaffId").val();
+
         $.ajax({
             method: 'Post',
             url: '/StaffFile/UpdateProfilePhoto/' + id,
@@ -250,11 +204,11 @@
             processData: false,
 
         }).done(function (result) {
-            debugger;
+          
             if (result == true) {
                 Swal.fire({
-                    title: "Silindi!",
-                    text: "Kaydınız silindi.",
+                    title: "Güncellendi!",
+                    text: "Profil fotoğrafınız güncellendi",
                     icon: "success",
                     showCancelButton: false
                 }).then(function () {
@@ -269,7 +223,7 @@
                 )
             }
         });
-        window.location.reload();
+        
     }
 
 </script>

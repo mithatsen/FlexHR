@@ -141,7 +141,7 @@
 
 
 <div class="modal fade" id="AddPaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
@@ -169,11 +169,14 @@
                                     <div class="row">
 
                                         @* fiş ekleme divi *@
-                                        <div id="receiptDiv" class="col-md-12 ">
+                                        <div  class="col-md-12 ">
                                             <div class="form-group row">
                                                 <div class="input-group">
                                                     <a onclick="AddReceipt()" class="btn  btn-primary btn-block font-size-h5 py-4">Fiş Ekle</a>
                                                 </div>
+                                            </div>
+                                            <div id="receiptDiv" style="max-height: 300px; overflow-x: hidden; overflow-y: scroll;">
+
                                             </div>
                                         </div>
                                         <div class="col-md-12"> <hr /></div>
@@ -339,11 +342,11 @@
         var fv;
         function validateAddPaymentForm() {
             console.log(fv);
-         
+
             if (fv != null) {
                 fv.destroy();
             }
-            const demoForm = document.getElementById('modalAddPaymentForm');         
+            const demoForm = document.getElementById('modalAddPaymentForm');
             fv = FormValidation.formValidation(
                 demoForm,
                 {
@@ -419,7 +422,7 @@
                     },
 
                 })
-           
+
         }
 
 
@@ -587,7 +590,7 @@
             var deleteId = "delete" + counter;
             var deleteFileId = "deleteFile" + counter;
             var fileInputId = "file" + counter;
-            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-5 pl-0"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>KDV(%)</label> <div class="input-group"><input required type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-2"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" onkeyup="NewReceiptAdded(this); this.oldvalue = this.value" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group my-auto col-md-1"> <label class="my-auto pt-1" for="' + fileInputId + '"> <i id="upload_icon' + counter + '" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileInputId + '" onchange="fileInputChange(' + counter + ')" type="file" name="File" style="display:none"/> </div><div class="form-group my-auto col-md-1"> <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptFile(' + counter + ')" id="' + deleteFileId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label">  </span> </a> </li><li class="navi-item"> <a onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> <span class="navi-label">  </span> </a> </li></ul> </div></div></div></div></div>')
+            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0 ml-4"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>KDV(%)</label> <div class="input-group"><input required type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" onkeyup="NewReceiptAdded(this); this.oldvalue = this.value" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group my-auto col-md-1"> <label class="my-auto pt-1" for="' + fileInputId + '"> <i id="upload_icon' + counter + '" class="fas fa-upload text-danger" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileInputId + '" onchange="fileInputChange(' + counter + ')" type="file" name="File" style="display:none"/> </div><div class="form-group my-auto col-md-1"> <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptFile(' + counter + ')" id="' + deleteFileId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label">  </span> </a> </li><li class="navi-item"> <a onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> <span class="navi-label">  </span> </a> </li></ul> </div></div></div></div></div>')
 
             validateAddPaymentForm();
         }

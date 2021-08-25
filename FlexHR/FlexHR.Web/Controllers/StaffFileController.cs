@@ -167,7 +167,7 @@ namespace FlexHR.Web.Controllers
             return picture != null ? picture.FileFullPath + picture.FileName : null;
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateProfilePhoto(IFormCollection formdata, int id)
+        public async Task<bool> UpdateProfilePhoto(IFormCollection formdata, int id)
         {
             var result = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == 3 && x.IsActive == true).FirstOrDefault();
             var staffName = "Staff_" + id;
@@ -206,7 +206,7 @@ namespace FlexHR.Web.Controllers
                         }
                     }
                 }
-                return RedirectToAction("Index","StaffGeneral", new { id = id });
+                return true;
             }
             foreach (var item in formdata.Files)
             {
@@ -230,7 +230,7 @@ namespace FlexHR.Web.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index", "StaffGeneral", new { id = id });
+            return true;
 
         }
         [HttpPost]
