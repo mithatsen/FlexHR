@@ -499,6 +499,17 @@
                             }
                         }
                     },
+                    ReceiptAmount: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tutar alanı boş geçilemez'
+                            },
+                            numeric: {
+                                message: ' Tutar rakamlardan oluşmalıdır'
+                            }
+
+                        }
+                    },
 
                 },
                 plugins: {
