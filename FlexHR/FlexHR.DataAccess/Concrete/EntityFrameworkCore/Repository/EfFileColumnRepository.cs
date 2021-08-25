@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using FlexHR.Entity.Enums;
+using Microsoft.IdentityModel.Protocols;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 {
@@ -206,6 +207,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                                         readList.Add(fuvm.columnList[c].ColumnName, new List<string> { $"{fuvm.rows[t][c]}" });
                                     }
                                 }
+
                             }
                         }
 
@@ -279,7 +281,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 using (SqlConnection con = new SqlConnection(cn.ConnectionString))
                 {
                     dt.Columns.Add("UploadDate");
-                    
+
                     foreach (var column in fuvm.columnList)
                     {
                         dt.Columns.Add(column.ColumnName);
@@ -294,6 +296,32 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                         {
                             var key = fuvm.columnList[k].ColumnName;
                             var value = fuvm.rows[i][k].ToString();
+
+                            // DateTime alanların sadece tarih kısmını alır
+                            if (fuvm.columnList[k].FileColumn_FileColumnProperties.Any(x => x.FileColumnPropertiesId == EnumFileColumnProperties.OnlyShowDateInDateTime.GetHashCode()))
+                            {
+                                if (value != "" && value != null)
+                                {
+                                    var valueSplit = value.Split(' ');
+                                    if (valueSplit.Length > 1)
+                                    {
+                                        value = value.Split(' ')[0];
+                                    }
+                                }
+                            }
+                            // DateTime alanların sadece saat kısmını alır
+                            else if (fuvm.columnList[k].FileColumn_FileColumnProperties.Any(x => x.FileColumnPropertiesId == EnumFileColumnProperties.OnlyShowHourInDateTime.GetHashCode()))
+                            {
+                                if (value != "" && value != null)
+                                {
+                                    var valueSplit = value.Split(' ');
+                                    if (valueSplit.Length > 1)
+                                    {
+                                        value = value.Split(' ')[1];
+                                    }
+                                }
+                            }
+
                             dr[$"{key}"] = $"{value}";
                         }
                         dt.Rows.Add(dr);
@@ -351,5 +379,63 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             return root;
         }
 
+        public List<FileColumn> FileColumnListByTypeId(int typeId)
+        {
+            var columnList = new List<FileColumn>();
+            columnList = _context.FileColumn.Where(x => x.IsActive && x.FileTypeId == typeId).Include(x => x.FileColumn_FileColumnProperties).OrderBy(x => x.ColumnSequence).ToList();
+            return columnList != null ? columnList : new List<FileColumn>();
+        }
+
+        public ReadGenericTableMainViewModel GetStaffTrackkingData(string tableName, string whereParam = "", int recordCount = 0)
+        {
+            try
+            {
+                var resultList = new ReadGenericTableMainViewModel();
+                var childList = new List<ReadGenericTableViewModel>();
+
+                var recordCountParam = "";
+                if (recordCount > 0)
+                {
+                    recordCountParam = $"TOP {recordCount}";
+                }
+
+                var query = $"Select {recordCountParam} * From {tableName}";
+                if (whereParam != "" && whereParam != null)
+                {
+                    query = $"Select {recordCountParam} * From {tableName} Where {whereParam}";
+                }
+
+                var dt = new DataTable();
+
+                //var connectionString = ConfigurationManager.AppSettings["IndexConnectionString"];
+                SqlConnection connectionString = new SqlConnection("Data Source=DESKTOP-GRI9IBK\\SQLEXPRESS;Initial Catalog=FlexHR;Integrated Security= True");
+                using (SqlConnection con = new SqlConnection(connectionString.ConnectionString))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        childList.Add(new ReadGenericTableViewModel
+                        {
+                            ColumnName = col.ColumnName,
+                            Value = row.ItemArray[col.Ordinal].ToString()
+                        });
+                    }
+                    resultList.list.Add(childList);
+                    childList = new List<ReadGenericTableViewModel>();
+                }
+                return resultList;
+            }
+            catch (Exception e)
+            {
+                return new ReadGenericTableMainViewModel();
+            }
+        }
     }
 }

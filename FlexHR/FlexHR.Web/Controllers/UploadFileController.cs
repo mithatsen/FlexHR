@@ -37,13 +37,19 @@ namespace FlexHR.Web.Controllers
         {
             TempData["Active"] = TempdataInfo.FileProcess;
             ViewBag.FileGeneralUpdateStatus = TempData["FileGeneralUpdateStatus"];
-            return View();
+
+            var model = new FileUploadIndexViewModel();
+            model.ColumnList = _fileColumnService.FileColumnListByTypeId(EnumFileType.StaffTrackingFile.GetHashCode());
+            return View(model);
         }
         public IActionResult Refectory()
         {
             TempData["Active"] = TempdataInfo.Refectory;
             ViewBag.FileGeneralUpdateStatus = TempData["FileGeneralUpdateStatus"];
-            return View();
+
+            var model = new FileUploadIndexViewModel();
+            model.ColumnList = _fileColumnService.FileColumnListByTypeId(EnumFileType.RefectoryFile.GetHashCode());
+            return View(model);
         }
 
         public static string ClearTurkishCharacter(string _dirtyText)
@@ -152,7 +158,7 @@ namespace FlexHR.Web.Controllers
                         Message = fileUploadResult.Message
                     };
                     TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
-                    if (fileName== "StaffTracking")
+                    if (fileName == "StaffTracking")
                     {
                         return RedirectToAction("Index");
                     }
@@ -160,96 +166,103 @@ namespace FlexHR.Web.Controllers
                     {
                         return RedirectToAction("Refectory");
                     }
-                    
+
                 }
 
 
 
-                // var fileNameUpdate = model.Date.ToString("d") + "_" + fileName + extension;
 
-
-
-                //foreach (var item in result)
-                //{
-                //    //hatalı bak buraya
-                //    if (fileName == item.FileName)
-                //    {
-                //        var folderPathUpdate = Path.Combine(fullPath);
-                //        if (!Directory.Exists(folderPathUpdate))
-                //            Directory.CreateDirectory(folderPathUpdate);
-                //        //Excel klasörü oluşturuldu
-                //        var filePathUpdate = Path.Combine(folderPathUpdate, categoryNameFolder + "/");
-                //        if (!Directory.Exists(filePathUpdate))
-                //            Directory.CreateDirectory(filePathUpdate);
-                //        //
-                //        filePathUpdate = Path.Combine(filePathUpdate, categoryTypeFolder + "/");
-                //        if (!Directory.Exists(filePathUpdate))
-                //            Directory.CreateDirectory(filePathUpdate);
-                //        var excelPathUpdate = Path.Combine(filePathUpdate + model.Date.ToString("d") + "_" + fileName + extension);
-                //        if (model.file.Length > 0)
-                //        {
-                //            //dosyamızı kaydediyoruz.
-                //            using (var stream = new FileStream(excelPathUpdate, FileMode.Create))
-                //            {
-                //                await model.file.CopyToAsync(stream);
-                //            }
-                //        }
-                //        TempData["FileGeneralUpdateStatus"] = "true";
-                //        if (model.CategoryId == 127)
-                //        {
-                //            return RedirectToAction("Refectory");
-                //        }
-                //        else if (model.CategoryId == 129)
-                //        {
-                //            return RedirectToAction("Index");
-                //        }
-
-                //    }
-                //}
-                ////Flex > Files klasörü oluşturuldu
-                //var folderPath = Path.Combine(fullPath);
-                //if (!Directory.Exists(folderPath))
-                //    Directory.CreateDirectory(folderPath);
-                ////Excel klasörü oluşturuldu
-                //var filePath = Path.Combine(folderPath, categoryNameFolder + "/");
-                //if (!Directory.Exists(filePath))
-                //    Directory.CreateDirectory(filePath);
-                ////
-                //filePath = Path.Combine(filePath, categoryTypeFolder + "/");
-                //if (!Directory.Exists(filePath))
-                //    Directory.CreateDirectory(filePath);
-                //var excelPath = Path.Combine(filePath + model.Date.ToString("d") + "_" + fileName + extension);
-                //if (model.file.Length > 0)
-                //{
-                //    //dosyamızı kaydediyoruz.
-                //    using (var stream = new FileStream(excelPath, FileMode.Create))
-                //    {
-                //        await model.file.CopyToAsync(stream);
-                //    }
-                //}
-                //TempData["FileGeneralUpdateStatus"] = "true";
-                //#endregion
-                //var fileUploadResult = _fileColumnService.LoadDataFromExcel(
-                //    new FileUploadViewModel
-                //    {
-                //        file = model.file,
-                //        xlsFileName = model.file.FileName,
-                //        folderName = $"{categoryNameFolder}",
-                //        xlsPath = $"{excelPath}",
-                //        fileUploadTypeID = 132,
-                //        tableName = "StaffTrackingData"
-                //    });
-                //if (!fileUploadResult.IsSuccess)
-                //{
-                //    //databsaeden de sil exceli
-
-
-                //    System.IO.File.Delete(excelPath);
-                //}
-                
             }
             TempData["FileGeneralUpdateStatus"] = "false";
             return View("Index");
+        }
+
+        [HttpPost]
+        public IActionResult LoadDataGenericFileTableList(int id)
+        {
+            var dict = Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
+            var draw = dict["draw"];
+            var start = dict["start"];
+            var length = dict["length"];
+            var sortColumn = dict["columns[" + dict["order[0][column]"] + "][name]"];
+            var sortColumnDir = dict["order[0][dir]"];
+            var searchValue = dict["search[value]"];
+
+            //Paging Size (10,20,50,100)    
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int recordsTotal = 0;
+
+            ////Get StockUnitList
+            var dynamicExcelColumnList = _fileColumnService.FileColumnListByTypeId(id);
+            var tableName = "";
+            if (EnumFileType.StaffTrackingFile.GetHashCode() == id)
+            {
+                tableName = EnumTableName.StaffTracking.ToString();
+            }
+            else if (EnumFileType.RefectoryFile.GetHashCode() == id)
+            {
+                tableName = EnumTableName.Refectory.ToString();
+            }
+            var dataDB = _fileColumnService.GetStaffTrackkingData(tableName).list;
+
+            var data = new List<List<ReadGenericTableViewModel>>();
+
+            foreach (var row in dataDB)
+            {
+                var rowData = new List<ReadGenericTableViewModel>();
+
+                foreach (var column in row)
+                {
+                    rowData.Add(new ReadGenericTableViewModel()
+                    {
+                        ColumnName = column.ColumnName,
+                        Value = column.Value
+                    });
+                }
+                data.Add(rowData);
+            }
+
+            ////Sorting    
+            //if ((!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDir)))
+            //{
+            //    data = data.OrderBy(sortColumn + " " + sortColumnDir).ToList();
+            //}
+
+            ////Search    
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                data = data.Where(
+                    m => m[0].Value.ToLower().Contains(searchValue.ToLower()) ||
+                    m[1].Value.ToLower().Contains(searchValue.ToLower()) ||
+                    m[2].Value.ToLower().Contains(searchValue.ToLower()) ||
+                    m[3].Value.ToLower().Contains(searchValue.ToLower()) ||
+                    m[4].Value.ToLower().Contains(searchValue.ToLower())
+                    ).ToList();
+            }
+
+            //total number of rows count     
+            recordsTotal = data.Count();
+
+            //Paging     
+            var resultlist = new List<List<string>>();
+
+            foreach (var row in data.Skip(skip).Take(pageSize).ToList())
+            {
+                var rowData = new List<string>();
+
+                foreach (var column in row)
+                {
+                    rowData.Add(column.Value);
+                }
+                resultlist.Add(rowData);
+            }
+
+
+            //Returning Json Data    
+            var jsonResult = Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = resultlist });
+            //jsonResult.MaxsonLength = int.MaxValue;
+            return jsonResult;
         }
     }
 }

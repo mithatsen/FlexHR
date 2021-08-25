@@ -16,9 +16,19 @@ namespace FlexHR.Business.Concrete
             _fileColumnDal = fileColumnDal;
         }
 
+        public List<FileColumn> FileColumnListByTypeId(int typeId)
+        {
+            return _fileColumnDal.FileColumnListByTypeId(typeId);
+        }
+
         public string FileUploadCreateFolder(FileUploadViewModel fuvm)
         {
             return _fileColumnDal.FileUploadCreateFolder(fuvm);
+        }
+
+        public ReadGenericTableMainViewModel GetStaffTrackkingData(string tableName, string whereParam = "", int recordCount = 0)
+        {
+            return _fileColumnDal.GetStaffTrackkingData(tableName, whereParam, recordCount);
         }
 
         public GenericResultViewModel LoadDataFromExcel(FileUploadViewModel fuvm)

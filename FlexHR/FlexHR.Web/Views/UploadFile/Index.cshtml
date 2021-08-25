@@ -1,8 +1,14 @@
-﻿@{
+﻿@model FileUploadIndexViewModel
+@using FlexHR.Entity.Enums
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
 <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <!--begin::Info-->
@@ -23,35 +29,35 @@
     @*@await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })*@
     <div class="card-body">
         <!--begin::Profile Personal Information-->
-        <div class="d-flex flex-row">
+        <div class="d-flex flex-row row">
 
             <!--begin::Aside-->
-            <div class=" col-md-3" style="height: 220px; " id="kt_profile_aside">
+            <div class=" col-md-12" id="kt_profile_aside">
                 <!--begin::Profile Card-->
                 <div class="card card-custom card-stretch">
                     <!--begin::Body-->
                     <div class="card-body pt-4">
                         <!--begin::User-->
-                        <div class=" align-items-center">
-                            <!--begin::Card-->
+                        <!--begin::Card-->
 
-                            <form id="uploadExcelFileForm" method="post" asp-action="AddExcelWithAjax" asp-controller="UploadFile" enctype="multipart/form-data">
-                                <div>
-                                    <input type="hidden" name="categoryId" value="1" />
+                        <form id="uploadExcelFileForm" method="post" asp-action="AddExcelWithAjax" asp-controller="UploadFile" enctype="multipart/form-data">
+                            <div class="row">
 
-                                    <div class="form-group">
-                                        <div></div>
-                                        <div id="fileDiv" class="custom-file">
-                                            <input type="file" class="custom-file-input" name="file" id="customFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                                            <label class="custom-file-label" for="customFile">Dosya Seç</label>
-                                        </div>
+                                <input type="hidden" name="categoryId" value="1" />
+
+                                <div class="form-group row col-md-8">
+                                    <div></div>
+                                    <div id="fileDiv" class="custom-file">
+                                        <input type="file" class="custom-file-input d-block " name="file" id="customFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                        <label class="custom-file-label" for="customFile">Dosya Seç</label>
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+
+                                <div class="form-group row col-md-3">
                                     <div class="col-lg-9 col-xl-12">
                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                            <input name="Date" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                            <input name="Date" type="text" class="form-control datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
                                             <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
                                                 <span class="input-group-text">
                                                     <i class="ki ki-calendar"></i>
@@ -60,12 +66,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class=" justify-content-center">
-                                    <button id="uploadButton" type="submit" class="btn btn-success btn-lg mt-2 px-15 ">Yükle </button>
-                                    <button id="uploadUpdateButton" onclick="addUpdateButtonClick()" type="button" class="btn btn-primary btn-lg mt-2 ">Yükle ve Güncelle </button>
+                                <div class="form-group row  col-md-1">
+                                    <button id="uploadButton" type="submit" class="btn btn-linkedin  btn-block btn-sm ">Yükle </button>
+                                    @*<button id="uploadUpdateButton" onclick="addUpdateButtonClick()" type="button" class="btn btn-primary btn-lg input-group">Yükle ve Güncelle </button>*@
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
+
 
                         <!--begin::Contact-->
 
@@ -76,86 +83,112 @@
             </div>
             <!--end::Aside-->
             <!--begin: Datatable-->
-            <div class="tab-content w-100">
-                <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
-                    <!--begin::Entry-->
-                    <div class="d-flex flex-column-fluid">
-                        <!--begin::Container-->
-                        <div class="container">
-                            <!--begin::Notice-->
-                            <!--end::Notice-->
-                            <!--begin::Card-->
-                            <div class="card card-custom">
-                                <div class="card-header flex-wrap py-5">
-                                    <div class="card-title">
-                                        <i class="fas fa-building text-dark mr-2"></i>
-                                        <h3 id="VariableTitle" class="card-label">
-                                            Şirketler
+            <!--begin::Entry-->
+            <div class="  col-md-12">
+                <!--begin::Notice-->
+                <!--end::Notice-->
+                <!--begin::Card-->
+                <div class="card card-custom">
+                    <div class="card-header flex-wrap py-5">
+                        <div class="card-title">
+                            <i class="fas fa-building text-dark mr-2"></i>
+                            <h3 id="VariableTitle" class="card-label">
+                                Devamsızlık Tablosu
 
-                                        </h3>
-                                    </div>
-                                    <div class="card-toolbar">
-                                        <!--begin::Button-->
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#companyAddModal">
-                                            Ekle
-                                        </button>
-                                        <!--end::Button-->
-                                    </div>
-                                </div>
-                                <div class="card-body">
-
-                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
-                                        <thead>
-                                            <tr>
-                                                <th>Şirket Adı</th>
-                                                <th>İşlemler</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td width="85%">asdsdasdsdasfsaf</td>
-                                                <td width="15%">
-                                                    <a id="CareerUpdateBtn" onclick="CompanyUpdate()" class="btn btn-sm btn-clean btn-icon" title="Edit details">
-                                                        <i class="la la-edit text-warning"></i>
-                                                    </a>
-                                                    <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCompany()">
-
-                                                        <i class="la la-trash text-danger"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!--end::Card-->
+                            </h3>
                         </div>
-                        <!--end::Container-->
+                        <div class="card-toolbar">
+                            <!--begin::Button-->
+                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#companyAddModal">
+                                Ekle
+                            </button>
+                            <!--end::Button-->
+                        </div>
                     </div>
-                    <!--end::Entry-->
+                    <div class="card-body">
+
+                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_@EnumTableName.StaffTracking">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Yüklenme Tarihi</th>
+                                    @foreach (var item in Model.ColumnList)
+                                    {
+                                        <th>@item.ColumnDescription</th>
+                                    }
+                                    <th>Aktif Mi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <!--end::Card-->
             </div>
-
-
+            <!--end::Container-->
         </div>
+        <!--end::Entry-->
     </div>
 </div>
 
 @section Scripts{
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
     @*dosya ekleme başarılı için sweet alert*@
     <script src="~/js/uploadFile.js"></script>
     <script>
         $(document).ready(function () {
-            debugger;
+            KTDatatablesStaffTracking.init();
             var json = '@Html.Raw(@ViewBag.FileGeneralUpdateStatus)';
             json=$.parseJSON(json)
             if (json != null) {
-                Swal.fire(json.IsSuccess == true ? "Yüklendi!":"Yüklenemedi", json.Message, json.IsSuccess == true ? "success" : "error");
+                Swal.fire(json.IsSuccess == true ? "Yüklendi!" : "Yüklenemedi!", json.Message, json.IsSuccess == true ? "success" : "error");
+                $('#kt_datatable_StaffTrackking').DataTable().ajax.reload();
             }
         });
     </script>
+    <script>
+        var id = '@EnumFileType.StaffTrackingFile.GetHashCode()';
+        var KTDatatablesStaffTracking = function () {
+            var initTable1 = function () {
+                var table = $('#kt_datatable_StaffTracking')
+                table.DataTable({
+                    destroy: true,
+                    serverSide: true,
+                    processing: true,
+                    responsive: false,
+                    fixedHeader: true,
+                    "scrollY": screen.height - (screen.height * 0.55),
+                    "scrollX": true,
+                    "bFilter": true,
+                    scrollCollapse: true,
+                    searching: true,
+                    sortable: false,
+                    "pageLength": 10,
+                    "search": {
+                        "caseInsensitive": true
+                    },
+                    pagingType: 'full_numbers',
+                    "order": [[0, "desc"]],
+                    "ajax": {
+                        "url": "/UploadFile/LoadDataGenericFileTableList/" + id,
+                        "type": "POST",
+                        "datatype": "json",
+                    },
+                    "rowCallback": function (row, data, index) { },
+                    "initComplete": function (settings, json) { }
+                });
+            };
+            return {
+                //main function to initiate the module
+                init: function () {
+                    initTable1();
+                },
+            };
+        }();
 
+    </script>
     <script>
         function addUpdateButtonClick() {
             Swal.fire({

@@ -1,9 +1,15 @@
 ﻿
+@using FlexHR.Entity.Enums
+@model FileUploadIndexViewModel
 @{
     ViewData["Title"] = "Refectory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
 
 <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -105,29 +111,23 @@
                                 </div>
                                 <div class="card-body">
 
-                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_@EnumTableName.Refectory">
                                         <thead>
                                             <tr>
-                                                <th>Şirket Adı</th>
-                                                <th>İşlemler</th>
+                                                <th>ID</th>
+                                                <th>Yüklenme Tarihi</th>
+                                                @foreach (var item in Model.ColumnList)
+                                                {
+                                                    <th>@item.ColumnDescription</th>
+                                                }
+                                                <th>Aktif Mi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td width="85%">asdsdasdsdasfsaf</td>
-                                                <td width="15%">
-                                                    <a id="CareerUpdateBtn" onclick="CompanyUpdate()" class="btn btn-sm btn-clean btn-icon" title="Edit details">
-                                                        <i class="la la-edit text-warning"></i>
-                                                    </a>
-                                                    <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteCompany()">
-
-                                                        <i class="la la-trash text-danger"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
                                         </tbody>
                                     </table>
+
+
                                 </div>
                             </div>
                             <!--end::Card-->
@@ -145,16 +145,59 @@
 
 @section Scripts{
     @*dosya ekleme başarılı için sweet alert*@
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
     <script src="~/js/refectory.js"></script>
     <script>
        $(document).ready(function () {
-            debugger;
+           KTDatatablesRefectory.init();
             var json = '@Html.Raw(@ViewBag.FileGeneralUpdateStatus)';
             json=$.parseJSON(json)
             if (json != null) {
                 Swal.fire(json.IsSuccess == true ? "Yüklendi!":"Yüklenemedi", json.Message, json.IsSuccess == true ? "success" : "error");
             }
         });
+    </script>
+    <script>
+        var id = '@EnumFileType.RefectoryFile.GetHashCode()';
+        var KTDatatablesRefectory = function () {
+            var initTable1 = function () {
+                var table = $('#kt_datatable_Refectory')
+                table.DataTable({
+                    destroy: true,
+                    serverSide: true,
+                    processing: true,
+                    responsive: false,
+                    fixedHeader: true,
+                    "scrollY": screen.height - (screen.height * 0.55),
+                    "scrollX": true,
+                    "bFilter": true,
+                    scrollCollapse: true,
+                    searching: true,
+                    sortable: false,
+                    "pageLength": 10,
+                    "search": {
+                        "caseInsensitive": true
+                    },
+                    pagingType: 'full_numbers',
+                    "order": [[0, "desc"]],
+                    "ajax": {
+                        "url": "/UploadFile/LoadDataGenericFileTableList/" + id,
+                        "type": "POST",
+                        "datatype": "json",
+                    },
+                    "rowCallback": function (row, data, index) { },
+                    "initComplete": function (settings, json) { }
+                });
+            };
+            return {
+                //main function to initiate the module
+                init: function () {
+                    initTable1();
+                },
+            };
+        }();
+
     </script>
 
 }
