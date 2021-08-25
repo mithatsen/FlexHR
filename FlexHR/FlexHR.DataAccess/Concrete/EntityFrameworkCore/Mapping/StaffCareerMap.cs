@@ -14,6 +14,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
             entity.Property(e => e.JobFinishDate).HasColumnType("datetime");
 
             entity.Property(e => e.JobStartDate).HasColumnType("datetime");
+            entity.Property(e => e.CompanyBranchId).IsRequired();
 
             entity.HasOne(d => d.CompanyBranch)
                 .WithMany(p => p.StaffCareer)
