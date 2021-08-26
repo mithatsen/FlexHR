@@ -37,14 +37,10 @@
                 <div class="card card-custom card-stretch">
                     <!--begin::Body-->
                     <div class="card-body pt-4">
-                        <!--begin::User-->
-                        <!--begin::Card-->
 
                         <form id="uploadExcelFileForm" method="post" asp-action="AddExcelWithAjax" asp-controller="UploadFile" enctype="multipart/form-data">
+                            <input type="hidden" name="categoryId" value="1" />
                             <div class="row">
-
-                                <input type="hidden" name="categoryId" value="1" />
-
                                 <div class="form-group row col-md-8">
                                     <div></div>
                                     <div id="fileDiv" class="custom-file">
@@ -52,22 +48,18 @@
                                         <label class="custom-file-label" for="customFile">Dosya Seç</label>
                                     </div>
                                 </div>
-
-
-                                <div class="form-group row col-md-3">
-                                    <div class="col-lg-9 col-xl-12">
-                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                            <input name="Date" type="text" class="form-control datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
-                                            <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
-                                                <span class="input-group-text">
-                                                    <i class="ki ki-calendar"></i>
-                                                </span>
-                                            </div>
+                                <div class="form-group row ml-2 col-md-3">
+                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
+                                        <input name="Date" type="text" class="form-control datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                        <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
+                                            <span class="input-group-text">
+                                                <i class="ki ki-calendar"></i>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group row  col-md-1">
-                                    <button id="uploadButton" type="submit" class="btn btn-linkedin  btn-block btn-sm ">Yükle </button>
+                                <div class="form-group row ml-2  col-md-1">
+                                    <button id="uploadButton" type="submit" class="btn btn-linkedin btn-block" style="max-height:36px!important;">Yükle </button>
                                     @*<button id="uploadUpdateButton" onclick="addUpdateButtonClick()" type="button" class="btn btn-primary btn-lg input-group">Yükle ve Güncelle </button>*@
                                 </div>
                             </div>
@@ -85,9 +77,6 @@
             <!--begin: Datatable-->
             <!--begin::Entry-->
             <div class="  col-md-12">
-                <!--begin::Notice-->
-                <!--end::Notice-->
-                <!--begin::Card-->
                 <div class="card card-custom">
                     <div class="card-header flex-wrap py-5">
                         <div class="card-title">
@@ -176,6 +165,33 @@
                         "type": "POST",
                         "datatype": "json",
                     },
+                    columnDefs: [
+
+                        {
+                            targets: -1,
+                            title: 'Aktif Mi',
+                            width: '20px',
+
+                            render: function (data, type, full, meta) {
+                                var status = {
+                                    'True': {
+                                        'title': '',
+                                        'state': 'success'
+                                    },
+                                    'False': {
+                                        'title': '',
+                                        'state': 'danger'
+                                    },
+                                };
+                                if (typeof status[data] === 'undefined') {
+                                    return data;
+                                }
+                                return '<span class="label label-' + status[data].state + ' label-dot label-xl  mr-2"></span>'
+                                // + '<span class="font-weight-bold text-' + status[data].state + '">' + status[data].title + '</span>';
+                            },
+                        },
+
+                    ],
                     "rowCallback": function (row, data, index) { },
                     "initComplete": function (settings, json) { }
                 });

@@ -39,5 +39,10 @@ namespace FlexHR.Business.Concrete
         {
             return _fileColumnDal.LoadDataFromExcel(fuvm);
         }
+
+        public bool UpdateGenericSqlTable(FileUploadViewModel fuvm)
+        {
+            return _fileColumnDal.UpdateGenericSqlTable(fuvm);
+        }
     }
 }

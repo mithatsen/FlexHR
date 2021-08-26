@@ -34,114 +34,95 @@
         <div class="d-flex flex-row">
 
             <!--begin::Aside-->
-            <div class=" col-md-3" style="height: 220px; " id="kt_profile_aside">
+            <div class=" col-md-12" id="kt_profile_aside">
                 <!--begin::Profile Card-->
                 <div class="card card-custom card-stretch">
                     <!--begin::Body-->
                     <div class="card-body pt-4">
-                        <!--begin::User-->
-                        <div class=" align-items-center">
-                            <!--begin::Card-->
-
-                            <form id="uploadExcelFileForm" method="post" asp-action="AddExcelWithAjax" asp-controller="UploadFile" enctype="multipart/form-data">
-                                <div>
-                                    <input type="hidden" name="categoryId" value="2" />
-
-                                    <div class="form-group">
-                                        <div></div>
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="file" id="customFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                                            <label class="custom-file-label" for="customFile">Dosya Seç</label>
+                        <form id="uploadExcelFileForm" method="post" asp-action="AddExcelWithAjax" asp-controller="UploadFile" enctype="multipart/form-data">
+                            <input type="hidden" name="categoryId" value="2" />
+                            <div class="row">
+                                <div class="form-group row col-md-8">
+                                    <div></div>
+                                    <div id="fileDiv" class="custom-file">
+                                        <input type="file" class="custom-file-input d-block " name="file" id="customFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                        <label class="custom-file-label" for="customFile">Dosya Seç</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row ml-2 col-md-3">
+                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
+                                        <input name="Date" type="text" class="form-control datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                        <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
+                                            <span class="input-group-text">
+                                                <i class="ki ki-calendar"></i>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-9 col-xl-12">
-                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                            <input name="Date" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
-                                            <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
-                                                <span class="input-group-text">
-                                                    <i class="ki ki-calendar"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" justify-content-center">
-                                    <button id="uploadButton" type="submit" class="btn btn-primary btn-block btn-lg mt-2 ">Kaydet </button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!--begin::Contact-->
-
-                    </div>
-                    <!--end::Body-->
-                </div>
-                <!--end::Profile Card-->
-            </div>
-            <!--end::Aside-->
-            <!--begin: Datatable-->
-            <div class="tab-content w-100">
-                <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
-                    <!--begin::Entry-->
-                    <div class="d-flex flex-column-fluid">
-                        <!--begin::Container-->
-                        <div class="container">
-                            <!--begin::Notice-->
-                            <!--end::Notice-->
-                            <!--begin::Card-->
-                            <div class="card card-custom">
-                                <div class="card-header flex-wrap py-5">
-                                    <div class="card-title">
-                                        <i class="fas fa-building text-dark mr-2"></i>
-                                        <h3 id="VariableTitle" class="card-label">
-                                            Şirketler
-
-                                        </h3>
-                                    </div>
-                                    <div class="card-toolbar">
-                                        <!--begin::Button-->
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#companyAddModal">
-                                            Ekle
-                                        </button>
-                                        <!--end::Button-->
-                                    </div>
-                                </div>
-                                <div class="card-body">
-
-                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_@EnumTableName.Refectory">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Yüklenme Tarihi</th>
-                                                @foreach (var item in Model.ColumnList)
-                                                {
-                                                    <th>@item.ColumnDescription</th>
-                                                }
-                                                <th>Aktif Mi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-
-
+                                <div class="form-group row ml-2  col-md-1">
+                                    <button id="uploadButton" type="submit" class="btn btn-linkedin btn-block" style="max-height:36px!important;">Yükle </button>
+                                    @*<button id="uploadUpdateButton" onclick="addUpdateButtonClick()" type="button" class="btn btn-primary btn-lg input-group">Yükle ve Güncelle </button>*@
                                 </div>
                             </div>
-                            <!--end::Card-->
-                        </div>
-                        <!--end::Container-->
+                        </form>
+
                     </div>
-                    <!--end::Entry-->
+
+                    <!--begin::Contact-->
+
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::Profile Card-->
+        </div>
+        <!--end::Aside-->
+        <!--begin::Entry-->
+        <div class="  col-md-12">
+            <div class="card card-custom">
+                <div class="card-header flex-wrap py-5">
+                    <div class="card-title">
+                        <i class="fas fa-building text-dark mr-2"></i>
+                        <h3 id="VariableTitle" class="card-label">
+                            Devamsızlık Tablosu
+
+                        </h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <!--begin::Button-->
+                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#companyAddModal">
+                            Ekle
+                        </button>
+                        <!--end::Button-->
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_@EnumTableName.Refectory">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Yüklenme Tarihi</th>
+                                @foreach (var item in Model.ColumnList)
+                                {
+                                    <th>@item.ColumnDescription</th>
+                                }
+                                <th>Aktif Mi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+
                 </div>
             </div>
-
-
+            <!--end::Card-->
         </div>
+        <!--end::Container-->
     </div>
+    <!--end::Entry-->
 </div>
+
 
 @section Scripts{
     @*dosya ekleme başarılı için sweet alert*@
@@ -180,6 +161,33 @@
                         "caseInsensitive": true
                     },
                     pagingType: 'full_numbers',
+                    columnDefs: [
+
+                        {
+                            targets: -1,
+                            title: 'Aktif Mi',
+                            width: '20px',
+
+                            render: function (data, type, full, meta) {
+                                var status = {
+                                    'True': {
+                                        'title': '',
+                                        'state': 'success'
+                                    },
+                                    'False': {
+                                        'title': '',
+                                        'state': 'danger'
+                                    },
+                                };
+                                if (typeof status[data] === 'undefined') {
+                                    return data;
+                                }
+                                return '<span class="label label-' + status[data].state + ' label-dot label-xl  mr-2"></span>'
+                                // + '<span class="font-weight-bold text-' + status[data].state + '">' + status[data].title + '</span>';
+                            },
+                        },
+
+                    ],
                     "order": [[0, "desc"]],
                     "ajax": {
                         "url": "/UploadFile/LoadDataGenericFileTableList/" + id,

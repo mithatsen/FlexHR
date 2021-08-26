@@ -13,5 +13,6 @@ namespace FlexHR.DataAccess.Interface
         GenericResultViewModel ReadExcelFile(FileUploadViewModel fuvm);
         List<FileColumn> FileColumnListByTypeId(int typeId);
         ReadGenericTableMainViewModel GetStaffTrackkingData(string tableName, string whereParam = "", int recordCount = 0);
+        bool UpdateGenericSqlTable(FileUploadViewModel fuvm);
     }
 }

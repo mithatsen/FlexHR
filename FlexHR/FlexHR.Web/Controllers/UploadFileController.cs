@@ -66,11 +66,11 @@ namespace FlexHR.Web.Controllers
                 string fileName = "";
                 if (model.CategoryId == EnumFileType.RefectoryFile.GetHashCode())
                 {
-                    fileName = "Refectory";
+                    fileName = EnumTableName.Refectory.ToString();
                 }
                 else if (model.CategoryId == EnumFileType.StaffTrackingFile.GetHashCode())
                 {
-                    fileName = "StaffTracking";
+                    fileName = EnumTableName.StaffTracking.ToString();
                 }
                 //dosyanın uzantısını aldık
                 string extension = Path.GetExtension(model.file.FileName);
@@ -97,6 +97,13 @@ namespace FlexHR.Web.Controllers
                         }
                     }
                     //eski dataya nasıl ulaşcaz servisi yok generic tablonun
+                    _fileColumnService.UpdateGenericSqlTable(new FileUploadViewModel
+                    {
+                        tableName = fileName,
+                        UploadDate = model.Date
+                    });
+
+
                     var fileUploadResult = _fileColumnService.LoadDataFromExcel(new FileUploadViewModel
                     {
                         file = model.file,
@@ -118,6 +125,14 @@ namespace FlexHR.Web.Controllers
                         Message = fileUploadResult.Message
                     };
                     TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
+                    if (fileName == EnumTableName.StaffTracking.ToString())
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Refectory");
+                    }
                 }
                 else
                 {
@@ -158,7 +173,7 @@ namespace FlexHR.Web.Controllers
                         Message = fileUploadResult.Message
                     };
                     TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
-                    if (fileName == "StaffTracking")
+                    if (fileName == EnumTableName.StaffTracking.ToString())
                     {
                         return RedirectToAction("Index");
                     }
@@ -168,10 +183,6 @@ namespace FlexHR.Web.Controllers
                     }
 
                 }
-
-
-
-
             }
             TempData["FileGeneralUpdateStatus"] = "false";
             return View("Index");
@@ -211,16 +222,18 @@ namespace FlexHR.Web.Controllers
             foreach (var row in dataDB)
             {
                 var rowData = new List<ReadGenericTableViewModel>();
-
-                foreach (var column in row)
+                if (row.LastOrDefault().Value == "True")
                 {
-                    rowData.Add(new ReadGenericTableViewModel()
+                    foreach (var column in row)
                     {
-                        ColumnName = column.ColumnName,
-                        Value = column.Value
-                    });
+                        rowData.Add(new ReadGenericTableViewModel()
+                        {
+                            ColumnName = column.ColumnName,
+                            Value = column.Value
+                        });
+                    }
+                    data.Add(rowData);
                 }
-                data.Add(rowData);
             }
 
             ////Sorting    
@@ -257,8 +270,6 @@ namespace FlexHR.Web.Controllers
                 }
                 resultlist.Add(rowData);
             }
-
-
             //Returning Json Data    
             var jsonResult = Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = resultlist });
             //jsonResult.MaxsonLength = int.MaxValue;

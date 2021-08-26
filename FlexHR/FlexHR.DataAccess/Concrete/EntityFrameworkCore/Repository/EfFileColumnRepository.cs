@@ -382,7 +382,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         public List<FileColumn> FileColumnListByTypeId(int typeId)
         {
             var columnList = new List<FileColumn>();
-            columnList = _context.FileColumn.Where(x => x.IsActive && x.FileTypeId == typeId).Include(x => x.FileColumn_FileColumnProperties).OrderBy(x => x.ColumnSequence).ToList();
+            columnList = _context.FileColumn.Where(x => x.IsActive&& x.FileTypeId == typeId).Include(x => x.FileColumn_FileColumnProperties).OrderBy(x => x.ColumnSequence).ToList();
             return columnList != null ? columnList : new List<FileColumn>();
         }
 
@@ -435,6 +435,25 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             catch (Exception e)
             {
                 return new ReadGenericTableMainViewModel();
+            }
+        }
+        // 4-> Generic Excel Tablosu Oluşturma
+        public bool UpdateGenericSqlTable(FileUploadViewModel fuvm)
+        {
+            try
+            {
+                var myDateTime = fuvm.UploadDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                var query = $"UPDATE {fuvm.tableName} SET IsActive = 0 WHERE UploadDate =  '{myDateTime}'";
+
+                ExecuteSqlCommand(query);
+
+
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }
