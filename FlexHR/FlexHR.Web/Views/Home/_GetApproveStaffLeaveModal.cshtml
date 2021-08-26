@@ -22,6 +22,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+
+                <button type="button" onclick="rejectLeaveDash(@Model.StaffLeaveId)" class="btn btn-danger font-weight-bold">Reddet</button>
                 @if ((User.IsInRole("ApproveLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <button type="button" onclick="approveLeaveDash(@Model.StaffLeaveId)" class="btn btn-primary font-weight-bold">Onayla</button>

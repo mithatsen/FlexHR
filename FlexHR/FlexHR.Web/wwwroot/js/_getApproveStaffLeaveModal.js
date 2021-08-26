@@ -44,7 +44,7 @@
     });
 
 }
-function rejectLeave(id) {
+function rejectLeaveDash(id) {
     Swal.fire({
         title: "Talebi Reddetmek İster Misiniz ?",
         text: "Bunu geri alamazsınız!",
