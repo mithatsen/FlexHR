@@ -2,16 +2,32 @@
 
 namespace FlexHR.DataAccess.Migrations
 {
-    public partial class ExcelFiles : Migration
+    public partial class ExcelFileTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "FileTypeId",
-                table: "FileColumn",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+
+
+       
+
+            migrationBuilder.CreateTable(
+               name: "FileColumn",
+               columns: table => new
+               {
+                   Id = table.Column<int>(type: "int", nullable: false)
+                       .Annotation("SqlServer:Identity", "1, 1"),
+                   FileTypeId = table.Column<int>(type: "int", nullable: false),
+                   ColumnName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                   ColumnDescription = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                   ColumnSequence = table.Column<int>(type: "int", nullable: false),
+                   DataType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                   AllowNulls = table.Column<bool>(type: "bit", nullable: false),
+                   IsActive = table.Column<bool>(type: "bit", nullable: false)
+               },
+               constraints: table =>
+               {
+                   table.PrimaryKey("PK_FileColumn", x => x.Id);
+               });
 
             migrationBuilder.CreateTable(
                 name: "FileColumnProperties",
@@ -88,30 +104,13 @@ namespace FlexHR.DataAccess.Migrations
                 principalTable: "FileType",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
+
+          
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_FileColumn_FileType",
-                table: "FileColumn");
-
-            migrationBuilder.DropTable(
-                name: "FileColumn_FileColumnProperties");
-
-            migrationBuilder.DropTable(
-                name: "FileType");
-
-            migrationBuilder.DropTable(
-                name: "FileColumnProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_FileColumn_FileTypeId",
-                table: "FileColumn");
-
-            migrationBuilder.DropColumn(
-                name: "FileTypeId",
-                table: "FileColumn");
+           
         }
     }
 }

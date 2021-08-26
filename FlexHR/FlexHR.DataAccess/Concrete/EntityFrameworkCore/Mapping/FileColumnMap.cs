@@ -15,10 +15,8 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
             entity.Property(e => e.DataType).HasMaxLength(50).IsRequired();
             entity.Property(e => e.ColumnDescription).HasMaxLength(200).IsRequired(false);
             entity.Property(e => e.ColumnSequence).IsRequired();
+            entity.Property(e => e.FileTypeId).IsRequired();
             entity.Property(e => e.AllowNulls).IsRequired();
-            entity.Property(e => e.IsExistControl).IsRequired();
-            entity.Property(e => e.IsExistInExcel).IsRequired();
-            entity.Property(e => e.IsManuellAdded).IsRequired();
             entity.HasOne(d => d.FileType)
               .WithMany(p => p.FileColumn)
               .HasForeignKey(d => d.FileTypeId)

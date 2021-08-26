@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHR.DataAccess.Migrations
 {
     [DbContext(typeof(FlexHRContext))]
-    [Migration("20210821103813_ExcelFiles")]
-    partial class ExcelFiles
+    [Migration("20210826062941_ExcelFileTables")]
+    partial class ExcelFileTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -368,9 +368,6 @@ namespace FlexHR.DataAccess.Migrations
                     b.Property<int>("ColumnSequence")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyFileTypeGeneralSubTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("DataType")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -380,15 +377,6 @@ namespace FlexHR.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsExistControl")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsExistInExcel")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsManuellAdded")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -691,6 +679,7 @@ namespace FlexHR.DataAccess.Migrations
                         .UseIdentityColumn();
 
                     b.Property<int?>("CompanyBranchId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("CompanyId")
@@ -1322,7 +1311,9 @@ namespace FlexHR.DataAccess.Migrations
                     b.HasOne("FlexHR.Entity.Concrete.CompanyBranch", "CompanyBranch")
                         .WithMany("StaffCareer")
                         .HasForeignKey("CompanyBranchId")
-                        .HasConstraintName("FK_StaffCareer_CompanyBranch");
+                        .HasConstraintName("FK_StaffCareer_CompanyBranch")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FlexHR.Entity.Concrete.Staff", "Staff")
                         .WithMany("StaffCareer")
