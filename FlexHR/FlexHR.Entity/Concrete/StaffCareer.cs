@@ -10,7 +10,7 @@ namespace FlexHR.Entity.Concrete
         public int StaffCareerId { get; set; }
         public int StaffId { get; set; }
         public int CompanyId { get; set; }
-        public int? CompanyBranchId { get; set; }
+        public int CompanyBranchId { get; set; }
         public int DepartmantGeneralSubTypeId { get; set; }
         public int TitleGeneralSubTypeId { get; set; }
         public int ModeOfOperationGeneralSubTypeId { get; set; }

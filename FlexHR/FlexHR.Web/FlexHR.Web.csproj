@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Croppie-2.6.4\.github\ISSUE_TEMPLATE.md" />
     <None Include="wwwroot\lightbox2-2.11.3\.editorconfig" />
     <None Include="wwwroot\lightbox2-2.11.3\.github\ISSUE_TEMPLATE.md" />
     <None Include="wwwroot\lightbox2-2.11.3\.github\PULL_REQUEST_TEMPLATE.md" />
