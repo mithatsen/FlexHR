@@ -1,0 +1,168 @@
+﻿@model ListStaffPaymentOnDashboardDto
+
+<div class="modal fade" id="staffPaymentApprove" tabindex="-1" role="dialog" aria-labelledby="staffPaymentApprove" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder ">
+                        <i class="fas fa-wallet mr-2 "></i>Ödeme Detay
+                    </h3>
+                </div>
+                <button type="button" class="link-2 text-white bg-danger " data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+
+            <div class="modal-body text-center">
+                <p class="font-size-lg">@Model.NameSurname <span class="font-weight-bolder"> @Model.PaymentType </span> talebinde bulunmuştur.</p>
+                <p class="font-size-lg"><span class="font-weight-bolder"> Tarih : </span>@Model.CreationDate.ToShortDateString()  </p>
+                <p class="font-size-lg"><span class="font-weight-bolder"> Açıklama :  </span> @Model.Description </p>
+                @if (Model.Receipts.Count > 0)
+                {
+                    <table class="table table-lg mt-4 ">
+                        <tr class="table  bg-secondary">
+                            <th>Fiş Adı</th>
+                            <th>KDV </th>
+                            <th>Miktar (@Model.CurrencyType) </th>
+                            <th>Dosya </th>
+                        </tr>
+                        @foreach (var item in Model.Receipts)
+                        {
+                            <tr>
+
+                                <td>@item.Name</td>
+                                <td>@item.Vat</td>
+                                <td>@item.Amount @Model.CurrencyType</td>
+                                <td>
+                                    <div class="gallery">
+                                        @if (item.FileName != "")
+                                        {
+
+                                            <a class="cursor-pointer" href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
+                                                <i style="cursor:pointer" class="fas fa-eye text-secondary p-2 "></i>
+                                            </a>
+
+                                        }
+                                        else
+                                        {
+                                            <p class="ml-3">-</p>
+                                        }
+                                    </div>
+                                </td>
+
+
+                            </tr>
+                        }
+                    </table>
+                }
+
+                <p class="font-size-lg"> <span class="font-weight-bold">Talep Edilen Toplam @Model.PaymentType Tutarı : </span>@Model.Amount @Model.CurrencyType</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                <button type="button" onclick="rejectStaffPaymentDash(@Model.StaffPaymentId)" class="btn btn-danger font-weight-bold">Reddet</button>
+                @if ((User.IsInRole("ApprovePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <button type="button" onclick="approveStaffPaymentDash(@Model.StaffPaymentId)" class="btn btn-primary font-weight-bold">Onayla</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function approveStaffPaymentDash(id) {
+
+        Swal.fire({
+            title: "Onaylamak ister misiniz ?",
+            text: "Bunu geri alamazsınız!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet",
+            cancelButtonText: "Hayır",
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    method: "POST",
+                    url: "/Payment/ApprovePayment/" + id,
+                }).done(function (result) {
+                    debugger;
+                    if (result == true) {
+                        Swal.fire({
+                            title: "Onaylandı!",
+                            text: "Talep Onaylandı.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })
+
+                    } else {
+                        Swal.fire(
+                            "Hata",
+                            "Kaydınız onaylanmadı",
+                            "hata"
+                        )
+                    }
+
+                })
+            } else if (result.dismiss === "cancel") {
+                Swal.fire({
+                    title: "İptal Edildi",
+                    text: "Kaydınız onaylanmadı",
+                    icon: "error",
+                    showCancelButton: false
+                })
+            }
+        });
+
+    }
+
+    function rejectStaffPaymentDash(id) {
+        Swal.fire({
+            title: "Reddetmek ister misiniz ?",
+            text: "Bunu geri alamazsınız!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet",
+            cancelButtonText: "Hayır",
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    method: "POST",
+                    url: "/Payment/RejectPayment/" + id,
+                }).done(function (result) {
+                    debugger;
+                    if (result == true) {
+                        Swal.fire({
+                            title: "Reddedildi!",
+                            text: "Talep Reddedildi.",
+                            icon: "success",
+                            showCancelButton: false
+                        }).then(function () {
+                            window.location.reload();
+                        })
+
+                    } else {
+                        Swal.fire(
+                            "Hata",
+                            "İşlem başarısız",
+                            "hata"
+                        )
+                    }
+
+                })
+            } else if (result.dismiss === "cancel") {
+                Swal.fire({
+                    title: "İptal Edildi",
+                    text: "İşlem başarısız",
+                    icon: "error",
+                    showCancelButton: false
+                })
+            }
+        });
+
+    }
+</script>
+
