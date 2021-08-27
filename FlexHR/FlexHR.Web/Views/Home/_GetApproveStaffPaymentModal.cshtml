@@ -33,7 +33,22 @@
                                 <td>@item.Name</td>
                                 <td>@item.Vat</td>
                                 <td>@item.Amount @Model.CurrencyType</td>
-                                <td> <a href="/img/@item.FileFullPath@item.FileName" download title="@item.FileName"><i class="fas fa-image text-warning"></i></a></td>
+                                <td>
+                                    <div class="gallery">
+                                        @if (item.FileName != "")
+                                        {
+
+                                            <a href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
+                                                <i style="cursor:pointer" class="fas fa-eye text-secondary p-2 "></i>
+                                            </a>
+
+                                        }
+                                        else
+                                        {
+                                            <p class="ml-3">-</p>
+                                        }
+                                    </div>
+                                </td>
 
 
                             </tr>

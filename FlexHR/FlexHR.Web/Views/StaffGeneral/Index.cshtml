@@ -197,6 +197,22 @@
         });
     </script>
     <script>
+        // Demo 7
+        $('#kt_datetimepicker_2').datetimepicker({
+
+        });
+        $('#kt_datetimepicker_3').datetimepicker({
+            useCurrent: false
+        });
+
+        $('#kt_datetimepicker_2').on('change.datetimepicker', function (e) {
+            $('#kt_datetimepicker_3').datetimepicker('minDate', e.date);
+        });
+        $('#kt_datetimepicker_3').on('change.datetimepicker', function (e) {
+            $('#kt_datetimepicker_2').datetimepicker('maxDate', e.date);
+        });
+    </script>
+    <script>
         $('input[name="PhonePersonal"]').mask('(000) 000 0000');
         $('input[name="PhoneJob"]').mask('(000) 000 0000');
         $('input[name="JobJoinDate"]').mask('00.00.0000');

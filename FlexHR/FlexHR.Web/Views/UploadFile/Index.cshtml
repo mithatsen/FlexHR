@@ -38,19 +38,19 @@
                     <!--begin::Body-->
                     <div class="card-body pt-4">
 
-                        <form id="uploadExcelFileForm" method="post" asp-action="AddExcelWithAjax" asp-controller="UploadFile" enctype="multipart/form-data">
-                            <input type="hidden" name="categoryId" value="1" />
+                        <form id="uploadExcelFileForm" method="post"  enctype="multipart/form-data">
+                            <input type="hidden" name="categoryId" id="categoryId" value="1" />
                             <div class="row">
                                 <div class="form-group row col-md-8">
                                     <div></div>
-                                    <div id="fileDiv" class="custom-file">
+                                    <div class="custom-file">
                                         <input type="file" class="custom-file-input d-block " name="file" id="customFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                         <label class="custom-file-label" for="customFile">Dosya Seç</label>
                                     </div>
                                 </div>
                                 <div class="form-group row ml-2 col-md-3">
                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                        <input name="Date" type="text" class="form-control datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                        <input name="Date" id="ExcelUploadDate" type="text" class="form-control datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
                                         <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
                                             <span class="input-group-text">
                                                 <i class="ki ki-calendar"></i>
@@ -59,8 +59,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group row ml-2  col-md-1">
-                                    <button id="uploadButton" type="submit" class="btn btn-linkedin btn-block" style="max-height:36px!important;">Yükle </button>
-                                    @*<button id="uploadUpdateButton" onclick="addUpdateButtonClick()" type="button" class="btn btn-primary btn-lg input-group">Yükle ve Güncelle </button>*@
+                                    @*<button id="uploadButton" type="submit" class="btn btn-linkedin btn-block" style="max-height:36px!important;">Yükle </button>*@
+                                    <button id="uploadUpdateButton" onclick="addUpdateExcelButtonClick()" type="button" class="btn btn-primary btn-lg input-group">Yükle </button>
                                 </div>
                             </div>
                         </form>
@@ -87,11 +87,7 @@
                             </h3>
                         </div>
                         <div class="card-toolbar">
-                            <!--begin::Button-->
-                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#companyAddModal">
-                                Ekle
-                            </button>
-                            <!--end::Button-->
+                            
                         </div>
                     </div>
                     <div class="card-body">
@@ -129,12 +125,12 @@
     <script>
         $(document).ready(function () {
             KTDatatablesStaffTracking.init();
-            var json = '@Html.Raw(@ViewBag.FileGeneralUpdateStatus)';
+            @*var json = '@Html.Raw(@ViewBag.FileGeneralUpdateStatus)';
             json=$.parseJSON(json)
             if (json != null) {
                 Swal.fire(json.IsSuccess == true ? "Yüklendi!" : "Yüklenemedi!", json.Message, json.IsSuccess == true ? "success" : "error");
                 $('#kt_datatable_StaffTrackking').DataTable().ajax.reload();
-            }
+            }*@
         });
     </script>
     <script>
@@ -206,51 +202,85 @@
 
     </script>
     <script>
-        function addUpdateButtonClick() {
-            Swal.fire({
-                title: "Bu tarihe ait yüklediğiniz eski kayıtlar silinecektir ?",
-                text: "Bunu geri alamazsınız!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Evet",
-                cancelButtonText: "Hayır",
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    //asdfsgdhngmh
-                    var formdata = new FormData();
-                    $('#fileDiv').each(function (i, obj) {
-                        debugger;
-                        var myKey = "1";
-                        var file;
-                        var itemId = "#customFile";
-                        $(this).find('input').each(function (j, obj2) {
-                            if ($(obj2).attr("name") == "file" && $(itemId).prop('files') != null) {
-                                file = $(itemId).prop('files');
-                            }
+        function addUpdateExcelButtonClick() {
+            var file = $("#customFile").prop('files');
+            var formData = new FormData();
 
-                        });
-                        console.log(file);
-                        if (file.length != 0) {
-                            formdata.append(myKey, file[0]);
+            formData.append("file", file[0]);
+            formData.append("Date", $("#ExcelUploadDate").val());
+            formData.append("CategoryId", $("#categoryId").val());
+            $.ajax({
+                method: 'Post',
+                url: '/UploadFile/UploadingFileIsExist',
+                data: formData,
+                contentType: false,
+                cache: false,
+                processData: false,
+            }).done(function (result) {
+                if (result == true) {
+                    Swal.fire({
+                        title: "Uyarı!",
+                        text: "Aynı isimde dosyanız bulunmaktadır. Onaylarsanız eski verileriniz silinecektir.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Evet",
+                        cancelButtonText: "Hayır",
+                        reverseButtons: true
+                    }).then(function (result) {
+                        debugger;
+                        if (result.value) {
+                            $.ajax({
+                                method: "POST",
+                                url: "/UploadFile/AddExcelWithAjax",
+                                data: formData,
+                                contentType: false,
+                                cache: false,
+                                processData: false,
+                            }).done(function (result) {
+                                console.log(result);
+                                debugger;
+                                if (result.isSuccess == true) {
+                                    Swal.fire({
+                                        title: "Yüklendi!",
+                                        text: result.message,
+                                        icon: "success",
+                                        showCancelButton: false
+                                    }).then(function () {
+                                        window.location.reload();
+                                    })
+
+                                } else {
+                                    Swal.fire(
+                                        "Hata",
+                                        result.Message,
+                                        "hata"
+                                    )
+                                }
+
+                            })
+                        } else if (result.dismiss === "cancel") {
+                            Swal.fire({
+                                title: "İptal Edildi",
+                                text: "Kaydınız silinmedi",
+                                icon: "error",
+                                showCancelButton: false
+                            })
                         }
-                    });
-                    debugger;
-                    var id = $("#StaffId").val();
+                    })
+                } else {
                     $.ajax({
-                        method: 'Post',
-                        url: '/UploadFile/AddUpdateExcelFile/' + id,
-                        data: formdata,
+                        method: "POST",
+                        url: "/UploadFile/AddExcelWithAjax",
+                        data: formData,
                         contentType: false,
                         cache: false,
                         processData: false,
-
                     }).done(function (result) {
                         debugger;
-                        if (result == true) {
+                        if (result.isSuccess == true) {
                             Swal.fire({
-                                title: "Eklendi!",
-                                text: "Excel Dosyanız Eklendi.",
+                                title: "Yüklendi!",
+                                text: result.message,
                                 icon: "success",
                                 showCancelButton: false
                             }).then(function () {
@@ -258,24 +288,19 @@
                             })
 
                         } else {
-                            Swal.fire(
-                                "Hata",
-                                "Excel Dosyanız Hatalı",
-                                "hata"
-                            )
+                            Swal.fire({
+                                title: "Hata!",
+                                text: result.message,
+                                icon: "error",
+                                showCancelButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            })
                         }
-                    });
 
-                } else if (result.dismiss === "cancel") {
-                    Swal.fire({
-                        title: "İptal Edildi",
-                        text: "",
-                        icon: "error",
-                        showCancelButton: false
                     })
                 }
             });
-
         }
     </script>
 }

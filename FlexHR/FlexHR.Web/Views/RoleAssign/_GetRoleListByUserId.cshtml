@@ -31,8 +31,8 @@
                 <thead>
                     <tr>
 
-                        <th>Rol Adı</th>
-                        <th>İşlemler</th>
+                        <th width="90%">Rol Adı</th>
+                        <th width="10%">İşlemler</th>
 
                     </tr>
                 </thead>
@@ -165,9 +165,8 @@
 </div>
 
 
-<script src="~/js/_getRoleListByUserId.js"></script>
+@*<script src="~/js/_getRoleListByUserId.js"></script>*@
 <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-@*<script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>*@
 <script>
     $('.selectpicker').selectpicker();
     $('#s2permissions').select2({
@@ -177,6 +176,17 @@
     $('#s2roles').select2({
         closeOnSelect: false,
         width: '100%'
+    });
+</script>
+<script>
+    var table = $('#kt_datatable_18');
+    // begin first table
+    table.columns.adjust().draw();
+    table.DataTable({
+        scrollY: "500px",
+        scrollCollapse: true,
+        responsive: true,
+        paging: true,
     });
 </script>
 <script>

@@ -519,74 +519,7 @@ var KTDatatablesAdvancedColumnRendering = function () {
 
         });
 
-        var table = $('#kt_datatable_17');
-
-        // begin first table
-        table.DataTable({
-            responsive: true,
-            paging: true,
-            scrollY: "500px",
-            scrollCollapse: true,
-            columnDefs: [
-                {
-                    targets: 0,
-                    title: 'Ad Soyad',
-                    render: function (data, type, full, meta) {
-                        var user_img = full[0];
-                        var stringSplitted = user_img.split("~");
-
-
-                        var output;
-                        if (stringSplitted[0] != "-") {
-                            output = `
-                                <div class="d-flex align-items-center">
-                                    <div class="symbol symbol-50 flex-shrink-0">
-                                        <img src="/img/` + stringSplitted[0] + `" alt="photo">
-                                    </div>
-                                    <div class="ml-3">
-                                         <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
-                                         <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
-                                    </div>
-                                </div>`;
-                        }
-
-                        else {
-                            var stateNo = KTUtil.getRandomInt(0, 6);
-                            var states = [
-                                'success',
-                                'danger',
-                                'success',
-                                'warning',
-                                'dark',
-                                'primary',
-                                'info'];
-
-                            var state = states[stateNo];
-
-                            output = `
-                                <div class="d-flex align-items-center">
-                                    <div class="symbol symbol-50 symbol-light-` + state + `" flex-shrink-0">
-                                        <div class="symbol-label font-size-h5">` + stringSplitted[2].substring(0, 1) + `</div>
-                                    </div>
-                                    <div class="ml-3">
-                                       <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
-                                         <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
-                                    </div>
-                                </div>`;
-                        }
-
-                        return output;
-                    },
-                },
-                {
-                    targets: 1,
-                    render: function (data, type, full, meta) {
-                        return '<a class="text-dark-50 text-hover-primary" href="mailto:' + data + '">' + data + '</a>';
-                    },
-                },
-
-            ],
-        });
+  
 
        
         $('#kt_datatable_search_status').on('change', function () {

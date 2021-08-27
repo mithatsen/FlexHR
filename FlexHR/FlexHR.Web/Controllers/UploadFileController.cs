@@ -58,66 +58,106 @@ namespace FlexHR.Web.Controllers
             var unaccentedText = String.Join("", text.Normalize(NormalizationForm.FormD).Where(c => char.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.NonSpacingMark));
             return unaccentedText.Replace("ı", "i");
         }
+
         [HttpPost]
-        public async Task<IActionResult> AddExcelWithAjax(AddExcelViewModel model)
+        public bool UploadingFileIsExist(IFormCollection data)
         {
-            if (model.file != null)
+            DateTime date = Convert.ToDateTime(data["Date"]);
+            int categoryId = Convert.ToInt32(data["CategoryId"]);
+            string fileName = "";
+            string excelFileName = data.Files.FirstOrDefault().FileName;
+            if (categoryId == EnumFileType.RefectoryFile.GetHashCode())
+            {
+                fileName = EnumTableName.Refectory.ToString();
+            }
+            else if (categoryId == EnumFileType.StaffTrackingFile.GetHashCode())
+            {
+                fileName = EnumTableName.StaffTracking.ToString();
+            }
+            string categoryNameFolder = "Excel";
+            string categoryTypeFolder = categoryNameFolder + "/" + fileName;
+            var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
+            var path = _fileColumnService.FileUploadCreateFolder(new FileUploadViewModel
+            {
+                folderName = categoryTypeFolder,
+                UploadDate = date,
+                xlsFileName = excelFileName,
+                xlsPath = fullPath
+            });
+            var result = _companyFileService.Get(x => x.FileFullPath == path + "/" + excelFileName).FirstOrDefault();
+            if (result != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExcelWithAjax(IFormCollection data)
+        {
+            DateTime date = Convert.ToDateTime(data["Date"]);
+            int categoryId = Convert.ToInt32(data["CategoryId"]);
+            string excelFileName = data.Files.FirstOrDefault().FileName;
+            if (excelFileName != null)
             {
                 string fileName = "";
-                if (model.CategoryId == EnumFileType.RefectoryFile.GetHashCode())
+                if (categoryId == EnumFileType.RefectoryFile.GetHashCode())
                 {
                     fileName = EnumTableName.Refectory.ToString();
                 }
-                else if (model.CategoryId == EnumFileType.StaffTrackingFile.GetHashCode())
+                else if (categoryId == EnumFileType.StaffTrackingFile.GetHashCode())
                 {
                     fileName = EnumTableName.StaffTracking.ToString();
                 }
                 //dosyanın uzantısını aldık
-                string extension = Path.GetExtension(model.file.FileName);
+                string extension = Path.GetExtension(excelFileName);
                 string categoryNameFolder = "Excel";
                 string categoryTypeFolder = categoryNameFolder + "/" + fileName;
                 var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
                 var path = _fileColumnService.FileUploadCreateFolder(new FileUploadViewModel
                 {
                     folderName = categoryTypeFolder,
-                    UploadDate = model.Date,
-                    xlsFileName = model.file.FileName,
+                    UploadDate = date,
+                    xlsFileName = excelFileName,
                     xlsPath = fullPath
                 });
-                var result = _companyFileService.Get(x => x.FileFullPath == path + "/" + model.file.FileName).FirstOrDefault();
+                var result = _companyFileService.Get(x => x.FileFullPath == path + "/" + excelFileName).FirstOrDefault();
                 if (result != null)
                 {
                     //update
-                    if (model.file.Length > 0)
+                    if (data.Files.Count > 0)
                     {
                         //dosyamızı kaydediyoruz.
                         using (var stream = new FileStream(result.FileFullPath, FileMode.Create))
                         {
-                            await model.file.CopyToAsync(stream);
+                            await data.Files.FirstOrDefault().CopyToAsync(stream);
                         }
                     }
                     //eski dataya nasıl ulaşcaz servisi yok generic tablonun
                     _fileColumnService.UpdateGenericSqlTable(new FileUploadViewModel
                     {
                         tableName = fileName,
-                        UploadDate = model.Date
+                        UploadDate = date
                     });
 
 
                     var fileUploadResult = _fileColumnService.LoadDataFromExcel(new FileUploadViewModel
                     {
-                        file = model.file,
-                        xlsFileName = model.file.FileName,
+                        file = data.Files.FirstOrDefault(),
+                        xlsFileName = excelFileName,
                         folderName = categoryNameFolder,
                         xlsPath = result.FileFullPath,
-                        fileUploadTypeID = model.CategoryId,
+                        fileUploadTypeID = categoryId,
                         tableName = fileName,
-                        UploadDate = model.Date
+                        UploadDate = date
                     });
                     if (!fileUploadResult.IsSuccess)
                     {
                         //databsaeden de sil exceli
-                        System.IO.File.Delete(path + "/" + model.file.FileName);
+                        System.IO.File.Delete(path + "/" + excelFileName);
                     }
                     GenericResultViewModel genericResultView = new GenericResultViewModel()
                     {
@@ -127,11 +167,11 @@ namespace FlexHR.Web.Controllers
                     TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
                     if (fileName == EnumTableName.StaffTracking.ToString())
                     {
-                        return RedirectToAction("Index");
+                        return Json(genericResultView);
                     }
                     else
                     {
-                        return RedirectToAction("Refectory");
+                        return Json(genericResultView);
                     }
                 }
                 else
@@ -139,33 +179,33 @@ namespace FlexHR.Web.Controllers
                     //add
                     _companyFileService.Add(new CompanyFile()
                     {
-                        FileFullPath = path + "/" + model.file.FileName,
-                        FileName = model.file.FileName,
-                        FileGeneralSubTypeId = model.CategoryId,
+                        FileFullPath = path + "/" + excelFileName,
+                        FileName = excelFileName,
+                        FileGeneralSubTypeId = categoryId,
                         IsActive = true,
                     });
-                    if (model.file.Length > 0)
+                    if (data.Files.Count > 0)
                     {
                         //dosyamızı kaydediyoruz.
-                        using (var stream = new FileStream(path + "/" + model.file.FileName, FileMode.Create))
+                        using (var stream = new FileStream(path + "/" + excelFileName, FileMode.Create))
                         {
-                            await model.file.CopyToAsync(stream);
+                            await data.Files.FirstOrDefault().CopyToAsync(stream);
                         }
                     }
                     var fileUploadResult = _fileColumnService.LoadDataFromExcel(new FileUploadViewModel
                     {
-                        file = model.file,
-                        xlsFileName = model.file.FileName,
+                        file = data.Files.FirstOrDefault(),
+                        xlsFileName = excelFileName,
                         folderName = categoryNameFolder,
-                        xlsPath = path + "/" + model.file.FileName,
-                        fileUploadTypeID = model.CategoryId,
+                        xlsPath = path + "/" + excelFileName,
+                        fileUploadTypeID = categoryId,
                         tableName = fileName,
-                        UploadDate = model.Date
+                        UploadDate = date
                     });
                     if (!fileUploadResult.IsSuccess)
                     {
                         //databsaeden de sil exceli
-                        System.IO.File.Delete(path + "/" + model.file.FileName);
+                        System.IO.File.Delete(path + "/" + excelFileName);
                     }
                     GenericResultViewModel genericResultView = new GenericResultViewModel()
                     {
@@ -175,11 +215,11 @@ namespace FlexHR.Web.Controllers
                     TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
                     if (fileName == EnumTableName.StaffTracking.ToString())
                     {
-                        return RedirectToAction("Index");
+                        return Json(genericResultView);
                     }
                     else
                     {
-                        return RedirectToAction("Refectory");
+                        return Json(genericResultView);
                     }
 
                 }
@@ -187,6 +227,135 @@ namespace FlexHR.Web.Controllers
             TempData["FileGeneralUpdateStatus"] = "false";
             return View("Index");
         }
+        //[HttpPost]
+        //public async Task<IActionResult> AddExcelWithAjax(AddExcelViewModel model)
+        //{
+        //    if (model.file != null)
+        //    {
+        //        string fileName = "";
+        //        if (model.CategoryId == EnumFileType.RefectoryFile.GetHashCode())
+        //        {
+        //            fileName = EnumTableName.Refectory.ToString();
+        //        }
+        //        else if (model.CategoryId == EnumFileType.StaffTrackingFile.GetHashCode())
+        //        {
+        //            fileName = EnumTableName.StaffTracking.ToString();
+        //        }
+        //        //dosyanın uzantısını aldık
+        //        string extension = Path.GetExtension(model.file.FileName);
+        //        string categoryNameFolder = "Excel";
+        //        string categoryTypeFolder = categoryNameFolder + "/" + fileName;
+        //        var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
+        //        var path = _fileColumnService.FileUploadCreateFolder(new FileUploadViewModel
+        //        {
+        //            folderName = categoryTypeFolder,
+        //            UploadDate = model.Date,
+        //            xlsFileName = model.file.FileName,
+        //            xlsPath = fullPath
+        //        });
+        //        var result = _companyFileService.Get(x => x.FileFullPath == path + "/" + model.file.FileName).FirstOrDefault();
+        //        if (result != null)
+        //        {
+        //            //update
+        //            if (model.file.Length > 0)
+        //            {
+        //                //dosyamızı kaydediyoruz.
+        //                using (var stream = new FileStream(result.FileFullPath, FileMode.Create))
+        //                {
+        //                    await model.file.CopyToAsync(stream);
+        //                }
+        //            }
+        //            //eski dataya nasıl ulaşcaz servisi yok generic tablonun
+        //            _fileColumnService.UpdateGenericSqlTable(new FileUploadViewModel
+        //            {
+        //                tableName = fileName,
+        //                UploadDate = model.Date
+        //            });
+
+
+        //            var fileUploadResult = _fileColumnService.LoadDataFromExcel(new FileUploadViewModel
+        //            {
+        //                file = model.file,
+        //                xlsFileName = model.file.FileName,
+        //                folderName = categoryNameFolder,
+        //                xlsPath = result.FileFullPath,
+        //                fileUploadTypeID = model.CategoryId,
+        //                tableName = fileName,
+        //                UploadDate = model.Date
+        //            });
+        //            if (!fileUploadResult.IsSuccess)
+        //            {
+        //                //databsaeden de sil exceli
+        //                System.IO.File.Delete(path + "/" + model.file.FileName);
+        //            }
+        //            GenericResultViewModel genericResultView = new GenericResultViewModel()
+        //            {
+        //                IsSuccess = fileUploadResult.IsSuccess,
+        //                Message = fileUploadResult.Message
+        //            };
+        //            TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
+        //            if (fileName == EnumTableName.StaffTracking.ToString())
+        //            {
+        //                return RedirectToAction("Index");
+        //            }
+        //            else
+        //            {
+        //                return RedirectToAction("Refectory");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            //add
+        //            _companyFileService.Add(new CompanyFile()
+        //            {
+        //                FileFullPath = path + "/" + model.file.FileName,
+        //                FileName = model.file.FileName,
+        //                FileGeneralSubTypeId = model.CategoryId,
+        //                IsActive = true,
+        //            });
+        //            if (model.file.Length > 0)
+        //            {
+        //                //dosyamızı kaydediyoruz.
+        //                using (var stream = new FileStream(path + "/" + model.file.FileName, FileMode.Create))
+        //                {
+        //                    await model.file.CopyToAsync(stream);
+        //                }
+        //            }
+        //            var fileUploadResult = _fileColumnService.LoadDataFromExcel(new FileUploadViewModel
+        //            {
+        //                file = model.file,
+        //                xlsFileName = model.file.FileName,
+        //                folderName = categoryNameFolder,
+        //                xlsPath = path + "/" + model.file.FileName,
+        //                fileUploadTypeID = model.CategoryId,
+        //                tableName = fileName,
+        //                UploadDate = model.Date
+        //            });
+        //            if (!fileUploadResult.IsSuccess)
+        //            {
+        //                //databsaeden de sil exceli
+        //                System.IO.File.Delete(path + "/" + model.file.FileName);
+        //            }
+        //            GenericResultViewModel genericResultView = new GenericResultViewModel()
+        //            {
+        //                IsSuccess = fileUploadResult.IsSuccess,
+        //                Message = fileUploadResult.Message
+        //            };
+        //            TempData["FileGeneralUpdateStatus"] = JsonConvert.SerializeObject(genericResultView);
+        //            if (fileName == EnumTableName.StaffTracking.ToString())
+        //            {
+        //                return RedirectToAction("Index");
+        //            }
+        //            else
+        //            {
+        //                return RedirectToAction("Refectory");
+        //            }
+
+        //        }
+        //    }
+        //    TempData["FileGeneralUpdateStatus"] = "false";
+        //    return View("Index");
+        //}
 
         [HttpPost]
         public IActionResult LoadDataGenericFileTableList(int id)
