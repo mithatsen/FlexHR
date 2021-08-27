@@ -240,7 +240,25 @@
         $('input[name="IssueDate"]').mask('00.00.0000');
         $('input[name="ReturnDate"]').mask('00.00.0000');
     </script>
+
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+    <script>
+        var date = new Date();
+        $("#IssueDate").val(date.getDate())
+        // Demo 7
+        $('#kt_datetimepicker_5').datetimepicker({
 
+        });
+        $('#kt_datetimepicker_6').datetimepicker({
+            useCurrent: false
+        });
+
+        $('#kt_datetimepicker_5').on('change.datetimepicker', function (e) {
+            $('#kt_datetimepicker_6').datetimepicker('minDate', e.date);
+        });
+        $('#kt_datetimepicker_6').on('change.datetimepicker', function (e) {
+            $('#kt_datetimepicker_5').datetimepicker('maxDate', e.date);
+        });
+    </script>
 }

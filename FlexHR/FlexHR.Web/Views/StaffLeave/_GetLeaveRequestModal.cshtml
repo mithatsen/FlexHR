@@ -48,7 +48,7 @@
                                                 <label>Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_14" data-target-input="nearest">
-                                                        <input name="LeaveStartDate" id="LeaveStartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
+                                                        <input name="LeaveStartDate" id="LeaveStartDate_r" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_14" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_14" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -109,7 +109,7 @@
                                                 <label>Bitiş Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_15" data-target-input="nearest">
-                                                        <input name="LeaveEndDate" id="LeaveEndDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
+                                                        <input name="LeaveEndDate" id="LeaveEndDate_r" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_15" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_15" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -272,4 +272,24 @@
         });
     }
 
+</script>
+<script>
+    var date = new Date();
+    $("#LeaveStartDate_r").val(date.getDate())
+    // Demo 7
+    $('#kt_datetimepicker_14').datetimepicker({
+
+    });
+    $('#kt_datetimepicker_15').datetimepicker({
+        useCurrent: false
+    });
+
+    $('#kt_datetimepicker_14').on('change.datetimepicker', function (e) {
+        $('#kt_datetimepicker_15').datetimepicker('minDate', e.date);
+
+
+    });
+    $('#kt_datetimepicker_15').on('change.datetimepicker', function (e) {
+        $('#kt_datetimepicker_14').datetimepicker('maxDate', e.date);
+    });
 </script>

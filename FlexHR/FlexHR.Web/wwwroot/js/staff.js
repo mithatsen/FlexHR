@@ -367,6 +367,8 @@ $('#ContractTypeSelect').on('change', function () {
         $("#JobFinishDate").attr("disabled", false);
         $("#JobFinishDate").removeClass("text-muted");
         $("#jobFinishDateLbl").removeClass("text-muted");
+        $("#JobFinishDate").val(moment().format('DD.MM.YYYY'));
+      
     }
     else {
         $("#JobFinishDate").attr("disabled", true);

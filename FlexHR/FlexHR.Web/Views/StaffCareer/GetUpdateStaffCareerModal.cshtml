@@ -10,6 +10,7 @@
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark">
                         <i class="fas fa-address-book mr-2 text-dark"></i>Pozisyon Düzenle
+
                     </h3>
 
                 </div>
@@ -33,20 +34,29 @@
 
                                         <div class="col-md-5 ">
                                             <div class="form-group row ">
-                                                <label  >Şirket *</label>
+                                                <label>Şirket *</label>
                                                 <div class="input-group">
-                                                    <select onchange="CompanyChangeUpdate()" class="form-control form-control-solid form-control-lg"  style=" width: 100% !important;" id="c_companySelectUpdate" asp-for="CompanyId" asp-items="ViewBag.Companies">
+                                                    <select onchange="CompanyChangeUpdate()" class="form-control form-control-solid form-control-lg" style=" width: 100% !important;" id="c_companySelectUpdate" asp-for="CompanyId" asp-items="ViewBag.Companies">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
 
                                                 </div>
                                                 <input type="hidden" asp-for="StaffId" />
-                                                <input type="hidden" asp-for="StaffCareerId"/>
+                                                <input type="hidden" asp-for="StaffCareerId" />
 
                                             </div>
                                             <div class="form-group row ">
-                                                <label  >Departman *</label>
+                                                <label>Şube</label>
+                                                <div class="input-group">
+                                                    <select class="form-control form-control-solid form-control-lg" style=" width: 100% !important;" id="c_companyBranchSelectUpdate" asp-for="CompanyBranchId" asp-items="ViewBag.CompanyBranchs">
+                                                        <option value="">Seçiniz</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <label>Departman *</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" id="c_DepartmentUpdate" style=" width: 100% !important;" asp-for="DepartmantGeneralSubTypeId" asp-items="ViewBag.Departments">
                                                         <option value="">Seçiniz</option>
@@ -54,9 +64,24 @@
                                                     </select>
                                                 </div>
                                             </div>
-
                                             <div class="form-group row ">
-                                                <label  >Çalışma Şekli *</label>
+                                                <label>Unvan *</label>
+                                                <div class="input-group">
+                                                    <select class="form-control form-control-solid form-control-lg" style=" width: 100% !important;" id="c_TitleUpdate" asp-for="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
+                                                        <option value="">Seçiniz</option>
+
+                                                    </select>
+                                                    <input type="hidden" asp-for="@Model.StaffId" />
+                                                </div>
+                                            </div>
+
+                                           
+
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row ">
+                                                <label>Çalışma Şekli *</label>
                                                 <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" style=" width: 100% !important;" id="c_ModeOfOperationUpdate" asp-for="ModeOfOperationGeneralSubTypeId" asp-items="ViewBag.ModeOfOperations">
                                                         <option value="">Seçiniz</option>
@@ -64,13 +89,13 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                 
+
 
                                             <div class="form-group row ">
-                                                <label id="jobFinishDateLbl"  >Başlangıç Tarihi *</label>
+                                                <label id="jobFinishDateLbl">Başlangıç Tarihi *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_45" data-target-input="nearest">
-                                                        <input id="ContractFinishDate" asp-for="JobStartDate" value="@Model.JobStartDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_45" />
+                                                        <input id="ContractStartDate" asp-for="JobStartDate" value="@Model.JobStartDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_45" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_45" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -80,30 +105,8 @@
                                                 </div>
                                             </div>
 
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-5">
-                                            <div class="form-group row ">
-                                                <label  >Şube</label>
-                                                <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" style=" width: 100% !important;"   id="c_companyBranchSelectUpdate" asp-for="CompanyBranchId" asp-items="ViewBag.CompanyBranchs">
-                                                        <option value="-1">Seçiniz</option>
-
-                                                    </select>
-                                                </div>
-                                            </div>
 
 
-                                            <div class="form-group row ">
-                                                <label  >Unvan *</label>
-                                                <div class="input-group">
-                                                    <select class="form-control form-control-solid form-control-lg" style=" width: 100% !important;" id="c_TitleUpdate" asp-for="TitleGeneralSubTypeId" asp-items="ViewBag.Titles">
-                                                        <option value="">Seçiniz</option>
-
-                                                    </select>
-                                                    <input type="hidden" asp-for="@Model.StaffId" />
-                                                </div>
-                                            </div>
 
                                             <div class="form-group row ">
                                                 <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label ">Bitiş Tarihi</label>
@@ -170,5 +173,27 @@
         placeholder: 'Seçiniz'
     });
    
+</script>
+
+<script>
+    $('#kt_datetimepicker_45').datetimepicker({
+
+    });
+    $('#kt_datetimepicker_29').datetimepicker({
+        useCurrent: false
+    });
+
+    $('#kt_datetimepicker_45').on('change.datetimepicker', function (e) {
+        $('#kt_datetimepicker_29').datetimepicker('minDate', e.date);
+        var x = $('#ContractStartDate').val().split(".").reverse().join(".");
+        var y = $('#ContractFinishDate').val().split(".").reverse().join(".");
+        if (x > y) {
+
+            $('#ContractFinishDate').val($('#ContractStartDate').val());
+        }
+    });
+    $('#kt_datetimepicker_29').on('change.datetimepicker', function (e) {
+        $('#kt_datetimepicker_45').datetimepicker('maxDate', e.date);
+    });
 </script>
 <script src="~/js/getUpdateStaffCareerModal.js"></script>
