@@ -13,11 +13,11 @@
                 </button>
             </div>
             <div class="modal-body text-center">
-                <h4>@Model.NameSurname <span class="text-warning"> @Model.LeaveType </span> talebinde bulunmuştur.</h4>
-                <h4 class="card-title "><span class="text-warning"> Tarih Aralığı : </span> @Model.LeaveStartDate.ToShortDateString() - @Model.LeaveEndDate.ToShortDateString()  ( @Model.TotalDay gün ) </h4>
-                <p class="card-title "> <h4> <span class="text-warning">Açıklama : </span> @Model.Description </h4></p>
-                <div >
-                    <h4><span class="text-warning"> Kalan Yıllık İzin Hakkı : </span> @Model.TotalRemainingDay Gün</h4>
+                <p class="font-size-lg">@Model.NameSurname <span class="font-weight-bolder"> @Model.LeaveType </span> talebinde bulunmuştur.</p>
+                <p class="font-size-lg"><span class="font-weight-bolder"> Tarih Aralığı : </span> @Model.LeaveStartDate.ToShortDateString() - @Model.LeaveEndDate.ToShortDateString()  ( @Model.TotalDay gün ) </p>
+                <p class="font-size-lg"><span class="font-weight-bolder">Açıklama : </span> @Model.Description </p>
+                <div>
+                    <p class="font-size-lg"><span class="font-weight-bolder"> Kalan Yıllık İzin Hakkı : </span> @Model.TotalRemainingDay Gün</p>
                 </div>
             </div>
             <div class="modal-footer">

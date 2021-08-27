@@ -84,17 +84,7 @@ var KTBootstrapDatetimepicker = function () {
             format: 'MM.yyyy'
         });
 
-        $('#kt_datetimepicker_99').datetimepicker({
-            locale: 'tr',
-            format: 'DD.MM.YYYY HH:mm',
-            autoclose: true
-        });
-
-        $('#kt_datetimepicker_100').datetimepicker({
-            locale: 'tr',
-            format: 'DD.MM.YYYY HH:mm',
-            autoclose: true
-        });
+      
 
     }
 

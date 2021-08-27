@@ -14,9 +14,9 @@
             </div>
 
             <div class="modal-body text-center">
-                <h4>@Model.NameSurname <span class="text-warning"> @Model.PaymentType </span> talebinde bulunmuştur.</h4>
-                <h4 class="card-title "><span class="text-warning"> Tarih : </span>@Model.CreationDate.ToShortDateString()  </h4>
-                <p class="card-title "> <h4><span class="text-warning"> Açıklama :  </span> @Model.Description </h4></p>
+                <p class="font-size-lg">@Model.NameSurname <span class="font-weight-bolder"> @Model.PaymentType </span> talebinde bulunmuştur.</p>
+                <p class="font-size-lg"><span class="font-weight-bolder"> Tarih : </span>@Model.CreationDate.ToShortDateString()  </p>
+                <p class="font-size-lg"><span class="font-weight-bolder"> Açıklama :  </span> @Model.Description </p>
                 @if (Model.Receipts.Count > 0)
                 {
                     <table class="table table-lg mt-4 ">
@@ -33,7 +33,22 @@
                                 <td>@item.Name</td>
                                 <td>@item.Vat</td>
                                 <td>@item.Amount @Model.CurrencyType</td>
-                                <td> <a href="/img/@item.FileFullPath@item.FileName" download title="@item.FileName"><i class="fas fa-image text-warning"></i></a></td>
+                                <td>
+                                    <div class="gallery">
+                                        @if (item.FileName != "")
+                                        {
+
+                                            <a class="cursor-pointer" href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
+                                                <i style="cursor:pointer" class="fas fa-eye text-secondary p-2 "></i>
+                                            </a>
+
+                                        }
+                                        else
+                                        {
+                                            <p class="ml-3">-</p>
+                                        }
+                                    </div>
+                                </td>
 
 
                             </tr>
@@ -41,7 +56,7 @@
                     </table>
                 }
 
-                <h4> <span class="text-warning">Talep Edilen Toplam @Model.PaymentType Tutarı : </span>@Model.Amount @Model.CurrencyType</h4>
+                <p class="font-size-lg"> <span class="font-weight-bold">Talep Edilen Toplam @Model.PaymentType Tutarı : </span>@Model.Amount @Model.CurrencyType</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>

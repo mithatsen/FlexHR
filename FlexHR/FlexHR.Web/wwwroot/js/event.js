@@ -96,7 +96,6 @@ function deleteEvent() {
 
 }
 
-
 function FullCalenderProcessPublicHoliday(calEvent) {
     $("#publicHolidayId").val(calEvent.event.id)
     $("#publicHolidayDescription").val(calEvent.event.extendedProps.description)
@@ -467,3 +466,47 @@ FormValidation.formValidation(
     }
 );
 
+
+$("#eventAddStartDate").val(moment().format('DD.MM.YYYY h:mm:ss'))
+// Demo 7
+$('#kt_datetimepicker_18').datetimepicker({
+    locale: 'tr',
+    format: 'DD.MM.YYYY HH:mm'
+});
+$('#kt_datetimepicker_20').datetimepicker({
+    locale: 'tr',
+    format: 'DD.MM.YYYY HH:mm'
+});
+
+$('#kt_datetimepicker_18').on('change.datetimepicker', function (e) {
+    $('#kt_datetimepicker_20').datetimepicker('minDate', e.date);
+});
+$('#kt_datetimepicker_20').on('change.datetimepicker', function (e) {
+    $('#kt_datetimepicker_18').datetimepicker('maxDate', e.date);
+});
+
+
+$('#kt_datetimepicker_99').datetimepicker({
+    locale: 'tr',
+    format: 'DD.MM.YYYY HH:mm',
+    autoclose: true
+});
+
+$('#kt_datetimepicker_100').datetimepicker({
+    locale: 'tr',
+    format: 'DD.MM.YYYY HH:mm',
+    autoclose: true
+}); 
+
+$('#kt_datetimepicker_99').on('change.datetimepicker', function (e) {
+    $('#kt_datetimepicker_100').datetimepicker('minDate', e.date);
+    var x = $('#eventStartDate').val().split(".").reverse().join(".");
+    var y = $('#eventEndDate').val().split(".").reverse().join(".");
+    if (x > y) {
+
+        $('#eventEndDate').val($('#eventStartDate').val());
+    }
+});
+$('#kt_datetimepicker_100').on('change.datetimepicker', function (e) {
+    $('#kt_datetimepicker_99').datetimepicker('maxDate', e.date);
+});

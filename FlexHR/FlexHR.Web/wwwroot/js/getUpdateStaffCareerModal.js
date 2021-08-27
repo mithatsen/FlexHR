@@ -52,6 +52,13 @@
                     }
                 }
             },
+            CompanyBranchId: {
+                validators: {
+                    notEmpty: {
+                        message: 'Şube seçiniz'
+                    }
+                }
+            }
         },
 
         plugins: {
@@ -65,3 +72,4 @@
         }
     }
 );
+

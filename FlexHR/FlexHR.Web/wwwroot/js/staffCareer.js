@@ -54,6 +54,13 @@ var fv = FormValidation.formValidation(
                     }
                 }
             },
+            CompanyBranchId: {
+                validators: {
+                    notEmpty: {
+                        message: 'Şube seçiniz'
+                    }
+                }
+            }
         },
         plugins: {
             trigger: new FormValidation.plugins.Trigger(),
@@ -237,3 +244,20 @@ function DeleteCareer(id) {
 
 
 }
+
+var date = new Date();
+$("#JobStartDate").val(date.getDate())
+// Demo 7
+$('#kt_datetimepicker_5').datetimepicker({
+
+});
+$('#kt_datetimepicker_6').datetimepicker({
+    useCurrent: false
+});
+
+$('#kt_datetimepicker_5').on('change.datetimepicker', function (e) {
+    $('#kt_datetimepicker_6').datetimepicker('minDate', e.date);
+});
+$('#kt_datetimepicker_6').on('change.datetimepicker', function (e) {
+    $('#kt_datetimepicker_5').datetimepicker('maxDate', e.date);
+});

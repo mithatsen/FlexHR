@@ -128,7 +128,7 @@
                                                     <label class="col-xl-4 col-lg-3 col-form-label">İşe Başlama Tarihi *</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
-                                                            <input asp-for="JobJoinDate" value="@Model.JobJoinDate.ToShortDateString()" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
+                                                            <input asp-for="JobJoinDate" value="@Model.JobJoinDate.ToString("dd.MM.yyyy")" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
                                                             <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
                                                                 <span class="input-group-text">
                                                                     <i class="ki ki-calendar"></i>
@@ -144,7 +144,7 @@
                                                         <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
-                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" value="@Model.JobFinishDate.Value.ToShortDateString()" type="text" class="form-control datetimepicker-input form-control-lg " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
+                                                                <input id="ContractFinishDate" asp-for="JobFinishDate" value="@Model.JobFinishDate.Value.ToString("dd.MM.yyyy")" type="text" class="form-control datetimepicker-input form-control-lg " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
                                                                     <span class="input-group-text">
                                                                         <i class="ki ki-calendar"></i>
@@ -203,8 +203,7 @@
         $('input[name="JobFinishDate"]').mask('00.00.0000');
     </script>
     <script>
-        FormValidation.formValidation(
-            document.getElementById('generalForm'),
+        var fvAddIndefinite = FormValidation.formValidation(document.getElementById('generalForm'),
             {
                 fields: {
                     NameSurname: {
@@ -281,8 +280,9 @@
                             }
                         }
                     },
-                },
 
+
+                },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
                     // Bootstrap Framework Integration
@@ -291,9 +291,190 @@
                     submitButton: new FormValidation.plugins.SubmitButton(),
                     // Submit the form when all fields are valid
                     defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+
                 }
+            });
+
+        var fvAdd;
+
+        function ValidateInfo(status) {
+
+            if (status == "true" && fvAddIndefinite != null) {
+                fvAddIndefinite.destroy();
+                fvAdd = FormValidation.formValidation(document.getElementById('generalForm'),
+                    {
+                        fields: {
+                            NameSurname: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Ad soyad alanı boş geçilemez'
+                                    }
+                                }
+                            },
+                            EmailPersonal: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'E-posta alanı boş geçilemez'
+                                    },
+                                    emailAddress: {
+                                        message: 'Geçerli bir E-posta adresi girin'
+                                    }
+                                }
+                            },
+                            EmailJob: {
+                                validators: {
+
+                                    emailAddress: {
+                                        message: 'Geçerli bir E-posta adresi girin'
+                                    }
+                                }
+                            },
+                            PhonePersonal: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Telefon alanı boş geçilemez'
+                                    },
+                                    phone: {
+                                        country: 'US',
+                                        message: 'Geçerli bir numara girin'
+                                    }
+                                }
+                            },
+                            PhoneJob: {
+                                validators: {
+                                    phone: {
+                                        country: 'US',
+                                        message: 'Geçerli bir numara girin'
+                                    }
+                                }
+                            },
+                            JobJoinDate: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Tarih alanı boş geçilemez'
+                                    },
+                                    date: {
+                                        format: 'DD.MM.YYYY',
+                                        message: 'Geçerli bir tarih girin'
+                                    },
+                                }
+                            },
+                            ContractTypeGeneralSubTypeId: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Sözleşme türü seçiniz'
+                                    }
+                                }
+                            },
+                            JobFinishDate: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Tarih alanı boş geçilemez'
+                                    },
+                                    date: {
+                                        format: 'DD.MM.YYYY',
+                                        message: 'Geçerli bir tarih girin'
+                                    },
+                                }
+                            }
+
+
+                        },
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger(),
+                            // Bootstrap Framework Integration
+                            bootstrap: new FormValidation.plugins.Bootstrap(),
+                            // Validate fields when clicking the Submit button
+                            submitButton: new FormValidation.plugins.SubmitButton(),
+                            // Submit the form when all fields are valid
+                            defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+
+                        }
+                    });
             }
-        );
+            else {
+                fvAdd.destroy();
+                fvAddIndefinite = FormValidation.formValidation(document.getElementById('generalForm'),
+                    {
+                        fields: {
+                            NameSurname: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Ad soyad alanı boş geçilemez'
+                                    }
+                                }
+                            },
+                            EmailPersonal: {
+                                validators: {
+                                    emailAddress: {
+                                        message: 'Geçerli bir E-posta adresi girin'
+                                    },
+                                    notEmpty: {
+                                        message: 'E-posta alanı boş geçilemez'
+                                    }
+
+                                }
+                            },
+                            EmailJob: {
+                                validators: {
+
+                                    emailAddress: {
+                                        message: 'Geçerli bir E-posta adresi girin'
+                                    }
+                                }
+                            },
+                            PhonePersonal: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Telefon alanı boş geçilemez'
+                                    },
+                                    phone: {
+                                        country: 'US',
+                                        message: 'Geçerli bir numara girin'
+                                    }
+                                }
+                            },
+                            PhoneJob: {
+                                validators: {
+                                    phone: {
+                                        country: 'US',
+                                        message: 'Geçerli bir numara girin'
+                                    }
+                                }
+                            },
+                            JobJoinDate: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Tarih alanı boş geçilemez'
+                                    },
+
+                                }
+                            },
+                            ContractTypeId: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Sözleşme türü seçiniz'
+                                    },
+
+                                }
+                            }
+
+
+                        },
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger(),
+                            // Bootstrap Framework Integration
+                            bootstrap: new FormValidation.plugins.Bootstrap(),
+                            // Validate fields when clicking the Submit button
+                            submitButton: new FormValidation.plugins.SubmitButton(),
+                            // Submit the form when all fields are valid
+                            defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+
+                        }
+                    });
+            }
+
+        }
     </script>
     @*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı*@
     <script type="text/javascript">
@@ -304,11 +485,13 @@
                 $("#ContractFinishDate").attr("disabled", false);
                 $("#ContractFinishDate").removeClass("text-muted");
                 $("#jobFinishDateLbl").removeClass("text-muted");
+                ValidateInfo("true");
             }
             else {
                 $("#ContractFinishDate").attr("disabled", true);
                 $("#ContractFinishDate").addClass("text-muted");
                 $("#jobFinishDateLbl").addClass("text-muted");
+                ValidateInfo("false")
             }
         });
     </script>
@@ -319,6 +502,14 @@
             if (@ViewBag.StaffGeneralUpdateStatus == true) {
                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
             }
+            var id = document.getElementById("ContractTypeSelect").value;
+            if (id == 1) {
+                ValidateInfo("true");
+            }
+            else {
+                ValidateInfo("false");
+            }
+
         });
     </script>
 
