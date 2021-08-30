@@ -17,7 +17,6 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         public EfGenericRepository(FlexHRContext context)
         {
             _context = context;
-            //_context.Entry(T).State = EntityState.Modified;
         }
         public void Delete(int id)
         {
@@ -25,37 +24,26 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _context.Set<T>().Remove(temp);
             _context.SaveChanges();
         }
-
-
         public List<T> GetAll()
         {
 
             return _context.Set<T>().Where(x => x.IsActive).ToList();
         }
-
         public T GetById(int id)
         {
             return _context.Set<T>().Find(id);
         }
-
         public void Add(T table)
         {
-
             _context.Set<T>().Add(table);
             _context.SaveChanges();
-
-
         }
         public T AddResult(T table)
         {
-
             _context.Set<T>().Add(table);
             _context.SaveChanges();
             return table;
-
-
         }
-
         public void Update(T table)
         {
             _context.Set<T>().Update(table);
