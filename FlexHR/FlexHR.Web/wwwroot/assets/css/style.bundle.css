@@ -34805,7 +34805,7 @@ button {
   transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
   padding: 0.85rem 0;
-  margin: 0 1rem; }
+  margin: 0 0rem; }
   .nav-item:first-child .nav.nav-tabs.nav-tabs-line .nav-link {
     margin-left: 0; }
   .nav-item:last-child .nav.nav-tabs.nav-tabs-line .nav-link {

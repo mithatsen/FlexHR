@@ -358,7 +358,7 @@ function staffAddClickFunction() {
         });
     }
   
-}
+    kt_apps_contacts_view_tab_2
 
 /*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı */
 $('#ContractTypeSelect').on('change', function () {

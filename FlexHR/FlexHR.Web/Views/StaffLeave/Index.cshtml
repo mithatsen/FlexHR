@@ -13,119 +13,116 @@
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
-        <div class="d-flex flex-row">
-            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
-            @*staffLeave*@
-            <div class="tab-content w-100">
-                <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_5">
+        @*staffLeave*@
+        <div class="tab-content w-100">
+            <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_5">
 
-                    <!--begin::Entry-->
-                    <div class="d-flex flex-column-fluid">
-                        <!--begin::Container-->
-                        <div class="container">
-                            <!--begin::Notice-->
-                            <!--end::Notice-->
-                            <!--begin::Card-->
-                            <div class="card card-custom">
-                                <div class="card-header flex-wrap py-5">
-                                    <div class="card-title w-75">
-                                        <i class="fas fa-plane-departure text-dark mr-2"></i>
-                                        <h3 class="card-label">
-                                            İzinler
-                                        </h3>
-                                        @{
-                                            decimal TotalLeaveDeserved = ViewBag.TotalLeaveDeserved;
-                                            decimal UsedLeave = ViewBag.UsedLeaveDay;
-                                            decimal RemainLeaveDay = TotalLeaveDeserved - UsedLeave;
-                                            decimal yuzde = TotalLeaveDeserved != 0 ? (RemainLeaveDay / TotalLeaveDeserved) * 100 : 0;
-                                            var abc = yuzde != 0 ? Convert.ToInt32(yuzde) + "%" : "0%";
+                <!--begin::Entry-->
+                <div class="d-flex flex-column-fluid">
+                    <!--begin::Container-->
+                    <div class="container-fluid">
+                        <!--begin::Notice-->
+                        <!--end::Notice-->
+                        <!--begin::Card-->
+                        <div class="card card-custom">
+                            <div class="card-header flex-wrap py-5">
+                                <div class="card-title w-75">
+                                    <i class="fas fa-plane-departure text-dark mr-2"></i>
+                                    <h3 class="card-label">
+                                        İzinler
+                                    </h3>
+                                    @{
+                                        decimal TotalLeaveDeserved = ViewBag.TotalLeaveDeserved;
+                                        decimal UsedLeave = ViewBag.UsedLeaveDay;
+                                        decimal RemainLeaveDay = TotalLeaveDeserved - UsedLeave;
+                                        decimal yuzde = TotalLeaveDeserved != 0 ? (RemainLeaveDay / TotalLeaveDeserved) * 100 : 0;
+                                        var abc = yuzde != 0 ? Convert.ToInt32(yuzde) + "%" : "0%";
 
-                                        }
+                                    }
 
 
-                                        <div class="progress w-50 ml-8">
+                                    <div class="progress w-50 ml-8">
 
-                                            <div class="progress-bar" role="progressbar" style="width:@abc;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">@abc</div>
+                                        <div class="progress-bar" role="progressbar" style="width:@abc;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">@abc</div>
 
-                                        </div>
-                                        <a data-toggle="tooltip" title="Kalan izin günü @RemainLeaveDay"><span class="ml-4 font-size-sm">@RemainLeaveDay / </span></a>
-                                        <a data-toggle="tooltip" title="Hak edilen izin günü @TotalLeaveDeserved"><span class="ml-1 font-size-sm"> @TotalLeaveDeserved</span></a>
                                     </div>
-                                    <div class="card-toolbar">
-                                        <!--begin::Button-->
-                                        @if ((User.IsInRole("AddStaffLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                        {
-                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
-                                                İzin Ekle
-                                            </button>
-                                        }
-                                        <!--end::Button-->
-                                    </div>
-
+                                    <a data-toggle="tooltip" title="Kalan izin günü @RemainLeaveDay"><span class="ml-4 font-size-sm">@RemainLeaveDay / </span></a>
+                                    <a data-toggle="tooltip" title="Hak edilen izin günü @TotalLeaveDeserved"><span class="ml-1 font-size-sm"> @TotalLeaveDeserved</span></a>
                                 </div>
-                                <div class="card-body">
-                                    <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
-                                        <thead>
+                                <div class="card-toolbar">
+                                    <!--begin::Button-->
+                                    @if ((User.IsInRole("AddStaffLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                    {
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffLeaveAddModal">
+                                            İzin Ekle
+                                        </button>
+                                    }
+                                    <!--end::Button-->
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <!--begin: Datatable-->
+                                <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
+                                    <thead>
+                                        <tr>
+                                            <th>Başlangıç</th>
+                                            <th>Bitiş</th>
+                                            <th>Süre</th>
+                                            <th>İzin Türü</th>
+                                            <th width="35%">Açıklama</th>
+                                            <th>Durum</th>
+                                            @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <th>İşlemler</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
                                             <tr>
-                                                <th>Başlangıç</th>
-                                                <th>Bitiş</th>
-                                                <th>Süre</th>
-                                                <th>İzin Türü</th>
-                                                <th width="35%">Açıklama</th>
-                                                <th>Durum</th>
+
+                                                <td>@item.LeaveStartDate.ToString("d")</td>
+
+                                                <td>@item.LeaveEndDate.ToString("d")</td>
+
+                                                <td>@item.TotalDay Gün</td>
+                                                <td>@item.LeaveType</td>
+                                                <td>@item.Description</td>
+                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
                                                 @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                                 {
-                                                    <th>İşlemler</th>
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" onclick=" DeleteStaffLeave(@item.StaffLeaveId)" title="Sil">
+
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                    </td>
                                                 }
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model)
-                                            {
-                                                <tr>
 
-                                                    <td>@item.LeaveStartDate.ToString("d")</td>
-
-                                                    <td>@item.LeaveEndDate.ToString("d")</td>
-
-                                                    <td>@item.TotalDay Gün</td>
-                                                    <td>@item.LeaveType</td>
-                                                    <td>@item.Description</td>
-                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
-                                                    @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                                    {
-                                                        <td>
-                                                            <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
-                                                                <i class="la la-edit text-warning"></i>
-                                                            </a>
-                                                            <a class="btn btn-sm btn-clean btn-icon" onclick=" DeleteStaffLeave(@item.StaffLeaveId)" title="Sil">
-
-                                                                <i class="la la-trash text-danger"></i>
-                                                            </a>
-                                                        </td>
-                                                    }
-                                                </tr>
-
-                                            }
-                                        </tbody>
-                                    </table>
-                                    <!--end: Datatable-->
-                                </div>
+                                        }
+                                    </tbody>
+                                </table>
+                                <!--end: Datatable-->
                             </div>
-                            <!--end::Card-->
                         </div>
-                        <!--end::Container-->
+                        <!--end::Card-->
                     </div>
-                    <!--end::Entry-->
+                    <!--end::Container-->
                 </div>
+                <!--end::Entry-->
             </div>
-
         </div>
 
     </div>
 
 </div>
+
 
 @*add leave modal*@
 <div class="modal fade" id="staffLeaveAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
@@ -319,8 +316,8 @@
 
         $('#kt_datetimepicker_7_1').on('change.datetimepicker', function (e) {
             $('#kt_datetimepicker_7_2').datetimepicker('minDate', e.date);
-           
-            
+
+
         });
         $('#kt_datetimepicker_7_2').on('change.datetimepicker', function (e) {
             $('#kt_datetimepicker_7_1').datetimepicker('maxDate', e.date);

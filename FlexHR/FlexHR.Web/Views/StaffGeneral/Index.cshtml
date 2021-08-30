@@ -47,16 +47,16 @@
 
                                         <div class="row">
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="form-group row ">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Ad Soyad *</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label>Ad Soyad *</label>
+                                                    <div class="input-group">
                                                         <input asp-for="NameSurname" name="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" required />
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (Kişisel) *</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label >E-Posta (Kişisel) *</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
@@ -68,8 +68,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (İş) </label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label >E-Posta (İş) </label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
@@ -83,8 +83,8 @@
 
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü *</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label >Sözleşme Türü *</label>
+                                                    <div class="input-group">
                                                         <select id="ContractTypeSelect" asp-for="ContractTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
                                                             <option value="" selected>Seçiniz</option>
 
@@ -94,25 +94,23 @@
 
 
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-5">
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Telefon (Kişisel) *</label>
-                                                    <div class="col-lg-9 col-xl-6">
-                                                        <div class="input-group input-group-lg input-group-solid">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    <i class="la la-phone"></i>
-                                                                </span>
-                                                            </div>
-                                                            <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
-                                                            <input type="hidden" asp-for="@Model.StaffId" />
+                                                    <label>Telefon (Kişisel) *</label>
+                                                    <div class="input-group input-group-lg input-group-solid">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="la la-phone"></i>
+                                                            </span>
                                                         </div>
-
+                                                        <input asp-for="PhonePersonal" type="text" class="form-control form-control-lg form-control-solid" placeholder="Telefon (Kişisel)" />
+                                                        <input type="hidden" asp-for="@Model.StaffId" />
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Telefon (İş) </label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label >Telefon (İş) </label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
@@ -125,8 +123,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">İşe Başlama Tarihi *</label>
-                                                    <div class="col-lg-9 col-xl-6">
+                                                    <label >İşe Başlama Tarihi *</label>
+                                                    <div class="input-group">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
                                                             <input asp-for="JobJoinDate" value="@Model.JobJoinDate.ToString("dd.MM.yyyy")" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
                                                             <div class="input-group-append  " data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
@@ -141,8 +139,8 @@
                                                 <div class="form-group row">
                                                     @if (Model.ContractTypeGeneralSubTypeId == 1)
                                                     {
-                                                        <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label">Sözleşme Bitiş Tarihi</label>
-                                                        <div class="col-lg-9 col-xl-6">
+                                                        <label id="jobFinishDateLbl" >Sözleşme Bitiş Tarihi</label>
+                                                        <div class="input-group">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
                                                                 <input id="ContractFinishDate" asp-for="JobFinishDate" value="@Model.JobFinishDate.Value.ToString("dd.MM.yyyy")" type="text" class="form-control datetimepicker-input form-control-lg " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
@@ -156,8 +154,8 @@
                                                     }
                                                     else
                                                     {
-                                                        <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted">Sözleşme Bitiş Tarihi</label>
-                                                        <div class="col-lg-9 col-xl-6">
+                                                        <label id="jobFinishDateLbl" class="text-muted">Sözleşme Bitiş Tarihi</label>
+                                                        <div class="input-group">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
                                                                 <input id="ContractFinishDate" asp-for="JobFinishDate" type="text" class="form-control form-control-lg datetimepicker-input  text-muted" disabled placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
                                                                 <div class="input-group-append" data-target="#kt_datetimepicker_3" data-toggle="datetimepicker">
@@ -537,6 +535,6 @@
     <!--<script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>-->
     <!--end::Page Scripts-->
 
-    
+
 
 }

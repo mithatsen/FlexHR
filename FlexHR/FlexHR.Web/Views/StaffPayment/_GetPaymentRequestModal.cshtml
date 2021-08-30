@@ -298,7 +298,7 @@
         id = document.getElementById("personal_select2").value;
     }
     function fncAddRequestReceipt() {
-        fvRequest.validate().then(function (status) {
+        fv.validate().then(function (status) {
             if (status == 'Valid') {
                 var staffIdFd = $('#personal_select2').val() !== undefined ? $('#personal_select2').val() : $('#staffAutoId').val()
                 var formdata = new FormData();

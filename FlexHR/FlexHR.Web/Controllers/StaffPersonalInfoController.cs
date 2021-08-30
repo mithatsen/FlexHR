@@ -46,10 +46,9 @@ namespace FlexHR.Web.Controllers
             {
 
                 model.MaritalStatusGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
-                model.DegreeOfDisabilityGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
-                model.BloodGroupGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
-                model.EducationStatusGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
-                model.EducationLevelGeneralSubTypeId = model.MaritalStatusGeneralSubTypeId == -1 ? null : model.MaritalStatusGeneralSubTypeId;
+                model.DegreeOfDisabilityGeneralSubTypeId = model.DegreeOfDisabilityGeneralSubTypeId == -1 ? null : model.DegreeOfDisabilityGeneralSubTypeId;
+                model.BloodGroupGeneralSubTypeId = model.BloodGroupGeneralSubTypeId == -1 ? null : model.BloodGroupGeneralSubTypeId;
+                model.EducationStatusGeneralSubTypeId = model.EducationStatusGeneralSubTypeId == -1 ? null : model.EducationStatusGeneralSubTypeId;              
                 model.GenderGeneralSubTypeId = model.GenderGeneralSubTypeId == -1 ? null : model.GenderGeneralSubTypeId;
                 _staffPersonelInfoService.Update(_mapper.Map<StaffPersonelInfo>(model));
                 TempData["StaffPersonalInfoUpdateStatus"] = "true";

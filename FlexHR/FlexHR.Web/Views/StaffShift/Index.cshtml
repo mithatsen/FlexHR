@@ -16,15 +16,14 @@
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
-        <div class="d-flex flex-row">
-            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
+       
             @*staffLeave*@
             <div class="tab-content w-100">
                 <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_7">
                     <!--begin::Entry-->
                     <div class="d-flex flex-column-fluid">
                         <!--begin::Container-->
-                        <div class="container">
+                        <div class="container-fluid">
                             <!--begin::Notice-->
                             <!--end::Notice-->
                             <!--begin::Card-->
@@ -110,7 +109,6 @@
     </div>
 
 
-</div>
 
 @*add shift modal*@
 <div class="modal fade" id="staffShiftAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">

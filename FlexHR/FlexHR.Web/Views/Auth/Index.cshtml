@@ -2,11 +2,13 @@
 
 <!DOCTYPE html>
 
+
 <html lang="en">
 <!--begin::Head-->
 <head>
     <base href="../../../../">
     <meta charset="utf-8" />
+    <title>Login Page 2 | Keenthemes</title>
     <meta name="description" content="Login page example" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="canonical" href="https://keenthemes.com/metronic" />
@@ -14,20 +16,20 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
     <!--begin::Page Custom Styles(used by this page)-->
-    <link href="~/assets/css/pages/login/classic/login-6.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/pages/login/classic/login-2.css" rel="stylesheet" type="text/css" />
     <!--end::Page Custom Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
-    <link href="~/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
-    <link href="~/assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
     <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="~/assets/media/logos/favicon.ico" />
+    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -35,58 +37,84 @@
     <!--begin::Main-->
     <div class="d-flex flex-column flex-root">
         <!--begin::Login-->
-        <div class="login login-6 login-signin-on login-signin-on d-flex flex-column-fluid" id="kt_login">
-            <div class="d-flex flex-column flex-lg-row flex-row-fluid text-center" style="background-image: url(assets/media/bg/HR2.jpg); ">
-                <!--begin:Aside-->
-                <div class="d-flex w-100 flex-center p-15">
 
-                </div>
-                <!--end:Aside-->
-                <!--begin:Divider-->
-                <!--end:Divider-->
-                <!--begin:Content-->
-                <div class="d-flex w-100 flex-center p-15 position-relative overflow-hidden">
-                    <div class="login-wrapper">
-                        <!--begin:Sign In Form-->
-                        <div class="login-signin">
-                            <div class="text-center  p-10 mb-10 mb-lg-20"> </div>
-                            <form class="form text-left" id="signInForm" method="post" asp-action="SignIn" asp-controller="Auth">
-                                <div class="form-group py-2 m-0">
+        <div class="login login-2 login-signin-on d-flex flex-column flex-lg-row flex-md-row flex-column-fluid bg-white  " id="kt_login">
+
+            <div class=" order-1 order-lg-1 order-sm-1 flex-column-auto flex-lg-row-fluid d-flex flex-column mx-10 " style="background-image: url(assets/media/bg/HR3.png); background-repeat: no-repeat;background-position: center;background-size: contain;">
+
+            </div>
+
+
+            <!--begin::Aside-->
+            <div class="login-aside order-2 order-sm-2 order-lg-2 d-flex flex-column-fluid flex-lg-row-auto bgi-size-cover bgi-no-repeat mr-5">
+                <!--begin: Aside Container-->
+                <div class="d-flex flex-row-fluid flex-column justify-content-between">
+                    <!--begin::Aside body-->
+                    <div class="d-flex flex-column-fluid flex-column flex-center mt-5 mr-5 mt-lg-0">
+                        <a href="#" class="mb-15 text-center">
+                            <img src="assets/media/bg/upToLoginPage.png" class="max-h-100px" alt="" />
+                        </a>
+                        <!--begin::Signin-->
+                        <div class="login-form login-signin">
+
+                            <!--begin::Form-->
+                            <form class="form" id="signInForm" asp-action="SignIn" asp-controller="Auth" method="post">
+                                <div class="form-group border-bottom border-warning ">
                                     <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="text" placeholder="Kullanıcı Adı" name="UserName" autocomplete="off" />
                                 </div>
-                                <div class="form-group py-2 border-top m-0">
+                                <div class="form-group border-bottom border-warning">
                                     <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="Password" placeholder="Şifre" name="Password" />
                                 </div>
 
-                                <div class="text-center mt-15">
-                                    <button type="submit" class="btn btn-primary btn-pill shadow-sm py-4 px-9 font-weight-bold">Giriş Yap</button>
+                                <div class="form-group d-flex flex-wrap justify-content-center align-items-center mt-2">
+
+                                    <button id="kt_login_signin_submit" style="background-color: #F5782B; color:white" class="btn btn-hover-bg-warning btn-sm btn-pill shadow-sm py-4 px-9 font-weight-bold">Giriş Yap</button>
                                 </div>
                             </form>
+                            <!--end::Form-->
                         </div>
-                        <!--end:Sign In Form-->
+
+
                     </div>
+                    <!--end::Aside body-->
+                    <!--begin: Aside footer for desktop-->
+                    <div class="d-flex flex-column-auto justify-content-between mt-15">
+                        <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© 2021 Yuchisoft</div>
+
+                    </div>
+                    <!--end: Aside footer for desktop-->
                 </div>
-                <!--end:Content-->
+                <!--end: Aside Container-->
             </div>
+            <!--begin::Aside-->
+            <!--begin::Content-->
+            <!--end::Content-->
         </div>
+
+
         <!--end::Login-->
     </div>
 
-    <!--end::Main-->
-    <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
     <!--begin::Global Config(global config for global JS scripts)-->
     <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
-    <script src="~/assets/plugins/global/plugins.bundle.js"></script>
-    <script src="~/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
-    <script src="~/assets/js/scripts.bundle.js"></script>
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
     <!--end::Global Theme Bundle-->
     <!--begin::Page Scripts(used by this page)-->
-    <script src="~/assets/js/pages/custom/login/login-general.js"></script>
-    <script>
+    <script src="assets/js/pages/custom/login/login-general.js"></script>
+    <!--end::Page Scripts-->
+</body>
+<!--end::Body-->
+</html>
+
+<script src="~/js/auth.js"></script>
+<script src="~/assets/js/pages/custom/login/login-general.js"></script>
+<script>
         $(document).ready(function () {
-            debugger;
+
             if (@ViewBag.LoginMessage!= null) {
                 if (@ViewBag.LoginMessage== false) {
                     Swal.fire({
@@ -100,10 +128,4 @@
 
             }
         });
-    </script>
-
-    <script src="~/js/auth.js"></script>
- 
-</body>
-<!--end::Body-->
-</html>
+</script>
