@@ -25,119 +25,118 @@
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
-        <div class="d-flex flex-row">
-            @await Component.InvokeAsync("StaffCard", new { id = @ViewBag.StaffId })
-            @*staffLeave*@
-            <div class="tab-content w-100">
-                <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_6">
-                    <!--begin::Entry-->
-                    <div class="d-flex flex-column-fluid">
-                        <!--begin::Container-->
-                        <div class="container">
-                            <!--begin::Notice-->
-                            <!--end::Notice-->
-                            <!--begin::Card-->
-                            <div class="card card-custom">
-                                <div class="card-header flex-wrap py-5">
-                                    <div class="card-title">
-                                        <i class="fas fa-wallet text-dark mr-2"></i>
-                                        <h3 class="card-label">
-                                            Ödemeler
 
-                                        </h3>
-                                    </div>
-                                    <div class="card-toolbar">
-                                        <!--begin::Button-->
-                                        @if ((User.IsInRole("AddStaffPayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                        {
-                                            <select id="kt_select2_1" onchange="PaymentTypeChange()" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.PaymentTypeList">
-                                                <option value="-1" disabled selected hidden>Ödeme Ekle</option>
-                                            </select>
-                                            <!--end::Button-->
-                                        }
-                                    </div>
+        @*staffLeave*@
+        <div class="tab-content w-100">
+            <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_6">
+                <!--begin::Entry-->
+                <div class="d-flex flex-column-fluid">
+                    <!--begin::Container-->
+                    <div class="container-fluid">
+                        <!--begin::Notice-->
+                        <!--end::Notice-->
+                        <!--begin::Card-->
+                        <div class="card card-custom">
+                            <div class="card-header flex-wrap py-5">
+                                <div class="card-title">
+                                    <i class="fas fa-wallet text-dark mr-2"></i>
+                                    <h3 class="card-label">
+                                        Ödemeler
 
+                                    </h3>
                                 </div>
-                                <div class="card-body">
-                                    <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_3">
-                                        <thead>
-                                            <tr>
-                                                <th>Tarih</th>
-                                                <th>Ödeme Türü</th>
-                                                <th width="25%">Açıklama</th>
-                                                <th width="10%">Tutar</th>
-                                                <th>Durum</th>
-                                                <th>Oluştrulma Tarihi</th>
-                                                <th>Ödendi</th>
-                                                @if ((User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("UpdateDeletePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                                {
-                                                    <th width="12%">İşlemler</th>
-                                                }
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model)
-                                            {
-                                                <tr>
-
-                                                    <td>@item.PaymentDate.ToString("d")</td>
-
-                                                    <td>@item.PaymentType</td>
-
-                                                    <td>@item.Description</td>
-                                                    @{var InstallmentStatus = item.Installment != null ? "Taksit" : null;}
-                                                    <td>
-                                                        @item.Amount @item.CurrencyType
-                                                        @if (InstallmentStatus != null)
-                                                        {
-                                                            <small class="badge badge-pill badge-secondary text-sm-center">@item.Installment @InstallmentStatus</small>
-
-                                                        }
-                                                    </td>
-                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
-                                                    <td>@item.CreationDate.ToShortDateString()</td>
-                                                    <td>@item.IsPaid</td>
-                                                    <td class="text-left">
-                                                        @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count > 0 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
-                                                        {
-                                                            <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="details">
-                                                                <i class="la la-info text-info"></i>
-                                                            </a>
-                                                        }
-                                                        @if ((User.IsInRole("UpdateDeletePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                                        {
-                                                            <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal">
-                                                                <i class="la la-edit text-warning"></i>
-                                                            </a>
-                                                            <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffPayment(@item.StaffPaymentId)" title="Sil">
-
-                                                                <i class="la la-trash text-danger"></i>
-                                                            </a>
-                                                        }
-
-                                                    </td>
-                                                </tr>
-
-                                            }
-                                        </tbody>
-                                    </table>
-                                    <!--end: Datatable-->
+                                <div class="card-toolbar">
+                                    <!--begin::Button-->
+                                    @if ((User.IsInRole("AddStaffPayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                    {
+                                        <select id="kt_select2_1" onchange="PaymentTypeChange()" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.PaymentTypeList">
+                                            <option value="-1" disabled selected hidden>Ödeme Ekle</option>
+                                        </select>
+                                        <!--end::Button-->
+                                    }
                                 </div>
+
                             </div>
-                            <!--end::Card-->
-                        </div>
-                        <!--end::Container-->
-                    </div>
-                    <!--end::Entry-->
+                            <div class="card-body">
+                                <!--begin: Datatable-->
+                                <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_3">
+                                    <thead>
+                                        <tr>
+                                            <th>Tarih</th>
+                                            <th>Ödeme Türü</th>
+                                            <th width="25%">Açıklama</th>
+                                            <th width="10%">Tutar</th>
+                                            <th>Durum</th>
+                                            <th>Oluştrulma Tarihi</th>
+                                            <th>Ödendi</th>
+                                            @if ((User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("UpdateDeletePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <th width="12%">İşlemler</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
 
+                                                <td>@item.PaymentDate.ToString("d")</td>
+
+                                                <td>@item.PaymentType</td>
+
+                                                <td>@item.Description</td>
+                                                @{var InstallmentStatus = item.Installment != null ? "Taksit" : null;}
+                                                <td>
+                                                    @item.Amount @item.CurrencyType
+                                                    @if (InstallmentStatus != null)
+                                                    {
+                                                        <small class="badge badge-pill badge-secondary text-sm-center">@item.Installment @InstallmentStatus</small>
+
+                                                    }
+                                                </td>
+                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                                <td>@item.CreationDate.ToShortDateString()</td>
+                                                <td>@item.IsPaid</td>
+                                                <td class="text-left">
+                                                    @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count > 0 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
+                                                    {
+                                                        <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="details">
+                                                            <i class="la la-info text-info"></i>
+                                                        </a>
+                                                    }
+                                                    @if ((User.IsInRole("UpdateDeletePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                    {
+                                                        <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffPayment(@item.StaffPaymentId)" title="Sil">
+
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                    }
+
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    </tbody>
+                                </table>
+                                <!--end: Datatable-->
+                            </div>
+                        </div>
+                        <!--end::Card-->
+                    </div>
+                    <!--end::Container-->
                 </div>
+                <!--end::Entry-->
+
             </div>
         </div>
-
     </div>
 
 </div>
+
+
 
 
 <div class="modal fade" id="AddPaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
@@ -292,14 +291,14 @@
         $(document).ready(function () {
             $("#tab_6").addClass("active");
         });
-    </script>    
+    </script>
     <script>
         $('#valFeeType').select2({
             placeholder: 'Seçiniz'
         });
         $('#valInstallment').select2({
             placeholder: 'Seçiniz'
-        }); 
+        });
     </script>
     <script>
         function ShowReceiptInModal(id) {

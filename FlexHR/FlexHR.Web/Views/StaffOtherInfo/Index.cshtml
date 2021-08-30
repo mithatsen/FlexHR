@@ -50,10 +50,10 @@
 
                                         <div class="row">
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Adres</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Adres</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <textarea asp-for="Adress" type="text" class="form-control form-control-lg form-control-solid" placeholder="Adres"></textarea>
@@ -62,8 +62,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Ev Telefonu</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Ev Telefonu</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
@@ -78,8 +78,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Posta Kodu</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Posta Kodu</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="PostalCode" type="text" class="form-control form-control-lg form-control-solid" placeholder="Posta Kodu" />
@@ -90,12 +90,13 @@
 
 
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-5">
                                                 @if (Model.TownId > 0)
                                                 {
                                                     <div class="form-group row">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Ülke</label>
-                                                        <div class="col-lg-9 col-xl-7">
+                                                        <label>Ülke</label>
+                                                        <div class="input-group">
                                                             <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
                                                                 <option value="-1">Ülke Seçiniz</option>
                                                             </select>
@@ -104,16 +105,16 @@
 
 
                                                     <div class="form-group row">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Şehir</label>
-                                                        <div class="col-lg-9 col-xl-7">
+                                                        <label>Şehir</label>
+                                                        <div class="input-group">
                                                             <select id="kt_select2_city" onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Cities" placeholder="deneme">
                                                                 <option disabled selected value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">İlçe</label>
-                                                        <div class="col-lg-9 col-xl-7">
+                                                        <label>İlçe</label>
+                                                        <div class="input-group">
                                                             <select id="kt_select2_town" asp-for="TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted" asp-items="ViewBag.Towns">
                                                                 <option disabled selected value="-1">Seçiniz</option>
                                                             </select>
@@ -123,8 +124,8 @@
                                                 else
                                                 {
                                                     <div class="form-group row">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Ülke</label>
-                                                        <div class="col-lg-9 col-xl-7">
+                                                        <label>Ülke</label>
+                                                        <div class="input-group">
                                                             <select id="kt_select2_1" onchange="countryChange()" style=" width: 100% !important;" class="form-control form-control-lg " asp-for="TownHelper.CountryId" asp-items="ViewBag.Countries">
                                                                 <option value="-1">Ülke Seçiniz</option>
                                                             </select>
@@ -133,16 +134,16 @@
 
 
                                                     <div class="form-group row">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">Şehir</label>
-                                                        <div class="col-lg-9 col-xl-7">
+                                                        <label>Şehir</label>
+                                                        <div class="input-group">
                                                             <select id="kt_select2_city" onchange="cityChange()" style=" width: 100% !important;" asp-for="TownHelper.CityId" disabled class="form-control form-control-solid form-control-lg text-muted">
                                                                 <option disabled value="-1">Seçiniz</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label class="col-xl-4 col-lg-3 col-form-label">İlçe</label>
-                                                        <div class="col-lg-9 col-xl-7">
+                                                        <label>İlçe</label>
+                                                        <div class="input-group">
                                                             <select id="kt_select2_town" disabled asp-for="TownId" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg text-muted">
                                                                 <option disabled value="-1">Seçiniz</option>
                                                             </select>
@@ -153,9 +154,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--end::Body-->
                                 </div>
-
+                                <!--end::Body-->
                                 @*Banka Bilgileri*@
                                 <div><h6 class="ml-5 mb-0 px-4"> Banka Bilgileri</h6></div>
 
@@ -166,10 +166,10 @@
 
                                         <div class="row">
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Banka Adı</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Banka Adı</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="BankName" type="text" class="form-control form-control-lg form-control-solid" placeholder="Banka Adı" />
@@ -178,8 +178,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Hesap No</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Hesap No</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="AccountNo" type="text" class="form-control form-control-lg form-control-solid" placeholder="Hesap No" />
@@ -190,11 +190,12 @@
 
 
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-5">
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Hesap Tipi</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Hesap Tipi</label>
+                                                    <div class="input-group">
                                                         <select id="ContractTypeSelect3" asp-for="AccountTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.AccountTypeList">
                                                             <option selected value="-1">Seçiniz</option>
 
@@ -204,8 +205,8 @@
 
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">IBAN</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>IBAN</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
@@ -237,10 +238,10 @@
 
                                         <div class="row">
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Ad Soyad</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Ad Soyad</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="CallPersonNameSurname" type="text" class="form-control form-control-lg form-control-solid" placeholder="Ad Soyad" />
@@ -250,8 +251,8 @@
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Telefonu</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Telefonu</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">
@@ -266,11 +267,12 @@
 
 
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-5">
 
                                                 <div class="form-group row">
-                                                    <label class="col-xl-4 col-lg-3 col-form-label">Yakınlık Dererecesi</label>
-                                                    <div class="col-lg-9 col-xl-7">
+                                                    <label>Yakınlık Dererecesi</label>
+                                                    <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
 
                                                             <input asp-for="CallPersonProximityDegree" type="text" class="form-control form-control-lg form-control-solid" placeholder="Yakınlık Derecesi" />

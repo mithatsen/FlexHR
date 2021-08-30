@@ -5,7 +5,7 @@
         <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
             @if ((User.IsInRole("ViewStaffGeneralPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="nav-item mr-3">
+                <li class="nav-item mr-5">
                     <a class="nav-link" id="tab_1" asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
@@ -16,22 +16,10 @@
                     </a>
                 </li>
             }
-            @if ((User.IsInRole("ViewStaffCareerPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-            {
-                <li class="nav-item mr-3">
-                    <a class="nav-link" id="tab_2" asp-controller="StaffCareer" asp-action="Index" asp-route-id="@Model">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-business-time"></i>
-                            </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Kariyer</span>
-                    </a>
-                </li>
-            }
+
             @if ((User.IsInRole("ViewStaffPersonalInfoPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="nav-item mr-3">
+                <li class="nav-item mr-5">
                     <a class="nav-link" id="tab_3" asp-controller="StaffPersonalInfo" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
@@ -44,7 +32,7 @@
             }
             @if ((User.IsInRole("ViewStaffOtherInfoPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="nav-item">
+                <li class="nav-item mr-5">
                     <a class="nav-link" id="tab_4" asp-controller="StaffOtherInfo" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
@@ -55,9 +43,22 @@
                     </a>
                 </li>
             }
+            @if ((User.IsInRole("ViewStaffCareerPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item mr-5">
+                    <a class="nav-link" id="tab_2" asp-controller="StaffCareer" asp-action="Index" asp-route-id="@Model">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-business-time"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Kariyer</span>
+                    </a>
+                </li>
+            }
             @if ((User.IsInRole("ViewStaffLeavePage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="nav-item">
+                <li class="nav-item mr-5">
                     <a class="nav-link" id="tab_5" asp-controller="StaffLeave" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
@@ -70,7 +71,7 @@
             }
             @if ((User.IsInRole("ViewStaffPaymentPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="nav-item">
+                <li class="nav-item mr-5">
                     <a class="nav-link" id="tab_6" asp-controller="StaffPayment" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
@@ -83,7 +84,7 @@
             }
             @if ((User.IsInRole("ViewStaffShiftPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="nav-item">
+                <li class="nav-item mr-5">
                     <a class="nav-link" id="tab_7" asp-controller="StaffShift" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
@@ -94,22 +95,9 @@
                     </a>
                 </li>
             }
-            @if ((User.IsInRole("ViewStaffFilePage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-            {
-                <li class="nav-item">
-                    <a class="nav-link" id="tab_8" asp-controller="StaffFile" asp-action="Index" asp-route-id="@Model">
-                        <span class="nav-icon mr-2">
-                            <span class="svg-icon mr-3">
-                                <i class="fas fa-folder"></i>
-                            </span>
-                        </span>
-                        <span class="nav-text font-weight-bold">Belgeler</span>
-                    </a>
-                </li>
-            }
             @if ((User.IsInRole("ViewStaffDebitPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="nav-item">
+                <li class="nav-item  mr-5">
                     <a class="nav-link" id="tab_9" asp-controller="StaffDebit" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
@@ -120,9 +108,23 @@
                     </a>
                 </li>
             }
+            @if ((User.IsInRole("ViewStaffFilePage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item  mr-5">
+                    <a class="nav-link" id="tab_8" asp-controller="StaffFile" asp-action="Index" asp-route-id="@Model">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-folder"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Belgeler</span>
+                    </a>
+                </li>
+            }
+
             @if ((User.IsInRole("ViewStaffRolePage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="nav-item">
+                <li class="nav-item  mr-5">
                     <a class="nav-link" id="tab_10" asp-controller="StaffSetActive" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
