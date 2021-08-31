@@ -209,5 +209,24 @@ namespace FlexHR.Web.Controllers
                 return Json("true");
             }
         }
+
+        public IActionResult RemoveStaff(int id)
+        {
+            var staff = _staffService.GetById(id);
+            if (staff!=null)
+            {
+                staff.IsActive = false;
+                _staffService.Update(staff);
+                var user = _appUserService.Get(x => x.StaffId == id).FirstOrDefault();
+                if (staff != null)
+                {
+                    user.IsActive = false;
+                    _appUserService.Update(user);
+                } 
+                return RedirectToAction("Index", "Home");
+            }
+            TempData["StaffRemoveStatus"] = "false";
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

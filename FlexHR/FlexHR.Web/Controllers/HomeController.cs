@@ -51,6 +51,8 @@ namespace FlexHR.Web.Controllers
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.Home;
+
+            ViewBag.StaffRemoveStatus = TempData["StaffRemoveStatus"];
             int userId = Convert.ToInt32(_userManager.GetUserId(HttpContext.User));
             var staffId = _appUserService.Get(x => x.Id == userId).FirstOrDefault().StaffId;
             ViewBag.StaffName = _staffService.Get(x => x.StaffId == staffId).FirstOrDefault().NameSurname;
