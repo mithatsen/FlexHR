@@ -29,16 +29,16 @@ namespace FlexHR.Web.Controllers
         public async Task<IActionResult> SignIn(SignInDto model)
         {
             var user = _appUserService.Get(x => x.UserName == model.UserName && x.IsActive == true).FirstOrDefault();
-            if (ModelState.IsValid && user!=null)
+            if (ModelState.IsValid && user != null)
             {
-               
+
                 var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
                 if (signInResult.Succeeded)
                 {
                     ViewBag.LoginMessage = "true";
-                    return RedirectToAction( "Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
-               
+
             }
             ViewBag.LoginMessage = "false";
             return View("Index", model);
@@ -48,7 +48,7 @@ namespace FlexHR.Web.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Auth");
         }
-        public async Task<bool> ResetPassword(int id,string password,string confirmPassword)
+        public async Task<bool> ResetPassword(int id, string password, string confirmPassword)
         {
             if (password == confirmPassword)
             {
@@ -60,28 +60,41 @@ namespace FlexHR.Web.Controllers
             return false;
         }
 
-        public bool UpdateUserName(string userName,int id)
+        public async Task<IActionResult> UpdateUserName(string userName, int id)
         {
             try
             {
-                var user = _appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault();
-                user.UserName = userName;
-                user.NormalizedUserName = userName.ToUpper();
-                _appUserService.Update(user);
-                return true;
+                var appUser = await _userManager.FindByNameAsync(userName);
+                if (appUser != null)
+                {
+                    return Json("false");
+                }
+                else if (!String.IsNullOrWhiteSpace(userName) && userName.Length >= 3)
+                {
+                    var user = _appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault();
+                    user.UserName = userName;
+                    user.NormalizedUserName = userName.ToUpper();
+                    _appUserService.Update(user);
+                    return Json("true");
+                }
+                else
+                {
+                    return Json("not_valid");
+                }
+
             }
             catch (Exception)
             {
 
-                return false;
+                return Json("false");
             }
-          
+
         }
         [HttpPost]
 
         public async Task<IActionResult> Register(string userName, string password, int id)
         {
-            
+
             if (await _userManager.FindByNameAsync(userName) != null)
             {
                 return Json("false");

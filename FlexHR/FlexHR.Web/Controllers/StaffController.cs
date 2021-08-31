@@ -128,8 +128,7 @@ namespace FlexHR.Web.Controllers
         public async Task<IActionResult> AddStaffWithAjax(AddStaffDto modal)
         {
             var staffResult = new Staff();
-            staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
-            var staffId = staffResult.StaffId;
+            int staffId;
 
             if (modal.WillUseSystem != false)
             {
@@ -138,8 +137,11 @@ namespace FlexHR.Web.Controllers
                 {
                     return Json("false");
                 }
-                else
+                else if (!String.IsNullOrWhiteSpace(modal.UserName) && modal.UserName.Length >= 3)
                 {
+                    staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
+                    staffId = staffResult.StaffId;         
+                                           
                     AppUser user = new AppUser()
                     {
                         UserName = modal.UserName,
@@ -183,23 +185,29 @@ namespace FlexHR.Web.Controllers
                     });
                     return Json("true");
                 }
+                else
+                {
+                    return Json("not_valid");
+                }
             }
-
-
-            _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
-            _staffPersonelInfoService.Add(new StaffPersonelInfo
+            else
             {
-                StaffId = staffId,
-                MaritalStatusGeneralSubTypeId = null,
-                GenderGeneralSubTypeId = null,
-                DegreeOfDisabilityGeneralSubTypeId = null,
-                BloodGroupGeneralSubTypeId = null,
-                EducationLevelGeneralSubTypeId = null,
-                EducationStatusGeneralSubTypeId = null,
-                IsActive = true
-            });
-
-            return Json("true");
+                staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
+                staffId = staffResult.StaffId;
+                _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
+                _staffPersonelInfoService.Add(new StaffPersonelInfo
+                {
+                    StaffId = staffId,
+                    MaritalStatusGeneralSubTypeId = null,
+                    GenderGeneralSubTypeId = null,
+                    DegreeOfDisabilityGeneralSubTypeId = null,
+                    BloodGroupGeneralSubTypeId = null,
+                    EducationLevelGeneralSubTypeId = null,
+                    EducationStatusGeneralSubTypeId = null,
+                    IsActive = true
+                });
+                return Json("true");
+            }
         }
     }
 }
