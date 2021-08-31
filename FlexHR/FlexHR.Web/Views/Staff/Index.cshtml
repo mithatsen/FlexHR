@@ -8,6 +8,8 @@
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
+
+    <link href="~/css/spinner.css" rel="stylesheet" />
 }
 @{ Random rand = new Random();
     List<string> colors = new List<string> { "success", "danger", "info", "primary", "warning" };
@@ -57,6 +59,10 @@
 
 
 <div class="flex-row-fluid ml-lg-8">
+    @*<div class="container">
+            <div id="example_processing" class="dataTables_processing py-10" style="display: block; z-index: 10000;">Processing...</div>
+        </div>*@
+
     <!--begin::Form-->
     <!--begin::Card-->
     <div class="card card-custom card-stretch">
@@ -65,7 +71,7 @@
 
             <div class="tab-content pt-5">
                 <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
-                    <div class="card-body">
+                    <div class="card-body" hidden id="closeOpen">
                         <!--begin: Datatable-->
                         <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_17">
                             <thead>
@@ -185,7 +191,18 @@
         </div>
         <!--end::Form-->
     </div>
+    <div class="my-auto p-48">
+        <div class="sk-chase mx-auto">
+            <div class="sk-chase-dot "></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot "></div>
+            <div class="sk-chase-dot "></div>
+            <div class="sk-chase-dot "></div>
+        </div>
 
+    </div>
+    
 </div>
 
 @*add staff modal*@
@@ -388,6 +405,7 @@
         </div>
     </div>
 </div>
+
 @section Scripts{
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
@@ -416,16 +434,25 @@
         $('input[name="PhoneJob"]').mask('(000) 000 0000');
     </script>
     <script>
+
         var table = $('#kt_datatable_17');
+
         // begin first table
         table.DataTable({
+            "processing": true,
+            "fnPreDrawCallback": function () {
+                $('.sk-chase-dot').show();
+            },
+            "fnInitComplete": function () {
+
+                $('#closeOpen').removeAttr('hidden');
+                $(".sk-chase-dot").hide();
+
+            },
             responsive: true,
             paging: true,
             scrollY: "500px",
             scrollCollapse: true,
-            
-                processing: '<i class="fa fa-spinner fa-spin" style="font-size:24px;color:rgb(75, 183, 245);"></i>'
-          ,
             columnDefs: [
                 {
                     targets: 0,
@@ -438,15 +465,15 @@
                         var output;
                         if (stringSplitted[0] != "-") {
                             output = `
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="symbol symbol-50 flex-shrink-0">
-                                                                <img src="/img/` + stringSplitted[0] + `" alt="photo">
-                                                            </div>
-                                                            <div class="ml-3">
-                                                                 <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
-                                                                 <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
-                                                            </div>
-                                                        </div>`;
+                                                                                                <div class="d-flex align-items-center">
+                                                                                                    <div class="symbol symbol-50 flex-shrink-0">
+                                                                                                        <img src="/img/` + stringSplitted[0] + `" alt="photo">
+                                                                                                    </div>
+                                                                                                    <div class="ml-3">
+                                                                                                         <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
+                                                                                                         <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
+                                                                                                    </div>
+                                                                                                </div>`;
                         }
 
                         else {
@@ -463,15 +490,15 @@
                             var state = states[stateNo];
 
                             output = `
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="symbol symbol-50 symbol-light-` + state + `" flex-shrink-0">
-                                                                <div class="symbol-label font-size-h5">` + stringSplitted[2].substring(0, 1) + `</div>
-                                                            </div>
-                                                            <div class="ml-3">
-                                                               <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
-                                                                 <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
-                                                            </div>
-                                                        </div>`;
+                                                                                                <div class="d-flex align-items-center">
+                                                                                                    <div class="symbol symbol-50 symbol-light-` + state + `" flex-shrink-0">
+                                                                                                        <div class="symbol-label font-size-h5">` + stringSplitted[2].substring(0, 1) + `</div>
+                                                                                                    </div>
+                                                                                                    <div class="ml-3">
+                                                                                                       <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
+                                                                                                         <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
+                                                                                                    </div>
+                                                                                                </div>`;
                         }
 
                         return output;
@@ -486,6 +513,7 @@
 
             ],
         });
+
     </script>
 
     <script>
