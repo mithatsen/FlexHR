@@ -15,7 +15,7 @@
                         <!--begin::Navigation-->
                         <ul class="navi navi-hover">
                             <li class="navi-item ">
-                                <a asp-controller="Staff" asp-action="RemoveStaff" asp-route-id="@ViewBag.StaffId"  class="navi-link">
+                                <a asp-controller="Staff" asp-action="RemoveStaff" asp-route-id="@ViewBag.StaffId" class="navi-link">
                                     <span class="navi-icon">
                                         <i class="flaticon2-drop"></i>
                                     </span>
@@ -53,9 +53,9 @@
                                     <div class="image-input-wrapper">
                                         <img id="profilePhoto" style="width:100%; height:100%;" src="@pp" />
                                     </div>
-                                    <label onclick="UpdateProfilePhotoClick()" class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow xyz" data-action="change" data-toggle="tooltip" title="" data-original-title="Fotoğrafı Güncelle">
+                                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow xyz" data-action="change" data-toggle="tooltip" title="" data-original-title="Fotoğrafı Güncelle">
                                         <i id="updateProfilePhoto" class="fa fa-pen icon-sm text-muted"></i>
-                                        <input type="file" name="profile_avatar" onchange="profileAvatarChange()" id="profile_avatar" accept=".png, .jpg, .jpeg" />
+                                        <input type="file" name="profile_avatar" onchange="profileAvatarChange()" id="profile_avatar"  />
                                         <input type="hidden" name="profile_avatar_remove" />
                                     </label>
                                     @if (Model.PictureUrl != null)
@@ -118,17 +118,38 @@
     <!--end::Profile Card-->
 </div>
 <!--end::Aside-->
+<div class="my-auto p-48">
+    <div class="sk-chase mx-auto">
+        <div class="sk-chase-dot "></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot "></div>
+        <div class="sk-chase-dot "></div>
+        <div class="sk-chase-dot "></div>
+    </div>
 
+</div>
 <!--begin::Page Scripts(used by this page)-->
 <script src="~/assets/js/pages/widgets.js"></script>
 <script src="~/assets/js/pages/custom/profile/profile.js"></script>
 <!--end::Page Scripts-->
 <script>
     function profileAvatarChange() {
-        if ($("#profile_avatar").val() != "") {
-            $(".image-input-wrapper img").remove();
+        var uploadField = document.getElementById("profile_avatar");
+        if (uploadField.files[0].size > 20972345678723152) {
+            Swal.fire(
+                "Hata",
+                "Dosya boyutu en fazla 2 mb olmalıdır.",
+                "error"
+            )
+            uploadField.value = "";
+        } else {
+            if ($("#profile_avatar").val() != "") {
+                $(".image-input-wrapper img").remove();
+            }
+            $("#saveButton").attr('hidden', false);
         }
-        $("#saveButton").attr('hidden', false);
+
     }
     function removeProfilePhoto(id) {
         Swal.fire({
@@ -141,10 +162,16 @@
             reverseButtons: true
         }).then(function (result) {
             if (result.value) {
-
+                $('#cover-spin').show();
                 $.ajax({
                     method: "POST",
                     url: "/StaffFile/RemoveProfilePhoto/" + id,
+                    beforeSend: function () {
+                        $('.sk-chase-dot').show();
+                    },
+                    complete: function (data) {
+                        $(".sk-chase-dot").hide();
+                    }
                 }).done(function (result) {
                     if (result == true) {
                         Swal.fire({
@@ -157,15 +184,17 @@
                         })
 
                     } else {
+                        $('#cover-spin').hide();
                         Swal.fire(
                             "Hata",
                             "Kaydınız silinemedi",
-                            "hata"
+                            "error"
                         )
                     }
 
                 })
             } else if (result.dismiss === "cancel") {
+                $('#cover-spin').hide();
                 Swal.fire({
                     title: "İptal Edildi",
                     text: "Kaydınız silinmedi",
@@ -179,7 +208,7 @@
     }
     function saveButtonClick() {
         var formdata = new FormData();
-        $('.xyz').each(function (i, obj) {        
+        $('.xyz').each(function (i, obj) {
             var myKey = "1";
             var file;
             var itemId = "#profile_avatar";
@@ -188,12 +217,13 @@
                     file = $(itemId).prop('files');
                 }
 
-            });      
+            });
             if (file.length != 0) {
                 formdata.append(myKey, file[0]);
             }
         });
         var id = $("#StaffId").val();
+        $('#cover-spin').show();
 
         $.ajax({
             method: 'Post',
@@ -204,7 +234,7 @@
             processData: false,
 
         }).done(function (result) {
-          
+            $('#cover-spin').hide();
             if (result == true) {
                 Swal.fire({
                     title: "Güncellendi!",
@@ -216,14 +246,15 @@
                 })
 
             } else {
+                $('#cover-spin').hide();
                 Swal.fire(
                     "Hata",
                     "Kaydınız silinemedi",
-                    "hata"
+                    "error"
                 )
             }
         });
-        
+
     }
 
 </script>
