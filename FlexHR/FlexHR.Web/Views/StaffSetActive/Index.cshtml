@@ -295,6 +295,14 @@
                                 }).then(function () {
                                     window.location.reload()
                                 })
+                            } else if (data == "not_valid") {
+                                Swal.fire({
+                                    title: "Başarısız!",
+                                    text: "Kullanıcı adı en az üç karakterden oluşmalı.",
+                                    icon: "error",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
                             }
                             else {
                                 Swal.fire({

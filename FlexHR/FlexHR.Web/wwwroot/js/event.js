@@ -165,7 +165,7 @@ var KTCalendarListView = function () {
 
                 defaultView: 'dayGridMonth',
                 defaultDate: TODAY,
-
+                firstDay:1,
                 editable: true,
 
                 eventLimit: true, // allow "more" link when too many events

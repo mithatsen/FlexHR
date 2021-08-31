@@ -290,8 +290,15 @@ function staffAddClickFunction() {
                             }).then(function () {
                                 window.location.reload()
                             })
+                        } else if (data == "not_valid") {
+                            Swal.fire({
+                                title: "Başarısız!",
+                                text: "Kullanıcı adı en az üç karakterden oluşmalı.",
+                                icon: "error",
+                            }).then(function () {
+                                window.location.reload()
+                            })
                         } else {
-
                             Swal.fire({
                                 title: "Başarısız!",
                                 text: "Kullanıcı adı zaten var.",
@@ -357,8 +364,8 @@ function staffAddClickFunction() {
             }
         });
     }
-  
-    kt_apps_contacts_view_tab_2
+}
+/* kt_apps_contacts_view_tab_2*/
 
 /*sözleşme türü süreli ise tarih seçme alanı disabled olmamalı, süresizse disable olmalı */
 $('#ContractTypeSelect').on('change', function () {
@@ -368,7 +375,7 @@ $('#ContractTypeSelect').on('change', function () {
         $("#JobFinishDate").removeClass("text-muted");
         $("#jobFinishDateLbl").removeClass("text-muted");
         $("#JobFinishDate").val(moment().format('DD.MM.YYYY'));
-      
+
     }
     else {
         $("#JobFinishDate").attr("disabled", true);
@@ -378,7 +385,7 @@ $('#ContractTypeSelect').on('change', function () {
 });
 
 $('#WillUseSystem').on('change', function () {
-
+    debugger;
     if ($('#WillUseSystem').is(":checked")) {
         $("#dvPassword").attr("hidden", false);
         $("#dvUserName").attr("hidden", false);
@@ -396,7 +403,7 @@ $('#WillUseSystem').on('change', function () {
         $("#dvAccessType").attr("hidden", true);
         ValidateStaff("false");
     }
-})
+});
 $('#pageRoles').select2({
     closeOnSelect: false,
     width: '100%'
