@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class StaffCareerController : Controller
     {
         private readonly IStaffCareerService _staffCareerService;

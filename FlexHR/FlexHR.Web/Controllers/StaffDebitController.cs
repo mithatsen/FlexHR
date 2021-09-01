@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
-  
+    [Authorize]
     public class StaffDebitController : Controller
     {
         private readonly IStaffDebitService _staffDebitService;

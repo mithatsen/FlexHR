@@ -16,6 +16,7 @@ using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class StaffController : Controller
     {
         private readonly IStaffService _staffService;
@@ -223,10 +224,10 @@ namespace FlexHR.Web.Controllers
                     user.IsActive = false;
                     _appUserService.Update(user);
                 } 
-                return RedirectToAction("Index", "Home");
+                return Json("true");
             }
-            TempData["StaffRemoveStatus"] = "false";
-            return RedirectToAction("Index", "Home");
+           // TempData["StaffRemoveStatus"] = "false";
+            return Json("false"); 
         }
     }
 }

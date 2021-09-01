@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class StaffPersonalInfoController : Controller
     {
         private readonly IMapper _mapper;

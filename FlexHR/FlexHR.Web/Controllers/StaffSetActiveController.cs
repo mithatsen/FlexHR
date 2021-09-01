@@ -1,5 +1,6 @@
 ﻿using FlexHR.Business.Interface;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class StaffSetActiveController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -18,6 +20,7 @@ namespace FlexHR.Web.Controllers
             _appUserService = appUserService;
             _userManager = userManager;
         }
+        [Authorize(Roles = "ViewStaffSetActivePage,Manager")]
         public IActionResult Index(int id)
         {
             var isExistPast = _appUserService.Get(x => x.StaffId == id && x.IsActive == false).FirstOrDefault();

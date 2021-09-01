@@ -13,7 +13,7 @@ using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
-
+    [Authorize]
     public class LeaveController : Controller
     {
         private readonly ICompanyService _companyService;

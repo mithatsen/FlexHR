@@ -28,7 +28,7 @@
                     Swal.fire(
                         "Hata",
                         "Kaydınız onaylanmadı",
-                        "hata"
+                        "error"
                     )
                 }
 
@@ -74,7 +74,7 @@ function rejectPayment(id) {
                     Swal.fire(
                         "Hata",
                         "İşlem Başarısız",
-                        "hata"
+                        "error"
                     )
                 }
 
@@ -114,6 +114,7 @@ function isPaidPayment(id) {
                         icon: "success",
                         showCancelButton: false
                     }).then(function () {
+                        localStorage.SingleRoleAssignUserId = id;
                         window.location.reload();
                     })
 
@@ -121,7 +122,7 @@ function isPaidPayment(id) {
                     Swal.fire(
                         "Hata",
                         "Kaydınız onaylanmadı",
-                        "hata"
+                        "error"
                     )
                 }
 

@@ -12,6 +12,7 @@ using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class PaymentController : Controller
     {
         private readonly IStaffPaymentService _staffPaymentService;

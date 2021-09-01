@@ -48,7 +48,7 @@ namespace FlexHR.Web.Controllers
             _companyBranchService = companyBranchService;
             _roleManager = roleManager;
         }
-        [Authorize(Roles = "ViewRoleAssignPage,Manager")]
+        [Authorize(Roles = "ViewSystemVariablePage,Manager")]
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.Config;

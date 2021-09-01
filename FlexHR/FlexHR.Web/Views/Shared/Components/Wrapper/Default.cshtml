@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     string active = string.Empty;
     @if (TempData["Active"] != null)
     {
@@ -178,39 +178,41 @@
                     </a>
                 </li>
             }
+            @if ((User.IsInRole("ViewFileOperationSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item menu-item-submenu  @(active == "fileProcess" ? "menu-item-active menu-item-open" : " ")  @(active == "refectory" ? "menu-item-active menu-item-open" : " ") " aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </span>
+                        <span class="menu-text"> Dosya İşlemleri </span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu" kt-hidden-height="80" style="">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
 
-            <li class="menu-item menu-item-submenu  @(active=="fileProcess"?"menu-item-active menu-item-open":" ")  @(active=="refectory"?"menu-item-active menu-item-open":" ") " aria-haspopup="true" data-menu-toggle="hover">
-                <a href="javascript:;" class="menu-link menu-toggle">
-                    <span class="svg-icon menu-icon">
-                        <i class="fas fa-file-upload"></i>
-                    </span>
-                    <span class="menu-text"> Dosya İşlemleri </span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="menu-submenu" kt-hidden-height="80" style="">
-                    <i class="menu-arrow"></i>
-                    <ul class="menu-subnav">
+                            <li class="menu-item  @(active == "fileProcess" ? "menu-item-active" : " ")" aria-haspopup="true">
+                                <a asp-controller="UploadFile" asp-action="Index" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Personel Takip</span>
+                                </a>
+                            </li>
+                            <li class="menu-item @(active == "refectory" ? "menu-item-active" : " ") " aria-haspopup="true">
+                                <a asp-controller="UploadFile" asp-action="Refectory" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Yemekhane Takip</span>
+                                </a>
+                            </li>
 
-                        <li class="menu-item  @(active=="fileProcess"?"menu-item-active":" ")" aria-haspopup="true">
-                            <a asp-controller="UploadFile" asp-action="Index" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Personel Takip</span>
-                            </a>
-                        </li>
-                        <li class="menu-item @(active=="refectory"?"menu-item-active":" ") " aria-haspopup="true">
-                            <a asp-controller="UploadFile" asp-action="Refectory" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Yemekhane Takip</span>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
+            }
             @if ((User.IsInRole("ViewRoleAssignPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
 

@@ -15,6 +15,7 @@ using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IMapper _mapper;
@@ -46,13 +47,12 @@ namespace FlexHR.Web.Controllers
             _generalSubTypeService = generalSubTypeService;
             _userManager = userManager;
         }
-    
-   
+        [Authorize(Roles = "ViewAdminDashboard,Manager")]
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.Home;
 
-            ViewBag.StaffRemoveStatus = TempData["StaffRemoveStatus"];
+            //ViewBag.StaffRemoveStatus = TempData["StaffRemoveStatus"];
             int userId = Convert.ToInt32(_userManager.GetUserId(HttpContext.User));
             var staffId = _appUserService.Get(x => x.Id == userId).FirstOrDefault().StaffId;
             ViewBag.StaffName = _staffService.Get(x => x.StaffId == staffId).FirstOrDefault().NameSurname;

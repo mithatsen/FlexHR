@@ -186,6 +186,7 @@
                 $("#myAwesomeDropzone").empty();
                 document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> ";
             }
+            
             $.ajax({
                 method: "GET",
                 url: "/StaffFile/GetStaffFile/" + id,
@@ -194,7 +195,7 @@
                 let serverFiles = JSON.parse(content);
                 Dropzone.autoDiscover = false;
                 var catId = document.getElementById("categorySelect").value;
-
+                
                 $('#myAwesomeDropzone').dropzone({
                     autoProcessQueue: false,
                     url: "/StaffFile/AddStaffFile/" + id, // Set the url for your upload script location
@@ -272,9 +273,11 @@
                         }
 
                         $('#uploadButton').click(function () {
+                            $('#cover-spin').show();
                             dz.processQueue();
                         });
                         dz.on("complete", function (file) {
+                            $('#cover-spin').hide();
                             if (file.upload) {
                                 Swal.fire({
                                     icon: 'success',

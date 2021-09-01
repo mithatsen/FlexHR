@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class StaffLeaveController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

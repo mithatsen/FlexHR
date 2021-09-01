@@ -511,6 +511,7 @@
                     formdata.append("LgDescription", $('#txtLgDescription').val());
                     formdata.append("CurrencyType", $('#currencyType').val());
                     formdata.append("StaffId", $('#staffId').val());
+                    $('#cover-spin').show();
                     $.ajax({
                         url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,
                         type: "POST",
@@ -520,7 +521,8 @@
                         cache: false,
                         processData: false,
                         success: function (data) {
-                            if (data == "true") {
+                            $('#cover-spin').hide();
+                            if (data == "true") {                                
                                 Swal.fire({
                                     title: "Eklendi!",
                                     text: "Kaydınız eklendi.",
@@ -604,6 +606,7 @@
                 $("#smDescription").hide();
                 $("#InstallmentDiv").hide();
                 $("#txtSmDescription").prop("disabled", true);
+                $("#txtLgDescription").prop("disabled", false);
             }
             else if (id == 100 || id == 103) {
                 $("#receiptTopDiv").hide();
