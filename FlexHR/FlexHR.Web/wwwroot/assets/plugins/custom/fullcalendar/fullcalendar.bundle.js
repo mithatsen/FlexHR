@@ -4599,7 +4599,7 @@ Docs & License: https://fullcalendar.io/
         weekLabel: 'W',
         allDayText: 'Tum Gun',
         eventLimitText: 'Daha fazla',
-        noEventsMessage: 'No events to display'
+        noEventsMessage: 'Gosterilecek etkinlik yok'
     };
     function parseRawLocales(explicitRawLocales) {
         var defaultCode = explicitRawLocales.length > 0 ? explicitRawLocales[0].code : 'en';

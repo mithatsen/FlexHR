@@ -15,11 +15,13 @@ namespace FlexHR.Web.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IAppUserService _appUserService;
         private readonly UserManager<AppUser> _userManager;
-        public AuthController(SignInManager<AppUser> signInManager, IAppUserService appUserService, UserManager<AppUser> userManager)
+        private readonly RoleManager<AppRole> _roleManager;
+        public AuthController(SignInManager<AppUser> signInManager, IAppUserService appUserService, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _signInManager = signInManager;
             _appUserService = appUserService;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         public IActionResult Index()
         {
@@ -31,14 +33,20 @@ namespace FlexHR.Web.Controllers
             var user = _appUserService.Get(x => x.UserName == model.UserName && x.IsActive == true).FirstOrDefault();
             if (ModelState.IsValid && user != null)
             {
-
+                var result=  await _userManager.GetRolesAsync(user);
                 var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
                 if (signInResult.Succeeded)
                 {
                     ViewBag.LoginMessage = "true";
-                    return RedirectToAction("Index", "Home");
+                    if (result.Contains("ViewAdminDashboard") || result.Contains("Manager"))
+                    {                        
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "StaffGeneral" ,new { id=user.StaffId});
+                    }                    
                 }
-
             }
             ViewBag.LoginMessage = "false";
             return View("Index", model);

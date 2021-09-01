@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.ViewModels;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,6 +19,7 @@ using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class UploadFileController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -33,6 +35,7 @@ namespace FlexHR.Web.Controllers
             _companyFileService = companyFileService;
             _fileColumnService = fileColumnService;
         }
+        [Authorize(Roles = "ViewStaffTrackingPage,Manager")]
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.FileProcess;
@@ -42,6 +45,7 @@ namespace FlexHR.Web.Controllers
             model.ColumnList = _fileColumnService.FileColumnListByTypeId(EnumFileType.StaffTrackingFile.GetHashCode());
             return View(model);
         }
+        [Authorize(Roles = "ViewRefectoryPage,Manager")]
         public IActionResult Refectory()
         {
             TempData["Active"] = TempdataInfo.Refectory;

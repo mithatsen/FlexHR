@@ -16,7 +16,7 @@
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
-                @if ((User.IsInRole("AddStaffRole") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                @if ((User.IsInRole("AddSingleRole") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffRoleAddModal">
                         Rol Ata

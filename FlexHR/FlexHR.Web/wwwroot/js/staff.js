@@ -277,11 +277,13 @@ function staffAddClickFunction() {
                     PageRoles: $("#pageRoles").val(),
 
                 };
+                $('#cover-spin').show();
                 $.ajax({
                     method: 'post',
                     url: '/Staff/AddStaffWithAjax',
                     data: formData,
                     success: function (data) {
+                        $('#cover-spin').hide();
                         if (data == "true") {
                             Swal.fire({
                                 title: "Eklendi!",
@@ -295,16 +297,12 @@ function staffAddClickFunction() {
                                 title: "Başarısız!",
                                 text: "Kullanıcı adı en az üç karakterden oluşmalı.",
                                 icon: "error",
-                            }).then(function () {
-                                window.location.reload()
                             })
                         } else {
                             Swal.fire({
                                 title: "Başarısız!",
-                                text: "Kullanıcı adı zaten var.",
+                                text: "Bu kullanıcı adı daha önceden alınmış. Lütfen geçerli bir kullanıcı adı giriniz.",
                                 icon: "error",
-                            }).then(function () {
-                                window.location.reload()
                             })
                         }
 
@@ -334,11 +332,13 @@ function staffAddClickFunction() {
                     PageRoles: $("#pageRoles").val(),
 
                 };
+                $('#cover-spin').show();
                 $.ajax({
                     method: 'post',
                     url: '/Staff/AddStaffWithAjax',
                     data: formData,
                     success: function (data) {
+                        $('#cover-spin').hide();
                         if (data == "true") {
                             Swal.fire({
                                 title: "Eklendi!",
@@ -351,10 +351,8 @@ function staffAddClickFunction() {
 
                             Swal.fire({
                                 title: "Başarısız!",
-                                text: "Kullanıcı adı zaten var.",
+                                text: "Bu kullanıcı adı daha önceden alınmış. Lütfen geçerli bir kullanıcı adı giriniz.",
                                 icon: "error",
-                            }).then(function () {
-                                window.location.reload()
                             })
                         }
 

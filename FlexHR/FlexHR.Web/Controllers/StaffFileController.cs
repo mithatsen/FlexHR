@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class StaffFileController : Controller
     {
         private readonly IConfiguration _configuration;

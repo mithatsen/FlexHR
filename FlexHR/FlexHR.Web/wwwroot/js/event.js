@@ -29,7 +29,7 @@
                     Swal.fire(
                         "Hata",
                         "Kaydınız silinemedi",
-                        "hata"
+                        "error"
                     )
                 }
 
@@ -78,7 +78,7 @@ function deleteEvent() {
                     Swal.fire(
                         "Hata",
                         "Kaydınız silinemedi",
-                        "hata"
+                        "error"
                     )
                 }
 

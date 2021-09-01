@@ -21,7 +21,7 @@
     <div class="card-header card-header-tabs-line">
         <div class="card-toolbar">
             <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
-                @if ((User.IsInRole("ViewLeaveRequestPendingApprovalLeavesTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                @if ((User.IsInRole("ViewMultipleRoleAssignTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
                         <a class="nav-link" id="multipleAssignBtn" data-toggle="tab" href="#multipleAssignTab" onclick="localStorage.RoleAssignTabId = 1">
@@ -34,7 +34,7 @@
                         </a>
                     </li>
                 }
-                @if ((User.IsInRole("ViewLeaveRequestApprovalLeavesTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                @if ((User.IsInRole("ViewSingleRoleAssignTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
                         <a class="nav-link" id="singleAssignBtn" data-toggle="tab" href="#singleAssignTab" onclick="localStorage.RoleAssignTabId = 2">
@@ -72,11 +72,11 @@
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Rol bilgilerini düzenleyin</span>
                                     </div>
                                     <div class="card-toolbar">
-                                        @if ((User.IsInRole("AddRoleAssign") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        @if ((User.IsInRole("AddMultipleRole") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                         {
                                             <button onclick="staffAddAuthorizeTypeClickFunction()" type="button" class="btn btn-primary mr-2">Kaydet</button>
                                         }
-                                        <a class="btn btn-secondary">Geri</a>
+                                        
                                     </div>
                                 </div>
                                 <!--end::Header-->
@@ -135,7 +135,7 @@
                                 </div>
                                 <div class="card-toolbar">
 
-                                    <a class="btn btn-secondary">Geri</a>
+                                    
                                 </div>
                             </div>
                             <!--end::Header-->

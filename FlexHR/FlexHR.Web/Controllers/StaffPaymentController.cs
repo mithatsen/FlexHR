@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class StaffPaymentController : Controller
     {
         private readonly IStaffService _staffService;

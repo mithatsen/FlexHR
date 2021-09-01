@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.EventDtos;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
+    [Authorize]
     public class EventController : Controller
     {
         private readonly IEventService _eventService;
@@ -25,7 +27,7 @@ namespace FlexHR.Web.Controllers
             _personelInfoService = personelInfoService;
             _publicHolidayService = publicHolidayService;
         }
-
+        [Authorize(Roles = "ViewEventPage,Manager")]
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.Event;
