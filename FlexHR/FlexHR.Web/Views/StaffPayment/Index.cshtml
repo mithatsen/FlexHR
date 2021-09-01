@@ -95,18 +95,18 @@
                                                     }
                                                 </td>
                                                 <td>@item.GeneralStatusGeneralSubTypeId</td>
-                                                <td>@item.CreationDate.ToShortDateString()</td>
+                                                <td>@item.CreationDate.ToString("dd.MM.yyyy")</td>
                                                 <td>@item.IsPaid</td>
                                                 <td class="text-left">
                                                     @if (item.PaymentTypeGeneralSubTypeId == 99 && item.Receipts.Count > 0 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
                                                     {
-                                                        <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="details">
+                                                        <a onclick="ShowReceiptInModal(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Detay">
                                                             <i class="la la-info text-info"></i>
                                                         </a>
                                                     }
                                                     @if ((User.IsInRole("UpdateDeletePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                                     {
-                                                        <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal">
+                                                        <a id="CareerUpdateBtn" onclick="PaymentUpdate(@item.StaffPaymentId)" class="btn btn-sm btn-clean btn-icon" title="Düzenle" data-toggle="modal">
                                                             <i class="la la-edit text-warning"></i>
                                                         </a>
                                                         <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffPayment(@item.StaffPaymentId)" title="Sil">

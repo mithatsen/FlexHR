@@ -119,6 +119,7 @@
                                 <th width="25%">Açıklama</th>
                                 <th width="10%">Tutar</th>
                                 <th>Oluştrulma Tarihi</th>
+                                <th width="10%">Detay</th>
                                 @if ((User.IsInRole("ApprovePayment") || (User.IsInRole("RejectPayment")) || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                 {
                                     <th width="12%">Onaylama İşlemi</th>
@@ -129,13 +130,32 @@
                             @foreach (var item in Model.PendingApprovalPayments)
                             {
                                 <tr>
-                                    <td><a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
-                                    <td>@item.PaymentDate.ToShortDateString()</td>
+                                    @if (item.IsUserActive)
+                                    {
+                                        <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.NameSurname
+                                        </td>
+                                    }
+
+                                    <td>@item.PaymentDate.ToString("dd.MM.yyyy")()</td>
                                     <td>@item.PaymentType</td>
                                     <td>@item.Description</td>
                                     <td>@item.Amount @item.CurrencyType </td>
-                                    <td>@item.CreationDate.ToShortDateString()</td>
+                                    <td>@item.CreationDate.ToString("dd.MM.yyyy")()</td>
+                                    @if (item.PaymentTypeGeneralSubTypeId == 99 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
+                                    {
+                                        <th> <a onclick=ShowReceiptInModall(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a></th>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
                                     @*<td>@item.IsPaid</td>*@
+                                
 
                                     <td>
                                         @if ((User.IsInRole("ApprovePayment") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
@@ -167,6 +187,7 @@
                                 <th width="25%">Açıklama</th>
                                 <th width="10%">Tutar</th>
                                 <th>Oluştrulma Tarihi</th>
+                                <th>Detay</th>
                                 <th width="12%">Ödeme Yap</th>
                             </tr>
                         </thead>
@@ -174,12 +195,30 @@
                             @foreach (var item in Model.ApprovedPayments)
                             {
                                 <tr>
-                                    <td><a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    @if (item.IsUserActive)
+                                    {
+                                        <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.NameSurname
+                                        </td>
+                                    }
+
                                     <td>@item.PaymentDate.ToShortDateString()</td>
                                     <td>@item.PaymentType</td>
                                     <td>@item.Description</td>
                                     <td>@item.Amount  @item.CurrencyType </td>
                                     <td>@item.CreationDate.ToShortDateString()</td>
+                                    @if (item.PaymentTypeGeneralSubTypeId == 99 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
+                                    {
+                                        <th> <a onclick=ShowReceiptInModall(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a></th>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
 
                                     <td>
                                         @if (item.IsPaid)
@@ -209,18 +248,39 @@
                                 <th width="25%">Açıklama</th>
                                 <th width="10%">Tutar</th>
                                 <th>Oluştrulma Tarihi</th>
+                                <th>Detay</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.RejectedPayments)
                             {
                                 <tr>
-                                    <td><a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    @if (item.IsUserActive)
+                                    {
+                                        <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.NameSurname
+                                        </td>
+                                    }
+
                                     <td>@item.PaymentDate.ToShortDateString()</td>
                                     <td>@item.PaymentType</td>
                                     <td>@item.Description</td>
                                     <td>@item.Amount  @item.CurrencyType </td>
                                     <td>@item.CreationDate.ToShortDateString()</td>
+                                    @if (item.PaymentTypeGeneralSubTypeId == 99 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
+                                    {
+                                        <th> <a onclick=ShowReceiptInModall(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a></th>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+
                                 </tr>
 
                             }
@@ -232,6 +292,9 @@
 
     </div>
 </div>
+<div id="ShowStaffPaymentInfoDiv">
+</div>
+
 
 @section Scripts{
     <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>

@@ -130,7 +130,18 @@
                             @foreach (var item in Model.PendingApprovalLeaves)
                             {
                                 <tr>
-                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    @if (item.IsUserActive)
+                                    {
+                                        <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.NameSurname
+                                        </td>
+                                    }
+
+
                                     <td>@item.LeaveStartDate.ToString("d")</td>
                                     <td>@item.LeaveEndDate.ToString("d")</td>
                                     <td>@item.TotalDay Gün</td>
@@ -173,17 +184,26 @@
                         <tbody>
                             @foreach (var item in Model.ApprovedLeaves)
                             {
-                                <tr>
+                            <tr>
+                                @if (item.IsUserActive)
+                                {
                                     <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @item.NameSurname
+                                    </td>
+                                }
+                              
+                                <td>@item.LeaveStartDate.ToString("d")</td>
 
-                                    <td>@item.LeaveStartDate.ToString("d")</td>
+                                <td>@item.LeaveEndDate.ToString("d")</td>
 
-                                    <td>@item.LeaveEndDate.ToString("d")</td>
-
-                                    <td>@item.TotalDay Gün</td>
-                                    <td>@item.LeaveType</td>
-                                    <td>@item.Description</td>
-                                </tr>
+                                <td>@item.TotalDay Gün</td>
+                                <td>@item.LeaveType</td>
+                                <td>@item.Description</td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -204,17 +224,26 @@
                         <tbody>
                             @foreach (var item in Model.RejectedLeaves)
                             {
-                                <tr>
+                            <tr>
+                                @if (item.IsUserActive)
+                                {
                                     <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @item.NameSurname
+                                    </td>
+                                }                               
 
-                                    <td>@item.LeaveStartDate.ToString("d")</td>
+                                <td>@item.LeaveStartDate.ToString("d")</td>
 
-                                    <td>@item.LeaveEndDate.ToString("d")</td>
+                                <td>@item.LeaveEndDate.ToString("d")</td>
 
-                                    <td>@item.TotalDay Gün</td>
-                                    <td>@item.LeaveType</td>
-                                    <td>@item.Description</td>
-                                </tr>
+                                <td>@item.TotalDay Gün</td>
+                                <td>@item.LeaveType</td>
+                                <td>@item.Description</td>
+                            </tr>
 
                             }
                         </tbody>

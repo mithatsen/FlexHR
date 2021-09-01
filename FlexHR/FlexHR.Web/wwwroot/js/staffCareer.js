@@ -148,7 +148,6 @@ function CompanyChange() {
             $("#c_companyBranchSelect").attr("disabled", false);
             $("#c_companyBranchSelect").removeClass("text-muted");
             $("#c_companyBranchSelect").empty();
-            $("#c_companyBranchSelect").append('<option  value="-1">Şube Seçiniz</option>');
 
             let companyBranch = JSON.parse(content);
             for (var i = 0; i < companyBranch.length; i++) {
@@ -159,8 +158,7 @@ function CompanyChange() {
 
         });
     } else {
-        $("#c_companyBranchSelect").empty();
-        $("#c_companyBranchSelect").append('<option value="-1">Şube Seçiniz</option>');
+        $("#c_companyBranchSelect").empty(); 
         $("#c_companyBranchSelect").attr("disabled", true);
         $("#c_companyBranchSelect").addClass("text-muted");
     }
@@ -177,7 +175,7 @@ function CompanyChangeUpdate() {
             $("#c_companyBranchSelectUpdate").attr("disabled", false);
             $("#c_companyBranchSelectUpdate").removeClass("text-muted");
             $("#c_companyBranchSelectUpdate").empty();
-            $("#c_companyBranchSelectUpdate").append('<option  value="-1">Şube Seçiniz</option>');
+           
 
             let companyBranch = JSON.parse(content);
             for (var i = 0; i < companyBranch.length; i++) {
@@ -189,7 +187,6 @@ function CompanyChangeUpdate() {
         });
     } else {
         $("#c_companyBranchSelectUpdate").empty();
-        $("#c_companyBranchSelectUpdate").append('<option value="-1">Şube Seçiniz</option>');
         $("#c_companyBranchSelectUpdate").attr("disabled", true);
         $("#c_companyBranchSelectUpdate").addClass("text-muted");
     }

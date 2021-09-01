@@ -130,7 +130,16 @@
                             @foreach (var item in Model.PendingApprovalLeaves)
                             {
                                 <tr>
-                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    @if (item.IsUserActive)
+                                    {
+                                        <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.NameSurname
+                                        </td>
+                                    }
                                     <td>@item.StartDate.ToString("g")</td>
                                     <td>@item.Duration Saat</td>
                                     <td>@item.Description</td>
@@ -170,7 +179,16 @@
                             @foreach (var item in Model.ApprovedShift)
                             {
                                 <tr>
-                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    @if (item.IsUserActive)
+                                    {
+                                        <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.NameSurname
+                                        </td>
+                                    }
                                     <td>@item.StartDate.ToString("g")</td>
                                     <td>@item.Duration Saat</td>
                                     <td>@item.Description</td>
@@ -198,7 +216,16 @@
                             @foreach (var item in Model.RejectedShift)
                             {
                                 <tr>
-                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    @if (item.IsUserActive)
+                                    {
+                                        <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.NameSurname
+                                        </td>
+                                    }
                                     <td>@item.StartDate.ToString("g")</td>
                                     <td>@item.Duration Saat</td>
                                     <td>@item.Description</td>

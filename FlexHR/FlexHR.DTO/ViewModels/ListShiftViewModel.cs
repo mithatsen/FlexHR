@@ -7,8 +7,8 @@ namespace FlexHR.DTO.ViewModels
 {
     public class ListShiftViewModel
     {
-        public List<ListStaffShiftDto> ApprovedShift { get; set; }
-        public List<ListStaffShiftDto> RejectedShift { get; set; }
-        public List<ListStaffShiftDto> PendingApprovalLeaves { get; set; }
+        public List<ListStaffShiftWithUserActiveInfo> ApprovedShift { get; set; }
+        public List<ListStaffShiftWithUserActiveInfo> RejectedShift { get; set; }
+        public List<ListStaffShiftWithUserActiveInfo> PendingApprovalLeaves { get; set; }
     }
 }

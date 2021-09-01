@@ -8,8 +8,8 @@ namespace FlexHR.DTO.ViewModels
 {
     public class ListLeaveViewModel
     {
-        public List<ListStaffLeaveDto> PendingApprovalLeaves { get; set; }
-        public List<ListStaffLeaveDto> ApprovedLeaves { get; set; }
-        public List<ListStaffLeaveDto> RejectedLeaves { get; set; }
+        public List<ListStaffLeaveWithUserActiveInfoDto> PendingApprovalLeaves { get; set; }
+        public List<ListStaffLeaveWithUserActiveInfoDto> ApprovedLeaves { get; set; }
+        public List<ListStaffLeaveWithUserActiveInfoDto> RejectedLeaves { get; set; }
     }
 }

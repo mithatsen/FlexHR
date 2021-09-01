@@ -7,8 +7,8 @@ namespace FlexHR.DTO.ViewModels
 {
     public class ListPaymentViewModel
     {
-        public List<ListStaffPaymentDto> PendingApprovalPayments { get; set; }
-        public List<ListStaffPaymentDto> ApprovedPayments { get; set; }
-        public List<ListStaffPaymentDto> RejectedPayments { get; set; }
+        public List<ListStaffPaymentWithUserActiveInfoDto> PendingApprovalPayments { get; set; }
+        public List<ListStaffPaymentWithUserActiveInfoDto> ApprovedPayments { get; set; }
+        public List<ListStaffPaymentWithUserActiveInfoDto> RejectedPayments { get; set; }
     }
 }

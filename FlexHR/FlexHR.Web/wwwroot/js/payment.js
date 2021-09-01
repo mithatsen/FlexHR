@@ -137,3 +137,25 @@ function isPaidPayment(id) {
     });
 
 }
+
+function ShowReceiptInModall(id) {
+   
+    var modelContent = $("#ShowStaffPaymentInfoDiv");
+
+    $.ajax({
+        url: "/StaffPayment/GetStaffPaymentWithReceiptInfoModal/" + id,
+        type: "GET"
+    }).done(function (content) {
+
+        if (content != null) {
+            modelContent.html(content);
+        }
+        $("#ShowPaymentReceiptModal").modal("show");
+
+    }).fail(function (error) {
+        alert(error);
+    });
+
+
+
+}

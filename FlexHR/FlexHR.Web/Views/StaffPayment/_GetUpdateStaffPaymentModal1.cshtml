@@ -161,7 +161,7 @@
                                                 <label id="jobFinishDateLbl">Ödeme Tarihi</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="ContractStartDatePartial" asp-for="PaymentDate" value="@Model.PaymentDate.ToShortDateString()" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <input id="ContractStartDatePartial" asp-for="PaymentDate" value="@Model.PaymentDate.ToString("dd.MM.yyyy")" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>

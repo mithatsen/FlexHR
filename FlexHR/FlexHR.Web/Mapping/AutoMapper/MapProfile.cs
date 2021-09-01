@@ -52,6 +52,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #region StaffLeave
             CreateMap<AddStaffLeaveDto, StaffLeave>().ReverseMap();
             CreateMap<ListStaffLeaveDto, StaffLeave>().ReverseMap();
+            CreateMap<StaffLeave, ListStaffLeaveWithUserActiveInfoDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffLeave, ListStaffLeaveDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffLeave, ListStaffLeaveOnDashboardDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffLeave, ListStaffUpcomingLeaveOnDashboardDto>().ForMember(d => d.LeaveType, o => o.MapFrom(s => s.LeaveType.Name)).ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
@@ -62,6 +63,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<ListStaffShiftDto, StaffShift>().ReverseMap();
             CreateMap<StaffShift, ListStaffShiftOnDashboardDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffShift, ListStaffShiftDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            CreateMap<StaffShift, ListStaffShiftWithUserActiveInfo>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
 
             #endregion
             #region StaffOtherInfo
@@ -71,6 +73,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<ListStaffPaymentDto, StaffPayment>().ReverseMap();
             CreateMap<AddStaffPaymentDto, StaffPayment>().ReverseMap();
             CreateMap<StaffPayment, ListStaffPaymentDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            CreateMap<StaffPayment, ListStaffPaymentWithUserActiveInfoDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffPayment, ListStaffPaymentOnDashboardDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
 
             #endregion

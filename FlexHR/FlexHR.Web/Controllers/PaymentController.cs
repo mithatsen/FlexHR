@@ -29,26 +29,28 @@ namespace FlexHR.Web.Controllers
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.Payment;
-            var approvedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());
-            var pendingApprovalPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff").ToList());
-            var rejectedPayment = _mapper.Map<List<ListStaffPaymentDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff").ToList());
+            var approvedPayment = _mapper.Map<List<ListStaffPaymentWithUserActiveInfoDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());
+            var pendingApprovalPayment = _mapper.Map<List<ListStaffPaymentWithUserActiveInfoDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff").ToList());
+            var rejectedPayment = _mapper.Map<List<ListStaffPaymentWithUserActiveInfoDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff").ToList());
 
             foreach (var item in approvedPayment)
             {
                 item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
                 item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
-
+                item.IsUserActive= _staffService.Get(p => p.StaffId == item.StaffId).FirstOrDefault().IsActive;
 
             }
             foreach (var item in pendingApprovalPayment)
             {
                 item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
                 item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
+                item.IsUserActive = _staffService.Get(p => p.StaffId == item.StaffId).FirstOrDefault().IsActive;
             }
             foreach (var item in rejectedPayment)
             {
                 item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
                 item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
+                item.IsUserActive = _staffService.Get(p => p.StaffId == item.StaffId).FirstOrDefault().IsActive;
             }
             ListPaymentViewModel listPaymentViewModel = new ListPaymentViewModel
             {

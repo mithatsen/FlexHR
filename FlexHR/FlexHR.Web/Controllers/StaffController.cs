@@ -218,7 +218,7 @@ namespace FlexHR.Web.Controllers
                 staff.IsActive = false;
                 _staffService.Update(staff);
                 var user = _appUserService.Get(x => x.StaffId == id).FirstOrDefault();
-                if (staff != null)
+                if (user != null)
                 {
                     user.IsActive = false;
                     _appUserService.Update(user);

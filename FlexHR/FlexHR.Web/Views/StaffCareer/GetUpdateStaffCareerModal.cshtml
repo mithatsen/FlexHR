@@ -113,10 +113,10 @@
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_29" data-target-input="nearest">
                                                         @{
-                                                            var date = DateTime.Now.ToShortDateString();
+                                                            var date = DateTime.Now.ToString("dd.MM.yyyy");
                                                             @if (Model.JobFinishDate != null)
                                                             {
-                                                                date = Model.JobFinishDate.Value.ToShortDateString();
+                                                                date = Model.JobFinishDate.Value.ToString("dd.MM.yyyy");
                                                             }
                                                             else
                                                             {

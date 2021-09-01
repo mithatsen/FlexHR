@@ -56,7 +56,7 @@
                                                             @{ var birthDate = "";
                                                                 if (Model.BirthDate != null)
                                                                 {
-                                                                    birthDate = Model.BirthDate.Value.ToShortDateString();
+                                                                    birthDate = Model.BirthDate.Value.ToString("dd.MM.yyyy");
                                                                 }
                                                                 else
                                                                 {

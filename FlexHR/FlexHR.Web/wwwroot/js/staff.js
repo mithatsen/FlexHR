@@ -58,7 +58,7 @@ var fvAddStaffWithoutUser = FormValidation.formValidation(document.getElementByI
 
                 }
             },
-            ContractTypeId: {
+            ContractTypeGeneralSubTypeId: {
                 validators: {
                     notEmpty: {
                         message: 'Sözleşme türü seçiniz'
@@ -139,7 +139,7 @@ function ValidateStaff(status) {
 
                         }
                     },
-                    ContractTypeId: {
+                    ContractTypeGeneralSubTypeId: {
                         validators: {
                             notEmpty: {
                                 message: 'Sözleşme türü seçiniz'
@@ -232,7 +232,7 @@ function ValidateStaff(status) {
 
                         }
                     },
-                    ContractTypeId: {
+                    ContractTypeGeneralSubTypeId: {
                         validators: {
                             notEmpty: {
                                 message: 'Sözleşme türü seçiniz'
@@ -385,7 +385,6 @@ $('#ContractTypeSelect').on('change', function () {
 });
 
 $('#WillUseSystem').on('change', function () {
-    debugger;
     if ($('#WillUseSystem').is(":checked")) {
         $("#dvPassword").attr("hidden", false);
         $("#dvUserName").attr("hidden", false);
@@ -408,4 +407,8 @@ $('#pageRoles').select2({
     closeOnSelect: false,
     width: '100%'
 
+});
+$('#ContractTypeSelect').select2({
+    placeholder: 'Seçiniz',
+    width: '100%'
 });
