@@ -3,7 +3,9 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffOtherInfoDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using FlexHR.Web.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -15,7 +17,7 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-    public class StaffOtherInfoController : Controller
+    public class StaffOtherInfoController : BaseIdentityController
     {
         private readonly IMapper _mapper;
         private readonly IGeneralSubTypeService _generalSubTypeService;
@@ -23,7 +25,8 @@ namespace FlexHR.Web.Controllers
         private readonly ICountryService _countryService;
         private readonly ITownService _townService;
         private readonly ICityService _cityService;
-        public StaffOtherInfoController(IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffOtherInfoService staffOtherInfoService, ICountryService countryService, ITownService townService, ICityService cityService)
+        public StaffOtherInfoController(IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffOtherInfoService staffOtherInfoService,
+            ICountryService countryService, ITownService townService, ICityService cityService ,UserManager<AppUser> userManager) : base(userManager)
         {
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
@@ -33,26 +36,34 @@ namespace FlexHR.Web.Controllers
             _cityService = cityService;
         }
         [Authorize(Roles = "ViewStaffOtherInfoPage,Manager")]
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
-            TownHelper cityIdAndCountryId = new TownHelper();
-            var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
-
-            if (staffOtherInfo.TownId != null)
+            if (await IsAuthority(id))
             {
-                cityIdAndCountryId = _townService.GetCityIdAndCountryIdByTownId((int)staffOtherInfo.TownId);
-                ViewBag.Cities = new SelectList(_cityService.GetCityListByCountryId(cityIdAndCountryId.CountryId), "CityId", "Name");
-                ViewBag.Towns = new SelectList(_townService.GetTownListByCityId(cityIdAndCountryId.CityId), "TownId", "Name");
+                TownHelper cityIdAndCountryId = new TownHelper();
+                var staffOtherInfo = _staffOtherInfoService.GetOtherInfoByStaffId(id);
 
+                if (staffOtherInfo.TownId != null)
+                {
+                    cityIdAndCountryId = _townService.GetCityIdAndCountryIdByTownId((int)staffOtherInfo.TownId);
+                    ViewBag.Cities = new SelectList(_cityService.GetCityListByCountryId(cityIdAndCountryId.CountryId), "CityId", "Name");
+                    ViewBag.Towns = new SelectList(_townService.GetTownListByCityId(cityIdAndCountryId.CityId), "TownId", "Name");
+
+                }
+                ViewBag.AccountTypeList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.AccountType), "GeneralSubTypeId", "Description");
+                ViewBag.Countries = new SelectList(_countryService.GetAll(), "CountryId", "Name");
+                var staffOtherInfoDto = _mapper.Map<ListStaffOtherInfoDto>(staffOtherInfo);
+                staffOtherInfoDto.TownHelper = cityIdAndCountryId;
+
+                ViewBag.StaffOtherInfoUpdateStatus = TempData["StaffOtherInfoUpdateStatus"];
+                return View(staffOtherInfoDto);
             }
-            ViewBag.AccountTypeList= new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.AccountType), "GeneralSubTypeId", "Description");
-            ViewBag.Countries = new SelectList(_countryService.GetAll(), "CountryId", "Name");
-            var staffOtherInfoDto = _mapper.Map<ListStaffOtherInfoDto>(staffOtherInfo);
-            staffOtherInfoDto.TownHelper = cityIdAndCountryId;
-
-            ViewBag.StaffOtherInfoUpdateStatus= TempData["StaffOtherInfoUpdateStatus"];
-            return View(staffOtherInfoDto);
+            else
+            {
+                return RedirectToAction("StatusCode", "Auth", new { code = 404 });
+            }
         }
+        
         [HttpPost]
         public IActionResult UpdateStaffOtherInfo(ListStaffOtherInfoDto model)
         {

@@ -3,7 +3,9 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffCareerDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using FlexHR.Web.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -15,14 +17,15 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-    public class StaffCareerController : Controller
+    public class StaffCareerController : BaseIdentityController
     {
         private readonly IStaffCareerService _staffCareerService;
         private readonly ICompanyService _companyService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IMapper _mapper;
-        public StaffCareerController(IStaffCareerService staffCareerService, ICompanyService companyService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ICompanyBranchService companyBranchService)
+        public StaffCareerController(IStaffCareerService staffCareerService, ICompanyService companyService, IGeneralSubTypeService generalSubTypeService,
+            IMapper mapper, ICompanyBranchService companyBranchService, UserManager<AppUser> userManager) : base(userManager)
         {
             _staffCareerService = staffCareerService;
             _companyService = companyService;
@@ -31,40 +34,48 @@ namespace FlexHR.Web.Controllers
             _companyBranchService = companyBranchService;
         }
         [Authorize(Roles = "ViewStaffCareerPage,Manager")]
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
-
-            ViewBag.StaffId = id;
-            var careerModels = new List<ListStaffCareerDto>();
-            var careerResult = _staffCareerService.Get(p => p.IsActive == true && p.StaffId == id, null, "CompanyBranch");
-
-
-            ViewBag.Companies = new SelectList(_companyService.GetAll(), "CompanyId", "CompanyName");
-            ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
-            ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
-            ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
-  
-            foreach (var item in careerResult)
+            if (await IsAuthority(id))
             {
-                var careerModel = new ListStaffCareerDto
+                ViewBag.StaffId = id;
+                var careerModels = new List<ListStaffCareerDto>();
+                var careerResult = _staffCareerService.Get(p => p.IsActive == true && p.StaffId == id, null, "CompanyBranch");
+
+
+                ViewBag.Companies = new SelectList(_companyService.GetAll(), "CompanyId", "CompanyName");
+                ViewBag.Departments = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Department), "GeneralSubTypeId", "Description");
+                ViewBag.ModeOfOperations = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ModeOfOperation), "GeneralSubTypeId", "Description");
+                ViewBag.Titles = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Title), "GeneralSubTypeId", "Description");
+
+                foreach (var item in careerResult)
                 {
-                    StaffCareerId = item.StaffCareerId,
-                    JobStartDate = item.JobStartDate,
-                    JobFinishDate = item.JobFinishDate,
-                    CompanyName = _companyService.GetCompanyNameByCompanyId(item.CompanyId),
-                    BranchName = item.CompanyBranch != null ? item.CompanyBranch.BranchName : "-",
-                    IsActive = item.IsActive,
-                    ModeOfOperation = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.ModeOfOperationGeneralSubTypeId),
-                    DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DepartmantGeneralSubTypeId),
-                    Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.TitleGeneralSubTypeId),
-                    IsCareerContinue = item.JobFinishDate > DateTime.Now || item.JobFinishDate == null
-                };
-                careerModels.Add(careerModel);
+                    var careerModel = new ListStaffCareerDto
+                    {
+                        StaffCareerId = item.StaffCareerId,
+                        JobStartDate = item.JobStartDate,
+                        JobFinishDate = item.JobFinishDate,
+                        CompanyName = _companyService.GetCompanyNameByCompanyId(item.CompanyId),
+                        BranchName = item.CompanyBranch != null ? item.CompanyBranch.BranchName : "-",
+                        IsActive = item.IsActive,
+                        ModeOfOperation = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.ModeOfOperationGeneralSubTypeId),
+                        DepartmantName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DepartmantGeneralSubTypeId),
+                        Title = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.TitleGeneralSubTypeId),
+                        IsCareerContinue = item.JobFinishDate > DateTime.Now || item.JobFinishDate == null
+                    };
+                    careerModels.Add(careerModel);
+                }
+
+                ViewBag.StaffCareerUpdateStatus = TempData["StaffCareerUpdateStatus"];
+                return View(careerModels);
+            }
+            else
+            {
+                return RedirectToAction("StatusCode", "Auth", new { code = 404 });
             }
 
-            ViewBag.StaffCareerUpdateStatus = TempData["StaffCareerUpdateStatus"];
-            return View(careerModels);
         }
+   
         [HttpPost]
         public IActionResult AddStaffCareerWithAjax(AddStaffCareerDto model)
         {

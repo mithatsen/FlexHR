@@ -3,8 +3,10 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffFileDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using FlexHR.Web.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
@@ -19,14 +21,15 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-    public class StaffFileController : Controller
+    public class StaffFileController : BaseIdentityController
     {
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IStaffFileService _staffFileService;
         private readonly IStaffService _staffService;
-        public StaffFileController(IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffFileService staffFileService, IConfiguration configuration, IStaffService staffService)
+        public StaffFileController(IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffFileService staffFileService, IConfiguration configuration, IStaffService staffService,
+            UserManager<AppUser> userManager) : base(userManager)
         {
             _mapper = mapper;
             _generalSubTypeService = generalSubTypeService;
@@ -41,22 +44,30 @@ namespace FlexHR.Web.Controllers
             return unaccentedText.Replace("ı", "i");
         }
         [Authorize(Roles = "ViewStaffFilePage,Manager")]
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
-            ViewBag.StaffId = id;
-            ViewBag.FileTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType), "GeneralSubTypeId", "Description").Take(7);
-            var models = new List<FileHelper>();
-            var fileTypes = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType).Take(7);
-
-            foreach (var item in fileTypes)
+            if (await IsAuthority(id))
             {
-                var temp = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == item.GeneralSubTypeId && x.IsActive == true);
+                ViewBag.StaffId = id;
+                ViewBag.FileTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType), "GeneralSubTypeId", "Description").Take(7);
+                var models = new List<FileHelper>();
+                var fileTypes = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FileType).Take(7);
 
-                FileHelper model = new FileHelper { TypeId = item.GeneralSubTypeId, Name = item.Description, Count = temp.Count() };
-                models.Add(model);
+                foreach (var item in fileTypes)
+                {
+                    var temp = _staffFileService.Get(x => x.StaffId == id && x.FileGeneralSubTypeId == item.GeneralSubTypeId && x.IsActive == true);
+
+                    FileHelper model = new FileHelper { TypeId = item.GeneralSubTypeId, Name = item.Description, Count = temp.Count() };
+                    models.Add(model);
+                }
+
+                return View(models);
+            }
+            else
+            {
+                return RedirectToAction("StatusCode", "Auth", new { code = 404 });
             }
 
-            return View(models);
         }
 
         [HttpPost]

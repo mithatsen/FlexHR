@@ -1,6 +1,7 @@
 ﻿using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.AuthDtos;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -119,6 +120,16 @@ namespace FlexHR.Web.Controllers
                 return Json("true");
             }
             return Json("false");
+        }
+        [Authorize]
+        public IActionResult StatusCode(int? code)
+        {
+            if (code == 404)
+            {
+                ViewBag.Code = code;
+                ViewBag.Message = "Sayfa Bulunamadı";
+            }
+            return View();
         }
     }
 }

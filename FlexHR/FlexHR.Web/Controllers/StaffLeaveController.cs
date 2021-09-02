@@ -3,6 +3,7 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using FlexHR.Web.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,8 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-    public class StaffLeaveController : Controller
+    public class StaffLeaveController : BaseIdentityController
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly IAppUserService _appUserService;
         private readonly IStaffLeaveService _staffLeaveService;
         private readonly IStaffService _staffService;
@@ -26,11 +26,11 @@ namespace FlexHR.Web.Controllers
         private readonly IMapper _mapper;
         private readonly ILeaveRuleService _leaveRuleService;
      
-        public StaffLeaveController(IStaffLeaveService staffLeaveService, UserManager<AppUser> userManager, IAppUserService appUserService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,IStaffService staffService)
+        public StaffLeaveController(IStaffLeaveService staffLeaveService, UserManager<AppUser> userManager, IAppUserService appUserService,
+            IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,IStaffService staffService):base(userManager)
         {
             _appUserService = appUserService;
             _staffLeaveService = staffLeaveService;
-            _userManager = userManager;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _leaveTypeService = leaveTypeService;
@@ -38,26 +38,34 @@ namespace FlexHR.Web.Controllers
             _staffService = staffService;
         }
         [Authorize(Roles = "ViewStaffLeavePage,Manager")]
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
-            ViewBag.StaffId = id;
-
-            var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
-            var leaveModels = new List<ListStaffLeaveDto>();
-            var staff = _staffService.GetById(id);
-
-            ViewBag.TotalLeaveDeserved =CalculateTotalLeaveAmountDeservedBySeniority(staff.JobJoinDate);
-            ViewBag.UsedLeaveDay =CalculateUsedLeaveAmount(id);
-            foreach (var item in staffLeaveList)
+            if (await IsAuthority(id))
             {
-                var leaveModel = _mapper.Map<ListStaffLeaveDto>(item);
-                leaveModel.LeaveType = _leaveTypeService.GetById(item.LeaveTypeId).Name;
-                leaveModel.StatusType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.GeneralStatusGeneralSubTypeId);
-                leaveModels.Add(leaveModel);
-            };
-            ViewBag.StaffLeaveUpdateStatus = TempData["StaffLeaveUpdateStatus"];
-            ViewBag.LeaveTypes= _leaveTypeService.GetAll();
-            return View(leaveModels);
+                ViewBag.StaffId = id;
+
+                var staffLeaveList = _staffLeaveService.Get(p => p.StaffId == id && p.IsActive == true);
+                var leaveModels = new List<ListStaffLeaveDto>();
+                var staff = _staffService.GetById(id);
+
+                ViewBag.TotalLeaveDeserved = CalculateTotalLeaveAmountDeservedBySeniority(staff.JobJoinDate);
+                ViewBag.UsedLeaveDay = CalculateUsedLeaveAmount(id);
+                foreach (var item in staffLeaveList)
+                {
+                    var leaveModel = _mapper.Map<ListStaffLeaveDto>(item);
+                    leaveModel.LeaveType = _leaveTypeService.GetById(item.LeaveTypeId).Name;
+                    leaveModel.StatusType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.GeneralStatusGeneralSubTypeId);
+                    leaveModels.Add(leaveModel);
+                };
+                ViewBag.StaffLeaveUpdateStatus = TempData["StaffLeaveUpdateStatus"];
+                ViewBag.LeaveTypes = _leaveTypeService.GetAll();
+                return View(leaveModels);
+            }
+            else
+            {
+                return RedirectToAction("StatusCode", "Auth", new { code = 404 });
+            }
+
         }
 
         public int CalculateUsedLeaveAmount(int id)

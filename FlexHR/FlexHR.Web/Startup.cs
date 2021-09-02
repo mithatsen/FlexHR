@@ -72,9 +72,9 @@ namespace FlexHR.Web
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                app.UseExceptionHandler("/Auth/StatusCode?code=404");
             }
+            app.UseStatusCodePagesWithReExecute("/Auth/StatusCode", "?code={0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

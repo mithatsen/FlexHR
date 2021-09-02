@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
+using FlexHR.Web.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,37 +15,42 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-    public class StaffShiftController : Controller
+    public class StaffShiftController : BaseIdentityController
     {
         private readonly IMapper _mapper;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IStaffShiftService _staffShiftService;
         private readonly IStaffService _staffService;
-        private readonly UserManager<AppUser> _userManager;
         private readonly IAppUserService _appUserService;
         public StaffShiftController(IStaffShiftService staffShiftService, IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService,
-            UserManager<AppUser> userManager, IAppUserService appUserService)
+            UserManager<AppUser> userManager, IAppUserService appUserService) :base(userManager)
         {
             _staffShiftService = staffShiftService;
             _staffService = staffService;
             _mapper = mapper;
             _generalSubTypeService = generalSubTypeService;
-            _userManager = userManager;
             _appUserService = appUserService;
         }
         [Authorize(Roles = "ViewStaffShiftPage,Manager")]
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
-
-            ViewBag.StaffId = id;
-            var staffShiftList = _staffShiftService.Get(p => p.StaffId == id && p.IsActive == true);
-            var shiftModels = new List<ListStaffShiftDto>();
-            foreach (var item in staffShiftList)
+            if (await IsAuthority(id))
             {
-                shiftModels.Add(_mapper.Map<ListStaffShiftDto>(item));
+                ViewBag.StaffId = id;
+                var staffShiftList = _staffShiftService.Get(p => p.StaffId == id && p.IsActive == true);
+                var shiftModels = new List<ListStaffShiftDto>();
+                foreach (var item in staffShiftList)
+                {
+                    shiftModels.Add(_mapper.Map<ListStaffShiftDto>(item));
+                }
+                ViewBag.StaffShiftUpdateStatus = TempData["StaffShiftUpdateStatus"];
+                return View(shiftModels);
             }
-            ViewBag.StaffShiftUpdateStatus = TempData["StaffShiftUpdateStatus"];
-            return View(shiftModels);
+            else
+            {
+                return RedirectToAction("StatusCode", "Auth", new { code = 404 });
+            }
+
         }
         [HttpGet]
         public IActionResult GetUpdateStaffShiftModal(int id)

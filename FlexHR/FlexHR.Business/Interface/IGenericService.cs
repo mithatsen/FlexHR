@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FlexHR.Business.Interface
 {
@@ -15,6 +16,6 @@ namespace FlexHR.Business.Interface
         List<T> GetAll();
         T AddResult(T table);
         IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
-        
+    
     }
 }

@@ -5,6 +5,7 @@ using FlexHR.DTO.Dtos.ReceiptDtos;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using FlexHR.Web.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +21,7 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-    public class StaffPaymentController : Controller
+    public class StaffPaymentController : BaseIdentityController
     {
         private readonly IStaffService _staffService;
         private readonly IStaffPaymentService _staffPaymentService;
@@ -29,10 +30,9 @@ namespace FlexHR.Web.Controllers
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IConfiguration _configuration;
         private readonly IAppUserService _appUserService;
-        private readonly UserManager<AppUser> _userManager;
         public StaffPaymentController(IStaffPaymentService staffPaymentService, IStaffService staffService, IMapper mapper,
             IGeneralSubTypeService generalSubTypeService, IConfiguration configuration, IReceiptService receiptService,
-             IAppUserService appUserService, UserManager<AppUser> userManager)
+             IAppUserService appUserService, UserManager<AppUser> userManager):base(userManager)
         {
             _staffPaymentService = staffPaymentService;
             _mapper = mapper;
@@ -41,30 +41,36 @@ namespace FlexHR.Web.Controllers
             _receiptService = receiptService;
             _staffService = staffService;
             _appUserService = appUserService;
-            _userManager = userManager;
         }
         [Authorize(Roles = "ViewStaffPaymentInfo,Manager")]
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
-
-            ViewBag.StaffId = id;
-            ViewBag.PaymentTypeList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.PaymentType), "GeneralSubTypeId", "Description");
-            ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
-            ViewBag.FeeTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FeeType), "GeneralSubTypeId", "Description");
-            var staffPaymentList = _staffPaymentService.Get(p => p.StaffId == id && p.IsActive == true);
-            var paymentModels = new List<ListStaffPaymentDto>();
-            foreach (var item in staffPaymentList)
+            if (await IsAuthority(id))
             {
+                ViewBag.StaffId = id;
+                ViewBag.PaymentTypeList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.PaymentType), "GeneralSubTypeId", "Description");
+                ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
+                ViewBag.FeeTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FeeType), "GeneralSubTypeId", "Description");
+                var staffPaymentList = _staffPaymentService.Get(p => p.StaffId == id && p.IsActive == true);
+                var paymentModels = new List<ListStaffPaymentDto>();
+                foreach (var item in staffPaymentList)
+                {
 
-                var paymentModel = _mapper.Map<ListStaffPaymentDto>(item);
-                paymentModel.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
+                    var paymentModel = _mapper.Map<ListStaffPaymentDto>(item);
+                    paymentModel.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
 
-                paymentModel.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
-                paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId && x.IsActive == true).ToList();
-                paymentModels.Add(paymentModel);
+                    paymentModel.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
+                    paymentModel.Receipts = _receiptService.Get(x => x.StaffPaymentId == item.StaffPaymentId && x.IsActive == true).ToList();
+                    paymentModels.Add(paymentModel);
+                }
+
+                return View(paymentModels);
+            }
+            else
+            {
+                return RedirectToAction("StatusCode", "Auth", new { code = 404 });
             }
 
-            return View(paymentModels);
         }
         [HttpPost]
         public bool DeleteStaffPayment(int id)

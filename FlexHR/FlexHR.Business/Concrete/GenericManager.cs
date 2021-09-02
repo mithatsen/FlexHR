@@ -1,17 +1,19 @@
 ﻿using FlexHR.Business.Interface;
 using FlexHR.DataAccess.Interface;
+using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Interface;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FlexHR.Business.Concrete
 {
     public class GenericManager<T> : IGenericService<T> where T : class, new()
     {
-
         private readonly IGenericDal<T> _genericDal;
         public GenericManager(IGenericDal<T> genericDal)
         {
@@ -47,7 +49,6 @@ namespace FlexHR.Business.Concrete
         {
             return _genericDal.GetById(id);
         }
-
         public void Update(T table)
         {
             _genericDal.Update(table);

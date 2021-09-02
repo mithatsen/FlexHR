@@ -141,11 +141,11 @@
                                         </td>
                                     }
 
-                                    <td>@item.PaymentDate.ToString("dd.MM.yyyy")()</td>
+                                    <td>@item.PaymentDate.ToString("dd.MM.yyyy")</td>
                                     <td>@item.PaymentType</td>
                                     <td>@item.Description</td>
                                     <td>@item.Amount @item.CurrencyType </td>
-                                    <td>@item.CreationDate.ToString("dd.MM.yyyy")()</td>
+                                    <td>@item.CreationDate.ToString("dd.MM.yyyy")</td>
                                     @if (item.PaymentTypeGeneralSubTypeId == 99 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
                                     {
                                         <th> <a onclick=ShowReceiptInModall(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a></th>

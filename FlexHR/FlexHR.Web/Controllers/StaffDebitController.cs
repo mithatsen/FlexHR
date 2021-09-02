@@ -3,7 +3,9 @@ using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffDebitDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
+using FlexHR.Web.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -14,32 +16,40 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-    public class StaffDebitController : Controller
+    public class StaffDebitController : BaseIdentityController
     {
         private readonly IStaffDebitService _staffDebitService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
-        public StaffDebitController(IStaffDebitService staffDebitService, IGeneralSubTypeService generalSubTypeService, IMapper mapper)
+        public StaffDebitController(IStaffDebitService staffDebitService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, UserManager<AppUser> userManager) : base(userManager)
         {
             _staffDebitService = staffDebitService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
         }
         [Authorize(Roles = "ViewStaffDebitPage,Manager")]
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
-            ViewBag.StaffId = id;
-            var staffDebits=_staffDebitService.Get(p => p.StaffId == id && p.IsActive == true);
-            
-            ViewBag.Categories = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Debit), "GeneralSubTypeId", "Description");
-            ViewBag.StaffDebitUpdateStatus = TempData["StaffDebitUpdateStatus"];
-            var staffDebitDtoList = _mapper.Map<List<ListStaffDebitDto>>(staffDebits);
-            foreach (var item in staffDebitDtoList)
+            if (await IsAuthority(id))
             {
-                item.DebitGeneralSubTypeName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DebitGeneralSubTypeId);
+                ViewBag.StaffId = id;
+                var staffDebits = _staffDebitService.Get(p => p.StaffId == id && p.IsActive == true);
+
+                ViewBag.Categories = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Debit), "GeneralSubTypeId", "Description");
+                ViewBag.StaffDebitUpdateStatus = TempData["StaffDebitUpdateStatus"];
+                var staffDebitDtoList = _mapper.Map<List<ListStaffDebitDto>>(staffDebits);
+                foreach (var item in staffDebitDtoList)
+                {
+                    item.DebitGeneralSubTypeName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.DebitGeneralSubTypeId);
+                }
+
+                return View(staffDebitDtoList);
             }
-          
-            return View(staffDebitDtoList);
+            else
+            {
+                return RedirectToAction("StatusCode", "Auth", new { code = 404 });
+            }
+
         }
         [HttpPost]
         public bool AddStaffDebitWithAjax(AddStaffDebitDto model)

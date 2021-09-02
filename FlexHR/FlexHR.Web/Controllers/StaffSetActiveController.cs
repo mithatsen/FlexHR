@@ -1,5 +1,6 @@
 ﻿using FlexHR.Business.Interface;
 using FlexHR.Entity.Concrete;
+using FlexHR.Web.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,34 +12,40 @@ using System.Threading.Tasks;
 namespace FlexHR.Web.Controllers
 {
     [Authorize]
-    public class StaffSetActiveController : Controller
+    public class StaffSetActiveController : BaseIdentityController
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly IAppUserService _appUserService;
-        public StaffSetActiveController(IAppUserService appUserService, UserManager<AppUser> userManager)
+        public StaffSetActiveController(IAppUserService appUserService, UserManager<AppUser> userManager):base(userManager)
         {
             _appUserService = appUserService;
-            _userManager = userManager;
         }
         [Authorize(Roles = "ViewStaffSetActivePage,Manager")]
-        public IActionResult Index(int id)
+
+        public async Task<IActionResult> Index(int id)
         {
-            var isExistPast = _appUserService.Get(x => x.StaffId == id && x.IsActive == false).FirstOrDefault();
-            var isExistNow = _appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault();
-
-            ViewBag.StaffId = id;
-            ViewBag.IsExist= isExistPast != null ? true : false;
-            if (isExistNow != null)
+            if (await IsAuthority(id))
             {
-                ViewBag.UserName = isExistNow.UserName;
-            }
-           
-            var user = _appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault();
-            bool isUser = user != null ? true : false;
-            ViewBag.IsUser = isUser;
-            return View();
-        }
+                var isExistPast = _appUserService.Get(x => x.StaffId == id && x.IsActive == false).FirstOrDefault();
+                var isExistNow = _appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault();
 
+                ViewBag.StaffId = id;
+                ViewBag.IsExist = isExistPast != null ? true : false;
+                if (isExistNow != null)
+                {
+                    ViewBag.UserName = isExistNow.UserName;
+                }
+
+                var user = _appUserService.Get(x => x.StaffId == id && x.IsActive == true).FirstOrDefault();
+                bool isUser = user != null ? true : false;
+                ViewBag.IsUser = isUser;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("StatusCode", "Auth", new { code = 404 });
+            }
+
+        }
         [HttpPost]
         public bool DeleteUser(int id)
         {
