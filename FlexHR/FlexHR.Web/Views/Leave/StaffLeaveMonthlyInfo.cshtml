@@ -131,8 +131,8 @@
                                 <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
                                 <td>@item.IdNumber</td>
                                 <td>@item.LeaveType</td>
-                                <td>@item.StartDate.ToShortDateString()</td>
-                                <td>@item.FinishDate.ToShortDateString()</td>
+                                <td>@item.StartDate.ToString("dd.MM.yyyy")</td>
+                                <td>@item.FinishDate.ToString("dd.MM.yyyy")</td>
                                 <td>@item.TotalDay</td>
                                 <td>@item.Description</td>
                                 <td>@item.GeneralStatusId</td>

@@ -64,20 +64,24 @@ namespace FlexHR.Web.Controllers
                     var staffName = item.Staff.NameSurname;
                     var month = item.BirthDate.Value.Month;
                     var day = item.BirthDate.Value.Day;
-                    var birthDayStart = new DateTime(2021, month, day, 0, 0, 0);
-                    var birthDayEnd = new DateTime(2021, month, day, 23, 59, 59);
-                    ListEventDto model = new ListEventDto()
+                    for(int i=0; i<2; i++)
                     {
-                        Description = staffName + "'ın Doğum Günü",
-                        ClassName = "fc-event-success fc-event-solid-success",
-                        Start = birthDayStart,
-                        End = birthDayEnd,
-                        Title = "Doğum Günü",
-                        IsActive = item.IsActive,
-                        AllDay = (birthDayEnd - birthDayStart).TotalHours >= 23 ? true : false,
-                        Editable = false
-                    };
-                    models.Add(model);
+                        var birthDayStart = new DateTime(DateTime.Now.Year+i, month, day, 0, 0, 0);
+                        var birthDayEnd = new DateTime(DateTime.Now.Year+i, month, day, 23, 59, 59);
+                        ListEventDto model = new ListEventDto()
+                        {
+                            Description = staffName + "'ın Doğum Günü",
+                            ClassName = "fc-event-success fc-event-solid-success",
+                            Start = birthDayStart,
+                            End = birthDayEnd,
+                            Title = "Doğum Günü",
+                            IsActive = item.IsActive,
+                            AllDay = (birthDayEnd - birthDayStart).TotalHours >= 23 ? true : false,
+                            Editable = false
+                        };
+                        models.Add(model);
+                    }
+                   
                 }
 
             }

@@ -68,10 +68,10 @@
                                         {
                                             <tr>
                                                 <td>@item.IsCareerContinue</td>
-                                                <td>@item.JobStartDate.ToShortDateString()</td>
+                                                <td>@item.JobStartDate.ToString("dd.MM.yyyy")</td>
                                                 @if (item.JobFinishDate != null)
                                                 {
-                                                    <td>@item.JobFinishDate.Value.ToShortDateString()</td>
+                                                    <td>@item.JobFinishDate.Value.ToString("dd.MM.yyyy")</td>
                                                 }
                                                 else
                                                 {

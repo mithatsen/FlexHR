@@ -65,7 +65,7 @@
                 @if ((User.IsInRole("ViewPaymentRequestPendingApprovalPaymentsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
-                        <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2" id="waitingApprovePayment" onclick="localStorage.PaymentRequestTab = 1">
+                        <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
                             <span class="nav-icon mr-2">
                                 <span class="svg-icon mr-3">
                                     <i class="fas fa-user-clock"></i>
@@ -78,7 +78,7 @@
                 @if ((User.IsInRole("ViewPaymentRequestApprovedPaymentsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
-                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3" id="approvedPaymentDone" onclick="localStorage.PaymentRequestTab = 2">
+                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
                             <span class="nav-icon mr-2">
                                 <span class="svg-icon mr-3">
                                     <i class="fas fa-user-check"></i>
@@ -141,11 +141,11 @@
                                         </td>
                                     }
 
-                                    <td>@item.PaymentDate.ToString("dd.MM.yyyy")()</td>
+                                    <td>@item.PaymentDate.ToString("dd.MM.yyyy")</td>
                                     <td>@item.PaymentType</td>
                                     <td>@item.Description</td>
                                     <td>@item.Amount @item.CurrencyType </td>
-                                    <td>@item.CreationDate.ToString("dd.MM.yyyy")()</td>
+                                    <td>@item.CreationDate.ToString("dd.MM.yyyy")</td>
                                     @if (item.PaymentTypeGeneralSubTypeId == 99 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
                                     {
                                         <th> <a onclick=ShowReceiptInModall(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a></th>
@@ -206,11 +206,11 @@
                                         </td>
                                     }
 
-                                    <td>@item.PaymentDate.ToShortDateString()</td>
+                                    <td>@item.PaymentDate.ToString("dd.MM.yyyy")</td>
                                     <td>@item.PaymentType</td>
                                     <td>@item.Description</td>
                                     <td>@item.Amount  @item.CurrencyType </td>
-                                    <td>@item.CreationDate.ToShortDateString()</td>
+                                    <td>@item.CreationDate.ToString("dd.MM.yyyy")</td>
                                     @if (item.PaymentTypeGeneralSubTypeId == 99 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
                                     {
                                         <th> <a onclick=ShowReceiptInModall(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a></th>
@@ -267,11 +267,11 @@
                                         </td>
                                     }
 
-                                    <td>@item.PaymentDate.ToShortDateString()</td>
+                                    <td>@item.PaymentDate.ToString("dd.MM.yyyy")</td>
                                     <td>@item.PaymentType</td>
                                     <td>@item.Description</td>
                                     <td>@item.Amount  @item.CurrencyType </td>
-                                    <td>@item.CreationDate.ToShortDateString()</td>
+                                    <td>@item.CreationDate.ToString("dd.MM.yyyy")</td>
                                     @if (item.PaymentTypeGeneralSubTypeId == 99 && (User.IsInRole("ViewStaffPaymentInfo") || User.IsInRole("Manager")))
                                     {
                                         <th> <a onclick=ShowReceiptInModall(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a></th>
@@ -301,22 +301,4 @@
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
     <script src="~/js/payment.js"></script>
-    <script>
-        $(document).ready(function () {
-            if (localStorage.PaymentRequestTab == 2) {
-                $("#approvedPaymentDone").addClass("active");
-                $("#kt_apps_contacts_view_tab_3").addClass("active");
-                $("#kt_apps_contacts_view_tab_2").removeClass("active");
-                $("#waitingApprovePayment").removeClass("active");
-            }
-            else {
-                $("#waitingApprovePayment").addClass("active");
-                $("#kt_apps_contacts_view_tab_2").addClass("active");
-                $("#kt_apps_contacts_view_tab_3").removeClass("active");
-                $("#approvedPaymentDone").removeClass("active");
-            }
-            
-
-        });
-    </script>
 }
