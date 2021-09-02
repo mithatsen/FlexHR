@@ -103,7 +103,7 @@
 
                 </div>
 
-                <div class="tab-pane  " id="kt_apps_contacts_view_tab_3" role="tabpanel" style="height: 700px; overflow-x: hidden; overflow-y: scroll;">
+                <div class="tab-pane" id="kt_apps_contacts_view_tab_3" role="tabpanel">
                     <div class="">
                         <div class="row justify-content-end">
                             <form method="post" class="col-md-2 mr-5 pr-5">
@@ -443,6 +443,9 @@
             "fnPreDrawCallback": function () {
                 $('.sk-chase-dot').show();
             },
+            "drawCallback": function (settings) {
+                $('.sk-chase-dot').hide();
+            },
             "fnInitComplete": function () {
 
                 $('#closeOpen').removeAttr('hidden');
@@ -451,8 +454,6 @@
             },
             responsive: true,
             paging: true,
-            scrollY: "500px",
-            scrollCollapse: true,
             columnDefs: [
                 {
                     targets: 0,
