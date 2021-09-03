@@ -15,18 +15,20 @@ using System.Threading.Tasks;
 using System.Configuration;
 using FlexHR.Entity.Enums;
 using Microsoft.IdentityModel.Protocols;
+using Microsoft.Extensions.Configuration;
 
 namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 {
     public class EfFileColumnRepository : EfGenericRepository<FileColumn>, IFileColumnDal
     {
         private readonly FlexHRContext _context;
-        public EfFileColumnRepository(FlexHRContext context) : base(context)
+        private readonly IConfiguration _configuration;
+        public EfFileColumnRepository(FlexHRContext context, IConfiguration configuration) : base(context)
         {
             _context = context;
+            _configuration = configuration;
         }
-
-
+        
         // 1-> (Ana Metod) - Excelden veri yükleme
         public GenericResultViewModel LoadDataFromExcel(FileUploadViewModel fuvm)
         {
@@ -277,7 +279,8 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             try
             {
                 DataTable dt = new DataTable();
-                SqlConnection cn = new SqlConnection("Data Source=DESKTOP-GRI9IBK\\SQLEXPRESS;Initial Catalog=FlexHR;Integrated Security= True");
+                var connectionStrings = _configuration.GetConnectionString("DefaultConnection");
+                SqlConnection cn = new SqlConnection(connectionStrings);
                 using (SqlConnection con = new SqlConnection(cn.ConnectionString))
                 {
                     dt.Columns.Add("UploadDate");
@@ -406,9 +409,9 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 }
 
                 var dt = new DataTable();
-
-                //var connectionString = ConfigurationManager.AppSettings["IndexConnectionString"];
-                SqlConnection connectionString = new SqlConnection("Data Source=DESKTOP-GRI9IBK\\SQLEXPRESS;Initial Catalog=FlexHR;Integrated Security= True");
+                
+                var connectionStrings = _configuration.GetConnectionString("DefaultConnection");
+                SqlConnection connectionString = new SqlConnection(connectionStrings);
                 using (SqlConnection con = new SqlConnection(connectionString.ConnectionString))
                 {
                     con.Open();

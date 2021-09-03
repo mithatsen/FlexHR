@@ -19,11 +19,16 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //if (!optionsBuilder.IsConfigured)
+            //{
+            //    var temp = Environment.GetEnvironmentVariable("DefaultConnection");
+            //    temp = temp.Replace("\\\\", "\\");
+            //    optionsBuilder.UseSqlServer(temp).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            //}
+            //base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
-                var temp = Environment.GetEnvironmentVariable("DefaultConnection");
-                temp = temp.Replace("\\\\", "\\");
-                optionsBuilder.UseSqlServer(temp).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
             }
             base.OnConfiguring(optionsBuilder);
         }
