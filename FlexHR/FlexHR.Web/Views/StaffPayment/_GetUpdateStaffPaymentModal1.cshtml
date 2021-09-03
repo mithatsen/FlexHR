@@ -53,7 +53,10 @@
                                                         </div>
                                                         <div class="form-group col-md-3">
                                                             <label>Tutar</label>
-                                                            <div class="input-group"><input type="text" asp-for="@item.Amount" name="ReceiptAmount" class="form-control form-control-solid form-control-lg u_rcptAmnt " /></div>
+                                                            @*@{
+                                                                var temp = @item.Amount.ToString().Replace(',','.');
+                                                            }*@
+                                                            <div class="input-group"><input type="text" asp-for="@item.Amount" value="@item.Amount.ToString().Replace(',','.')" name="ReceiptAmount" class="form-control form-control-solid form-control-lg u_rcptAmnt " /></div>
                                                         </div>
                                                         <div class="form-group my-auto col-md-1 ">
                                                             <div class="input-group justify-content-center">
@@ -256,11 +259,14 @@
         counter2++;
         var divUpdateId = "receipt" + counter2;
         var deleteUpdateId = "delete" + counter2;
+        var receiptAmountIdInputPartial = "moneyPartial" + counter2;
         var deleteUpdateFileId = "deleteUpdateFile" + counter2;
         var fileAddId = "fileAddId" + counter2;
 
-        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <input type="hidden" value="0" name="Id"/> <div class="form-group col-md-3 pl-0 ml-4"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" onkeyup="NewReceiptAdded(this); this.oldvalue = this.value"  class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group my-auto col-md-1"> <div class="input-group justify-content-center"> <label class="my-auto pt-1" for="' + fileAddId + '"> <i id="upload_icon_add' + counter2 + '" class="fas fa-upload text-danger cursor-pointer" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileAddId + '" onchange="fileInputAddChange(' + counter2 + ')" type="file" name="File" style="display: none;"/> </div></div><div class="form-group my-auto col-md-1">  <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptUpdateFile(' + counter2 + ')" id="' + deleteUpdateFileId + '" class="navi-link cursor-pointer"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a> </li> <li class="navi-item cursor-pointer"> <a onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> </a> </li></ul> </div></div></div></div></div>')
-        deneme()
+        $("#receiptUpdateDiv").append('<div id="' + divUpdateId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <input type="hidden" value="0" name="Id"/> <div class="form-group col-md-3 pl-0 ml-4"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>KDV(%)</label> <div class="input-group"><input type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>Tutar</label> <div class="input-group"><input id="' + receiptAmountIdInputPartial+'"type="text" name="ReceiptAmount" onkeyup="NewReceiptAdded(this); this.oldvalue = this.value"  class="form-control form-control-solid form-control-lg u_n_rcptAmnt  "/></div></div><div class="form-group my-auto col-md-1"> <div class="input-group justify-content-center"> <label class="my-auto pt-1" for="' + fileAddId + '"> <i id="upload_icon_add' + counter2 + '" class="fas fa-upload text-danger cursor-pointer" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileAddId + '" onchange="fileInputAddChange(' + counter2 + ')" type="file" name="File" style="display: none;"/> </div></div><div class="form-group my-auto col-md-1">  <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptUpdateFile(' + counter2 + ')" id="' + deleteUpdateFileId + '" class="navi-link cursor-pointer"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text">Dosyayı Sil</span> <span class="navi-label"> </span> </a> </li> <li class="navi-item cursor-pointer"> <a onclick="DeleteReceipt(' + counter2 + ')" id="' + deleteUpdateId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text">Fişi Sil</span> </a> </li></ul> </div></div></div></div></div>')
+        receiptAmountIdInputPartial = "#" + receiptAmountIdInputPartial;
+        $(receiptAmountIdInputPartial).mask('00000000.00', { reverse: true });
+        deneme();
     }
     function fncAddReceiptOnUpdatePage() {
         var formdata = new FormData();
@@ -381,6 +387,11 @@
 
                     var divId = "#receipt" + counter;
                     $(divId).remove();
+                    var x = parseFloat(0);
+                    $(".u_rcptAmnt").each(function () { var temp = $(this).val(); if (temp != '') { x += parseFloat(temp); } });
+                    $(".u_n_rcptAmnt").each(function () { var temp = $(this).val(); if (temp != '') { x += parseFloat(temp); } });
+
+                    $("#txtAmountPartial").val(x);
                 })
             } else if (result.dismiss === "cancel") {
                 Swal.fire({
@@ -416,10 +427,14 @@
                             text: "Kaydınız silindi.",
                             icon: "success",
                             showCancelButton: false
-                        }).then(function () {
-                            debugger;
+                        }).then(function () {                       
                             var recDivId = "#dbReceipt_" + id
                             $(recDivId).remove();
+                            var x = parseFloat(0);
+                            $(".u_rcptAmnt").each(function () { var temp = $(this).val(); if (temp != '') { x += parseFloat(temp); } });
+                            $(".u_n_rcptAmnt").each(function () { var temp = $(this).val(); if (temp != '') { x += parseFloat(temp); } });
+
+                            $("#txtAmountPartial").val(x);
                         })
 
                     } else {
@@ -474,7 +489,7 @@
                     }, Vat: {
                         validators: {
                             notEmpty: {
-                                message: 'Kdv alanı boş geçilemez'
+                                message: ' Kdv alanı boş geçilemez'
                             },
                             numeric: {
                                 message: ' KDV rakamlardan oluşmalıdır'
@@ -489,7 +504,7 @@
                             },
                             numeric: {
                                 message: ' Tutar rakamlardan oluşmalıdır',
-                                decimalSeparator: ','
+                               
                             }
                         }
                     },
@@ -527,30 +542,37 @@
         );
     }
 
-    const totalAmount = Number(0);
-    var y = Number(0);
-    $(".u_rcptAmnt").each(function () { var temp = $(this).val(); temp = temp.replace(/,/g, '.'); y += Number(temp); });
+    const totalAmount = parseFloat(0);
+    var y = parseFloat(0);
+    $(".u_rcptAmnt").each(function () { var temp = $(this).val(); y += parseFloat(temp); $(this).mask('000000000000.00', { reverse: true });});
     $("#txtAmountPartial").val(y);
 
     $('.u_rcptAmnt').on('input', function () {
-        var x = Number(0);
-        $(".u_rcptAmnt").each(function () { var temp = $(this).val(); temp = temp.replace(/,/g, '.'); x += Number(temp); })
+        var x = parseFloat(0);
+        $(".u_rcptAmnt").each(function () { var temp = $(this).val(); if (temp != '') { x += parseFloat(temp); } });
+        $(".u_n_rcptAmnt").each(function () { var temp = $(this).val(); if (temp != '') { x += parseFloat(temp); } });
+
         $("#txtAmountPartial").val(x);
     });
     function NewReceiptAdded(event) {
-
-        var total = Number($("#txtAmountPartial").val());
+        if ($("#txtAmountPartial").val() == null) {
+            var total = 0.0;
+        }
+        else {
+            var total = parseFloat($("#txtAmountPartial").val());
+        }
         var old = event.oldvalue;
-        if (old != null) {
-            old = old.replace(/,/g, '.');
-            total -= Number(old);
+        if (old != null && old != '') {
+            total -= parseFloat(old);
         }
         var newVal = $(event).val();
-        newVal = newVal.replace(/,/g, '.');
-        total += Number(newVal);
-        $("#txtAmountPartial").val(total);
+        if (newVal != '') {
+            total += parseFloat(newVal);
+        }
+        $("#txtAmountPartial").val(total.toFixed(2));
 
     }
+    $("#txtAmountPartial").mask('000000000000.00', { reverse: true });
 
 </script>
 <script>

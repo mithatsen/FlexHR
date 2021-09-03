@@ -183,7 +183,7 @@
                                             <div class="form-group row">
                                                 <label>Tutar</label>
                                                 <div class="input-group">
-                                                    <input id="txtAmount" type="text" name="Amount" class="form-control form-control-solid form-control-lg">
+                                                    <input id="txtAmount" type="text" name="Amount" class="form-control form-control-solid form-control-lg" value="0">
                                                     <div class="input-group-append">
                                                         <select id="currencyType" class="form-control form-control-solid form-control-lg" name="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
                                                         </select>
@@ -369,8 +369,10 @@
                                 message: 'Tutar alanı boş geçilemez'
                             },
                             numeric: {
-                                message: ' Tutar rakamlardan oluşmalıdır'
+                                message: ' Tutar rakamlardan oluşmalıdır',
+
                             }
+
 
                         }
                     },
@@ -438,7 +440,8 @@
                                     message: 'Tutar alanı boş geçilemez'
                                 },
                                 numeric: {
-                                    message: ' Tutar rakamlardan oluşmalıdır'
+                                    message: ' Tutar rakamlardan oluşmalıdır',
+
                                 }
 
                             }
@@ -449,7 +452,8 @@
                                     message: 'Tutar alanı boş geçilemez'
                                 },
                                 numeric: {
-                                    message: ' Tutar rakamlardan oluşmalıdır'
+                                    message: ' Tutar rakamlardan oluşmalıdır',
+
                                 }
 
                             }
@@ -522,7 +526,7 @@
                         processData: false,
                         success: function (data) {
                             $('#cover-spin').hide();
-                            if (data == "true") {                                
+                            if (data == "true") {
                                 Swal.fire({
                                     title: "Eklendi!",
                                     text: "Kaydınız eklendi.",
@@ -640,11 +644,13 @@
         function AddReceipt() {
             counter++;
             var divId = "receipt" + counter;
+            var receiptAmountIdInput = "money" + counter;
             var deleteId = "delete" + counter;
             var deleteFileId = "deleteFile" + counter;
             var fileInputId = "file" + counter;
-            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0 ml-4"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>KDV(%)</label> <div class="input-group"><input required type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>Tutar</label> <div class="input-group"><input type="text" name="ReceiptAmount" onkeyup="NewReceiptAdded(this); this.oldvalue = this.value" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group my-auto col-md-1"> <label class="my-auto pt-1" for="' + fileInputId + '"> <i id="upload_icon' + counter + '" class="fas fa-upload text-danger cursor-pointer" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileInputId + '" onchange="fileInputChange(' + counter + ')" type="file" name="File" style="display:none"/> </div><div class="form-group my-auto col-md-1"> <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptFile(' + counter + ')" id="' + deleteFileId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text cursor-pointer">Dosyayı Sil</span> <span class="navi-label">  </span> </a> </li><li class="navi-item"> <a onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text cursor-pointer">Fişi Sil</span> <span class="navi-label">  </span> </a> </li></ul> </div></div></div></div></div>')
-
+            $("#receiptDiv").append('<div id="' + divId + '" class="receiptdiv justify-content-between align-items-center d-flex row"> <div class="form-group col-md-3 pl-0 ml-4"> <label>Fiş Adı</label> <div class="input-group"><input type="text" name="Name" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>KDV(%)</label> <div class="input-group"><input required type="text" name="Vat" class="form-control form-control-solid form-control-lg"/></div></div><div class="form-group col-md-3"> <label>Tutar</label> <div class="input-group"><input id="' + receiptAmountIdInput + '" type="text" name="ReceiptAmount" onkeyup="NewReceiptAdded(this); this.oldvalue = this.value" class="form-control form-control-solid form-control-lg "/></div></div><div class="form-group my-auto col-md-1"> <label class="my-auto pt-1" for="' + fileInputId + '"> <i id="upload_icon' + counter + '" class="fas fa-upload text-danger cursor-pointer" style="font-size: 1.5em !important;"></i> </label> <input id="' + fileInputId + '" onchange="fileInputChange(' + counter + ')" type="file" name="File" style="display:none"/> </div><div class="form-group my-auto col-md-1"> <div class="card-toolbar"> <div class="dropdown dropdown-inline"> <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ki ki-bold-more-ver"></i> </a> <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left"> <ul class="navi"> <li class="navi-item"> <a onclick="DeleteReceiptFile(' + counter + ')" id="' + deleteFileId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-folder-minus"></i> </span> <span class="navi-text cursor-pointer">Dosyayı Sil</span> <span class="navi-label">  </span> </a> </li><li class="navi-item"> <a onclick="DeleteReceipt(' + counter + ')" id="' + deleteId + '" class="navi-link"> <span class="navi-icon"> <i class="fas fa-trash-alt"></i> </span> <span class="navi-text cursor-pointer">Fişi Sil</span> <span class="navi-label">  </span> </a> </li></ul> </div></div></div></div></div>')
+            receiptAmountIdInput = "#" + receiptAmountIdInput;
+            $(receiptAmountIdInput).mask('00000000.00', { reverse: true });
             validateAddPaymentForm();
         }
         function DeleteReceipt(counter) {
@@ -652,13 +658,13 @@
             $(divId).remove();
         }
         function DeleteReceiptFile(id) {
-            debugger;
+        
             var fileInputId = "#file" + id;
             $(fileInputId).val("");
             fileInputChange(id);
         }
         function fileInputChange(id) {
-            debugger;
+            
             var fileInputId = "#file" + id;
             var uploadIcon = "#upload_icon" + id;
             if ($(fileInputId).val() != "") {
@@ -670,22 +676,31 @@
             }
         }
         function NewReceiptAdded(event) {
-
-            var total = Number($("#txtAmount").val());
+            if ($("#txtAmount").val() == null || $("#txtAmount").val() == '') {
+                var total = 0.0;
+            }
+            else {
+                var total = parseFloat($("#txtAmount").val());
+            }
+            debugger;
             var old = event.oldvalue;
-            if (old != null) {
-                old = old.replace(/,/g, '.');
-                total -= Number(old);
+            if (old != null && old != '' && total!=0.0) {
+                total -= parseFloat(old);
             }
             var newVal = $(event).val();
-            newVal = newVal.replace(/,/g, '.');
-            total += Number(newVal);
-            $("#txtAmount").val(total);
-
+            if (newVal != '') {
+                total += parseFloat(newVal);
+            }
+            $("#txtAmount").val(total.toFixed(2));
+          
         }
 
-    </script>
+        $("#txtAmount").mask('000000000000.00', { reverse: true });
 
+      
+
+    </script>
+    <script src="~/assets/js/pages/crud/forms/widgets/jquery-mask.js"></script>
     <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>

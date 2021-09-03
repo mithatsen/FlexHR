@@ -135,7 +135,7 @@ namespace FlexHR.Web.Controllers
                         {
                             Name = temp[0],
                             Vat = Convert.ToDecimal(temp[1]),
-                            Amount = Convert.ToDecimal(temp[2]),
+                            Amount = decimal.Parse(temp[2].Replace(".", ",")),
                             FileName = item.FileName,
                             FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
                             IsActive = true
@@ -152,7 +152,8 @@ namespace FlexHR.Web.Controllers
                             {
                                 Name = temp[0],
                                 Vat = Convert.ToDecimal(temp[1]),
-                                Amount = Convert.ToDecimal(temp[2]),
+                                Amount = decimal.Parse(temp[2].Replace(".", ",")),
+                                
                                 FileName = "",
                                 FileFullPath = "",
                                 IsActive = true
@@ -164,7 +165,7 @@ namespace FlexHR.Web.Controllers
                     {
                         Receipts = receipts,
                         StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = Convert.ToDecimal(amount),
+                        Amount = decimal.Parse(amount.Replace(".", ",")),
                         PaymentDate = Convert.ToDateTime(date),
                         CreationDate = DateTime.Now,
                         CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
@@ -361,7 +362,7 @@ namespace FlexHR.Web.Controllers
                             {
                                 Name = temp[1],
                                 Vat = Convert.ToDecimal(temp[2]),
-                                Amount = Convert.ToDecimal(temp[3]),
+                                Amount = decimal.Parse(temp[3].Replace(".", ",")),                              
                                 FileName = item.FileName,
                                 FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
                                 IsActive = true,
@@ -375,7 +376,7 @@ namespace FlexHR.Web.Controllers
                             var tempo = _receiptService.GetById(Convert.ToInt32(temp[0]));
                             tempo.Name = temp[1];
                             tempo.Vat = Convert.ToDecimal(temp[2]);
-                            tempo.Amount = Convert.ToDecimal(temp[3]);
+                            tempo.Amount = decimal.Parse(temp[3].Replace(".", ","));
                             tempo.FileName = item.FileName;
                             tempo.FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/");
                             tempo.IsActive = true;
@@ -395,7 +396,7 @@ namespace FlexHR.Web.Controllers
                                 {
                                     Name = temp2[1],
                                     Vat = Convert.ToDecimal(temp2[2]),
-                                    Amount = Convert.ToDecimal(temp2[3]),
+                                    Amount = decimal.Parse(temp2[3].Replace(".", ",")),
                                     FileName = "",
                                     FileFullPath = "",
                                     IsActive = true,
@@ -408,7 +409,7 @@ namespace FlexHR.Web.Controllers
                                 var temp = _receiptService.GetById(Convert.ToInt32(temp2[0]));
                                 temp.Name = temp2[1];
                                 temp.Vat = Convert.ToDecimal(temp2[2]);
-                                temp.Amount = Convert.ToDecimal(temp2[3]);
+                                temp.Amount = decimal.Parse(temp2[3].Replace(".", ","));
                                 temp.FileName = temp.FileName;
                                 temp.FileFullPath = temp.FileFullPath;
                                 temp.IsActive = true;
