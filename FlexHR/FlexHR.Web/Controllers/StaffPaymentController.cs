@@ -47,6 +47,7 @@ namespace FlexHR.Web.Controllers
         {
             if (await IsAuthority(id))
             {
+                ViewBag.StaffPaymentUpdateStatus = TempData["StaffPaymentUpdateStatus"];
                 ViewBag.StaffId = id;
                 ViewBag.PaymentTypeList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.PaymentType), "GeneralSubTypeId", "Description");
                 ViewBag.Currencies = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
@@ -185,7 +186,7 @@ namespace FlexHR.Web.Controllers
                     var m = new StaffPayment
                     {
                         StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = Convert.ToDecimal(amount),
+                        Amount = decimal.Parse(amount.Replace(".", ",")),
                         PaymentDate = Convert.ToDateTime(date),
                         CreationDate = DateTime.Now,
                         CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
@@ -205,7 +206,7 @@ namespace FlexHR.Web.Controllers
                     var k = new StaffPayment
                     {
                         StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = Convert.ToDecimal(amount),
+                        Amount = decimal.Parse(amount.Replace(".", ",")),
                         PaymentDate = Convert.ToDateTime(date),
                         CreationDate = DateTime.Now,
                         CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
@@ -283,8 +284,10 @@ namespace FlexHR.Web.Controllers
             if (ModelState.IsValid)
             {
                 _staffPaymentService.Update(_mapper.Map<StaffPayment>(model));
+                TempData["StaffPaymentUpdateStatus"] = "true";
                 return RedirectToAction("Index", new { id = model.StaffId });
             }
+            TempData["StaffPaymentUpdateStatus"] = "false";
             return View();
         }
 
@@ -434,7 +437,7 @@ namespace FlexHR.Web.Controllers
                     var m = new StaffPayment
                     {
                         StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = Convert.ToDecimal(amount),
+                        Amount = decimal.Parse(amount.Replace(".", ",")),
                         PaymentDate = Convert.ToDateTime(date),
                         CreationDate = DateTime.Now,
                         GeneralStatusGeneralSubTypeId = 96,
@@ -452,7 +455,7 @@ namespace FlexHR.Web.Controllers
                     var k = new StaffPayment
                     {
                         StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = Convert.ToDecimal(amount),
+                        Amount = decimal.Parse(amount.Replace(".", ",")),
                         PaymentDate = Convert.ToDateTime(date),
                         CreationDate = DateTime.Now,
                         GeneralStatusGeneralSubTypeId = 96,

@@ -31,7 +31,7 @@
                                             <div class="form-group row">
                                                 <label>Tutar</label>
                                                 <div class="input-group">
-                                                    <input id="txtAmount" type="text" asp-for="Amount" class="form-control form-control-solid form-control-lg">
+                                                    <input id="txtAmount2" type="text" asp-for="Amount" class="form-control form-control-solid form-control-lg">
                                                     <div class="input-group-append">
                                                         <select id="currencyType" class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.Currencies">
                                                         </select>
@@ -136,7 +136,7 @@
                         },
                         numeric: {
                             message: ' Tutar rakamlardan oluşmalıdır',
-                            decimalSeparator:','
+                            decimalSeparator: ','
                         }
                     }
                 },
@@ -161,5 +161,6 @@
             }
         }
     );
+    $("#txtAmount2").mask('000000000000,00', { reverse: true });
     $('input[name="PaymentDate"]').mask('00.00.0000');
 </script>

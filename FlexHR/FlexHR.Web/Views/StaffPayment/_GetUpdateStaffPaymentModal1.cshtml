@@ -352,7 +352,7 @@
                 $('#cover-spin').hide();
                 if (data == "true") {
                     Swal.fire({
-                        title: "Eklendi!",
+                        title: "Güncellendi!",
                         text: "Kaydınız Güncellendi.",
                         icon: "success",
                         showCancelButton: false
@@ -551,8 +551,8 @@
         var x = parseFloat(0);
         $(".u_rcptAmnt").each(function () { var temp = $(this).val(); if (temp != '') { x += parseFloat(temp); } });
         $(".u_n_rcptAmnt").each(function () { var temp = $(this).val(); if (temp != '') { x += parseFloat(temp); } });
-
         $("#txtAmountPartial").val(x);
+      
     });
     function NewReceiptAdded(event) {
         if ($("#txtAmountPartial").val() == null) {
@@ -570,7 +570,14 @@
             total += parseFloat(newVal);
         }
         $("#txtAmountPartial").val(total.toFixed(2));
-
+        
+    }
+    var x = $("#txtAmountPartial").val().toString();
+    var temp = x.split(".");
+    if (temp[1].length == 1) {
+        temp[1] += "0";
+        x = temp[0]+"." + temp[1];
+        $("#txtAmountPartial").val(x);
     }
     $("#txtAmountPartial").mask('000000000000.00', { reverse: true });
 

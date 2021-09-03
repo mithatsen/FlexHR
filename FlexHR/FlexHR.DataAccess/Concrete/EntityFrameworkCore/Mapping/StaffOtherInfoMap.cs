@@ -12,8 +12,8 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
         public void Configure(EntityTypeBuilder<StaffOtherInfo> entity)
         {
             entity.Property(e => e.AccountNo)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasMaxLength(30);
+                    
 
             entity.Property(e => e.Adress).HasMaxLength(2000);
 

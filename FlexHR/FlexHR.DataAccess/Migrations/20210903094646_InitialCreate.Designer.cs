@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHR.DataAccess.Migrations
 {
     [DbContext(typeof(FlexHRContext))]
-    [Migration("20210729132156_addhalfdayonpublicholiday")]
-    partial class addhalfdayonpublicholiday
+    [Migration("20210903094646_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,120 @@ namespace FlexHR.DataAccess.Migrations
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.AppRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("AuthorizeTypeGeneralSubTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.AppUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("StaffId")
+                        .IsUnique();
+
+                    b.ToTable("AspNetUsers");
+                });
 
             modelBuilder.Entity("FlexHR.Entity.Concrete.City", b =>
                 {
@@ -94,6 +208,30 @@ namespace FlexHR.DataAccess.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("CompanyBranch");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.CompanyFile", b =>
+                {
+                    b.Property<int>("CompanyFileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("FileFullPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FileGeneralSubTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CompanyFileId");
+
+                    b.ToTable("CompanyFile");
                 });
 
             modelBuilder.Entity("FlexHR.Entity.Concrete.Country", b =>
@@ -206,6 +344,107 @@ namespace FlexHR.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Event");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileColumn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<bool>("AllowNulls")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ColumnDescription")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ColumnName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ColumnSequence")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DataType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("FileTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileTypeId");
+
+                    b.ToTable("FileColumn");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileColumnProperties", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PropertyDesc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PropertyName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileColumnProperties");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileColumn_FileColumnProperties", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("FileColumnId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FileColumnPropertiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileColumnId");
+
+                    b.HasIndex("FileColumnPropertiesId");
+
+                    b.ToTable("FileColumn_FileColumnProperties");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileUploadTypeName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileType");
                 });
 
             modelBuilder.Entity("FlexHR.Entity.Concrete.GeneralSubType", b =>
@@ -382,36 +621,15 @@ namespace FlexHR.DataAccess.Migrations
                     b.ToTable("Receipt");
                 });
 
-            modelBuilder.Entity("FlexHR.Entity.Concrete.Role", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("Role");
-                });
-
             modelBuilder.Entity("FlexHR.Entity.Concrete.Staff", b =>
                 {
                     b.Property<int>("StaffId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<int>("ContractTypeGeneralSubTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("EmailJob")
                         .HasMaxLength(50)
@@ -436,10 +654,6 @@ namespace FlexHR.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Password")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("PhoneJob")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
@@ -448,10 +662,6 @@ namespace FlexHR.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("WillUseSystem")
                         .HasColumnType("bit");
@@ -468,7 +678,7 @@ namespace FlexHR.DataAccess.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("CompanyBranchId")
+                    b.Property<int>("CompanyBranchId")
                         .HasColumnType("int");
 
                     b.Property<int>("CompanyId")
@@ -575,28 +785,6 @@ namespace FlexHR.DataAccess.Migrations
                     b.ToTable("Staff_File");
                 });
 
-            modelBuilder.Entity("FlexHR.Entity.Concrete.StaffGeneralSubType", b =>
-                {
-                    b.Property<int>("GeneralSubTypeStaffId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("GeneralSubTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GeneralSubTypeStaffId");
-
-                    b.HasIndex("GeneralSubTypeId");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("Staff_GeneralSubType");
-                });
-
             modelBuilder.Entity("FlexHR.Entity.Concrete.StaffLeave", b =>
                 {
                     b.Property<int>("StaffLeaveId")
@@ -652,9 +840,8 @@ namespace FlexHR.DataAccess.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("AccountNo")
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .IsFixedLength(true);
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int?>("AccountTypeGeneralSubTypeId")
                         .HasColumnType("int");
@@ -812,28 +999,6 @@ namespace FlexHR.DataAccess.Migrations
                     b.ToTable("StaffPersonelInfo");
                 });
 
-            modelBuilder.Entity("FlexHR.Entity.Concrete.StaffRole", b =>
-                {
-                    b.Property<int>("StaffRoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StaffRoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("Staff_Role");
-                });
-
             modelBuilder.Entity("FlexHR.Entity.Concrete.StaffSalary", b =>
                 {
                     b.Property<int>("StaffSalaryId")
@@ -902,6 +1067,9 @@ namespace FlexHR.DataAccess.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
+                    b.Property<int>("GeneralStatusGeneralSubTypeId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -950,6 +1118,118 @@ namespace FlexHR.DataAccess.Migrations
                     b.ToTable("Town");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.AppUser", b =>
+                {
+                    b.HasOne("FlexHR.Entity.Concrete.Staff", "Staff")
+                        .WithOne("AppUser")
+                        .HasForeignKey("FlexHR.Entity.Concrete.AppUser", "StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Staff");
+                });
+
             modelBuilder.Entity("FlexHR.Entity.Concrete.City", b =>
                 {
                     b.HasOne("FlexHR.Entity.Concrete.Country", "Country")
@@ -970,6 +1250,36 @@ namespace FlexHR.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileColumn", b =>
+                {
+                    b.HasOne("FlexHR.Entity.Concrete.FileType", "FileType")
+                        .WithMany("FileColumn")
+                        .HasForeignKey("FileTypeId")
+                        .HasConstraintName("FK_FileColumn_FileType")
+                        .IsRequired();
+
+                    b.Navigation("FileType");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileColumn_FileColumnProperties", b =>
+                {
+                    b.HasOne("FlexHR.Entity.Concrete.FileColumn", "FileColumn")
+                        .WithMany("FileColumn_FileColumnProperties")
+                        .HasForeignKey("FileColumnId")
+                        .HasConstraintName("FK_FileColumnFileColumnProperties_FileColumn")
+                        .IsRequired();
+
+                    b.HasOne("FlexHR.Entity.Concrete.FileColumnProperties", "FileColumnProperties")
+                        .WithMany("FileColumn_FileColumnProperties")
+                        .HasForeignKey("FileColumnPropertiesId")
+                        .HasConstraintName("FK_FileColumnFileColumnProperties_FileColumnProperties")
+                        .IsRequired();
+
+                    b.Navigation("FileColumn");
+
+                    b.Navigation("FileColumnProperties");
                 });
 
             modelBuilder.Entity("FlexHR.Entity.Concrete.GeneralSubType", b =>
@@ -999,7 +1309,9 @@ namespace FlexHR.DataAccess.Migrations
                     b.HasOne("FlexHR.Entity.Concrete.CompanyBranch", "CompanyBranch")
                         .WithMany("StaffCareer")
                         .HasForeignKey("CompanyBranchId")
-                        .HasConstraintName("FK_StaffCareer_CompanyBranch");
+                        .HasConstraintName("FK_StaffCareer_CompanyBranch")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FlexHR.Entity.Concrete.Staff", "Staff")
                         .WithMany("StaffCareer")
@@ -1030,25 +1342,6 @@ namespace FlexHR.DataAccess.Migrations
                         .HasForeignKey("StaffId")
                         .HasConstraintName("FK_Staff_File_Staff")
                         .IsRequired();
-
-                    b.Navigation("Staff");
-                });
-
-            modelBuilder.Entity("FlexHR.Entity.Concrete.StaffGeneralSubType", b =>
-                {
-                    b.HasOne("FlexHR.Entity.Concrete.GeneralSubType", "GeneralSubType")
-                        .WithMany("StaffGeneralSubType")
-                        .HasForeignKey("GeneralSubTypeId")
-                        .HasConstraintName("FK_Staff_GeneralSubType_GeneralSubType")
-                        .IsRequired();
-
-                    b.HasOne("FlexHR.Entity.Concrete.Staff", "Staff")
-                        .WithMany("StaffGeneralSubType")
-                        .HasForeignKey("StaffId")
-                        .HasConstraintName("FK_Staff_GeneralSubType_Staff")
-                        .IsRequired();
-
-                    b.Navigation("GeneralSubType");
 
                     b.Navigation("Staff");
                 });
@@ -1112,25 +1405,6 @@ namespace FlexHR.DataAccess.Migrations
                     b.Navigation("Staff");
                 });
 
-            modelBuilder.Entity("FlexHR.Entity.Concrete.StaffRole", b =>
-                {
-                    b.HasOne("FlexHR.Entity.Concrete.Role", "Role")
-                        .WithMany("StaffRole")
-                        .HasForeignKey("RoleId")
-                        .HasConstraintName("FK_Staff_Role_Role")
-                        .IsRequired();
-
-                    b.HasOne("FlexHR.Entity.Concrete.Staff", "Staff")
-                        .WithMany("StaffRole")
-                        .HasForeignKey("StaffId")
-                        .HasConstraintName("FK_Staff_Role_Staff")
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("Staff");
-                });
-
             modelBuilder.Entity("FlexHR.Entity.Concrete.StaffSalary", b =>
                 {
                     b.HasOne("FlexHR.Entity.Concrete.Staff", "Staff")
@@ -1164,6 +1438,57 @@ namespace FlexHR.DataAccess.Migrations
                     b.Navigation("City");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.HasOne("FlexHR.Entity.Concrete.AppRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.HasOne("FlexHR.Entity.Concrete.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.HasOne("FlexHR.Entity.Concrete.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.HasOne("FlexHR.Entity.Concrete.AppRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FlexHR.Entity.Concrete.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.HasOne("FlexHR.Entity.Concrete.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FlexHR.Entity.Concrete.City", b =>
                 {
                     b.Navigation("Town");
@@ -1184,9 +1509,19 @@ namespace FlexHR.DataAccess.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("FlexHR.Entity.Concrete.GeneralSubType", b =>
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileColumn", b =>
                 {
-                    b.Navigation("StaffGeneralSubType");
+                    b.Navigation("FileColumn_FileColumnProperties");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileColumnProperties", b =>
+                {
+                    b.Navigation("FileColumn_FileColumnProperties");
+                });
+
+            modelBuilder.Entity("FlexHR.Entity.Concrete.FileType", b =>
+                {
+                    b.Navigation("FileColumn");
                 });
 
             modelBuilder.Entity("FlexHR.Entity.Concrete.GeneralType", b =>
@@ -1199,20 +1534,15 @@ namespace FlexHR.DataAccess.Migrations
                     b.Navigation("StaffLeave");
                 });
 
-            modelBuilder.Entity("FlexHR.Entity.Concrete.Role", b =>
-                {
-                    b.Navigation("StaffRole");
-                });
-
             modelBuilder.Entity("FlexHR.Entity.Concrete.Staff", b =>
                 {
+                    b.Navigation("AppUser");
+
                     b.Navigation("StaffCareer");
 
                     b.Navigation("StaffDebit");
 
                     b.Navigation("StaffFile");
-
-                    b.Navigation("StaffGeneralSubType");
 
                     b.Navigation("StaffLeave");
 
@@ -1221,8 +1551,6 @@ namespace FlexHR.DataAccess.Migrations
                     b.Navigation("StaffPayment");
 
                     b.Navigation("StaffPersonelInfo");
-
-                    b.Navigation("StaffRole");
 
                     b.Navigation("StaffSalary");
 
