@@ -73,7 +73,7 @@
                                                                             }
                                                                             <td><a class="btn text-primary" onclick="ShowFileDetail(@item.TypeId)">Göster</a></td>
                                                                         </tr>
-                                                                    }                                                                  
+                                                                    }
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -90,14 +90,29 @@
                                                 <div class="row">
                                                     <div class="card-body">
                                                         <div class="col-md-11 mb-2 ml-7 row ">
-                                                            <div class="col-md-10 justify-content-center">
-                                                                <select id="categorySelect" onchange="categoryChange()" class="form-control form-control-solid d-block  form-control-lg" asp-items="@ViewBag.FileTypes">
-                                                                    <option hidden value="-1">Önce kategori seçiniz</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-2 justify-content-center">
-                                                                <button id="uploadButton" type="button" class="btn btn-primary btn-block btn-lg ml-4 ">Kaydet </button>
-                                                            </div>
+                                                            @if ((User.IsInRole("AddStaffFile") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                            {
+                                                                <div class="col-md-10 justify-content-center">
+                                                                    <select id="categorySelect" onchange="categoryChange()" class="form-control form-control-solid d-block  form-control-lg" asp-items="@ViewBag.FileTypes">
+                                                                        <option hidden value="-1">Önce kategori seçiniz</option>
+                                                                    </select>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="col-md-12 justify-content-center">
+                                                                    <select id="categorySelect" onchange="categoryChange()" class="form-control form-control-solid d-block  form-control-lg" asp-items="@ViewBag.FileTypes">
+                                                                        <option hidden value="-1">Önce kategori seçiniz</option>
+                                                                    </select>
+                                                                </div>
+                                                            }
+                                                            @if ((User.IsInRole("AddStaffFile") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                            {
+                                                                <div class="col-md-2 justify-content-center">
+                                                                    <button id="uploadButton" type="button" class="btn btn-primary btn-block btn-lg ml-4 ">Kaydet </button>
+                                                                </div>
+                                                            }
+
                                                         </div>
                                                         <input type="hidden" id="staffId" value="@ViewBag.StaffId" />
                                                         <div class="form-group row ml-8">
@@ -138,7 +153,9 @@
 
 </div>
 <div id="def"></div>
-
+@{
+    var hasFileDeleteRole = (User.IsInRole("DeleteStaffFile") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated;
+}
 @section Scripts{
     <script>
 
@@ -156,7 +173,7 @@
     </script>
 
     @*//add staff file dropzone*@
-<script>
+    <script>
         $(document).ready(function () {
             localStorage.SystemFileId;
 
@@ -186,7 +203,7 @@
                 $("#myAwesomeDropzone").empty();
                 document.getElementById("myAwesomeDropzone").innerHTML = "<span id='message' class='nav-icon  mr-2'><br/><br/><br/> <i class='fas fa-file-import'></i> Buraya görsellerinizi sürükle bırak yapabilirsiniz. <br/><br/><br/></span> ";
             }
-            
+
             $.ajax({
                 method: "GET",
                 url: "/StaffFile/GetStaffFile/" + id,
@@ -195,7 +212,6 @@
                 let serverFiles = JSON.parse(content);
                 Dropzone.autoDiscover = false;
                 var catId = document.getElementById("categorySelect").value;
-                
                 $('#myAwesomeDropzone').dropzone({
                     autoProcessQueue: false,
                     url: "/StaffFile/AddStaffFile/" + id, // Set the url for your upload script location
@@ -204,7 +220,7 @@
                     maxFilesize: 500, // MB
                     parallelUploads: 10,
                     timeout: 3600000,
-                    addRemoveLinks: true,
+                    addRemoveLinks: @Html.Raw(Json.Serialize(hasFileDeleteRole)),
                     params: { categoryId: catId },
                     init: function () {
                         var dz = this;
@@ -381,7 +397,7 @@
 
 
         }
-</script>
+    </script>
 
     <script src="~/assets/js/pages/crud/file-upload/dropzonejs.js"></script>
 }

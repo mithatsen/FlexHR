@@ -197,16 +197,9 @@ namespace FlexHR.Web.Controllers
 
                 foreach (var item in formdata.Files)
                 {
-                    var staffFile = new StaffFile()
-                    {
-                        FileName = item.FileName,
-                        FileFullPath = Path.Combine(staffName, categoryNameFolder + "/"),
-                        IsActive = true,
-                        FileGeneralSubTypeId = 3,
-                        StaffFileId = result.StaffFileId,
-                        StaffId = id
-                    };
-                    _staffFileService.Update(staffFile);
+
+                    result.FileName = item.FileName;
+                    _staffFileService.Update(result);
                     var imagePath = Path.Combine(filePath + item.FileName);
                     if (item.Length > 0)
                     {
