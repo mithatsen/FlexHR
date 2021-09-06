@@ -21,19 +21,6 @@
     <div class="card-header card-header-tabs-line">
         <div class="card-toolbar">
             <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x" role="tablist">
-                @if ((User.IsInRole("ViewMultipleRoleAssignTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                {
-                    <li class="nav-item mr-3">
-                        <a class="nav-link" id="multipleAssignBtn" data-toggle="tab" href="#multipleAssignTab" onclick="localStorage.RoleAssignTabId = 1">
-                            <span class="nav-icon mr-2">
-                                <span class="svg-icon mr-3">
-                                    <i class="fas fa-users"></i>
-                                </span>
-                            </span>
-                            <span class="nav-text font-weight-bold">Toplu Rol Atama</span>
-                        </a>
-                    </li>
-                }
                 @if ((User.IsInRole("ViewSingleRoleAssignTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
@@ -44,6 +31,20 @@
                                 </span>
                             </span>
                             <span class="nav-text font-weight-bold">Bireysel Rol Atama</span>
+                        </a>
+                    </li>
+                }
+
+                @if ((User.IsInRole("ViewMultipleRoleAssignTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link" id="multipleAssignBtn" data-toggle="tab" href="#multipleAssignTab" onclick="localStorage.RoleAssignTabId = 1">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-users"></i>
+                                </span>
+                            </span>
+                            <span class="nav-text font-weight-bold">Toplu Rol Atama</span>
                         </a>
                     </li>
                 }
