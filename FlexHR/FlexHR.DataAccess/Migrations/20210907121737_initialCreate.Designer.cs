@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlexHR.DataAccess.Migrations
 {
     [DbContext(typeof(FlexHRContext))]
-    [Migration("20210903094646_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210907121737_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -654,6 +654,10 @@ namespace FlexHR.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("PersonalNo")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneJob")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
@@ -1018,12 +1022,18 @@ namespace FlexHR.DataAccess.Migrations
                     b.Property<decimal?>("FoodPayment")
                         .HasColumnType("numeric(18,0)");
 
+                    b.Property<decimal?>("GrossSalary")
+                        .HasColumnType("numeric(18,2)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsAgi")
                         .HasColumnType("bit")
                         .HasColumnName("IsAGI");
+
+                    b.Property<decimal?>("NetSalary")
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<int>("PeriodGeneralSubTypeId")
                         .HasColumnType("int");
@@ -1035,9 +1045,6 @@ namespace FlexHR.DataAccess.Migrations
                         .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal?>("RoadPayment")
-                        .HasColumnType("numeric(18,2)");
-
-                    b.Property<decimal>("Salary")
                         .HasColumnType("numeric(18,2)");
 
                     b.Property<int>("StaffId")

@@ -16,6 +16,7 @@ namespace FlexHR.Entity.Concrete
         public DateTime JobJoinDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
         public int ContractTypeGeneralSubTypeId { get; set; }
+        public int PersonalNo { get; set; }
         public bool WillUseSystem { get; set; }
         public bool IsActive { get; set; }
 

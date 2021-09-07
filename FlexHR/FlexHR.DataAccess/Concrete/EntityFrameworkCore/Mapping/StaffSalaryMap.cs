@@ -23,7 +23,8 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
 
             entity.Property(e => e.RoadPayment).HasColumnType("numeric(18, 2)");
 
-            entity.Property(e => e.Salary).HasColumnType("numeric(18, 2)");
+            entity.Property(e => e.NetSalary).HasColumnType("numeric(18, 2)");
+            entity.Property(e => e.GrossSalary).HasColumnType("numeric(18, 2)");
 
             entity.Property(e => e.StartDate).HasColumnType("datetime");
 

@@ -24,6 +24,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
                 .HasMaxLength(100);
 
             entity.Property(e => e.PhoneJob).HasMaxLength(15);
+            entity.Property(e => e.PersonalNo).HasMaxLength(10).IsRequired();
 
             entity.Property(e => e.PhonePersonal).HasMaxLength(15).IsRequired();
        

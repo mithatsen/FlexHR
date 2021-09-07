@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FlexHR.DataAccess.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -216,6 +216,7 @@ namespace FlexHR.DataAccess.Migrations
                     JobJoinDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     JobFinishDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     ContractTypeGeneralSubTypeId = table.Column<int>(type: "int", nullable: false),
+                    PersonalNo = table.Column<int>(type: "int", maxLength: 10, nullable: false),
                     WillUseSystem = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -521,7 +522,8 @@ namespace FlexHR.DataAccess.Migrations
                     CurrencyGeneralSubTypeId = table.Column<int>(type: "int", nullable: false),
                     PeriodGeneralSubTypeId = table.Column<int>(type: "int", nullable: false),
                     FeeTypeGeneralSubTypeId = table.Column<int>(type: "int", nullable: false),
-                    Salary = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    NetSalary = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
+                    GrossSalary = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
                     RoadPayment = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
                     FoodPayment = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     ConstantBonus = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
