@@ -15,16 +15,19 @@
             </div>
             <div class="modal-body">
                 <table class='table table-responsive table-secondary mx-auto'>
-                    <tr class='table bg-dark text-white'>
-                        <th width="10%"></th>
+                    <tr class='table '>
                         <th width="60%">Fiş Adı</th>
                         <th width="15%">KDV(%)</th>
                         <th width="15%">Tutar</th>
+                        <th width="10%"></th>
                     </tr>
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        <tr class="bg-white">
                             @*<td>  <img style="width: 150px; height: 150px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.FileName" /></td>*@
+                            <td>@item.Name</td>
+                            <td>@item.Vat</td>
+                            <td>@item.Amount</td>
                             <td>
                                 <div class="gallery">
                                     @if (item.FileName != "")
@@ -41,10 +44,6 @@
                                     }
                                 </div>
                             </td>
-
-                            <td>@item.Name</td>
-                            <td>@item.Vat</td>
-                            <td>@item.Amount</td>
                         </tr>
 
                     }

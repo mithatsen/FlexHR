@@ -31,7 +31,12 @@
                                     <div class="card-body mx-auto">
                                         <div class="row">
                                             <div class="col-md-5">
-
+                                                <div class="form-group row ">
+                                                    <label>Süre (Saat) *</label>
+                                                    <div class="input-group">
+                                                        <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center" value="@Model.ShiftHour" asp-for="ShiftHour" name="ShiftHour"  />
+                                                    </div>
+                                                </div>
                                                 <div class="form-group row ">
                                                     <label>Başlangıç Tarihi *</label>
                                                     <div class="input-group">
@@ -49,15 +54,13 @@
                                             <div class="col-md-2"></div>
                                             <div class="col-md-5 ">
                                                 <div class="form-group row ">
-                                                    <label>Süre (Saat) *</label>
+                                                    <label>Süre (Dakika) *</label>
                                                     <div class="input-group">
-                                                        <input id="kt_touchspin_2" type="text" class="form-control form-control-lg text-center" value="@Model.Duration" asp-for="Duration" name="Duration" placeholder="Toplam" />
+                                                        <input id="kt_touchspin_23" type="text" class="form-control form-control-lg text-center" value="@Model.ShiftMinute" asp-for="ShiftMinute" name="ShiftMinute"  />
                                                     </div>
                                                 </div>
 
-                                            </div>
-
-                                            <div class="col-md-12">
+                                            
                                                 <div class="form-group row">
                                                     <label>Açıklama *</label>
                                                     <div class="input-group">
@@ -104,14 +107,27 @@
 
                         }
                     },
-                    Duration: {
+                    ShiftHour: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Saat alanı boş geçilemez',
+                            },
+                            greaterThan: {
+                                min: 0,
+                                message: 'Saat alanı sıfırdan küçük olamaz',
+                            }
+
+                        }
+                    },
+                    ShiftMinute: {
                         validators: {
                             notEmpty: {
                                 message: 'Süre alanı boş geçilemez',
                             },
-                            greaterThan: {
-                                min: 1,
-                                message: 'Süre alanı 0 olamaz',
+                            between: {
+                                min: 0,
+                                max: 59,
+                                message: 'Dakika alanı 0 - 60 arasında olmalı'
                             }
 
                         }
@@ -142,6 +158,17 @@
     </script>
     <script>
         $('#kt_touchspin_2, #kt_touchspin_2_2').TouchSpin({
+            buttondown_class: 'btn btn-secondary',
+            buttonup_class: 'btn btn-secondary',
+            min: 0,
+            max: 100,
+            step: 1,
+            int: 1,
+            boostat: 5,
+            maxboostedstep: 10,
+
+        });
+        $('#kt_touchspin_23, #kt_touchspin_2_2').TouchSpin({
             buttondown_class: 'btn btn-secondary',
             buttonup_class: 'btn btn-secondary',
             min: 0,
