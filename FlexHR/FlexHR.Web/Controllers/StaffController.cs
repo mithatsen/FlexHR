@@ -33,11 +33,13 @@ namespace FlexHR.Web.Controllers
         private readonly IAppUserService _appUserService;
         private readonly IFileColumnService _fileColumnService;
         private readonly IStaffCareerService _staffCareerService;
+        private readonly IStaffSalaryService _staffSalaryService;
+        private readonly IStaffTrackingService _staffTrackingService;
 
-        public StaffController(IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffPersonelInfoService staffPersonelInfoService,
-                                      IAppRoleService appRoleService, IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService, UserManager<AppUser> userManager,
-                                       RoleManager<AppRole> roleManager, IAppUserService appUserService, IStaffCareerService staffCareerService, IFileColumnService fileColumnService)
+        public StaffController(IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffPersonelInfoService staffPersonelInfoService, IAppRoleService appRoleService, 
+            IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IAppUserService appUserService, IStaffCareerService staffCareerService, IFileColumnService fileColumnService, IStaffSalaryService staffSalaryService, IStaffTrackingService staffTrackingService)
         {
+            _staffTrackingService = staffTrackingService;
             _staffService = staffService;
             _fileColumnService = fileColumnService;
             _mapper = mapper;
@@ -51,13 +53,15 @@ namespace FlexHR.Web.Controllers
             _roleManager = roleManager;
             _appUserService = appUserService;
             _staffCareerService = staffCareerService;
+            _staffSalaryService = staffSalaryService;
         }
         [Authorize(Roles = "ViewPersonalsPage,Manager")]
         public IActionResult Index()
         {
+         
             TempData["Active"] = TempdataInfo.Staff;
             var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");
-
+            var abs= _staffTrackingService.GetStaffTimeKeepingMonthly(DateTime.Now,result.ToList());
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
             ViewBag.Roles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125), "Id", "Description");
             ViewBag.PageRoles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 126), "Id", "Description");
@@ -141,8 +145,8 @@ namespace FlexHR.Web.Controllers
                 else if (!String.IsNullOrWhiteSpace(modal.UserName) && modal.UserName.Length >= 3)
                 {
                     staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
-                    staffId = staffResult.StaffId;         
-                                           
+                    staffId = staffResult.StaffId;
+
                     AppUser user = new AppUser()
                     {
                         UserName = modal.UserName,
@@ -171,17 +175,11 @@ namespace FlexHR.Web.Controllers
                             await _userManager.AddToRoleAsync(user, rolePage);
                         }
                     }
-
+                    _staffSalaryService.Add(new StaffSalary { StaffId = staffId, CurrencyGeneralSubTypeId = 111, PeriodGeneralSubTypeId = 114, FeeTypeGeneralSubTypeId = 107, StartDate = modal.JobJoinDate, IsAgi = true, Salary = 2825, IsActive = true });
                     _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
                     _staffPersonelInfoService.Add(new StaffPersonelInfo
                     {
                         StaffId = staffId,
-                        MaritalStatusGeneralSubTypeId = null,
-                        GenderGeneralSubTypeId = null,
-                        DegreeOfDisabilityGeneralSubTypeId = null,
-                        BloodGroupGeneralSubTypeId = null,
-                        EducationLevelGeneralSubTypeId = null,
-                        EducationStatusGeneralSubTypeId = null,
                         IsActive = true
                     });
                     return Json("true");
@@ -195,16 +193,11 @@ namespace FlexHR.Web.Controllers
             {
                 staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
                 staffId = staffResult.StaffId;
+                _staffSalaryService.Add(new StaffSalary { StaffId = staffId, CurrencyGeneralSubTypeId = 111, PeriodGeneralSubTypeId = 114, FeeTypeGeneralSubTypeId = 107, StartDate = modal.JobJoinDate, IsAgi = true, Salary = 2825, IsActive = true });
                 _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
                 _staffPersonelInfoService.Add(new StaffPersonelInfo
                 {
                     StaffId = staffId,
-                    MaritalStatusGeneralSubTypeId = null,
-                    GenderGeneralSubTypeId = null,
-                    DegreeOfDisabilityGeneralSubTypeId = null,
-                    BloodGroupGeneralSubTypeId = null,
-                    EducationLevelGeneralSubTypeId = null,
-                    EducationStatusGeneralSubTypeId = null,
                     IsActive = true
                 });
                 return Json("true");
@@ -214,7 +207,7 @@ namespace FlexHR.Web.Controllers
         public IActionResult RemoveStaff(int id)
         {
             var staff = _staffService.GetById(id);
-            if (staff!=null)
+            if (staff != null)
             {
                 staff.IsActive = false;
                 _staffService.Update(staff);
@@ -223,11 +216,11 @@ namespace FlexHR.Web.Controllers
                 {
                     user.IsActive = false;
                     _appUserService.Update(user);
-                } 
+                }
                 return Json("true");
             }
-           // TempData["StaffRemoveStatus"] = "false";
-            return Json("false"); 
+            // TempData["StaffRemoveStatus"] = "false";
+            return Json("false");
         }
     }
 }
