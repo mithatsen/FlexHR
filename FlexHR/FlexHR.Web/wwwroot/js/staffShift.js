@@ -15,14 +15,27 @@ var fv = FormValidation.formValidation(document.getElementById('modalAddShift'),
 
             }
         },
-        Duration: {
+        ShiftHour: {
+            validators: {
+                notEmpty: {
+                    message: 'Saat alanı boş geçilemez',
+                },
+                greaterThan: {
+                    min: 0,
+                    message: 'Saat alanı sıfırdan küçük olamaz',
+                }
+
+            }
+        },
+        ShiftMinute: {
             validators: {
                 notEmpty: {
                     message: 'Süre alanı boş geçilemez',
                 },
-                greaterThan: {
-                    min: 1,
-                    message: 'Süre alanı 0 olamaz',
+                between: {
+                    min: 0,
+                    max: 59,
+                    message: 'Dakika alanı 0 - 60 arasında olmalı'
                 }
 
             }
@@ -58,7 +71,8 @@ function shiftClickFunction() {
             var formData = {
                 StaffId: $("#StaffId").val(),
                 StartDate: $("#StartDate").val(),
-                Duration: $("#kt_touchspin_1").val(),
+                ShiftHour: $("#kt_touchspin_1").val(),
+                ShiftMinute: $("#kt_touchspin_123").val(),
                 Description: $("#Description").val()
             };
             console.log(formData);
@@ -155,7 +169,17 @@ function DeleteStaffShift(id) {
 
 
 }
+$('#kt_touchspin_123, #kt_touchspin_2_1').TouchSpin({
+    buttondown_class: 'btn btn-secondary',
+    buttonup_class: 'btn btn-secondary',
 
+    min: 0,
+    max: 60,
+    step: 1,
+    int: 1,
+    boostat: 5,
+    maxboostedstep: 10,
+});
 $('#kt_datetimepicker_18').datetimepicker({
     locale: 'tr',
     format: 'DD.MM.YYYY HH:mm'

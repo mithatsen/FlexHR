@@ -36,7 +36,7 @@
                                         {
                                             <button class="btn btn-primary mr-2">Kaydet</button>
                                         }
-                                       
+
                                     </div>
                                 </div>
                                 <!--end::Header-->
@@ -55,7 +55,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label >E-Posta (Kişisel) *</label>
+                                                    <label>E-Posta (Kişisel) *</label>
                                                     <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
@@ -68,7 +68,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label >E-Posta (İş) </label>
+                                                    <label>E-Posta (İş) </label>
                                                     <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
@@ -83,7 +83,7 @@
 
 
                                                 <div class="form-group row">
-                                                    <label >Sözleşme Türü *</label>
+                                                    <label>Sözleşme Türü *</label>
                                                     <div class="input-group">
                                                         <select id="ContractTypeSelect" asp-for="ContractTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
                                                             <option value="" selected>Seçiniz</option>
@@ -91,7 +91,14 @@
                                                         </select>
                                                     </div>
                                                 </div>
-
+                                                <div class="form-group row">
+                                                    <label>Personal No *</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            <input asp-for="PersonalNo" type="text" class="form-control form-control-lg form-control-solid" placeholder="Personal No" />
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                             <div class="col-md-2"></div>
@@ -109,7 +116,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label >Telefon (İş) </label>
+                                                    <label>Telefon (İş) </label>
                                                     <div class="input-group">
                                                         <div class="input-group input-group-lg input-group-solid">
                                                             <div class="input-group-prepend">
@@ -123,7 +130,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label >İşe Başlama Tarihi *</label>
+                                                    <label>İşe Başlama Tarihi *</label>
                                                     <div class="input-group">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_2" data-target-input="nearest">
                                                             <input asp-for="JobJoinDate" value="@Model.JobJoinDate.ToString("dd.MM.yyyy")" type="text" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_2" />
@@ -139,7 +146,7 @@
                                                 <div class="form-group row">
                                                     @if (Model.ContractTypeGeneralSubTypeId == 1)
                                                     {
-                                                        <label id="jobFinishDateLbl" >Sözleşme Bitiş Tarihi</label>
+                                                        <label id="jobFinishDateLbl">Sözleşme Bitiş Tarihi</label>
                                                         <div class="input-group">
                                                             <div class="input-group date input-group-solid" id="kt_datetimepicker_3" data-target-input="nearest">
                                                                 <input id="ContractFinishDate" asp-for="JobFinishDate" value="@Model.JobFinishDate.Value.ToString("dd.MM.yyyy")" type="text" class="form-control datetimepicker-input form-control-lg " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_3" />
@@ -253,6 +260,17 @@
                             phone: {
                                 country: 'US',
                                 message: 'Geçerli bir numara girin'
+                            }
+                        }
+                    },
+                    PersonalNo: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Personel numarası alanı boş geçilemez'                               
+                            },
+                            stringLength: {
+                                max: 10,
+                                message: '10 karakterden az girin'
                             }
                         }
                     },
@@ -510,13 +528,13 @@
         });
     </script>
     @*Staff Güncellendi için sweet alert*@
-<script>
+    <script>
         $(document).ready(function () {
 
             if (@ViewBag.StaffGeneralUpdateStatus == true) {
                 Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
             }
-           
+
             var id = document.getElementById("ContractTypeSelect").value;
             if (id == 1) {
                 ValidateInfo("true");
@@ -526,7 +544,7 @@
             }
 
         });
-</script>
+    </script>
 
     <script>
         $('#ContractTypeSelect').select2({

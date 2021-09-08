@@ -53,7 +53,7 @@
                                         <thead>
                                             <tr>
                                                 <th width="15%">Başlangıç</th>
-                                                <th width="10%">Süre(saat)</th>
+                                                <th width="10%">Süre</th>
                                                 <th width="55%">Açıklama</th>
                                                 <th width="10%">Durum</th>
                                                 @if ((User.IsInRole("UpdateDeleteShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
@@ -69,7 +69,7 @@
 
                                                     <td>@item.StartDate.ToString("g")</td>
 
-                                                    <td>@item.Duration Saat</td>
+                                                    <td>@item.ShiftHour Saat @item.ShiftMinute Dakika</td>
 
                                                     <td>@item.Description</td>
                                                     <td>@item.GeneralStatusGeneralSubTypeId</td>
@@ -139,7 +139,12 @@
                                 <div class="card-body mx-auto">
                                     <div class="row">
                                         <div class="col-md-5">
-
+                                            <div class="form-group row ">
+                                                <label>Süre (Saat) *</label>
+                                                <div class="input-group">
+                                                    <input id="kt_touchspin_1" type="text" class="form-control form-control-lg text-center" value="0" name="ShiftHour" />
+                                                </div>
+                                            </div>
                                             <div class="form-group row ">
                                                 <label>Başlangıç Tarihi *</label>
                                                 <div class="input-group">
@@ -157,14 +162,12 @@
                                         <div class="col-md-2"></div>
                                         <div class="col-md-5 ">
                                             <div class="form-group row ">
-                                                <label>Süre (Saat) *</label>
+                                                <label>Süre (Dakika) *</label>
                                                 <div class="input-group">
-                                                    <input id="kt_touchspin_1" type="text" class="form-control form-control-lg text-center" value="0" name="Duration" placeholder="Toplam" />
+                                                    <input id="kt_touchspin_123" type="text" class="form-control form-control-lg text-center" value="0" name="ShiftMinute" />
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-12">
+                                        
                                             <div class="form-group row">
                                                 <label>Açıklama *</label>
                                                 <div class="input-group">

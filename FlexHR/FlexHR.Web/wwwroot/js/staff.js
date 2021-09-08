@@ -50,6 +50,17 @@ var fvAddStaffWithoutUser = FormValidation.formValidation(document.getElementByI
                     }
                 }
             },
+            PersonalNo: {
+                validators: {
+                    notEmpty: {
+                        message: 'Personel numarası alanı boş geçilemez'
+                    },
+                    stringLength: {
+                        max: 10,
+                        message: '10 karakterden az girin'
+                    }
+                }
+            },
             JobJoinDate: {
                 validators: {
                     notEmpty: {
@@ -147,6 +158,17 @@ function ValidateStaff(status) {
 
                         }
                     },
+                    PersonalNo: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Personel numarası alanı boş geçilemez'
+                            },
+                            stringLength: {
+                                max: 10,
+                                message: '10 karakterden az girin'
+                            }
+                        }
+                    },
                     UserNameAddStaff: {
                         validators: {
                             notEmpty: {
@@ -224,6 +246,17 @@ function ValidateStaff(status) {
                             }
                         }
                     },
+                    PersonalNo: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Personel numarası alanı boş geçilemez'
+                            },
+                            stringLength: {
+                                max: 10,
+                                message: '10 karakterden az girin'
+                            }
+                        }
+                    },
                     JobJoinDate: {
                         validators: {
                             notEmpty: {
@@ -275,7 +308,7 @@ function staffAddClickFunction() {
                     RoleId: $("#RoleId").val(),
                     Password: $("#Password").val(),
                     PageRoles: $("#pageRoles").val(),
-
+                    PersonalNo: $("#PersonalNo").val(),
                 };
                 $('#cover-spin').show();
                 $.ajax({
@@ -330,7 +363,7 @@ function staffAddClickFunction() {
                     RoleId: $("#RoleId").val(),
                     Password: $("#Password").val(),
                     PageRoles: $("#pageRoles").val(),
-
+                    PersonalNo: $("#PersonalNo").val(),
                 };
                 $('#cover-spin').show();
                 $.ajax({

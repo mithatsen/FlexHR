@@ -13,6 +13,7 @@ namespace FlexHR.DTO.Dtos.StaffGeneralDtos
         public string EmailJob { get; set; }
         public string EmailPersonal { get; set; }
         public string PhoneJob { get; set; }
+        public int PersonalNo { get; set; }
         public string PhonePersonal { get; set; }
         public DateTime JobJoinDate { get; set; }
         public DateTime? JobFinishDate { get; set; }
