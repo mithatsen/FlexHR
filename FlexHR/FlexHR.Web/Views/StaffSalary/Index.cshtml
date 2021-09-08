@@ -1,0 +1,252 @@
+﻿
+@model ListStaffSalaryDto
+@{
+    ViewData["Title"] = "Maaş Bilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+}
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+@await Component.InvokeAsync("StaffSubHeader", new { id = @Model.StaffId })
+<div class="card card-custom">
+    @await Component.InvokeAsync("StaffNavbar", new { id = Model.StaffId })
+    <div class="card-body">
+        <div class="d-flex flex-row">
+            @await Component.InvokeAsync("StaffCard", new { id = Model.StaffId })
+            <div class="tab-content w-100">
+                <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_11">
+                    <div class="flex-row-fluid ml-lg-8">
+                        <!--begin::Form-->
+                        <form id="salaryForm" class="form" asp-action="UpdateStaffSalary" asp-controller="StaffSalary" method="post">
+                            <!--begin::Card-->
+                            <div class="card card-custom card-stretch">
+                                <!--begin::Header-->
+                                <div class="card-header py-3">
+                                    <div class="card-title align-items-start flex-column">
+                                        <h3 class="card-label font-weight-bolder text-dark">
+                                            <i class="fas fa-user-edit text-dark mr-2"></i>Maaş Bilgileri
+                                        </h3>
+                                        <span class="text-muted font-weight-bold font-size-sm mt-1">Maaş bilgilerini düzenleyin</span>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        @if ((User.IsInRole("yenirol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        {
+                                            <button type="submit" class="btn btn-primary mr-2">Kaydet</button>
+                                        }
+
+                                    </div>
+                                </div>
+                                <!--end::Header-->
+
+                                <div class="container">
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <input type="hidden" asp-for="StaffSalaryId" />
+                                            <input type="hidden" asp-for="StaffId" />
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label>Ödeme Türü</label>
+                                                    <div class="input-group">
+                                                        <select style=" width: 100% !important;" asp-for="FeeTypeGeneralSubTypeId" id="Select1" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.FeeTypeList">
+                                                            <option value="">Seçiniz</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Maaş</label>
+                                                    <div class="input-group">
+
+                                                        <input id="txtSalaryAmount" type="text" name="Salary" class="form-control form-control-solid form-control-lg" />
+                                                        <div class="input-group-append">
+                                                            <select id="Select2" class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.CurrencyList">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Yemek Ödemesi</label>
+                                                    <div class="input-group">
+                                                        <input id="txtFoodPayment" type="text" asp-for="FoodPayment" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Özel Sağlık Hizmeti</label>
+                                                    <div class="input-group">
+                                                        <input id="txtPrivateHealthCare" type="text" asp-for="PrivateHealthCare" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Maaş Başlama Tarihi</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_4" data-target-input="nearest">
+                                                            <input asp-for="StartDate" type="text" value="@Model.StartDate.ToString("dd.MM.yyyy")" class="form-control datetimepicker-input form-control-lg" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_4" />
+                                                            <div class="input-group-append" data-target="#kt_datetimepicker_4" data-toggle="datetimepicker">
+                                                                <span class="input-group-text">
+                                                                    <i class="ki ki-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">   </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label>Periyot</label>
+                                                    <div class="input-group">
+                                                        <select style=" width: 100% !important;" id="Select3" asp-for="PeriodGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.PeriodList">
+                                                            <option value="">Periyot Seçiniz</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Yol Ödemesi</label>
+                                                    <div class="input-group">
+                                                        <input id="txtRoadPayment" type="text" asp-for="RoadPayment" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Bonus</label>
+                                                    <div class="input-group">
+                                                        <input id="txtConstantBonus" type="text" asp-for="ConstantBonus" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Bireysel Emeklilik</label>
+                                                    <div class="input-group">
+                                                        <input id="txtPrivateHealthCare" type="text" asp-for="PrivatePension" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label></label>
+                                                    <div class="input-group col-form-label">
+                                                        <div class="checkbox-inline">
+                                                            <label class="checkbox checkbox-primary">
+                                                                <input id="isAgi" type="checkbox" asp-for="IsAgi"  />
+                                                                <span></span>
+                                                                AGİ
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
+
+
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#tab_11").addClass("active");
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            debugger;
+            if ($("#Select1").val()=="107") {
+                 $("#txtSalaryAmount").val(@Html.Raw(Json.Serialize(Model.NetSalary)));
+            }
+            else{
+                 $("#txtSalaryAmount").val(@Html.Raw(Json.Serialize(Model.GrossSalary)));
+            }
+
+        });
+    </script>
+    <script>
+        $('#Select1').select2({
+            placeholder: 'Seçiniz'
+        });
+        $('#Select2').select2({
+
+        });
+        $('#Select3').select2({
+            placeholder: 'Seçiniz'
+        });
+    </script>
+    <script>
+        $('input[name="StartDate"]').mask('00.00.0000');
+
+    </script>
+    <script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>
+    <script>
+
+        FormValidation.formValidation(
+            document.getElementById('salaryForm'),
+            {
+                fields: {
+
+                    StartDate: {
+                        validators: {
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
+                            },
+                            notEmpty: {
+                                message: 'Maaş başlama tarihi boş geçilemez'
+                            },
+                        }
+                    },
+                    FeeTypeGeneralSubTypeId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Periyot boş geçilemez'
+                            },
+                        }
+                    },
+                    PeriodGeneralSubTypeId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'İzin türü alanı boş geçilemez'
+                            },
+                        }
+
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    // Submit the form when all fields are valid
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                }
+
+            });
+    </script>
+
+    @*Kişisel bilgiler Güncellendiği için sweet alert*@
+    <script>
+        $(document).ready(function () {
+
+            if (@ViewBag.StaffSalaryUpdateStatus == true) {
+
+                Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+            }
+        });
+    </script>
+
+}

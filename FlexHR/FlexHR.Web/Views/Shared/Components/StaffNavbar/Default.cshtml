@@ -16,6 +16,19 @@
                     </a>
                 </li>
             }
+            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item  mr-5 pr-3">
+                    <a class="nav-link" id="tab_11" asp-controller="StaffSalary" asp-action="Index" asp-route-id="@Model">
+                        <span class="nav-icon mr-2">
+                            <span class="svg-icon mr-3">
+                                <i class="fas fa-wallet"></i>
+                            </span>
+                        </span>
+                        <span class="nav-text font-weight-bold">Maaş</span>
+                    </a>
+                </li>
+            }
 
             @if ((User.IsInRole("ViewStaffPersonalInfoPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
@@ -75,7 +88,7 @@
                     <a class="nav-link" id="tab_6" asp-controller="StaffPayment" asp-action="Index" asp-route-id="@Model">
                         <span class="nav-icon mr-2">
                             <span class="svg-icon mr-3">
-                                <i class="fas fa-wallet"></i>
+                                <i class="far fa-credit-card"></i>
                             </span>
                         </span>
                         <span class="nav-text font-weight-bold">Ödemeler</span>
@@ -135,6 +148,7 @@
                     </a>
                 </li>
             }
+
         </ul>
 
     </div>

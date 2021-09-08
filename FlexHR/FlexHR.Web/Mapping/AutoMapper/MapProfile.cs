@@ -17,6 +17,7 @@ using FlexHR.DTO.Dtos.StaffLeaveDtos;
 using FlexHR.DTO.Dtos.StaffOtherInfoDtos;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.DTO.Dtos.StaffPersonalInfoDtos;
+using FlexHR.DTO.Dtos.StaffSalaryDtos;
 using FlexHR.DTO.Dtos.StaffShiftDtos;
 using FlexHR.Entity.Concrete;
 using System;
@@ -77,7 +78,14 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<StaffPayment, ListStaffPaymentOnDashboardDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
 
             #endregion
+            #region StaffSalary
+            CreateMap<ListStaffSalaryDto, StaffSalary>().ReverseMap();
+            CreateMap<UpdateStaffSalaryDto, StaffSalary>().ReverseMap();
+          
 
+            #endregion
+
+            
             #region Receipt
             CreateMap<ListReceiptDto, Receipt>().ReverseMap();
             #endregion

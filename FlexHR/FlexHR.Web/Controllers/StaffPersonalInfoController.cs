@@ -63,7 +63,7 @@ namespace FlexHR.Web.Controllers
                 TempData["StaffPersonalInfoUpdateStatus"] = "true";
                 return RedirectToAction("Index", new { id = model.StaffId });
             }
-            return View();
+            return RedirectToAction("Index", new { id = model.StaffId });
         }
     }
 }
