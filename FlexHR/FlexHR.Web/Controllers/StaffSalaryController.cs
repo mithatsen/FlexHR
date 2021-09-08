@@ -52,14 +52,7 @@ namespace FlexHR.Web.Controllers
             try
             {
                 var result = _mapper.Map<StaffSalary>(model);
-                if(model.FeeTypeGeneralSubTypeId == 107)
-                {
-                    result.NetSalary = model.Salary;
-                }
-                else
-                {
-                    result.GrossSalary = model.Salary;
-                }
+                              
                 _staffSalaryService.Update(result);
                 TempData["StaffSalaryUpdateStatus"] = "true";
                 return RedirectToAction("Index", new { id = model.StaffId });

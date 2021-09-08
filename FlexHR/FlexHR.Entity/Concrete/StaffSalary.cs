@@ -12,8 +12,7 @@ namespace FlexHR.Entity.Concrete
         public int CurrencyGeneralSubTypeId { get; set; }
         public int PeriodGeneralSubTypeId { get; set; }
         public int FeeTypeGeneralSubTypeId { get; set; }
-        public decimal? NetSalary { get; set; }
-        public decimal? GrossSalary { get; set; }
+        public decimal Salary { get; set; }   
         public decimal? RoadPayment { get; set; }
         public decimal? FoodPayment { get; set; }
         public decimal? ConstantBonus { get; set; }

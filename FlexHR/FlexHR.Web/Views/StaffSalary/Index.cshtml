@@ -29,7 +29,7 @@
                                 <div class="card-header py-3">
                                     <div class="card-title align-items-start flex-column">
                                         <h3 class="card-label font-weight-bolder text-dark">
-                                            <i class="fas fa-user-edit text-dark mr-2"></i>Maaş Bilgileri
+                                            <i class="fas fa-wallet text-dark mr-2"></i>Maaş Bilgileri
                                         </h3>
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Maaş bilgilerini düzenleyin</span>
                                     </div>
@@ -63,13 +63,13 @@
                                                 <div class="form-group row">
                                                     <label>Maaş</label>
                                                     <div class="input-group">
-
-                                                        <input id="txtSalaryAmount" type="text" name="Salary" class="form-control form-control-solid form-control-lg" />
+                                                        <input id="txtSalaryAmount" type="text" asp-for="Salary" class="form-control form-control-solid form-control-lg" />
                                                         <div class="input-group-append">
-                                                            <select id="Select2" class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.CurrencyList">
+                                                            <select  class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.CurrencyList">
                                                             </select>
                                                         </div>
                                                     </div>
+                                                   
                                                 </div>
                                                 <div class="form-group row">
                                                     <label>Yemek Ödemesi</label>
@@ -123,7 +123,7 @@
                                                 <div class="form-group row">
                                                     <label>Bireysel Emeklilik</label>
                                                     <div class="input-group">
-                                                        <input id="txtPrivateHealthCare" type="text" asp-for="PrivatePension" class="form-control form-control-solid form-control-lg">
+                                                        <input id="txtPrivatePension" type="text" asp-for="PrivatePension" class="form-control form-control-solid form-control-lg">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -163,18 +163,7 @@
             $("#tab_11").addClass("active");
         });
     </script>
-    <script>
-        $(document).ready(function () {
-            debugger;
-            if ($("#Select1").val()=="107") {
-                 $("#txtSalaryAmount").val(@Html.Raw(Json.Serialize(Model.NetSalary)));
-            }
-            else{
-                 $("#txtSalaryAmount").val(@Html.Raw(Json.Serialize(Model.GrossSalary)));
-            }
-
-        });
-    </script>
+   
     <script>
         $('#Select1').select2({
             placeholder: 'Seçiniz'
@@ -185,10 +174,16 @@
         $('#Select3').select2({
             placeholder: 'Seçiniz'
         });
+       
     </script>
     <script>
         $('input[name="StartDate"]').mask('00.00.0000');
-
+        $("#txtSalaryAmount").mask('000.000.000.000,00', { reverse: true });
+        $("#txtFoodPayment").mask('000.000.000.000,00', { reverse: true });
+        $("#txtPrivateHealthCare").mask('000.000.000.000,00', { reverse: true });
+        $("#txtRoadPayment").mask('000.000.000.000,00', { reverse: true });
+        $("#txtConstantBonus").mask('000.000.000.000,00', { reverse: true });
+        $("#txtPrivatePension").mask('000.000.000.000,00', { reverse: true });
     </script>
     <script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>
     <script>
