@@ -22,7 +22,6 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffService _staffService;
 
         private readonly IMapper _mapper;
-        //   private readonly IStaffRoleService _staffRoleService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IAppRoleService _appRoleService;
         private readonly IStaffPersonelInfoService _staffPersonelInfoService;
@@ -34,17 +33,16 @@ namespace FlexHR.Web.Controllers
         private readonly IFileColumnService _fileColumnService;
         private readonly IStaffCareerService _staffCareerService;
         private readonly IStaffSalaryService _staffSalaryService;
-        private readonly IStaffTrackingService _staffTrackingService;
+      
 
         public StaffController(IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService, IStaffPersonelInfoService staffPersonelInfoService, IAppRoleService appRoleService, 
-            IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IAppUserService appUserService, IStaffCareerService staffCareerService, IFileColumnService fileColumnService, IStaffSalaryService staffSalaryService, IStaffTrackingService staffTrackingService)
+            IStaffOtherInfoService staffOtherInfoService, IStaffFileService staffFileService, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IAppUserService appUserService, IStaffCareerService staffCareerService, IFileColumnService fileColumnService, IStaffSalaryService staffSalaryService)
         {
-            _staffTrackingService = staffTrackingService;
+  
             _staffService = staffService;
             _fileColumnService = fileColumnService;
             _mapper = mapper;
             _userManager = userManager;
-            //_staffRoleService = staffRoleService;
             _generalSubTypeService = generalSubTypeService;
             _appRoleService = appRoleService;
             _staffPersonelInfoService = staffPersonelInfoService;
@@ -61,7 +59,7 @@ namespace FlexHR.Web.Controllers
          
             TempData["Active"] = TempdataInfo.Staff;
             var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");
-            var abs= _staffTrackingService.GetStaffTimeKeepingMonthly(DateTime.Now,result.ToList());
+            var abs= _staffService.GetStaffTimeKeepingMonthly(DateTime.Now,result.ToList());
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
             ViewBag.Roles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125), "Id", "Description");
             ViewBag.PageRoles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 126), "Id", "Description");
@@ -70,7 +68,7 @@ namespace FlexHR.Web.Controllers
             var models = _mapper.Map<List<ListStaffDto>>(result);
             foreach (var item in models)
             {
-                //***************************************************************************
+            
                 var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList();
 
                 if (careerResult.Count > 0)

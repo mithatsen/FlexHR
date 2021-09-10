@@ -8,6 +8,9 @@ namespace FlexHR.DTO.Dtos.StaffTracking
     {
         public int PersonalNo { get; set; }
         public string NameSurname { get; set; }
+        public string Branch { get; set; }
+        public string Department { get; set; }
         public List<string> DaysStatus { get; set; }
+    
     }
 }

@@ -178,6 +178,18 @@
                     </a>
                 </li>
             }
+            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
+                    <a asp-controller="StaffTracking" asp-action="Index" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-calendar-check"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-text">Personel Takip</span>
+                    </a>
+                </li>
+            }
             @if ((User.IsInRole("ViewFileOperationSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="menu-item menu-item-submenu  @(active == "fileProcess" ? "menu-item-active menu-item-open" : " ")  @(active == "refectory" ? "menu-item-active menu-item-open" : " ") " aria-haspopup="true" data-menu-toggle="hover">

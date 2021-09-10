@@ -47,19 +47,19 @@
                                                                 var tittle = "";
                                                                 if (item.IsFree)
                                                                 {
-                                                                    tittle += "Ücretsiz İzin_______";
+                                                                    tittle += "Ücretsiz İzin ";
                                                                 }
                                                                 else
                                                                 {
-                                                                    tittle += "Ücretli İzin_______";
+                                                                    tittle += "Ücretli İzin ";
                                                                 }
                                                                 if (item.TotalDay == 0)
                                                                 {
-                                                                    tittle += "Süresiz                     " + item.Description;
+                                                                    tittle += "Süresiz " + item.Description;
                                                                 }
                                                                 else
                                                                 {
-                                                                    tittle += item.TotalDay + " Gün                     " + item.Description;
+                                                                    tittle += item.TotalDay + " Gün " + item.Description;
                                                                 }
 
                                                                 <li class="dropdown-item" id="@item.Id" name="@item.Name" onclick="ChangeLeaveTypeUpdateModal(this)">@item.Name <a data-toggle='tooltip' title='@tittle' class="float-right"><i class='fas fa-info-circle bg-success '></i></a></li>

@@ -33,6 +33,7 @@
                                         </h3>
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Maaş bilgilerini düzenleyin</span>
                                     </div>
+                                  
                                     <div class="card-toolbar">
                                         @if ((User.IsInRole("yenirol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                         {
@@ -65,11 +66,11 @@
                                                     <div class="input-group">
                                                         <input id="txtSalaryAmount" type="text" asp-for="Salary" class="form-control form-control-solid form-control-lg" />
                                                         <div class="input-group-append">
-                                                            <select  class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.CurrencyList">
+                                                            <select class="form-control form-control-solid form-control-lg" asp-for="CurrencyGeneralSubTypeId" asp-items="ViewBag.CurrencyList">
                                                             </select>
                                                         </div>
                                                     </div>
-                                                   
+
                                                 </div>
                                                 <div class="form-group row">
                                                     <label>Yemek Ödemesi</label>
@@ -131,7 +132,7 @@
                                                     <div class="input-group col-form-label">
                                                         <div class="checkbox-inline">
                                                             <label class="checkbox checkbox-primary">
-                                                                <input id="isAgi" type="checkbox" asp-for="IsAgi"  />
+                                                                <input id="isAgi" type="checkbox" asp-for="IsAgi" />
                                                                 <span></span>
                                                                 AGİ
                                                             </label>
@@ -163,7 +164,7 @@
             $("#tab_11").addClass("active");
         });
     </script>
-   
+
     <script>
         $('#Select1').select2({
             placeholder: 'Seçiniz'
@@ -174,7 +175,7 @@
         $('#Select3').select2({
             placeholder: 'Seçiniz'
         });
-       
+
     </script>
     <script>
         $('input[name="StartDate"]').mask('00.00.0000');

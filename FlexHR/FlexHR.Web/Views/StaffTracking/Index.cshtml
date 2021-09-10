@@ -1,0 +1,178 @@
+﻿@model StaffTrackingMonthlyViewModal
+@{
+    ViewData["Title"] = "Puantaj";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Raporlar</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+
+<br />
+<div class="card card-custom">
+  
+
+
+    <div class="card card-custom">
+        <div class="card-body  ">
+
+            <!--begin: Datatable-->
+            <div class="tab-content pt-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="text-dark mb-4 font-size-h3"> @Model.filterDate.ToString("Y") Puantaj Tablosu</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-8 float-right">
+                            <!--begin: Search Form-->
+                            <form asp-controller="StaffTracking" asp-action="Index" method="post">
+
+                                <div class="row ">
+                                    <div class="col-md-4"></div>
+                                    <div class="input-group d-inline col-md-5">
+                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_78" data-target-input="nearest">
+                                            <input name="dateTime" type="text" class="form-control form-control-lg datetimepicker-input" value="@Model.filterDate.Month.@Model.filterDate.Year" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_78" autocomplete="off" />
+                                            <div class="input-group-append" data-target="#kt_datetimepicker_78" data-toggle="datetimepicker">
+                                                <span class="input-group-text">
+                                                    <i class="ki ki-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-primary--icon d-inline col-md-3" type="submit">
+                                        <span>
+                                            <i class="la la-search"></i>
+                                            <span>Listele</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <hr />
+                <!--begin: Search Form-->
+
+                <table class="table table-bordered table-head-custom table-sm " id="kt_datatable_tracking">
+                    <thead class="pe-none">
+                        <tr>
+                            <th>No</th>
+                            <th>Ad Soyad</th>
+                            <th>Şube</th>
+                            <th>Bölüm</th>
+                         @{var abc= DateTime.DaysInMonth(Model.filterDate.Year, Model.filterDate.Month); }
+                            @for (int i = 1; i <= DateTime.DaysInMonth(Model.filterDate.Year, Model.filterDate.Month); i++)
+                            {
+                                var tooltipTitle = new DateTime(Model.filterDate.Year, Model.filterDate.Month, i);
+                                if (i < 10)
+                                {
+                                    var x = "0" + i;
+
+                                    <th class="px-2 text-center" data-toggle="tooltip" data-placement="top" title="@tooltipTitle.ToString("dddd")">@x</th>
+                                }
+                                else
+                                {
+                                    <th class="px-2 text-center" data-toggle="tooltip" data-placement="top" title="@tooltipTitle.ToString("dddd")">@i</th>
+                                }
+
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ListStaffTimeKeepings)
+                        {
+                            <tr>
+
+                                <td>@item.PersonalNo</td>
+                                <td>@item.NameSurname</td>
+                                <td>@item.Branch</td>
+                                <td>@item.Department</td>
+
+                                @for (int i = 0; i < item.DaysStatus.Count-1; i++)
+                                {
+                                    if (@item.DaysStatus[i] == "İ")
+                                    {
+                                        <td class="table-warning text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
+                                    }
+                                    else if (@item.DaysStatus[i] == "D")
+                                    {
+                                        <td class="table-danger text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
+                                    }
+                                    else if (@item.DaysStatus[i] == "R")
+                                    {
+                                        <td class="table-primary text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
+                                    }
+                                    else if (@item.DaysStatus[i] == "X")
+                                    {
+                                        <td class="table-success text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="table-secondary text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
+                                    }
+
+
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+
+    <script src="~/assets/js/pages/custom/contacts/edit-contact.js"></script>
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js"></script>
+    <script>
+
+        var table = $('#kt_datatable_tracking');
+
+        // begin first table
+
+        table.DataTable({
+            responsive: false,
+            paging: true,
+            sorting: false,
+            "targets": 'no-sort',
+     
+            "order": [],
+            "scrollX": true,
+        
+            "aoColumnDefs": [
+                { "bSortable": false, "aTargets": ["_all"] }
+            ]
+
+
+        })
+
+    </script>
+}
