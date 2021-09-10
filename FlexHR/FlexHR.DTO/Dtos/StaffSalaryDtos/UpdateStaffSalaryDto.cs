@@ -11,6 +11,8 @@ namespace FlexHR.DTO.Dtos.StaffSalaryDtos
         public int CurrencyGeneralSubTypeId { get; set; }
         public int PeriodGeneralSubTypeId { get; set; }
         public int FeeTypeGeneralSubTypeId { get; set; }
+        public int TotalWorkingHour { get; set; }
+        public decimal OvertimePayPerHour { get; set; }
         public decimal Salary { get; set; }
         public decimal? RoadPayment { get; set; } = 0;
         public decimal? FoodPayment { get; set; } = 0;

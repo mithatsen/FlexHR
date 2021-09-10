@@ -1,0 +1,72 @@
+﻿@model List<ListStaffSalaryMonthlyDto>
+@{
+    ViewData["Title"] = "GetStaffSalaryMonthlyList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!--begin::Notice-->
+        <!--end::Notice-->
+        <!--begin::Card-->
+        <div class="card card-custom">
+            <div class="card-header flex-wrap py-5">
+                <div class="card-title">
+                    <i class="fas fa-business-time text-dark mr-2"></i>
+                    <h3 class="card-label">
+                        Kariyer
+
+                    </h3>
+                </div>
+                <div class="card-toolbar">
+                    <!--begin::Button-->
+                    <!--end::Button-->
+                </div>
+            </div>
+            <div class="card-body">
+                <!--begin: Datatable-->
+                <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Ad Soyad</th>
+                            <th>Şube</th>
+                            <th>Bölüm</th>
+                            <th>Toplam Çalışma Saati</th>
+                            <th>Toplam Mesai Saati</th>
+                            <th>Saatlik Ücreti</th>
+                            <th>Saatlik Ek Mesai Ücreti</th>
+                            <th>Toplam Hakedilen Maaş</th>
+                            <th>Aldığı Maaş</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {                            
+                            <tr>
+                                <td>@item.CardNo</td>
+                                <td>@item.NameSurname</td>
+                                <td>@item.Branch</td>
+                                <td>@item.Department</td>
+                                <td>@item.TotalWorkingHour</td>
+                                <td>@item.TotalOvertimeHour</td>
+                                <td>@item.IncomePerHour</td>
+                                <td>@item.IncomePerShiftHour</td>
+                                <td>@item.TotalDeservedSalary</td>
+                                <td>@item.NetSalary</td>
+                              
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+                <!--end: Datatable-->
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Entry-->

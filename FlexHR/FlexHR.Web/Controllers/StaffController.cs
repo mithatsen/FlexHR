@@ -173,7 +173,7 @@ namespace FlexHR.Web.Controllers
                             await _userManager.AddToRoleAsync(user, rolePage);
                         }
                     }
-                    _staffSalaryService.Add(new StaffSalary { StaffId = staffId, CurrencyGeneralSubTypeId = 111, PeriodGeneralSubTypeId = 114, FeeTypeGeneralSubTypeId = 107, StartDate = modal.JobJoinDate, IsAgi = true, Salary = 2825, IsActive = true });
+                    _staffSalaryService.Add(new StaffSalary { StaffId = staffId, CurrencyGeneralSubTypeId = 111, PeriodGeneralSubTypeId = 115, FeeTypeGeneralSubTypeId = 107, StartDate = modal.JobJoinDate, IsAgi = true, Salary = 2825, IsActive = true });
                     _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
                     _staffPersonelInfoService.Add(new StaffPersonelInfo
                     {
@@ -191,7 +191,7 @@ namespace FlexHR.Web.Controllers
             {
                 staffResult = _staffService.AddResult(_mapper.Map<Staff>(modal));
                 staffId = staffResult.StaffId;
-                _staffSalaryService.Add(new StaffSalary { StaffId = staffId, CurrencyGeneralSubTypeId = 111, PeriodGeneralSubTypeId = 114, FeeTypeGeneralSubTypeId = 107, StartDate = modal.JobJoinDate, IsAgi = true, Salary = 2825, IsActive = true });
+                _staffSalaryService.Add(new StaffSalary { StaffId = staffId, CurrencyGeneralSubTypeId = 111, PeriodGeneralSubTypeId = 115, FeeTypeGeneralSubTypeId = 107, StartDate = modal.JobJoinDate, IsAgi = true, Salary = 2825, IsActive = true });
                 _staffOtherInfoService.Add(new StaffOtherInfo { StaffId = staffId, IsActive = true });
                 _staffPersonelInfoService.Add(new StaffPersonelInfo
                 {

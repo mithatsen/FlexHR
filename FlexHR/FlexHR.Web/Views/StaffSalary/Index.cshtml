@@ -28,8 +28,8 @@
                                 <!--begin::Header-->
                                 <div class="card-header py-3">
                                     <div class="card-title align-items-start flex-column">
-                                        <h3 class="card-label font-weight-bolder text-dark">
-                                            <i class="fas fa-wallet text-dark mr-2"></i>Maaş Bilgileri
+                                        <h3 class="card-label font-weight-bolder text-dark" id="salaryPageTitle">
+                                            <i class="fas fa-wallet text-dark mr-2"></i>Yıllık Maaş Bilgileri
                                         </h3>
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Maaş bilgilerini düzenleyin</span>
                                     </div>
@@ -73,6 +73,19 @@
 
                                                 </div>
                                                 <div class="form-group row">
+                                                    <label>Aylık Toplam Çalışma Saati</label>
+                                                    <div class="input-group">
+                                                        <input id="txtTotalWorkingHour" type="text" asp-for="TotalWorkingHour" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Saat Başına Fazla Mesai Ücreti</label>
+                                                    <div class="input-group">
+                                                        <input id="txtOvertimePayPerHour" type="text" asp-for="OvertimePayPerHour" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
                                                     <label>Yemek Ödemesi</label>
                                                     <div class="input-group">
                                                         <input id="txtFoodPayment" type="text" asp-for="FoodPayment" class="form-control form-control-solid form-control-lg">
@@ -82,6 +95,19 @@
                                                     <label>Özel Sağlık Hizmeti</label>
                                                     <div class="input-group">
                                                         <input id="txtPrivateHealthCare" type="text" asp-for="PrivateHealthCare" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-2">   </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label>Periyot</label>
+                                                    <div class="input-group">
+                                                        <select style=" width: 100% !important;" id="Select3" asp-for="PeriodGeneralSubTypeId" class="form-control form-control-solid form-control-lg" onchange="periodOnChange()" asp-items="ViewBag.PeriodList">
+                                                            <option value="">Periyot Seçiniz</option>
+
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -95,18 +121,6 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">   </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group row">
-                                                    <label>Periyot</label>
-                                                    <div class="input-group">
-                                                        <select style=" width: 100% !important;" id="Select3" asp-for="PeriodGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.PeriodList">
-                                                            <option value="">Periyot Seçiniz</option>
-
-                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -162,9 +176,26 @@
     <script>
         $(document).ready(function () {
             $("#tab_11").addClass("active");
+            var id = document.getElementById("Select3").value;
+            $("#Select3 > option").each(function () {
+                if (this.value == id) {
+                    $("#salaryPageTitle").html('<i class="fas fa-wallet text-dark mr-2"></i>' + this.text + ' Maaş Bilgileri');
+                };
+            });
         });
     </script>
-
+    <script>
+        function periodOnChange() {
+            debugger;
+            var id = document.getElementById("Select3").value;
+            $("#Select3 > option").each(function () {
+                if (this.value == id) {
+                    $("#salaryPageTitle").html('<i class="fas fa-wallet text-dark mr-2"></i>' + this.text+' Maaş Bilgileri');
+                };
+            });
+           
+        }
+    </script>
     <script>
         $('#Select1').select2({
             placeholder: 'Seçiniz'
@@ -179,6 +210,7 @@
     </script>
     <script>
         $('input[name="StartDate"]').mask('00.00.0000');
+        $("#txtOvertimePayPerHour").mask('000.000.000.000,00', { reverse: true });
         $("#txtSalaryAmount").mask('000.000.000.000,00', { reverse: true });
         $("#txtFoodPayment").mask('000.000.000.000,00', { reverse: true });
         $("#txtPrivateHealthCare").mask('000.000.000.000,00', { reverse: true });

@@ -82,7 +82,7 @@
                         <span class="svg-icon menu-icon">
                             <i class="fas fa-users"></i>
                         </span>
-                        <span class="menu-text">Çalışanlar</span>
+                        <span class="menu-text">Personeller</span>
 
                     </a>
 
@@ -138,6 +138,30 @@
                     </div>
                 </li>
             }
+            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
+                    <a asp-controller="StaffTracking" asp-action="Index" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-calendar-check"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-text">Personel Takip</span>
+                    </a>
+                </li>
+            }
+            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
+                    <a asp-controller="StaffSalary" asp-action="GetStaffSalaryMonthlyList" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-wallet"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-text">Maaş Listesi</span>
+                    </a>
+                </li>
+            }
             @if ((User.IsInRole("ViewReportSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="menu-item menu-item-submenu @(active=="report"?"menu-item-active menu-item-open":" ") " aria-haspopup="true" data-menu-toggle="hover">
@@ -166,30 +190,8 @@
                     </div>
                 </li>
             }
-            @if ((User.IsInRole("ViewEventPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-            {
-                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
-                    <a asp-controller="Event" asp-action="Index" class="menu-link">
-                        <span class="svg-icon menu-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <span class="menu-text">Etkinlikler</span>
-                    </a>
-                </li>
-            }
-            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-            {
-                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
-                    <a asp-controller="StaffTracking" asp-action="Index" class="menu-link">
-                        <span class="svg-icon menu-icon">
-                            <i class="fas fa-calendar-check"></i>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <span class="menu-text">Personel Takip</span>
-                    </a>
-                </li>
-            }
+
+
             @if ((User.IsInRole("ViewFileOperationSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="menu-item menu-item-submenu  @(active == "fileProcess" ? "menu-item-active menu-item-open" : " ")  @(active == "refectory" ? "menu-item-active menu-item-open" : " ") " aria-haspopup="true" data-menu-toggle="hover">
@@ -234,6 +236,18 @@
                             <i class="fas fa-user-tag"></i>
                         </span>
                         <span class="menu-text">Rol Atama</span>
+                    </a>
+                </li>
+            }
+            @if ((User.IsInRole("ViewEventPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
+                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
+                    <a asp-controller="Event" asp-action="Index" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-text">Etkinlikler</span>
                     </a>
                 </li>
             }
