@@ -113,7 +113,7 @@ namespace FlexHR.Web.Controllers
                     IncomePerShiftHour=salaryInfo.OvertimePayPerHour,
                     TotalWorkingHour = totalWorkingHour.Hours + " sa " + totalWorkingHour.Minutes + " dk ",
                     TotalOvertimeHour = totalOvertimeHour.Hours + " sa " + totalOvertimeHour.Minutes + " dk ",
-                    TotalDeservedSalary= Math.Round((incomePerHour * (totalWorkingHour.Hours + totalWorkingHour.Minutes / 60) + salaryInfo.OvertimePayPerHour * (totalOvertimeHour.Hours + totalWorkingHour.Minutes / 60)??0),2),
+                    TotalDeservedSalary= (decimal)(incomePerHour * (totalWorkingHour.Hours + (decimal)totalWorkingHour.Minutes / 60)) + (decimal)(salaryInfo.OvertimePayPerHour * (totalOvertimeHour.Hours + (decimal)totalOvertimeHour.Minutes / 60)),
                     NetSalary=salaryInfo.Salary
                 });
             }

@@ -54,7 +54,7 @@
                                 <td>@item.TotalOvertimeHour</td>
                                 <td>@item.IncomePerHour</td>
                                 <td>@item.IncomePerShiftHour</td>
-                                <td>@item.TotalDeservedSalary</td>
+                                <td>@Math.Round(item.TotalDeservedSalary??0,2)</td>
                                 <td>@item.NetSalary</td>
                               
                             </tr>
