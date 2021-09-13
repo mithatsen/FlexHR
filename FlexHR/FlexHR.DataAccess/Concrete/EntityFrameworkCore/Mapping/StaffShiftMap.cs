@@ -14,6 +14,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
             entity.Property(e => e.Description).HasMaxLength(500);
             entity.Property(e => e.ShiftHour).IsRequired();
             entity.Property(e => e.ShiftMinute).IsRequired();
+            entity.Property(e => e.WhoApprovedStaffId).IsRequired(false);
 
             entity.Property(e => e.StartDate).HasColumnType("datetime");
 

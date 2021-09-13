@@ -108,7 +108,11 @@ namespace FlexHR.Web.Controllers
         [HttpPost]
         public IActionResult AddStaffLeaveWithAjax(AddStaffLeaveDto model)
         {
-
+            if (model.IsCheckedApprove==true)
+            {
+                model.GeneralStatusGeneralSubTypeId = 97;
+                model.WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId;
+            } 
             _staffLeaveService.Add(_mapper.Map<StaffLeave>(model));
 
             return Json("true");

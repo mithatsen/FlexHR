@@ -20,14 +20,19 @@
                         <!--begin::Card-->
                         <div class="card card-custom card-stretch">
                             <!--begin::Header-->
-                            <!--end::Header-->
-
+                          <!--end::Header-->
+                                                   
                             <div class="container ">
                                 <!--begin::Body-->
                                 <div class="card-body mx-auto">
                                     <div class="row">
                                         <div class="col-md-5">
-
+                                            <div class="form-group row ">
+                                                <label>Süre (Saat) *</label>
+                                                <div class="input-group">
+                                                    <input id="kt_touchspin_28" type="text" class="form-control form-control-lg text-center" value="0" name="ShiftHour" />
+                                                </div>
+                                            </div>
                                             <div class="form-group row ">
                                                 <label>Başlangıç Tarihi *</label>
                                                 <div class="input-group">
@@ -39,22 +44,6 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label>Açıklama *</label>
-                                                <div class="input-group">
-                                                    <textarea type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" id="Description" name="Description" placeholder="Açıklama"></textarea>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-5 ">
-                                            <div class="form-group row ">
-                                                <label>Süre (Saat) *</label>
-                                                <div class="input-group">
-                                                    <input id="kt_touchspin_1" type="text" class="form-control form-control-lg text-center" value="0" name="Duration" placeholder="Toplam" />
                                                 </div>
                                             </div>
                                             @if ((User.IsInRole("CreateRequestAbilityToEveryone") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
@@ -73,6 +62,24 @@
 
                                             }
                                         </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row ">
+                                                <label>Süre (Dakika) *</label>
+                                                <div class="input-group">
+                                                    <input id="kt_touchspin_29" type="text" class="form-control form-control-lg text-center" value="0" name="ShiftMinute" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label>Açıklama *</label>
+                                                <div class="input-group">
+                                                    <textarea type="text" style="height:50px;" class="form-control form-control-lg form-control-solid" id="Description" name="Description" placeholder="Açıklama"></textarea>
+
+                                                </div>
+                                            </div>
+
+                                           
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -84,11 +91,38 @@
 
                     <!--end::Form-->
                 </div>
+                @if ((User.IsInRole("CreateRequestAbilityToEveryone") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <div class="modal-footer justify-content-between">
+                        <div class="form-group row pr-5 mr-5">
+                            <div class="col-md-3 ">
+                                <div class="input-group ">
+                                    <span class="switch switch-success switch-sm">
+                                        <label>
+                                            <input type="checkbox" id="IsCheckedApprove" name="IsCheckedApprove" />
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-9 my-auto"> Onay sürecine dahil edilmeden onaylansın </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="shiftRequestClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                            <button type="button" onclick="shiftRequestClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="modal-footer">
+                        <div>
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                            <button type="button" onclick="shiftRequestClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                        </div>
+                    </div>
+                }
             </form>
         </div>
     </div>
@@ -97,6 +131,29 @@
 <script>
     $('#staffSelect').select2({
         placeholder: 'Personel Seçiniz'
+    });
+</script>
+<script>
+    $('#kt_touchspin_29, #kt_touchspin_2_1').TouchSpin({
+        buttondown_class: 'btn btn-secondary',
+        buttonup_class: 'btn btn-secondary',
+
+        min: 0,
+        max: 60,
+        step: 1,
+        int: 1,
+        boostat: 5,
+        maxboostedstep: 10,
+    });
+    $('#kt_touchspin_28, #kt_touchspin_2_1').TouchSpin({
+        buttondown_class: 'btn btn-secondary',
+        buttonup_class: 'btn btn-secondary',
+
+        min: 0,
+        step: 1,
+        int: 1,
+        boostat: 5,
+        maxboostedstep: 10,
     });
 </script>
 
@@ -118,18 +175,31 @@
 
                 }
             },
-            Duration: {
+            ShiftHour: {
+                validators: {
+                    notEmpty: {
+                        message: 'Saat alanı boş geçilemez',
+                    },
+                    greaterThan: {
+                        min: 0,
+                        message: 'Saat alanı sıfırdan küçük olamaz',
+                    }
+
+                }
+            },
+            ShiftMinute: {
                 validators: {
                     notEmpty: {
                         message: 'Süre alanı boş geçilemez',
                     },
-                    greaterThan: {
-                        min: 1,
-                        message: 'Süre alanı 0 olamaz',
+                    between: {
+                        min: 0,
+                        max: 59,
+                        message: 'Dakika alanı 0 - 60 arasında olmalı'
                     }
 
                 }
-            },          
+            },
             Description: {
                 validators: {
                     notEmpty: {
@@ -161,8 +231,10 @@
                 var formData = {
                     StaffId: staffIdFdd,
                     StartDate: $("#StartDate").val(),
-                    Duration: $("#kt_touchspin_1").val(),
-                    Description: $("#Description").val()
+                    ShiftHour: $("#kt_touchspin_28").val(),
+                    ShiftMinute: $("#kt_touchspin_29").val(),
+                    Description: $("#Description").val(),
+                    IsCheckedApprove: $("#IsCheckedApprove").is(":checked")
                 };
                 console.log(formData);
                 $.ajax({

@@ -17,5 +17,7 @@ namespace FlexHR.DTO.Dtos.StaffShiftDtos
         public bool IsSentForApproval { get; set; }
         public bool IsMailSentToStaff { get; set; }
         public bool IsActive { get; set; }
+        public bool IsCheckedApprove { get; set; }
+        public bool IsPaidApprove { get; set; }
     }
 }

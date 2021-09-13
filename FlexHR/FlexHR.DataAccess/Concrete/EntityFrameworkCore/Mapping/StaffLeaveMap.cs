@@ -18,7 +18,9 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
             entity.Property(e => e.LeaveStartDate).HasColumnType("datetime").IsRequired();
 
             entity.Property(e => e.TotalDay)
-               .IsRequired();
+               .IsRequired(); 
+            entity.Property(e => e.WhoApprovedStaffId)
+               .IsRequired(false);
             
 
             entity.HasOne(d => d.Staff)

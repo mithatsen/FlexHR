@@ -17,6 +17,7 @@ namespace FlexHR.Entity.Concrete
         public string Description { get; set; }
         public decimal Amount { get; set; }
         public DateTime CreationDate { get; set; }
+        public int? WhoApprovedStaffId { get; set; }
         public bool IsPaid { get; set; }
         public bool IsSentForApproval { get; set; }
         public bool IsMailSentToStaff { get; set; }
@@ -25,5 +26,6 @@ namespace FlexHR.Entity.Concrete
 
         public virtual Staff Staff { get; set; }
         public virtual ICollection<Receipt> Receipts { get; set; }
+        public virtual ICollection<TakePayment> TakePayments { get; set; }
     }
 }

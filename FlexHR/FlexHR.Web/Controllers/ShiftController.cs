@@ -18,11 +18,13 @@ namespace FlexHR.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IStaffShiftService _staffShiftService;
         private readonly IStaffService _staffService;
-        public ShiftController(IMapper mapper, IStaffShiftService staffShiftService, IStaffService staffService)
+        private readonly IAppUserService _appUserService;
+        public ShiftController(IMapper mapper, IStaffShiftService staffShiftService, IStaffService staffService, IAppUserService appUserService)
         {
             _mapper = mapper;
             _staffShiftService = staffShiftService;
             _staffService = staffService;
+            _appUserService = appUserService;
         }
         
         [Authorize(Roles = "ViewShiftRequestPage,Manager")]
@@ -59,6 +61,7 @@ namespace FlexHR.Web.Controllers
         {
             var temp=_staffShiftService.GetById(id);
             temp.GeneralStatusGeneralSubTypeId = 97;
+            temp.WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId;
             try
             {
                 _staffShiftService.Update(temp);

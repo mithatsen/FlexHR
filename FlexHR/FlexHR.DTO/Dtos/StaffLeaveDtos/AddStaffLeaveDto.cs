@@ -16,5 +16,7 @@ namespace FlexHR.DTO.Dtos.StaffLeaveDtos
         public bool IsSentForApproval { get; set; } = false;
         public bool IsMailSentToStaff { get; set; } = false;
         public bool IsActive { get; set; } = true;
+        public bool IsCheckedApprove { get; set; }
+        public int? WhoApprovedStaffId { get; set; }
     }
 }

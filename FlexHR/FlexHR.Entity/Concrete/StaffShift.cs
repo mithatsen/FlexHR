@@ -16,6 +16,7 @@ namespace FlexHR.Entity.Concrete
         public int ShiftMinute { get; set; }
         public bool IsSentForApproval { get; set; }
         public bool IsMailSentToStaff { get; set; }
+        public int? WhoApprovedStaffId { get; set; }
         public bool IsActive { get; set; }
 
         public virtual Staff Staff { get; set; }

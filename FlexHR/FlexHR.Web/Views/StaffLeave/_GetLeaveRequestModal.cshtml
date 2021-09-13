@@ -144,10 +144,42 @@
                     <!--end::Form-->
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="leaveRequestClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
-                </div>
+                @if ((User.IsInRole("CreateRequestAbilityToEveryone") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+
+
+                    <div class="modal-footer justify-content-between">
+
+                        <div class="form-group row pr-5 mr-5">
+                            <div class="col-md-3 ">
+                                <div class="input-group ">
+                                    <span class="switch switch-success switch-sm">
+                                        <label>
+                                            <input type="checkbox" id="IsCheckedApprove" name="IsCheckedApprove" />
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-9 my-auto"> Onay sürecine dahil edilmeden onaylansın </div>
+
+                        </div>
+
+                        <div>
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                            <button type="button" onclick="leaveRequestClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="modal-footer">
+                        <div>
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                            <button type="button" onclick="leaveRequestClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                        </div>
+                    </div>
+                }
             </form>
         </div>
     </div>
@@ -245,7 +277,8 @@
                     LeaveEndDate: $("#LeaveEndDate_r").val(),
                     Description: $("#Description").val(),
                     StaffId: $('#staffSelect').val() !== undefined ? $('#staffSelect').val() : $('#staffAutoId').val(),
-                    TotalDay: $("#kt_touchspin_1").val()
+                    TotalDay: $("#kt_touchspin_1").val(),
+                    IsCheckedApprove: $("#IsCheckedApprove").is(":checked")
                 };
 
                 $.ajax({

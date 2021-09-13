@@ -266,9 +266,39 @@
                         <!--end::Form-->
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="fncAddReceipt()" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                <div class="modal-footer justify-content-between">
+                    <div class="form-group row col-md-4">
+                        <div class="col-md-3 ">
+                            <div class="input-group ">
+                                <span class="switch switch-success switch-sm">
+                                    <label>
+                                        <input type="checkbox" id="IsCheckedApprove" name="IsCheckedApprove" />
+                                        <span></span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-9 my-auto"> Onay sürecine dahil edilmeden onaylansın </div>
+
+                    </div>
+                    <div class="form-group row col-md-4">
+                        <div class="col-md-3">
+                            <div class="input-group ">
+                                <span class="switch switch-success switch-sm">
+                                    <label>
+                                        <input type="checkbox" id="IsPaidApprove" name="IsCheckedApprove" />
+                                        <span></span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-9 my-auto"> Ödendi </div>
+
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="button" onclick="fncAddReceipt()" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -484,6 +514,26 @@
                 })
 
         }
+        $('#IsPaidApprove').on('change', function () {
+            debugger;
+            if ($("#IsPaidApprove").is(":checked")) {
+
+                $("#IsCheckedApprove").prop("checked", true)
+            }
+          
+            
+        });
+    
+        $('#IsCheckedApprove').on('change', function () {
+            debugger;
+            if ($("#IsCheckedApprove").is(":checked")==false) {
+
+                $("#IsPaidApprove").prop("checked", false)
+            }
+
+        });
+            
+  
 
         $('input[name="PaymentDate"]').mask('00.00.0000');
 
@@ -521,6 +571,8 @@
                     formdata.append("LgDescription", $('#txtLgDescription').val());
                     formdata.append("CurrencyType", $('#currencyType').val());
                     formdata.append("StaffId", $('#staffId').val());
+                    formdata.append("IsCheckedApprove", $("#IsCheckedApprove").is(":checked"));
+                    formdata.append("IsPaidApprove", $("#IsPaidApprove").is(":checked"));
                     $('#cover-spin').show();
                     $.ajax({
                         url: "/StaffPayment/AddStaffPaymentWithAjax/" + id,

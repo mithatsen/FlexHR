@@ -10,7 +10,8 @@ namespace FlexHR.DTO.Dtos.StaffShiftDtos
         public string NameSurname { get; set; }
         public int StaffId { get; set; }
         public DateTime StartDate { get; set; }
-        public int Duration { get; set; }
+        public int ShiftHour { get; set; }
+        public int ShiftMinute { get; set; }
         public string Description { get; set; }
         public int GeneralStatusGeneralSubTypeId { get; set; }
         public bool IsSentForApproval { get; set; }

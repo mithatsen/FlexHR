@@ -100,6 +100,8 @@ namespace FlexHR.Web.Controllers
                 string currencyType = data["CurrencyType"];
                 string feeType = data["FeeType"];
                 string installment = data["Installment"];
+                bool isCheckedApprove = Convert.ToBoolean(data["IsCheckedApprove"]);
+                bool isPaidApprove = Convert.ToBoolean(data["IsPaidApprove"]);
                 var idddd = Convert.ToInt32(data["staffId"]);
                 if (id == 99)
                 {
@@ -171,10 +173,10 @@ namespace FlexHR.Web.Controllers
                         CreationDate = DateTime.Now,
                         CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
                         Description = LgDescription,
-                        GeneralStatusGeneralSubTypeId = 96,
+                        GeneralStatusGeneralSubTypeId =isCheckedApprove==true?97:96,
                         IsActive = true,
                         IsMailSentToStaff = false,
-                        IsPaid = false,
+                        IsPaid = isPaidApprove==true?true:false,
                         IsSentForApproval = false,
                         PaymentTypeGeneralSubTypeId = id
                     };
@@ -191,10 +193,10 @@ namespace FlexHR.Web.Controllers
                         CreationDate = DateTime.Now,
                         CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
                         Description = SmDescription,
-                        GeneralStatusGeneralSubTypeId = 96,
+                        GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
                         IsActive = true,
                         IsMailSentToStaff = false,
-                        IsPaid = false,
+                        IsPaid = isPaidApprove == true ? true : false,
                         IsSentForApproval = false,
                         PaymentTypeGeneralSubTypeId = id,
                         Installment = installment != null ? Convert.ToInt32(installment) : -1,
@@ -211,10 +213,10 @@ namespace FlexHR.Web.Controllers
                         CreationDate = DateTime.Now,
                         CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
                         Description = SmDescription,
-                        GeneralStatusGeneralSubTypeId = 96,
+                        GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
                         IsActive = true,
                         IsMailSentToStaff = false,
-                        IsPaid = false,
+                        IsPaid = isPaidApprove == true ? true : false,
                         IsSentForApproval = false,
                         PaymentTypeGeneralSubTypeId = id,
                         FeeTypeGeneralSubTypeId = Convert.ToInt32(feeType)

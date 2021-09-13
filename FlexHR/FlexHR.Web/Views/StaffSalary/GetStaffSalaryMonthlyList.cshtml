@@ -1,29 +1,63 @@
-﻿@model List<ListStaffSalaryMonthlyDto>
+﻿@model StaffSalaryMonthlyViewModal
 @{
     ViewData["Title"] = "GetStaffSalaryMonthlyList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!--begin::Entry-->
-<div class="d-flex flex-column-fluid">
-    <!--begin::Container-->
-    <div class="container-fluid">
-        <!--begin::Notice-->
-        <!--end::Notice-->
-        <!--begin::Card-->
-        <div class="card card-custom">
-            <div class="card-header flex-wrap py-5">
-                <div class="card-title">
-                    <i class="fas fa-business-time text-dark mr-2"></i>
-                    <h3 class="card-label">
-                        Kariyer
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
 
-                    </h3>
+}
+<div class="card card-custom">
+
+
+
+    <div class="card card-custom">
+        <div class="card-body  ">
+
+            <!--begin: Datatable-->
+            <div class="tab-content pt-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="text-dark mb-4 font-size-h3"><i class="fas fa-wallet text-dark mr-2"></i>  Maaş Tablosu</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-8 float-right">
+                            <!--begin: Search Form-->
+                            <form asp-controller="StaffSalary" asp-action="GetStaffSalaryMonthlyList" method="post">
+
+                                <div class="row ">
+                                    <div class="col-md-4"></div>
+                                    <div class="input-group d-inline col-md-5">
+                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_79" data-target-input="nearest">
+                                            <input name="dateTime" type="text" class="form-control form-control-lg datetimepicker-input" value="@Model.filterDate.Month.@Model.filterDate.Year" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_79" autocomplete="off" />
+                                            <div class="input-group-append" data-target="#kt_datetimepicker_79" data-toggle="datetimepicker">
+                                                <span class="input-group-text">
+                                                    <i class="ki ki-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-primary--icon d-inline col-md-3" type="submit">
+                                        <span>
+                                            <i class="la la-search"></i>
+                                            <span>Listele</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+
                 </div>
-                <div class="card-toolbar">
-                    <!--begin::Button-->
-                    <!--end::Button-->
-                </div>
+
+
+                <hr />
+
             </div>
             <div class="card-body">
                 <!--begin: Datatable-->
@@ -43,8 +77,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
-                        {                            
+                        @foreach (var item in Model.ListStaffSalaryMonthly)
+                        {
                             <tr>
                                 <td>@item.CardNo</td>
                                 <td>@item.NameSurname</td>
@@ -52,11 +86,11 @@
                                 <td>@item.Department</td>
                                 <td>@item.TotalWorkingHour</td>
                                 <td>@item.TotalOvertimeHour</td>
-                                <td>@item.IncomePerHour</td>
-                                <td>@item.IncomePerShiftHour</td>
-                                <td>@item.TotalDeservedSalary</td>
-                                <td>@item.NetSalary</td>
-                              
+                                <td>@item.IncomePerHour @item.CurrencyTypeName</td>
+                                <td>@item.IncomePerShiftHour @item.CurrencyTypeName</td>
+                                <td>@item.TotalDeservedSalary @item.CurrencyTypeName</td>
+                                <td>@item.NetSalary @item.CurrencyTypeName</td>
+
                             </tr>
 
                         }
@@ -70,3 +104,13 @@
     <!--end::Container-->
 </div>
 <!--end::Entry-->
+@section Scripts{
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
+    <script>
+        $('#kt_datetimepicker_79').datetimepicker({
+            locale: 'tr',
+            format: 'MM.yyyy'
+        });
+    </script>
+}

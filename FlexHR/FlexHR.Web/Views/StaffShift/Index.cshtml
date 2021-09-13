@@ -16,97 +16,97 @@
 <div class="card card-custom">
     @await Component.InvokeAsync("StaffNavbar", new { id = @ViewBag.StaffId })
     <div class="card-body">
-       
-            @*staffLeave*@
-            <div class="tab-content w-100">
-                <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_7">
-                    <!--begin::Entry-->
-                    <div class="d-flex flex-column-fluid">
-                        <!--begin::Container-->
-                        <div class="container-fluid">
-                            <!--begin::Notice-->
-                            <!--end::Notice-->
-                            <!--begin::Card-->
-                            <div class="card card-custom">
-                                <div class="card-header flex-wrap py-5">
-                                    <div class="card-title">
-                                        <i class="fas fa-user-clock text-dark mr-2"></i>
-                                        <h3 class="card-label">
-                                            Mesailer
-                                        </h3>
-                                    </div>
-                                    <div class="card-toolbar">
-                                        <!--begin::Button-->
-                                        @if ((User.IsInRole("AddStaffShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                        {
-                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
-                                                Mesai Kaydı Ekle
-                                            </button>
-                                        }
-                                        <!--end::Button-->
-                                    </div>
 
+        @*staffLeave*@
+        <div class="tab-content w-100">
+            <div class="tab-pane active" role="tabpanel" id="kt_apps_contacts_view_tab_7">
+                <!--begin::Entry-->
+                <div class="d-flex flex-column-fluid">
+                    <!--begin::Container-->
+                    <div class="container-fluid">
+                        <!--begin::Notice-->
+                        <!--end::Notice-->
+                        <!--begin::Card-->
+                        <div class="card card-custom">
+                            <div class="card-header flex-wrap py-5">
+                                <div class="card-title">
+                                    <i class="fas fa-user-clock text-dark mr-2"></i>
+                                    <h3 class="card-label">
+                                        Mesailer
+                                    </h3>
                                 </div>
-                                <div class="card-body">
-                                    <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
-                                        <thead>
+                                <div class="card-toolbar">
+                                    <!--begin::Button-->
+                                    @if ((User.IsInRole("AddStaffShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                    {
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffShiftAddModal">
+                                            Mesai Kaydı Ekle
+                                        </button>
+                                    }
+                                    <!--end::Button-->
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <!--begin: Datatable-->
+                                <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_2">
+                                    <thead>
+                                        <tr>
+                                            <th width="15%">Başlangıç</th>
+                                            <th width="10%">Süre</th>
+                                            <th width="55%">Açıklama</th>
+                                            <th width="10%">Durum</th>
+                                            @if ((User.IsInRole("UpdateDeleteShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <th width="10%">İşlemler</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
                                             <tr>
-                                                <th width="15%">Başlangıç</th>
-                                                <th width="10%">Süre</th>
-                                                <th width="55%">Açıklama</th>
-                                                <th width="10%">Durum</th>
+
+                                                <td>@item.StartDate.ToString("g")</td>
+
+                                                <td>@item.ShiftHour Saat @item.ShiftMinute Dakika</td>
+
+                                                <td>@item.Description</td>
+                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
+
                                                 @if ((User.IsInRole("UpdateDeleteShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                                 {
-                                                    <th width="10%">İşlemler</th>
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffShift(@item.StaffShiftId)" title="Sil">
+
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+
+                                                    </td>
                                                 }
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model)
-                                            {
-                                                <tr>
 
-                                                    <td>@item.StartDate.ToString("g")</td>
-
-                                                    <td>@item.ShiftHour Saat @item.ShiftMinute Dakika</td>
-
-                                                    <td>@item.Description</td>
-                                                    <td>@item.GeneralStatusGeneralSubTypeId</td>
-
-                                                    @if ((User.IsInRole("UpdateDeleteShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                                    {
-                                                        <td>
-                                                            <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
-                                                                <i class="la la-edit text-warning"></i>
-                                                            </a>
-                                                            <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffShift(@item.StaffShiftId)" title="Sil">
-
-                                                                <i class="la la-trash text-danger"></i>
-                                                            </a>
-
-                                                        </td>
-                                                    }
-                                                </tr>
-
-                                            }
-                                        </tbody>
-                                    </table>
-                                    <!--end: Datatable-->
-                                </div>
+                                        }
+                                    </tbody>
+                                </table>
+                                <!--end: Datatable-->
                             </div>
-                            <!--end::Card-->
                         </div>
-                        <!--end::Container-->
+                        <!--end::Card-->
                     </div>
-                    <!--end::Entry-->
-
+                    <!--end::Container-->
                 </div>
-            </div>
+                <!--end::Entry-->
 
+            </div>
         </div>
 
     </div>
+
+</div>
 
 
 
@@ -167,7 +167,7 @@
                                                     <input id="kt_touchspin_123" type="text" class="form-control form-control-lg text-center" value="0" name="ShiftMinute" />
                                                 </div>
                                             </div>
-                                        
+
                                             <div class="form-group row">
                                                 <label>Açıklama *</label>
                                                 <div class="input-group">
@@ -188,9 +188,25 @@
                     <!--end::Form-->
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" onclick="shiftClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                <div class="modal-footer justify-content-between">
+                    <div class="form-group row pr-5 mr-5">
+                        <div class="col-md-3 ">
+                            <div class="input-group ">
+                                <span class="switch switch-success switch-sm">
+                                    <label>
+                                        <input type="checkbox" id="IsCheckedApprove" name="IsCheckedApprove" />
+                                        <span></span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-9 my-auto"> Onay sürecine dahil edilmeden onaylansın </div>
+
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                        <button type="button" onclick="shiftClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -221,12 +237,12 @@
             }
         });
 
-        
+
     </script>
     <script>
         $('input[name="StartDate"]').mask('00.00.0000 00:00');
     </script>
-    
+
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js"></script>
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>

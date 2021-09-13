@@ -73,7 +73,8 @@ function shiftClickFunction() {
                 StartDate: $("#StartDate").val(),
                 ShiftHour: $("#kt_touchspin_1").val(),
                 ShiftMinute: $("#kt_touchspin_123").val(),
-                Description: $("#Description").val()
+                Description: $("#Description").val(),
+                IsCheckedApprove: $("#IsCheckedApprove").is(":checked")
             };
             console.log(formData);
             $.ajax({

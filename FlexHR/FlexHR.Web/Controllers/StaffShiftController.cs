@@ -23,7 +23,7 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffService _staffService;
         private readonly IAppUserService _appUserService;
         public StaffShiftController(IStaffShiftService staffShiftService, IStaffService staffService, IMapper mapper, IGeneralSubTypeService generalSubTypeService,
-            UserManager<AppUser> userManager, IAppUserService appUserService) :base(userManager)
+            UserManager<AppUser> userManager, IAppUserService appUserService) : base(userManager)
         {
             _staffShiftService = staffShiftService;
             _staffService = staffService;
@@ -60,10 +60,15 @@ namespace FlexHR.Web.Controllers
 
         }
         [HttpPost]
-        public IActionResult AddStaffShiftWithAjax(AddStaffShiftDto formData)
+        public async Task<IActionResult> AddStaffShiftWithAjax(AddStaffShiftDto formData)
         {
             if (ModelState.IsValid)
             {
+                if (formData.IsCheckedApprove == true)
+                {
+                    formData.GeneralStatusGeneralSubTypeId = 97;
+                    formData.WhoApprovedStaffId = _appUserService.Get(x=>x.UserName==User.Identity.Name).FirstOrDefault().StaffId;
+                }
                 formData.IsActive = true;
                 _staffShiftService.Add(_mapper.Map<StaffShift>(formData));
 

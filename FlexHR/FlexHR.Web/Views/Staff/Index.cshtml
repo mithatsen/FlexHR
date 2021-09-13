@@ -42,7 +42,7 @@
                 <li class="nav-item mr-3">
                     <a class=" nav-link   mr-2" data-toggle="tab" href="#kt_apps_contacts_view_tab_3" aria-haspopup="true" aria-expanded="false">
                         <span class="svg-icon svg-icon-md mr-0">
-                            <i class="fas fa-th-large" style="font-size:25px"></i>
+                            <i class="fas fa-2x fa-th-large" style="font-size:25px"></i>
                             <!--end::Svg Icon-->
                         </span>
                     </a>
@@ -229,17 +229,17 @@
                                 <!--begin::Body-->
                                 <div class="card-body mx-auto">
                                     <div class="row">
-                                        <div class="col-md-6 ">
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label ">Ad Soyad *</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row ">
+                                                <label>Ad Soyad *</label>
+                                                <div class="input-group">
                                                     <input name="NameSurname" id="NameSurname" class="form-control form-control-lg form-control-solid" type="text" placeholder="Ad Soyad" />
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (Kişisel) *</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label>E-Posta (Kişisel) *</label>
+                                                <div class="input-group">
                                                     <div class="input-group input-group-lg input-group-solid">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">
@@ -250,9 +250,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">E-Posta (İş)</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label>E-Posta (İş)</label>
+                                                <div class="input-group">
                                                     <div class="input-group input-group-lg input-group-solid">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">
@@ -265,29 +265,30 @@
                                             </div>
 
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Sözleşme Türü *</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label>Sözleşme Türü *</label>
+                                                <div class="input-group">
                                                     <select id="ContractTypeSelect" name="ContractTypeGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.ContractTypes">
                                                         <option value="">Seçiniz</option>
 
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Personel No *</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label>Personel No *</label>
+                                                <div class="input-group">
                                                     <div class="input-group input-group-lg input-group-solid">
                                                         <input type="text" name="PersonalNo" id="PersonalNo" class="form-control form-control-lg form-control-solid" placeholder="Personel No" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Telefon (Kişisel) *</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label>Telefon (Kişisel) *</label>
+                                                <div class="input-group">
                                                     <div class="input-group input-group-lg input-group-solid">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">
@@ -300,9 +301,9 @@
 
                                                 </div>
                                             </div>
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Telefon (İş) </label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label>Telefon (İş) </label>
+                                                <div class="input-group">
                                                     <div class="input-group input-group-lg input-group-solid">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">
@@ -315,9 +316,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label ">İşe Başlama Tarihi *</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label>İşe Başlama Tarihi *</label>
+                                                <div class="input-group">
                                                     <div class="input-group date" id="kt_datetimepicker_7_1" data-target-input="nearest">
                                                         <input name="JobJoinDate" id="JobJoinDate" type="text" class="form-control form-control-lg form-control-solid datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_1" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_7_1" data-toggle="datetimepicker">
@@ -329,9 +330,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label id="jobFinishDateLbl" class="col-xl-4 col-lg-3 col-form-label text-muted ">Sözleşme Bitiş Tarihi</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row ">
+                                                <label id="jobFinishDateLbl" class=" text-muted ">Sözleşme Bitiş Tarihi</label>
+                                                <div class="input-group">
                                                     <div class="input-group date" id="kt_datetimepicker_7_2" data-target-input="nearest">
                                                         <input disabled onkeydown="event.preventDefault()" id="JobFinishDate" name="JobFinishDate" type="text" class="form-control form-control-lg form-control-solid datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_7_2" />
                                                         <div id="calenderClick" class="input-group-append" data-target="#kt_datetimepicker_7_2" data-toggle="datetimepicker">
@@ -343,40 +344,43 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row justify-content-center">
-                                                <label class="col-xl-4 col-lg-3 col-form-label pb-0 mb-0">Sistemi Kullanacak mı ?</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <span class="switch switch-primary">
-                                                        <label>
-                                                            <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="1" />
-                                                            <span></span>
-                                                        </label>
-                                                    </span>
+                                            <div class="form-group row ">
+                                                <div class="col-md-8 pl-0"> <label class=" col-form-label pb-0 mb-0">Sistemi Kullanacak mı ?</label></div>
+                                                <div class="col-md-4 ">
+                                                    <div class="input-group justify-content-end">
+                                                        <span class="switch switch-primary">
+                                                            <label>
+                                                                <input type="checkbox" id="WillUseSystem" name="WillUseSystem" value="1" />
+                                                                <span></span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
 
-                                        <div class="col-md-6">
-                                            <div class="form-group row justify-content-center" hidden id="dvUserName">
-                                                <label class="col-xl-4 col-lg-3 col-form-label ">Kullanıcı Adı</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                        <div class="col-md-5">
+                                            <div class="form-group row " hidden id="dvUserName">
+                                                <label>Kullanıcı Adı *</label>
+                                                <div class="input-group">
                                                     <input name="UserNameAddStaff" id="UserName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Kullanıcı Adı" />
                                                 </div>
                                             </div>
-                                            <div class="form-group row justify-content-center" hidden id="dvAccessType">
-                                                <label class="col-xl-4 col-lg-3 col-form-label">Erişim Türü *</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                            <div class="form-group row " hidden id="dvAccessType">
+                                                <label>Erişim Türü </label>
+                                                <div class="input-group">
                                                     <select class="form-control form-control-solid form-control-lg" name="RoleId" id="RoleId" asp-items="ViewBag.Roles">
                                                         <option value="">Seçiniz</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row justify-content-center" hidden id="dvPassword">
-                                                <label class="col-xl-4 col-lg-3 col-form-label ">Şifre</label>
-                                                <div class="col-lg-9 col-xl-6">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row " hidden id="dvPassword">
+                                                <label>Şifre *</label>
+                                                <div class="input-group">
                                                     <input name="PasswordAddStaff" id="Password" class="form-control form-control-lg form-control-solid" type="text" placeholder="Şifre" />
                                                 </div>
                                             </div>
@@ -384,8 +388,8 @@
 
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="form-group row justify-content-center" hidden id="dvRoles">
-                                                <label class="col-xl-2 col-lg-2 col-form-label ">Ekran Yetkileri</label>
+                                            <div class="form-group row " hidden id="dvRoles">
+                                                <label>Ekran Yetkileri</label>
                                                 <div class="col-lg-9 col-xl-9">
                                                     <select class="form-control select2" id="pageRoles" name="pageRoles" multiple="multiple" style="min-width:100px !important" asp-items="ViewBag.PageRoles">
                                                     </select>
@@ -472,15 +476,15 @@
                         var output;
                         if (stringSplitted[0] != "-") {
                             output = `
-                                                                                                                    <div class="d-flex align-items-center">
-                                                                                                                        <div class="symbol symbol-50 flex-shrink-0">
-                                                                                                                            <img src="/img/` + stringSplitted[0] + `" alt="photo">
-                                                                                                                        </div>
-                                                                                                                        <div class="ml-3">
-                                                                                                                             <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
-                                                                                                                             <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
-                                                                                                                        </div>
-                                                                                                                    </div>`;
+                                                                                                                        <div class="d-flex align-items-center">
+                                                                                                                            <div class="symbol symbol-50 flex-shrink-0">
+                                                                                                                                <img src="/img/` + stringSplitted[0] + `" alt="photo">
+                                                                                                                            </div>
+                                                                                                                            <div class="ml-3">
+                                                                                                                                 <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
+                                                                                                                                 <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
+                                                                                                                            </div>
+                                                                                                                        </div>`;
                         }
 
                         else {
@@ -497,15 +501,15 @@
                             var state = states[stateNo];
 
                             output = `
-                                                                                                                    <div class="d-flex align-items-center">
-                                                                                                                        <div class="symbol symbol-50 symbol-light-` + state + `" flex-shrink-0">
-                                                                                                                            <div class="symbol-label font-size-h5">` + stringSplitted[2].substring(0, 1) + `</div>
-                                                                                                                        </div>
-                                                                                                                        <div class="ml-3">
-                                                                                                                           <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
-                                                                                                                             <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
-                                                                                                                        </div>
-                                                                                                                    </div>`;
+                                                                                                                        <div class="d-flex align-items-center">
+                                                                                                                            <div class="symbol symbol-50 symbol-light-` + state + `" flex-shrink-0">
+                                                                                                                                <div class="symbol-label font-size-h5">` + stringSplitted[2].substring(0, 1) + `</div>
+                                                                                                                            </div>
+                                                                                                                            <div class="ml-3">
+                                                                                                                               <a href="StaffGeneral/Index/` + stringSplitted[3] + `" class=" text-hover-primary text-dark-75 font-weight-bold line-height-sm d-block pb-2">` + stringSplitted[2] + `</a>
+                                                                                                                                 <span class="text-muted font-weight-bold line-height-sm d-block pb-2">`+ stringSplitted[1] + `</span>
+                                                                                                                            </div>
+                                                                                                                        </div>`;
                         }
 
                         return output;

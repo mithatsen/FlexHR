@@ -21,6 +21,7 @@ namespace FlexHR.DTO.Dtos.StaffLeaveDtos
         public string StatusType { get; set; }
         public string LeaveType { get; set; }
         public int TotalDay { get; set; }
+        public bool IsCheckedApprove { get; set; }
 
     }
 }

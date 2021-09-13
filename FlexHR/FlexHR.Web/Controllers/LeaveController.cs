@@ -25,8 +25,9 @@ namespace FlexHR.Web.Controllers
         private readonly ILeaveTypeService _leaveTypeService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
+        private readonly IAppUserService _appUserService;
         public LeaveController(IStaffLeaveService staffLeaveService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService,
-            IStaffCareerService staffCareerService, IStaffService staffService, IStaffPersonelInfoService personelInfoService, ICompanyService companyService,
+            IStaffCareerService staffCareerService, IStaffService staffService, IStaffPersonelInfoService personelInfoService, ICompanyService companyService, IAppUserService appUserService,
              ILeaveRuleService leaveRuleService)
         {
             _companyService = companyService;
@@ -38,6 +39,7 @@ namespace FlexHR.Web.Controllers
             _mapper = mapper;
             _leaveTypeService = leaveTypeService;
             _leaveRuleService = leaveRuleService;
+            _appUserService = appUserService;
         }
         [Authorize(Roles = "ViewLeaveRequestPage,Manager")]
         public IActionResult Index()
@@ -74,6 +76,7 @@ namespace FlexHR.Web.Controllers
         {
             var temp = _staffLeaveService.GetById(id);
             temp.GeneralStatusGeneralSubTypeId = 97;
+            temp.WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId;
             try
             {
                 _staffLeaveService.Update(temp);

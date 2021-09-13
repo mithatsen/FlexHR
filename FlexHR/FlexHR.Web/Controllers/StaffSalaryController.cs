@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffSalaryDtos;
+using FlexHR.DTO.ViewModels;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using FlexHR.Web.BaseControllers;
@@ -22,12 +23,17 @@ namespace FlexHR.Web.Controllers
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IStaffSalaryService _staffSalaryService;
         private readonly IStaffService _staffService;
-        public StaffSalaryController(IMapper mapper, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager, IStaffService staffService, IStaffSalaryService staffSalaryService) : base(userManager)
+        private readonly ICompanyBranchService _companyBranchService;
+        private readonly IStaffCareerService _staffCareerService;
+
+        public StaffSalaryController(IMapper mapper, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager, IStaffService staffService, IStaffSalaryService staffSalaryService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService) : base(userManager)
         {
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _staffService = staffService;
             _staffSalaryService = staffSalaryService;
+            _companyBranchService = companyBranchService;
+            _staffCareerService = staffCareerService;
         }
         [Authorize(Roles = "YeniRol,Manager")]
         public async Task<IActionResult> Index(int id)
@@ -65,10 +71,11 @@ namespace FlexHR.Web.Controllers
             }
         }
         [Authorize(Roles = "YeniRol,Manager")]
-        public async Task<IActionResult> GetStaffSalaryMonthlyList()
+        public IActionResult GetStaffSalaryMonthlyList(DateTime dateTime)
         {
-            var staffs = _staffService.Get(x => x.IsActive == true);
-            var result = _staffSalaryService.GetStaffSalaryMonthly(DateTime.Now);
+            DateTime date = dateTime.Year != 0001 ? dateTime : DateTime.Now;
+            var staffs = _staffService.Get(x => x.IsActive == true,null,"StaffCareer");
+            var result = _staffSalaryService.GetStaffSalaryMonthly(date);
             List<ListStaffSalaryMonthlyDto> models = new List<ListStaffSalaryMonthlyDto>();
             foreach (var item in staffs)
             {
@@ -77,15 +84,16 @@ namespace FlexHR.Web.Controllers
                 var trackingList = result.Where(x => Convert.ToInt32(x.CardNo) == item.PersonalNo).ToList();
                 TimeSpan totalWorkingHour = new TimeSpan(0, 0, 0, 0);
                 TimeSpan totalOvertimeHour = new TimeSpan(0, 0, 0, 0);
-                var department = "";
-                var branch = "";
+                var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).FirstOrDefault();
+                var department = item.StaffCareer.Count > 0?  _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId).ToString():"";
+                var branch = item.StaffCareer.Count>0 ? careerResult.CompanyBranch.BranchName:"";
                 if (trackingList.Count != 0)
                 {
 
                     foreach (var personal in trackingList)
                     {
-                        department = personal.Department;
-                        branch = personal.Branch;
+                        department = personal.Department ;
+                        branch = personal.Branch ;
                         var time = (Convert.ToDateTime(personal.CkeckoutTime) - Convert.ToDateTime(personal.EntryTime));
 
                         if (time.CompareTo(TimeSpan.Zero) < 0)
@@ -114,11 +122,12 @@ namespace FlexHR.Web.Controllers
                     TotalWorkingHour = totalWorkingHour.Hours + " sa " + totalWorkingHour.Minutes + " dk ",
                     TotalOvertimeHour = totalOvertimeHour.Hours + " sa " + totalOvertimeHour.Minutes + " dk ",
                     TotalDeservedSalary= Math.Round((incomePerHour * (totalWorkingHour.Hours + totalWorkingHour.Minutes / 60) + salaryInfo.OvertimePayPerHour * (totalOvertimeHour.Hours + totalWorkingHour.Minutes / 60)??0),2),
-                    NetSalary=salaryInfo.Salary
+                    NetSalary=salaryInfo.Salary,
+                    CurrencyTypeName= _generalSubTypeService.GetDescriptionByGeneralSubTypeId(salaryInfo.CurrencyGeneralSubTypeId)
                 });
             }
-
-            return View(models);
+            StaffSalaryMonthlyViewModal listModel = new StaffSalaryMonthlyViewModal { filterDate = date, ListStaffSalaryMonthly = models };
+            return View(listModel);
         }
     }
 

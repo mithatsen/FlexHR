@@ -16,6 +16,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
             entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
             entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.WhoApprovedStaffId).IsRequired(false);
 
             entity.Property(e => e.PaymentDate).HasColumnType("datetime");
 
