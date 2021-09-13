@@ -86,11 +86,19 @@
                                 <td>@item.Department</td>
                                 <td>@item.TotalWorkingHour</td>
                                 <td>@item.TotalOvertimeHour</td>
+<<<<<<< HEAD
                                 <td>@item.IncomePerHour @item.CurrencyTypeName</td>
                                 <td>@item.IncomePerShiftHour @item.CurrencyTypeName</td>
                                 <td>@item.TotalDeservedSalary @item.CurrencyTypeName</td>
                                 <td>@item.NetSalary @item.CurrencyTypeName</td>
 
+=======
+                                <td>@item.IncomePerHour</td>
+                                <td>@item.IncomePerShiftHour</td>
+                                <td>@Math.Round(item.TotalDeservedSalary??0,2)</td>
+                                <td>@item.NetSalary</td>
+                              
+>>>>>>> 690af50837d30d96f46c2c47a3f991a5f7904c62
                             </tr>
 
                         }

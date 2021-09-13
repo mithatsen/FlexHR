@@ -121,9 +121,14 @@ namespace FlexHR.Web.Controllers
                     IncomePerShiftHour=salaryInfo.OvertimePayPerHour,
                     TotalWorkingHour = totalWorkingHour.Hours + " sa " + totalWorkingHour.Minutes + " dk ",
                     TotalOvertimeHour = totalOvertimeHour.Hours + " sa " + totalOvertimeHour.Minutes + " dk ",
+<<<<<<< HEAD
                     TotalDeservedSalary= Math.Round((incomePerHour * (totalWorkingHour.Hours + totalWorkingHour.Minutes / 60) + salaryInfo.OvertimePayPerHour * (totalOvertimeHour.Hours + totalWorkingHour.Minutes / 60)??0),2),
                     NetSalary=salaryInfo.Salary,
                     CurrencyTypeName= _generalSubTypeService.GetDescriptionByGeneralSubTypeId(salaryInfo.CurrencyGeneralSubTypeId)
+=======
+                    TotalDeservedSalary= (decimal)(incomePerHour * (totalWorkingHour.Hours + (decimal)totalWorkingHour.Minutes / 60)) + (decimal)(salaryInfo.OvertimePayPerHour * (totalOvertimeHour.Hours + (decimal)totalOvertimeHour.Minutes / 60)),
+                    NetSalary=salaryInfo.Salary
+>>>>>>> 690af50837d30d96f46c2c47a3f991a5f7904c62
                 });
             }
             StaffSalaryMonthlyViewModal listModel = new StaffSalaryMonthlyViewModal { filterDate = date, ListStaffSalaryMonthly = models };
