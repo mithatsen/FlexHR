@@ -45,7 +45,7 @@ namespace FlexHR.Web.Controllers
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.Leave;
-            var approvedLeaves = _mapper.Map<List<ListStaffLeaveWithUserActiveInfoDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null, "Staff,LeaveType").ToList());
+            var approvedLeaves = _mapper.Map<List<ListStaffLeaveWithUserActiveInfoDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive == true, null, "Staff,LeaveType").ToList());
             var pendingApprovalLeaves = _mapper.Map<List<ListStaffLeaveWithUserActiveInfoDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff,LeaveType").ToList());
             var rejectedLeaves = _mapper.Map<List<ListStaffLeaveWithUserActiveInfoDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff,LeaveType").ToList());
             foreach (var item in approvedLeaves)
@@ -109,11 +109,11 @@ namespace FlexHR.Web.Controllers
             TempData["Active"] = TempdataInfo.Report;
 
             List<ListLeaveInfoAllStaffDto> models = new List<ListLeaveInfoAllStaffDto>();
-            var staffs = _staffService.GetAll();
+            var staffs = _staffService.Get(x => x.IsActive == true, null, "StaffPersonalInfo");
 
             foreach (var item in staffs)
             {
-                var totalDayDeserved = CalculateTotalLeaveAmountDeservedBySeniority(item.JobJoinDate);
+                var totalDayDeserved = CalculateTotalLeaveAmountDeservedBySeniority(item.JobJoinDate, item.StaffPersonelInfo.FirstOrDefault().BirthDate);
                 var totalDayUsed = _staffLeaveService.Get(p => p.StaffId == item.StaffId && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.LeaveTypeId == 14).Sum(p => p.TotalDay);
                 var staffCareer = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).FirstOrDefault();
                 var staffPersonel = _personelInfoService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null).FirstOrDefault();
@@ -121,11 +121,11 @@ namespace FlexHR.Web.Controllers
                 {
                     StaffId = item.StaffId,
                     NameSurname = item.NameSurname,
-                    IdNumber = staffPersonel != null ? staffPersonel.IdNumber :"-",
-                    CompanyName = staffCareer!=null ? _companyService.GetCompanyNameByCompanyId(staffCareer.CompanyId) : "-",
-                    CompanyBranchName = (staffCareer!=null)?( staffCareer.CompanyBranch != null ? staffCareer.CompanyBranch.BranchName : "-"): "-",
+                    IdNumber = staffPersonel != null ? staffPersonel.IdNumber : "-",
+                    CompanyName = staffCareer != null ? _companyService.GetCompanyNameByCompanyId(staffCareer.CompanyId) : "-",
+                    CompanyBranchName = (staffCareer != null) ? (staffCareer.CompanyBranch != null ? staffCareer.CompanyBranch.BranchName : "-") : "-",
                     DepartmantName = staffCareer != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(staffCareer.DepartmantGeneralSubTypeId) : "-",
-                    TitleName = staffCareer != null ?  _generalSubTypeService.GetDescriptionByGeneralSubTypeId(staffCareer.TitleGeneralSubTypeId) : "-",
+                    TitleName = staffCareer != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(staffCareer.TitleGeneralSubTypeId) : "-",
                     JobStartDate = item.JobJoinDate,
                     TotalDayDeserved = totalDayDeserved,
                     TotalDayUsed = totalDayUsed,
@@ -147,7 +147,7 @@ namespace FlexHR.Web.Controllers
             {
                 var totalDayUsed = _staffLeaveService.Get(p => p.StaffId == item.StaffId && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.LeaveTypeId == 14).Sum(p => p.TotalDay);
                 var staffPersonel = _personelInfoService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null).FirstOrDefault();
-                var staffLeaves = _staffLeaveService.Get(x => x.IsActive == true && x.StaffId==item.StaffId && x.LeaveStartDate.Year == date.Year && x.LeaveStartDate.Month==date.Month,null,"LeaveType" );
+                var staffLeaves = _staffLeaveService.Get(x => x.IsActive == true && x.StaffId == item.StaffId && x.LeaveStartDate.Year == date.Year && x.LeaveStartDate.Month == date.Month, null, "LeaveType");
                 ViewBag.Filter = date.ToString("Y");
                 foreach (var item2 in staffLeaves)
                 {
@@ -157,15 +157,15 @@ namespace FlexHR.Web.Controllers
                         NameSurname = item.NameSurname,
                         IdNumber = staffPersonel.IdNumber,
                         Description = item2.Description,
-                        FinishDate=item2.LeaveEndDate,
-                        StartDate=item2.LeaveStartDate,
-                        LeaveType=item2.LeaveType.Name,
-                        GeneralStatusId=item2.GeneralStatusGeneralSubTypeId,
-                        TotalDay=item2.TotalDay
+                        FinishDate = item2.LeaveEndDate,
+                        StartDate = item2.LeaveStartDate,
+                        LeaveType = item2.LeaveType.Name,
+                        GeneralStatusId = item2.GeneralStatusGeneralSubTypeId,
+                        TotalDay = item2.TotalDay
                     };
                     models.Add(model);
                 }
-                
+
             }
             return View(models);
         }
@@ -176,7 +176,7 @@ namespace FlexHR.Web.Controllers
         }
 
 
-        public int CalculateTotalLeaveAmountDeservedBySeniority(DateTime startDate)
+        public int CalculateTotalLeaveAmountDeservedBySeniority(DateTime startDate, DateTime birthDate)
         {
             var models = _leaveRuleService.GetAll().OrderBy(p => p.SeniorityYear);
             var seniorityLevel = (DateTime.Now - startDate).Days / 365;
@@ -187,17 +187,32 @@ namespace FlexHR.Web.Controllers
             {
                 if (seniorityLevel > item.SeniorityYear)
                 {
-                    totalDayDeserved += (item.SeniorityYear - oldCount) * leaveAmount;
+                    var age = ((DateTime.Now - birthDate).Days) / 365;
+                    var isOlderFifty = ((DateTime.Now - birthDate).Days) / 365 >= 50;
+
+                    if ((age-50  > seniorityLevel - item.SeniorityYear) && totalDayDeserved < 20)   //işe başlama yaşı 50 
+                    {
+                        totalDayDeserved += (50 - (age - seniorityLevel)) * 20;
+                        totalDayDeserved += item.SeniorityYear - (50 - (age - seniorityLevel)) * leaveAmount;
+                    }
+                    else
+                    {
+                        totalDayDeserved += (item.SeniorityYear - oldCount) * leaveAmount;
+
+                    }
+                    leaveAmount += item.AditionalLeaveAmount;
+                    oldCount = item.SeniorityYear;
+
                 }
                 else
                 {
+
                     totalDayDeserved += (seniorityLevel - oldCount) * leaveAmount;
                     leaveAmount += item.AditionalLeaveAmount;
                     oldCount = item.SeniorityYear;
                     break;
                 }
-                leaveAmount += item.AditionalLeaveAmount;
-                oldCount = item.SeniorityYear;
+
 
             }
             if (seniorityLevel - oldCount > 0)
