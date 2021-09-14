@@ -19,12 +19,14 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffService _staffService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
-        public PaymentController(IGeneralSubTypeService generalSubTypeService, IMapper mapper, IStaffPaymentService staffPaymentService, IStaffService staffService)
+        private readonly IAppUserService _appUserService;
+        public PaymentController(IGeneralSubTypeService generalSubTypeService, IMapper mapper, IStaffPaymentService staffPaymentService, IStaffService staffService, IAppUserService appUserService)
         {
             _staffService = staffService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _staffPaymentService = staffPaymentService;
+            _appUserService = appUserService;
         }
         [Authorize(Roles = "ViewPaymentRequestPage,Manager")]
         public IActionResult Index()
@@ -66,6 +68,7 @@ namespace FlexHR.Web.Controllers
         {
             var temp = _staffPaymentService.GetById(id);
             temp.GeneralStatusGeneralSubTypeId = 97;
+            temp.WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId;
             try
             {
                 _staffPaymentService.Update(temp);

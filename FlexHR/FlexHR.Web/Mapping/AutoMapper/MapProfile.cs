@@ -76,6 +76,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<StaffPayment, ListStaffPaymentDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffPayment, ListStaffPaymentWithUserActiveInfoDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffPayment, ListStaffPaymentOnDashboardDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
+            CreateMap<StaffPayment, ListPaymentForTakePaymentDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
 
             #endregion
             #region StaffSalary
