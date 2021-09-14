@@ -32,7 +32,7 @@ namespace FlexHR.Web.Controllers
         private readonly IAppUserService _appUserService;
         public StaffPaymentController(IStaffPaymentService staffPaymentService, IStaffService staffService, IMapper mapper,
             IGeneralSubTypeService generalSubTypeService, IConfiguration configuration, IReceiptService receiptService,
-             IAppUserService appUserService, UserManager<AppUser> userManager):base(userManager)
+             IAppUserService appUserService, UserManager<AppUser> userManager) : base(userManager)
         {
             _staffPaymentService = staffPaymentService;
             _mapper = mapper;
@@ -156,7 +156,7 @@ namespace FlexHR.Web.Controllers
                                 Name = temp[0],
                                 Vat = Convert.ToDecimal(temp[1]),
                                 Amount = decimal.Parse(temp[2].Replace(".", ",")),
-                                
+
                                 FileName = "",
                                 FileFullPath = "",
                                 IsActive = true
@@ -164,64 +164,140 @@ namespace FlexHR.Web.Controllers
                             receipts.Add(receipt);
                         }
                     }
-                    var x = new StaffPayment
+
+                    if (isCheckedApprove == true)
                     {
-                        Receipts = receipts,
-                        StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = decimal.Parse(amount.Replace(".", ",")),
-                        PaymentDate = Convert.ToDateTime(date),
-                        CreationDate = DateTime.Now,
-                        CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
-                        Description = LgDescription,
-                        GeneralStatusGeneralSubTypeId =isCheckedApprove==true?97:96,
-                        IsActive = true,
-                        IsMailSentToStaff = false,
-                        IsPaid = isPaidApprove==true?true:false,
-                        IsSentForApproval = false,
-                        PaymentTypeGeneralSubTypeId = id
-                    };
-                    _staffPaymentService.Add(x);
+                        var x = new StaffPayment
+                        {
+                            Receipts = receipts,
+                            StaffId = Convert.ToInt32(data["staffId"]),
+                            Amount = decimal.Parse(amount.Replace(".", ",")),
+                            PaymentDate = Convert.ToDateTime(date),
+                            CreationDate = DateTime.Now,
+                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                            Description = LgDescription,
+                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                            IsActive = true,
+                            IsMailSentToStaff = false,
+                            IsPaid = isPaidApprove == true ? true : false,
+                            IsSentForApproval = false,
+                            PaymentTypeGeneralSubTypeId = id,
+                            WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
+                        };
+                        _staffPaymentService.Add(x);
+                    }
+                    else
+                    {
+                        var x = new StaffPayment
+                        {
+                            Receipts = receipts,
+                            StaffId = Convert.ToInt32(data["staffId"]),
+                            Amount = decimal.Parse(amount.Replace(".", ",")),
+                            PaymentDate = Convert.ToDateTime(date),
+                            CreationDate = DateTime.Now,
+                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                            Description = LgDescription,
+                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                            IsActive = true,
+                            IsMailSentToStaff = false,
+                            IsPaid = isPaidApprove == true ? true : false,
+                            IsSentForApproval = false,
+                            PaymentTypeGeneralSubTypeId = id,
+                        };
+                        _staffPaymentService.Add(x);
+                    }
+
+
 
                 }
                 else if (id == 100 || id == 103)
                 {
-                    var m = new StaffPayment
+                    if (isCheckedApprove == true)
                     {
-                        StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = decimal.Parse(amount.Replace(".", ",")),
-                        PaymentDate = Convert.ToDateTime(date),
-                        CreationDate = DateTime.Now,
-                        CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
-                        Description = SmDescription,
-                        GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
-                        IsActive = true,
-                        IsMailSentToStaff = false,
-                        IsPaid = isPaidApprove == true ? true : false,
-                        IsSentForApproval = false,
-                        PaymentTypeGeneralSubTypeId = id,
-                        Installment = installment != null ? Convert.ToInt32(installment) : -1,
-                    };
-                    _staffPaymentService.Add(m);
+                        var m = new StaffPayment
+                        {
+                            StaffId = Convert.ToInt32(data["staffId"]),
+                            Amount = decimal.Parse(amount.Replace(".", ",")),
+                            PaymentDate = Convert.ToDateTime(date),
+                            CreationDate = DateTime.Now,
+                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                            Description = SmDescription,
+                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                            IsActive = true,
+                            IsMailSentToStaff = false,
+                            IsPaid = isPaidApprove == true ? true : false,
+                            IsSentForApproval = false,
+                            PaymentTypeGeneralSubTypeId = id,
+                            Installment = installment != null ? Convert.ToInt32(installment) : -1,
+                            WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
+                        };
+                        _staffPaymentService.Add(m);
+                    }
+                    else
+                    {
+                        var m = new StaffPayment
+                        {
+                            StaffId = Convert.ToInt32(data["staffId"]),
+                            Amount = decimal.Parse(amount.Replace(".", ",")),
+                            PaymentDate = Convert.ToDateTime(date),
+                            CreationDate = DateTime.Now,
+                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                            Description = SmDescription,
+                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                            IsActive = true,
+                            IsMailSentToStaff = false,
+                            IsPaid = isPaidApprove == true ? true : false,
+                            IsSentForApproval = false,
+                            PaymentTypeGeneralSubTypeId = id,
+                            Installment = installment != null ? Convert.ToInt32(installment) : -1,
+                            WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
+                        };
+                        _staffPaymentService.Add(m);
+                    }
                 }
                 else
                 {
-                    var k = new StaffPayment
+                    if (isCheckedApprove == true)
                     {
-                        StaffId = Convert.ToInt32(data["staffId"]),
-                        Amount = decimal.Parse(amount.Replace(".", ",")),
-                        PaymentDate = Convert.ToDateTime(date),
-                        CreationDate = DateTime.Now,
-                        CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
-                        Description = SmDescription,
-                        GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
-                        IsActive = true,
-                        IsMailSentToStaff = false,
-                        IsPaid = isPaidApprove == true ? true : false,
-                        IsSentForApproval = false,
-                        PaymentTypeGeneralSubTypeId = id,
-                        FeeTypeGeneralSubTypeId = Convert.ToInt32(feeType)
-                    };
-                    _staffPaymentService.Add(k);
+                        var k = new StaffPayment
+                        {
+                            StaffId = Convert.ToInt32(data["staffId"]),
+                            Amount = decimal.Parse(amount.Replace(".", ",")),
+                            PaymentDate = Convert.ToDateTime(date),
+                            CreationDate = DateTime.Now,
+                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                            Description = SmDescription,
+                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                            IsActive = true,
+                            IsMailSentToStaff = false,
+                            IsPaid = isPaidApprove == true ? true : false,
+                            IsSentForApproval = false,
+                            PaymentTypeGeneralSubTypeId = id,
+                            FeeTypeGeneralSubTypeId = Convert.ToInt32(feeType),
+                            WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
+                        };
+                        _staffPaymentService.Add(k);
+                    }
+                    else
+                    {
+                        var k = new StaffPayment
+                        {
+                            StaffId = Convert.ToInt32(data["staffId"]),
+                            Amount = decimal.Parse(amount.Replace(".", ",")),
+                            PaymentDate = Convert.ToDateTime(date),
+                            CreationDate = DateTime.Now,
+                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                            Description = SmDescription,
+                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                            IsActive = true,
+                            IsMailSentToStaff = false,
+                            IsPaid = isPaidApprove == true ? true : false,
+                            IsSentForApproval = false,
+                            PaymentTypeGeneralSubTypeId = id,
+                            FeeTypeGeneralSubTypeId = Convert.ToInt32(feeType)
+                        };
+                        _staffPaymentService.Add(k);
+                    }
                 }
                 return Json("true");
 
@@ -367,7 +443,7 @@ namespace FlexHR.Web.Controllers
                             {
                                 Name = temp[1],
                                 Vat = Convert.ToDecimal(temp[2]),
-                                Amount = decimal.Parse(temp[3].Replace(".", ",")),                              
+                                Amount = decimal.Parse(temp[3].Replace(".", ",")),
                                 FileName = item.FileName,
                                 FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
                                 IsActive = true,

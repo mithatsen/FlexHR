@@ -41,12 +41,14 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<IReceiptService, ReceiptManager>();
             services.AddScoped<ILeaveTypeService, LeaveTypeManager>();
             services.AddScoped<ILeaveRuleService, LeaveRuleManager>();
+            services.AddScoped<ITakePaymentService, TakePaymentManager>();
           
             services.AddScoped<IAppUserService, AppUserManager>();
             services.AddScoped<IFileColumnService, FileColumnManager>();
 
            
             services.AddScoped<IReceiptDal, EfReceiptRepository>();
+            services.AddScoped<ITakePaymentDal, EfTakePaymentRepository>();
             services.AddScoped<ICityDal, EfCityRepository>();
             services.AddScoped<ICompanyDal, EfCompanyRepository>();
             services.AddScoped<ICompanyBranchDal, EfCompanyBranchRepository>();
