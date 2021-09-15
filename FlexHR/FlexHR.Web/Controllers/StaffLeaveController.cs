@@ -112,11 +112,45 @@ namespace FlexHR.Web.Controllers
             {
                 model.GeneralStatusGeneralSubTypeId = 97;
                 model.WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId;
-            } 
+            }
+         
             _staffLeaveService.Add(_mapper.Map<StaffLeave>(model));
 
             return Json("true");
         }
+        [HttpPost]
+        public IActionResult AddStaffLeaveMultipleWithAjax(AddStaffLeaveMultipleDto model)
+        {
+            if (model.IsCheckedApprove == true)
+            {
+                model.GeneralStatusGeneralSubTypeId = 97;
+                model.WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId;
+            }
+            foreach (var item in model.StaffId)
+            {
+                AddStaffLeaveDto temp = new AddStaffLeaveDto
+                {
+                    StaffId = Convert.ToInt32(item),
+                    Description = model.Description,
+                    GeneralStatusGeneralSubTypeId = model.GeneralStatusGeneralSubTypeId,
+                    IsActive = true,
+                    IsCheckedApprove = model.IsCheckedApprove,
+                    IsMailSentToStaff = model.IsMailSentToStaff,
+                    IsSentForApproval = model.IsSentForApproval,
+                    LeaveEndDate = model.LeaveEndDate,
+                    LeaveStartDate = model.LeaveStartDate,
+                    LeaveTypeId = model.LeaveTypeId,
+                    TotalDay = model.TotalDay,
+                    WhoApprovedStaffId = model.WhoApprovedStaffId
+                   
+                };
+                _staffLeaveService.Add(_mapper.Map<StaffLeave>(temp));
+            }
+            
+
+            return Json("true");
+        }
+
         [HttpPost]
         public IActionResult UpdateStaffLeave(ListStaffLeaveDto model)
         {

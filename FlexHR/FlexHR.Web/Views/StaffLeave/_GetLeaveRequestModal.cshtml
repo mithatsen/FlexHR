@@ -34,8 +34,9 @@
                                                 <div class="form-group row">
                                                     <label>Personel *</label>
                                                     <div class="input-group">
-                                                        <select id="staffSelect" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <select id="staffSelect45" style=" width: 100% !important;"  multiple data-live-search="true" class="form-control selectpicker form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
                                                         </select>
+                                                        
                                                     </div>
                                                 </div>
                                             }
@@ -195,6 +196,9 @@
     $('#staffSelect').select2({
         placeholder: 'Personel Seçiniz'
     });
+
+    $('.selectpicker').selectpicker();
+
     $('input[name="LeaveStartDate"]').mask('00.00.0000');
     $('input[name="LeaveEndDate"]').mask('00.00.0000');
 </script>
@@ -208,6 +212,7 @@
         $("#selectLeaveTypeBtnText").text(name);
     }
 </script>
+
 <script>
     var fvRequestLeave = FormValidation.formValidation(
         document.getElementById('modalAddLeaveRequestForm'),
@@ -270,38 +275,59 @@
     function leaveRequestClickFunction() {
         fvRequestLeave.validate().then(function (status) {
             if (status == 'Valid') {
-                debugger;
                 var formData = {
                     LeaveTypeId: $("#LeaveTypeId").val(),
                     LeaveStartDate: $("#LeaveStartDate_r").val(),
                     LeaveEndDate: $("#LeaveEndDate_r").val(),
                     Description: $("#Description").val(),
-                    StaffId: $('#staffSelect').val() !== undefined ? $('#staffSelect').val() : $('#staffAutoId').val(),
+                    StaffId: $('#staffSelect45').val() !== undefined ? $('#staffSelect45').val() : $('#staffAutoId').val(),
                     TotalDay: $("#kt_touchspin_1").val(),
                     IsCheckedApprove: $("#IsCheckedApprove").is(":checked")
                 };
 
-                $.ajax({
-                    method: 'post',
-                    url: '/StaffLeave/AddStaffLeaveWithAjax',
-                    data: formData,
-                    success: function (data) {
-                        if (data == "true") {
-                            Swal.fire({
-                                title: "Eklendi!",
-                                text: "Kaydınız eklendi.",
-                                icon: "success",
-                                showCancelButton: false,
+                if ($('#staffSelect45').val() !== undefined) {                
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffLeave/AddStaffLeaveMultipleWithAjax',
+                        data: formData,
+                        success: function (data) {
+                            if (data == "true") {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                    showCancelButton: false,
 
-                            }).then(function () {
-                                window.location.reload();
-                            })
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+                            }
+
                         }
+                    })
+                }
+                else {
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffLeave/AddStaffLeaveWithAjax',
+                        data: formData,
+                        success: function (data) {
+                            if (data == "true") {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                    showCancelButton: false,
 
-                    }
-                })
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+                            }
+
+                        }
+                    })
+                }  
             }
-
         });
     }
 

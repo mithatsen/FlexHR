@@ -60,7 +60,7 @@ namespace FlexHR.Web.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> AddStaffShiftWithAjax(AddStaffShiftDto formData)
+        public IActionResult AddStaffShiftWithAjax(AddStaffShiftDto formData)
         {
             if (ModelState.IsValid)
             {
@@ -77,6 +77,40 @@ namespace FlexHR.Web.Controllers
             }
             return Json("false");
         }
+        [HttpPost]
+        public IActionResult AddStaffShiftMultipleWithAjax(AddStaffShiftMultipleDto formData)
+        {
+            if (ModelState.IsValid)
+            {
+                if (formData.IsCheckedApprove == true)
+                {
+                    formData.GeneralStatusGeneralSubTypeId = 97;
+                    formData.WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId;
+                }
+                foreach (var item in formData.StaffId)
+                {
+                    AddStaffShiftDto temp = new AddStaffShiftDto
+                    {
+                        StaffId = item,
+                        WhoApprovedStaffId = formData.WhoApprovedStaffId,
+                        Description = formData.Description,
+                        GeneralStatusGeneralSubTypeId = formData.GeneralStatusGeneralSubTypeId,
+                        IsActive = true,
+                        IsCheckedApprove = formData.IsCheckedApprove,
+                        IsMailSentToStaff = formData.IsMailSentToStaff,
+                        IsSentForApproval = formData.IsSentForApproval,
+                        ShiftHour = formData.ShiftHour,
+                        ShiftMinute = formData.ShiftMinute,
+                        StartDate = formData.StartDate
+                    };
+                    _staffShiftService.Add(_mapper.Map<StaffShift>(temp));
+                }
+                return Json("true");
+
+            }
+            return Json("false");
+        }
+
         [HttpPost]
         public IActionResult UpdateStaffShift(ListStaffShiftDto model)
         {
