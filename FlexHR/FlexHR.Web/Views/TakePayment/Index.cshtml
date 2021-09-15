@@ -13,23 +13,10 @@
     <div class="card-header flex-wrap border-0 pt-6 pb-0">
         <div class="card-title">
             <h3 class="card-label">
-               Borç - İcra Takip Tablosu
+                Borç - İcra Takip Tablosu
             </h3>
         </div>
-        <div class="card-toolbar">
-            <!--begin::Dropdown-->
-            <div class="dropdown dropdown-inline mr-2">
-                <button type="button" class="btn btn-light-primary font-weight-bolder ">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
-                       
-                        <!--end::Svg Icon-->
-                    </span>Ekle
-                </button>
 
-            </div>
-
-        </div>
     </div>
     <div class="card-body">
         <!--begin: Search Form-->
@@ -38,44 +25,18 @@
             <div class="row align-items-center">
                 <div class="col-lg-9 col-xl-8">
                     <div class="row align-items-center">
-                        <div class="col-md-4 my-2 my-md-0">
-                            <div class="input-icon">
-                                <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
+                        <div class="col-md-4 my-2 my-md-0 ">
+                            <div class="input-icon ">
+                                <input type="text" class="form-control" placeholder="Ara" id="kt_datatable_search_query" />
                                 <span>
                                     <i class="flaticon2-search-1 text-muted"></i>
                                 </span>
                             </div>
                         </div>
-                        <div class="col-md-4 my-2 my-md-0">
-                            <div class="d-flex align-items-center">
-                                <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
-                                <select class="form-control" id="kt_datatable_search_status">
-                                    <option value="">All</option>
-                                    <option value="1">Pending</option>
-                                    <option value="2">Delivered</option>
-                                    <option value="3">Canceled</option>
-                                    <option value="4">Success</option>
-                                    <option value="5">Info</option>
-                                    <option value="6">Danger</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4 my-2 my-md-0">
-                            <div class="d-flex align-items-center">
-                                <label class="mr-3 mb-0 d-none d-md-block">Type:</label>
-                                <select class="form-control" id="kt_datatable_search_type">
-                                    <option value="">All</option>
-                                    <option value="1">Online</option>
-                                    <option value="2">Retail</option>
-                                    <option value="3">Direct</option>
-                                </select>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
-                <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
-                    <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
-                </div>
+
             </div>
         </div>
         <!--end::Search Form-->
@@ -85,11 +46,98 @@
         <!--end: Datatable-->
     </div>
 </div>
+
+
+
+@* add installment modal*@
+<div class="modal fade" id="staffInstallmentAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">
+                        <i class="fas fa-credit-card mr-2 text-dark"></i>Taksit Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="modalAddInstallmentForm" method="POST" >
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row  ">
+                                                <label id="jobStartDateLbl">Ödeme Tarihi *</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
+                                                        <input id="PaymentDate" name="PaymentDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label></label>
+                                                <div class="input-group col-form-label">
+                                                    <div class="checkbox-inline">
+                                                        <label class="checkbox checkbox-primary">
+                                                            <input id="IsPaid" type="checkbox" name="IsPaid" />
+                                                            <span></span>
+                                                            Taksit ödendi
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Taksit Tutarı *</label>
+                                                <div class="input-group">
+                                                    <input id="InstallmentAmount" name="InstallmentAmount" type="text" class="form-control form-control-solid form-control-lg">
+                                                </div>
+                                            </div>
+                                            <input hidden type="text" id="StaffPaymentId" name="StaffPaymentId" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+                        </div>
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="button" onclick="AddInstallmentButton()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!--end::Card-->
+
+<div id="InstallmentUpdateModalDiv">   </div>
 @section Scripts{
-    <!--begin::Page Scripts(used by this page)-->
-    <!--<script src="~/assets/js/pages/crud/ktdatatable/child/data-local.js"></script>-->
-    <!--end::Page Scripts-->
+    <script>
+        $(document).ready(function () {
+
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
     <!--begin::Page Scripts(used by this page)-->
     <script src="~/assets/js/pages/crud/ktdatatable/child/data-ajax.js" charset="windows-1254"></script>
     <!--end::Page Scripts-->

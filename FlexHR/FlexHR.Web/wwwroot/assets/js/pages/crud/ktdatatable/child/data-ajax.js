@@ -49,7 +49,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                     field: 'staffPaymentId',
                     title: '#',
                     sortable: 'asc',
-                    width: 10
+                    width: 40
                 }, {
                     field: 'nameSurname',
                     title: 'Ad Soyad',
@@ -57,6 +57,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                 }, {
                     field: 'paymentType',
                     title: 'Ödeme Türü',
+                    sortable: 'asc',
                 }, {
                     field: 'creationDate',
                     title: 'Tarih',
@@ -78,13 +79,31 @@ var KTDatatableChildRemoteDataDemo = function () {
                 }, {
                     field: 'amount',
                     title: 'Tutar',
+                    sortable: 'asc',
                 }, {
                     field: 'installment',
                     title: 'Taksit Miktarý',
-                },
-
-
-            ],
+                    sortable: 'asc',
+                }, {
+                    field: 'Actions',
+                    width: 125,
+                    title: 'Ýþlem',
+                    class: 'text-center',
+                    sortable: false,
+                    overflow: 'visible',
+                    autoHide: false,
+                    template: function (row) {
+                        return '\
+                                 <div class="text-center">\
+	                                 <a onclick="InstallmentAddModal('+ row.staffPaymentId + ')" class="btn btn-sm btn-primary btn-icon mr-2" title="Taksit Ekle">\
+	                                     <span class="svg-icon svg-icon-md">\
+                                              <i class="fa fa-plus text-white"></i>\
+	                                      </span>\
+	                                  </a>\
+	                             </div>\
+	                            ';
+                    },
+                }],
         });
         var abc = datatable
         console.log(abc)
@@ -140,11 +159,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                     {
                         field: 'id',
                         title: '#',
-                        width: 10,
-                        template: function (row) {
-
-                            return row.id;
-                        }
+                        width: 40                        
                     }, {
                         field: 'paymentDate',
                         title: 'Ödeme Tarihi',
@@ -167,16 +182,16 @@ var KTDatatableChildRemoteDataDemo = function () {
                     }, {
                         field: 'installmentAmount',
                         title: 'Tutar',
-                        sortable: 'asc',
+                        sortable: true,
                     }, {
                         field: 'isPaid',
                         title: 'Durumu',
                         // callback function support for column rendering
                         template: function (row) {
                             if (row.isPaid == true) {
-                                return '<span class="label label-light-success label-inline font-weight-bold label-lg">Ödendi</span>';
+                                return '<span class="label label-light-success label-inline font-weight-bold label-lg">Ödeme Alýndý</span>';
                             } else {
-                                return '<span class="label label-light-danger label-inline font-weight-bold label-lg">Ödenmedi</span>';
+                                return '<span class="label label-light-danger label-inline font-weight-bold label-lg">Ödeme Alýnmadý</span>';
                             }
                         },
                     }, {
@@ -191,7 +206,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                             if (row.isPaid == true) {
                                 return '\
                                      <div class="text-center">\
-	                                    <a href="javascript:;" class="btn btn-sm btn-warning btn-icon mr-2" title="Düzenle">\
+	                                    <a onclick="getInstallmentUpdateModal('+row.id+')" class="btn btn-sm btn-warning btn-icon mr-2" title="Düzenle">\
 	                                        <span class="svg-icon svg-icon-md">\
                                                 <i class="fa fa-edit text-white"></i>\
 	                                        </span>\
@@ -211,7 +226,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                                                 <i class="fa fa-check text-white"></i>\
 	                                        </span>\
 	                                    </a>\
-                                        <a href="javascript:;" class="btn btn-sm btn-warning btn-icon mr-2" title="Düzenle">\
+                                        <a onclick="getInstallmentUpdateModal('+ row.id +')" class="btn btn-sm btn-warning btn-icon mr-2" title="Düzenle">\
 	                                        <span class="svg-icon svg-icon-md">\
                                                 <i class="fa fa-edit text-white"></i>\
 	                                        </span>\
@@ -242,6 +257,112 @@ var KTDatatableChildRemoteDataDemo = function () {
         },
     };
 }();
+
+jQuery(document).ready(function () {
+    KTDatatableChildRemoteDataDemo.init();
+});
+
+$("#InstallmentAmount").mask('000000000000,00', { reverse: true });
+$('input[name="PaymentDate"]').mask('00.00.0000');
+
+var fvInstallment = FormValidation.formValidation(document.getElementById('modalAddInstallmentForm'), {
+    fields: {
+        PaymentDate: {
+            validators: {
+                notEmpty: {
+                    message: 'Tarih alaný boþ geçilemez'
+                },
+                date: {
+                    format: 'DD.MM.YYYY',
+                    message: 'Geçerli bir tarih girin'
+                }
+
+            }
+        },
+        InstallmentAmount: {
+            validators: {
+                notEmpty: {
+                    message: 'Tutar alaný boþ geçilemez'
+                },
+                numeric: {
+                    message: ' Tutar rakamlardan oluþmalýdýr',
+
+                }
+            }
+        },
+    },
+    plugins: {
+        trigger: new FormValidation.plugins.Trigger(),
+        // Bootstrap Framework Integration
+        bootstrap: new FormValidation.plugins.Bootstrap(),
+        // Validate fields when clicking the Submit button
+        // submitButton: new FormValidation.plugins.SubmitButton(),
+        // Submit the form when all fields are valid
+        // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+    },
+});
+function AddInstallmentButton() {
+
+    fvInstallment.validate().then(function (status) {
+        // Update the login button content based on the validation status
+        if (status == 'Valid') {
+            var formData = {
+                StaffPaymentId: $("#StaffPaymentId").val(),
+                PaymentDate: $("#PaymentDate").val(),
+                IsPaid: $("#IsPaid").is(":checked"),
+                InstallmentAmount: $("#InstallmentAmount").val(),
+            };
+            $.ajax({
+                method: 'post',
+                url: '/TakePayment/AddInstallment',
+                data: formData,
+                success: function (data) {
+                    if (data == true) {
+                        Swal.fire({
+                            title: "Eklendi!",
+                            text: "Kaydýnýz eklendi.",
+                            icon: "success",
+                        }).then(function () {
+                            window.location.reload()
+                        })
+                    }
+
+                }
+
+            })
+        }
+    });
+}
+
+//update ýnstallment
+
+function getInstallmentUpdateModal(id) {
+
+    var modelContent = $("#InstallmentUpdateModalDiv")
+    $("#InstallmentUpdateModalDiv").empty();
+
+    $.ajax({
+        method: "GET",
+        url: "/TakePayment/GetInstallmentUpdateModal/" + id,
+        dataType: "html",
+        cache: false,
+    }).done(function (content) {
+        if (content != null) {
+            modelContent.html(content);
+        }
+        $("#staffInstallmentUpdateModal").modal("show");
+    }).fail(function (error) {
+        alert(error);
+    });
+}
+
+function InstallmentAddModal(id) {
+    $("#StaffPaymentId").val(id);
+    $("#staffInstallmentAddModal").modal("show");
+
+}
+
+
 
 function ApproveInstallment(id) {
     Swal.fire({
@@ -278,10 +399,8 @@ function ApproveInstallment(id) {
                 }
 
             })
-        } 
+        }
     });
-
-
 }
 function DeleteInstallment(id) {
     Swal.fire({
@@ -318,12 +437,8 @@ function DeleteInstallment(id) {
                 }
 
             })
-        } 
+        }
     });
-
-
 }
 
-jQuery(document).ready(function () {
-    KTDatatableChildRemoteDataDemo.init();
-});
+

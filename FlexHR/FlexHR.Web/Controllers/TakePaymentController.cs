@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
+using FlexHR.Entity.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetStaffPaymentInfo(int id)
         {
-            var paymentList = _takePaymentService.Get(x => x.StaffPaymentId == id && x.IsActive == true).ToList();
+            var paymentList = _takePaymentService.Get(x => x.StaffPaymentId == id && x.IsActive == true).OrderBy(x => x.PaymentDate).ToList();
             return Json(paymentList);
 
         }
@@ -52,13 +53,35 @@ namespace FlexHR.Web.Controllers
             return Json(true);
 
         }
+        [HttpPost]
+        public IActionResult AddInstallment(AddInstallmentDto model)
+        {
+            _takePaymentService.Add(_mapper.Map<TakePayment>(model));
+
+            return Json(true);
+
+        }
+        [HttpPost]
+        public IActionResult UpdateInstallment(ListInstallmentDto model)
+        {
+            model.IsActive = true;
+            _takePaymentService.Update(_mapper.Map<TakePayment>(model));
+            return Json(true);
+
+        }
         public IActionResult DeleteInstallment(int id)
         {
             var paymentList = _takePaymentService.Get(x => x.Id == id).FirstOrDefault();
             paymentList.IsActive = false;
             _takePaymentService.Update(paymentList);
             return Json(true);
-
+        }
+        [HttpGet]
+        public IActionResult GetInstallmentUpdateModal(int id)
+        {
+            var result = _takePaymentService.Get(x => x.Id == id).FirstOrDefault();
+            var avd = _mapper.Map<ListInstallmentDto>(result);
+            return PartialView("_GetInstallmentUpdateModal", avd);
         }
     }
 
