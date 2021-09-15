@@ -10,10 +10,28 @@
     <!--end::Page Vendors Styles-->
 
 }
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Maaş Listesi</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+
+<br />
 <div class="card card-custom">
-
-
-
     <div class="card card-custom">
         <div class="card-body  ">
 
@@ -21,7 +39,7 @@
             <div class="tab-content pt-5">
                 <div class="row">
                     <div class="col-md-6">
-                        <span class="text-dark mb-4 font-size-h3"><i class="fas fa-wallet text-dark mr-2"></i>  Maaş Tablosu</span>
+                        <span class="text-dark mb-4 font-size-h4"><i class="fas fa-wallet text-dark mr-2"></i>  Maaş Tablosu</span>
                     </div>
                     <div class="col-md-6">
                         <div class="col-md-8 float-right">
@@ -91,10 +109,10 @@
                                 <td>@item.TotalDeservedSalary @item.CurrencyTypeName</td>
                                 <td>@item.NetSalary @item.CurrencyTypeName</td>
 
-                        @*      <td>@item.IncomePerHour</td>
-                                <td>@item.IncomePerShiftHour</td>
-                                <td>@Math.Round(item.TotalDeservedSalary??0,2)</td>
-                                <td>@item.NetSalary</td>  *@
+                                @*      <td>@item.IncomePerHour</td>
+                                    <td>@item.IncomePerShiftHour</td>
+                                    <td>@Math.Round(item.TotalDeservedSalary??0,2)</td>
+                                    <td>@item.NetSalary</td>  *@
                             </tr>
 
                         }

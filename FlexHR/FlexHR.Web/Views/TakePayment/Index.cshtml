@@ -8,38 +8,47 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Borç - İcra Takip</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+
+<br />
 <!--begin::Card-->
 <div class="card card-custom">
-    <div class="card-header flex-wrap border-0 pt-6 pb-0">
-        <div class="card-title">
-            <h3 class="card-label">
-                Borç - İcra Takip Tablosu
-            </h3>
-        </div>
 
-    </div>
     <div class="card-body">
-        <!--begin: Search Form-->
-        <!--begin::Search Form-->
-        <div class="mb-7">
-            <div class="row align-items-center">
-                <div class="col-lg-9 col-xl-8">
-                    <div class="row align-items-center">
-                        <div class="col-md-4 my-2 my-md-0 ">
-                            <div class="input-icon ">
-                                <input type="text" class="form-control" placeholder="Ara" id="kt_datatable_search_query" />
-                                <span>
-                                    <i class="flaticon2-search-1 text-muted"></i>
-                                </span>
-                            </div>
-                        </div>
-
+        <div class="row">
+            <div class="col-md-10">
+                <span class="text-dark mb-4 font-weight-bold font-size-h4"><i class="fas fa-credit-card text-dark mr-2"></i> Borç - İcra Takip Tablosu</span>
+            </div>
+            <!--begin::Search Form-->
+            <div class="mb-7 col-md-2">
+                <div class="my-2 my-md-0 ">
+                    <div class="input-icon ">
+                        <input type="text" class="form-control" placeholder="Ara" id="kt_datatable_search_query" />
+                        <span>
+                            <i class="flaticon2-search-1 text-muted"></i>
+                        </span>
                     </div>
                 </div>
-
             </div>
         </div>
-        <!--end::Search Form-->
         <!--end: Search Form-->
         <!--begin: Datatable-->
         <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
@@ -55,7 +64,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
-                    <h3 class="card-label font-weight-bolder text-dark">
+                    <h3 class="card-label font-weight-bolder text-dark lead">
                         <i class="fas fa-credit-card mr-2 text-dark"></i>Taksit Ekle
                     </h3>
 
@@ -63,7 +72,7 @@
                 <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="modalAddInstallmentForm" method="POST" >
+            <form id="modalAddInstallmentForm" method="POST">
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
                         <!--begin::Form-->
