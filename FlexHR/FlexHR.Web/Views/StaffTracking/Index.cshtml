@@ -27,7 +27,7 @@
 
 <br />
 <div class="card card-custom">
-  
+
 
 
     <div class="card card-custom">
@@ -36,11 +36,31 @@
             <!--begin: Datatable-->
             <div class="tab-content pt-5">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <span class="text-dark mb-4 font-size-h3"> @Model.filterDate.ToString("Y") Puantaj Tablosu</span>
                     </div>
-                    <div class="col-md-6">
-                        <div class="col-md-8 float-right">
+                    <div class="col-md-4 border-2">
+                        <table class="table table-light table-sm w-50 ">
+                            <tr>
+
+                                <td class="table-success text-center font-weight-bolder px-2">X</td>
+                                <td class="text-center pl-3 pr-5">Geldi</td>
+
+                                <td class="table-warning text-center font-weight-bolder px-2">İ</td>
+                                <td class="text-center  pl-3 pr-5">İzinli</td>
+
+                                <td class="table-primary text-center font-weight-bolder px-2">R</td>
+                                <td class="text-center pl-3 pr-5">Raporlu</td>
+
+                                <td class="table-danger text-center font-weight-bolder px-2">D</td>
+                                <td class="text-center  pl-3 pr-5">Devamsız</td>
+
+                            </tr>
+                  
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12 float-right">
                             <!--begin: Search Form-->
                             <form asp-controller="StaffTracking" asp-action="Index" method="post">
 
@@ -82,7 +102,7 @@
                             <th>Ad Soyad</th>
                             <th>Şube</th>
                             <th>Bölüm</th>
-                         @{var abc= DateTime.DaysInMonth(Model.filterDate.Year, Model.filterDate.Month); }
+                            @{var abc = DateTime.DaysInMonth(Model.filterDate.Year, Model.filterDate.Month); }
                             @for (int i = 1; i <= DateTime.DaysInMonth(Model.filterDate.Year, Model.filterDate.Month); i++)
                             {
                                 var tooltipTitle = new DateTime(Model.filterDate.Year, Model.filterDate.Month, i);
@@ -110,7 +130,7 @@
                                 <td>@item.Branch</td>
                                 <td>@item.Department</td>
 
-                                @for (int i = 0; i < item.DaysStatus.Count-1; i++)
+                                @for (int i = 0; i < item.DaysStatus.Count - 1; i++)
                                 {
                                     if (@item.DaysStatus[i] == "İ")
                                     {
@@ -163,10 +183,10 @@
             paging: true,
             sorting: false,
             "targets": 'no-sort',
-     
+
             "order": [],
             "scrollX": true,
-        
+
             "aoColumnDefs": [
                 { "bSortable": false, "aTargets": ["_all"] }
             ]

@@ -109,7 +109,7 @@ namespace FlexHR.Web.Controllers
             TempData["Active"] = TempdataInfo.Report;
 
             List<ListLeaveInfoAllStaffDto> models = new List<ListLeaveInfoAllStaffDto>();
-            var staffs = _staffService.Get(x => x.IsActive == true, null, "StaffPersonalInfo");
+            var staffs = _staffService.Get(x => x.IsActive == true, null, "StaffPersonelInfo");
 
             foreach (var item in staffs)
             {
@@ -190,10 +190,13 @@ namespace FlexHR.Web.Controllers
                     var age = ((DateTime.Now - birthDate).Days) / 365;
                     var isOlderFifty = ((DateTime.Now - birthDate).Days) / 365 >= 50;
 
-                    if ((age-50  > seniorityLevel - item.SeniorityYear) && totalDayDeserved < 20)   //işe başlama yaşı 50 
+                    if ((age- seniorityLevel > 50 - item.SeniorityYear) && totalDayDeserved < 20)   //işe başlama yaşı 50 
                     {
-                        totalDayDeserved += (50 - (age - seniorityLevel)) * 20;
-                        totalDayDeserved += item.SeniorityYear - (50 - (age - seniorityLevel)) * leaveAmount;
+                        totalDayDeserved += (50 - (age - seniorityLevel)) * 14;
+                        totalDayDeserved += (item.SeniorityYear- (50 - (age - seniorityLevel))) * 20;
+                        oldCount = item.SeniorityYear;
+                        leaveAmount += item.AditionalLeaveAmount;
+                        continue;
                     }
                     else
                     {

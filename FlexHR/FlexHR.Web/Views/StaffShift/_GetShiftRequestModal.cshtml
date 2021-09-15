@@ -20,8 +20,8 @@
                         <!--begin::Card-->
                         <div class="card card-custom card-stretch">
                             <!--begin::Header-->
-                          <!--end::Header-->
-                                                   
+                            <!--end::Header-->
+
                             <div class="container ">
                                 <!--begin::Body-->
                                 <div class="card-body mx-auto">
@@ -51,8 +51,9 @@
                                                 <div class="form-group row">
                                                     <label>Personel *</label>
                                                     <div class="input-group">
-                                                        <select id="staffSelect" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        <select id="staffSelect46" style=" width: 100% !important;" multiple data-live-search="true" class="form-control selectpicker form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
                                                         </select>
+
                                                     </div>
                                                 </div>
                                             }
@@ -78,7 +79,7 @@
                                                 </div>
                                             </div>
 
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -129,11 +130,11 @@
 </div>
 
 <script>
-    $('#staffSelect').select2({
-        placeholder: 'Personel Seçiniz'
-    });
+
 </script>
 <script>
+    $('.selectpicker').selectpicker();
+
     $('#kt_touchspin_29, #kt_touchspin_2_1').TouchSpin({
         buttondown_class: 'btn btn-secondary',
         buttonup_class: 'btn btn-secondary',
@@ -227,7 +228,10 @@
         fvShiftRequest.validate().then(function (status) {
             // Update the login button content based on the validation status
             if (status == 'Valid') {
-                var staffIdFdd = $('#staffSelect').val() !== undefined ? $('#staffSelect').val() : $('#staffAutoId').val();
+
+
+
+                var staffIdFdd = $('#staffSelect46').val() !== undefined ? $('#staffSelect46').val() : $('#staffAutoId').val();
                 var formData = {
                     StaffId: staffIdFdd,
                     StartDate: $("#StartDate").val(),
@@ -236,25 +240,46 @@
                     Description: $("#Description").val(),
                     IsCheckedApprove: $("#IsCheckedApprove").is(":checked")
                 };
-                console.log(formData);
-                $.ajax({
-                    method: 'post',
-                    url: '/StaffShift/AddStaffShiftWithAjax',
-                    data: formData,
-                    success: function (data) {
-                        if (data == 'true') {
-                            Swal.fire({
-                                title: "Eklendi!",
-                                text: "Kaydınız eklendi.",
-                                icon: "success",
-                            }).then(function () {
-                                window.location.reload()
-                            })
+                if ($('#staffSelect46').val() !== undefined) {
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffShift/AddStaffShiftMultipleWithAjax',
+                        data: formData,
+                        success: function (data) {
+                            if (data == 'true') {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            }
+
                         }
 
-                    }
+                    })
+                }
+                else {
+                    $.ajax({
+                        method: 'post',
+                        url: '/StaffShift/AddStaffShiftWithAjax',
+                        data: formData,
+                        success: function (data) {
+                            if (data == 'true') {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload()
+                                })
+                            }
 
-                })
+                        }
+
+                    })
+                }
             }
         });
     }
