@@ -30,9 +30,10 @@ namespace FlexHR.Web.Controllers
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IConfiguration _configuration;
         private readonly IAppUserService _appUserService;
+        private readonly ITakePaymentService _takePaymentService;
         public StaffPaymentController(IStaffPaymentService staffPaymentService, IStaffService staffService, IMapper mapper,
             IGeneralSubTypeService generalSubTypeService, IConfiguration configuration, IReceiptService receiptService,
-             IAppUserService appUserService, UserManager<AppUser> userManager) : base(userManager)
+             IAppUserService appUserService, UserManager<AppUser> userManager, ITakePaymentService takePaymentService) : base(userManager)
         {
             _staffPaymentService = staffPaymentService;
             _mapper = mapper;
@@ -41,6 +42,7 @@ namespace FlexHR.Web.Controllers
             _receiptService = receiptService;
             _staffService = staffService;
             _appUserService = appUserService;
+            _takePaymentService = takePaymentService;
         }
         [Authorize(Roles = "ViewStaffPaymentInfo,Manager")]
         public async Task<IActionResult> Index(int id)
@@ -89,7 +91,7 @@ namespace FlexHR.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> AddStaffPaymentWithAjax(IFormCollection data, int id)   // buraya dto oluşturulacak gelen veriler maplenerek veritanına atılacak 
+        public async Task<IActionResult> AddStaffPaymentWithAjax(IFormCollection data, int id)
         {
             if (ModelState.IsValid)
             {
@@ -164,13 +166,176 @@ namespace FlexHR.Web.Controllers
                             receipts.Add(receipt);
                         }
                     }
+                    var x = new StaffPayment
+                    {
+                        Receipts = receipts,
+                        StaffId = Convert.ToInt32(data["staffId"]),
+                        Amount = decimal.Parse(amount.Replace(".", ",")),
+                        PaymentDate = Convert.ToDateTime(date),
+                        CreationDate = DateTime.Now,
+                        CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                        Description = LgDescription,
+                        GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                        IsActive = true,
+                        IsMailSentToStaff = false,
+                        IsPaid = isPaidApprove == true ? true : false,
+                        IsSentForApproval = false,
+                        PaymentTypeGeneralSubTypeId = id,
+                        WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
+                    };
+                    _staffPaymentService.Add(x);
+                }
+                else if (id == 100 || id == 103) // avans ve icra için taksite özel 'take back' tablosuna eklemeler de yapılacak.
+                {
+                    var m = new StaffPayment
+                    {
+                        StaffId = Convert.ToInt32(data["staffId"]),
+                        Amount = decimal.Parse(amount.Replace(".", ",")),
+                        PaymentDate = Convert.ToDateTime(date),
+                        CreationDate = DateTime.Now,
+                        CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                        Description = SmDescription,
+                        GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                        IsActive = true,
+                        IsMailSentToStaff = false,
+                        IsPaid = isPaidApprove == true ? true : false,
+                        IsSentForApproval = false,
+                        PaymentTypeGeneralSubTypeId = id,
+                        Installment = installment != null ? Convert.ToInt32(installment) : -1,
+                        WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
+                    };
+                    var staffPaymentResult = _staffPaymentService.AddResult(m);
+                    var month = Convert.ToDateTime(date).Month;
+                    var year = Convert.ToDateTime(date).Year;
 
-                    if (isCheckedApprove == true)
+                    if (isCheckedApprove == true && isPaidApprove==true)
+                    {
+                        for (int i = 0; i < Convert.ToInt32(installment); i++)
+                        {
+                            year = month < 12 ? year : year + 1;
+                            month = month < 12 ? month + 1 : 1;                        
+
+                            _takePaymentService.Add(new TakePayment
+                            {
+                                InstallmentAmount = decimal.Parse(amount.Replace(".", ",")) / Convert.ToInt32(installment),
+                                StaffPaymentId = staffPaymentResult.StaffPaymentId,
+                                PaymentDate = new DateTime(year, month, 1),
+                                IsPaid = false,
+                                IsActive = true,
+                            });
+                        }
+                    }
+               
+                }
+                else
+                {
+                    var k = new StaffPayment
+                    {
+                        StaffId = Convert.ToInt32(data["staffId"]),
+                        Amount = decimal.Parse(amount.Replace(".", ",")),
+                        PaymentDate = Convert.ToDateTime(date),
+                        CreationDate = DateTime.Now,
+                        CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
+                        Description = SmDescription,
+                        GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
+                        IsActive = true,
+                        IsMailSentToStaff = false,
+                        IsPaid = isPaidApprove == true ? true : false,
+                        IsSentForApproval = false,
+                        PaymentTypeGeneralSubTypeId = id,
+                        FeeTypeGeneralSubTypeId = Convert.ToInt32(feeType),
+                        WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
+                    };
+                    _staffPaymentService.Add(k);
+                }
+                return Json("true");
+
+            }
+            return Json("false");
+
+        }
+        public async Task<IActionResult> AddStaffPaymentMultipleWithAjax(IFormCollection data, int id)
+        {
+            if (ModelState.IsValid)
+            {
+                string amount = data["Amount"];
+                string date = data["Date"];
+                string SmDescription = data["SmDescription"];
+                string LgDescription = data["LgDescription"];
+                string currencyType = data["CurrencyType"];
+                string feeType = data["FeeType"];
+                string installment = data["Installment"];
+                bool isCheckedApprove = Convert.ToBoolean(data["IsCheckedApprove"]);
+                bool isPaidApprove = Convert.ToBoolean(data["IsPaidApprove"]);
+
+                var staffIds = data["staffId"][0].Split(',');
+
+                if (id == 99)
+                {
+                    List<Receipt> receipts = new List<Receipt>(); //datadan gelen fişleri listeye ekledik.
+                    foreach (var item in data.Files)
+                    {
+
+                        var temp = item.Name.Split("~");
+
+                        var staffName = "Staff_" + data["staffId"];
+
+                        var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
+                        var folderPath = Path.Combine(fullPath, staffName);
+                        if (!Directory.Exists(folderPath))
+                            Directory.CreateDirectory(folderPath);
+
+                        var filePath = Path.Combine(folderPath, "HarcamaFisleri" + "/");
+                        if (!Directory.Exists(filePath))
+                            Directory.CreateDirectory(filePath);
+                        var imagePath = Path.Combine(filePath + item.FileName);
+                        if (item.Length > 0)
+                        {
+                            //dosyamızı kaydediyoruz.
+
+                            using (var stream = new FileStream(imagePath, FileMode.Create))
+                            {
+                                await item.CopyToAsync(stream);
+                            }
+                        }
+
+                        Receipt receipt = new Receipt
+                        {
+                            Name = temp[0],
+                            Vat = Convert.ToDecimal(temp[1]),
+                            Amount = decimal.Parse(temp[2].Replace(".", ",")),
+                            FileName = item.FileName,
+                            FileFullPath = Path.Combine(staffName, "HarcamaFisleri" + "/"),
+                            IsActive = true
+                        };
+                        receipts.Add(receipt);
+
+                    }
+                    foreach (var item in data.Keys)
+                    {
+                        if (item.Contains("~"))
+                        {
+                            var temp = item.Split("~");
+                            Receipt receipt = new Receipt
+                            {
+                                Name = temp[0],
+                                Vat = Convert.ToDecimal(temp[1]),
+                                Amount = decimal.Parse(temp[2].Replace(".", ",")),
+
+                                FileName = "",
+                                FileFullPath = "",
+                                IsActive = true
+                            };
+                            receipts.Add(receipt);
+                        }
+                    }
+
+                    foreach (var item in staffIds)
                     {
                         var x = new StaffPayment
                         {
                             Receipts = receipts,
-                            StaffId = Convert.ToInt32(data["staffId"]),
+                            StaffId = Convert.ToInt32(item),
                             Amount = decimal.Parse(amount.Replace(".", ",")),
                             PaymentDate = Convert.ToDateTime(date),
                             CreationDate = DateTime.Now,
@@ -186,37 +351,14 @@ namespace FlexHR.Web.Controllers
                         };
                         _staffPaymentService.Add(x);
                     }
-                    else
-                    {
-                        var x = new StaffPayment
-                        {
-                            Receipts = receipts,
-                            StaffId = Convert.ToInt32(data["staffId"]),
-                            Amount = decimal.Parse(amount.Replace(".", ",")),
-                            PaymentDate = Convert.ToDateTime(date),
-                            CreationDate = DateTime.Now,
-                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
-                            Description = LgDescription,
-                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
-                            IsActive = true,
-                            IsMailSentToStaff = false,
-                            IsPaid = isPaidApprove == true ? true : false,
-                            IsSentForApproval = false,
-                            PaymentTypeGeneralSubTypeId = id,
-                        };
-                        _staffPaymentService.Add(x);
-                    }
-
-
-
                 }
                 else if (id == 100 || id == 103)
                 {
-                    if (isCheckedApprove == true)
+                    foreach (var item in staffIds)
                     {
                         var m = new StaffPayment
                         {
-                            StaffId = Convert.ToInt32(data["staffId"]),
+                            StaffId = Convert.ToInt32(item),
                             Amount = decimal.Parse(amount.Replace(".", ",")),
                             PaymentDate = Convert.ToDateTime(date),
                             CreationDate = DateTime.Now,
@@ -231,37 +373,37 @@ namespace FlexHR.Web.Controllers
                             Installment = installment != null ? Convert.ToInt32(installment) : -1,
                             WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
                         };
-                        _staffPaymentService.Add(m);
-                    }
-                    else
-                    {
-                        var m = new StaffPayment
+                       
+                        var staffPaymentResult = _staffPaymentService.AddResult(m);
+                        var month = Convert.ToDateTime(date).Month;
+                        var year = Convert.ToDateTime(date).Year;
+
+                        if (isCheckedApprove == true && isPaidApprove == true)
                         {
-                            StaffId = Convert.ToInt32(data["staffId"]),
-                            Amount = decimal.Parse(amount.Replace(".", ",")),
-                            PaymentDate = Convert.ToDateTime(date),
-                            CreationDate = DateTime.Now,
-                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
-                            Description = SmDescription,
-                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
-                            IsActive = true,
-                            IsMailSentToStaff = false,
-                            IsPaid = isPaidApprove == true ? true : false,
-                            IsSentForApproval = false,
-                            PaymentTypeGeneralSubTypeId = id,
-                            Installment = installment != null ? Convert.ToInt32(installment) : -1,
-                            WhoApprovedStaffId = _appUserService.Get(x => x.UserName == User.Identity.Name).FirstOrDefault().StaffId,
-                        };
-                        _staffPaymentService.Add(m);
+                            for (int i = 0; i < Convert.ToInt32(installment); i++)
+                            {
+                                year = month < 12 ? year : year + 1;
+                                month = month < 12 ? month + 1 : 1;
+                              
+                                _takePaymentService.Add(new TakePayment
+                                {
+                                    InstallmentAmount = decimal.Parse(amount.Replace(".", ",")) / Convert.ToInt32(installment),
+                                    StaffPaymentId = staffPaymentResult.StaffPaymentId,
+                                    PaymentDate = new DateTime(year, month, 1),
+                                    IsPaid = false,
+                                    IsActive = true,
+                                });
+                            }
+                        }
                     }
                 }
                 else
                 {
-                    if (isCheckedApprove == true)
+                    foreach (var item in staffIds)
                     {
                         var k = new StaffPayment
                         {
-                            StaffId = Convert.ToInt32(data["staffId"]),
+                            StaffId = Convert.ToInt32(item),
                             Amount = decimal.Parse(amount.Replace(".", ",")),
                             PaymentDate = Convert.ToDateTime(date),
                             CreationDate = DateTime.Now,
@@ -278,34 +420,12 @@ namespace FlexHR.Web.Controllers
                         };
                         _staffPaymentService.Add(k);
                     }
-                    else
-                    {
-                        var k = new StaffPayment
-                        {
-                            StaffId = Convert.ToInt32(data["staffId"]),
-                            Amount = decimal.Parse(amount.Replace(".", ",")),
-                            PaymentDate = Convert.ToDateTime(date),
-                            CreationDate = DateTime.Now,
-                            CurrencyGeneralSubTypeId = Convert.ToInt32(currencyType),
-                            Description = SmDescription,
-                            GeneralStatusGeneralSubTypeId = isCheckedApprove == true ? 97 : 96,
-                            IsActive = true,
-                            IsMailSentToStaff = false,
-                            IsPaid = isPaidApprove == true ? true : false,
-                            IsSentForApproval = false,
-                            PaymentTypeGeneralSubTypeId = id,
-                            FeeTypeGeneralSubTypeId = Convert.ToInt32(feeType)
-                        };
-                        _staffPaymentService.Add(k);
-                    }
                 }
                 return Json("true");
-
             }
-
             return Json("false");
-
         }
+
         [HttpGet]
         public IActionResult GetAdvancePaymentRequestModal()
         {

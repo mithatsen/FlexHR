@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.DTO.ViewModels;
+using FlexHR.Entity.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,19 +21,21 @@ namespace FlexHR.Web.Controllers
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly IMapper _mapper;
         private readonly IAppUserService _appUserService;
-        public PaymentController(IGeneralSubTypeService generalSubTypeService, IMapper mapper, IStaffPaymentService staffPaymentService, IStaffService staffService, IAppUserService appUserService)
+        private readonly ITakePaymentService _takePaymentService;
+        public PaymentController(IGeneralSubTypeService generalSubTypeService, IMapper mapper, IStaffPaymentService staffPaymentService, IStaffService staffService, IAppUserService appUserService, ITakePaymentService takePaymentService)
         {
             _staffService = staffService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _staffPaymentService = staffPaymentService;
             _appUserService = appUserService;
+            _takePaymentService = takePaymentService;
         }
         [Authorize(Roles = "ViewPaymentRequestPage,Manager")]
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.Payment;
-            var approvedPayment = _mapper.Map<List<ListStaffPaymentWithUserActiveInfoDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive==true,null,"Staff").ToList());
+            var approvedPayment = _mapper.Map<List<ListStaffPaymentWithUserActiveInfoDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive == true, null, "Staff").ToList());
             var pendingApprovalPayment = _mapper.Map<List<ListStaffPaymentWithUserActiveInfoDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff").ToList());
             var rejectedPayment = _mapper.Map<List<ListStaffPaymentWithUserActiveInfoDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff").ToList());
 
@@ -40,7 +43,7 @@ namespace FlexHR.Web.Controllers
             {
                 item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
                 item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
-                item.IsUserActive= _staffService.Get(p => p.StaffId == item.StaffId).FirstOrDefault().IsActive;
+                item.IsUserActive = _staffService.Get(p => p.StaffId == item.StaffId).FirstOrDefault().IsActive;
 
             }
             foreach (var item in pendingApprovalPayment)
@@ -95,12 +98,28 @@ namespace FlexHR.Web.Controllers
                 return false;
             }
 
-        } 
+        }
         [HttpPost]
         public bool IsPaidPayment(int id)
         {
             var temp = _staffPaymentService.GetById(id);
-            temp.IsPaid =true;
+            temp.IsPaid = true;
+            var month = Convert.ToDateTime(temp.PaymentDate).Month;
+            var year = Convert.ToDateTime(temp.PaymentDate).Year;
+            for (int i = 0; i < Convert.ToInt32(temp.Installment); i++)
+            {
+                year = month < 12 ? year : year + 1;
+                month = month < 12 ? month + 1 : 1;
+
+                _takePaymentService.Add(new TakePayment
+                {
+                    InstallmentAmount = temp.Amount / (decimal)temp.Installment,
+                    StaffPaymentId = temp.StaffPaymentId,
+                    PaymentDate = new DateTime(year, month, 1),
+                    IsPaid = false,
+                    IsActive = true,
+                });
+            }
             try
             {
                 _staffPaymentService.Update(temp);

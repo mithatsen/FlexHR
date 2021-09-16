@@ -60,7 +60,8 @@
                                                 <div class="form-group row">
                                                     <label>Personel *</label>
                                                     <div class="input-group">
-                                                        <select id="staffSelect" style=" width: 100% !important;" class="form-control form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
+                                                        
+                                                        <select id="staffSelect48" style=" width: 100% !important;" multiple data-live-search="true" class="form-control selectpicker form-control-solid form-control-lg" name="StaffId" asp-items="ViewBag.Staffs">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -161,6 +162,7 @@
 
 </div>
 <script>
+    $('.selectpicker').selectpicker();
     $('#staffSelect').select2({
         placeholder: 'Personel Seçiniz'
     });
@@ -236,10 +238,10 @@
     function fncAddAdvancePayment() {
 
         fvRequestAdvancePaymento.validate().then(function (status) {
-            console.log(status);
+            
             if (status == 'Valid') {
 
-                var staffIdFd = $('#staffSelect').val() !== undefined ? $('#staffSelect').val() : $('#staffAutoId').val();
+                var staffIdFd = $('#staffSelect48').val() !== undefined ? $('#staffSelect48').val() : $('#staffAutoId').val();
                 var formdata = new FormData();
                 formdata.append("Installment", $('#valInstallment').val());
                 formdata.append("Amount", $('#txtAmount').val());
@@ -249,28 +251,56 @@
                 formdata.append("Date", $('#ContractStartDate').val());
                 formdata.append("IsCheckedApprove", $("#IsCheckedApprove").is(":checked"));
                 formdata.append("IsPaidApprove", $("#IsPaidApprove").is(":checked"));
-                $.ajax({
-                    url: "/StaffPayment/AddStaffPaymentWithAjax/" + 100,
-                    type: "POST",
-                    data: formdata,
 
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    success: function (data) {
-                        if (data == "true") {
-                            Swal.fire({
-                                title: "Eklendi!",
-                                text: "Kaydınız eklendi.",
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
+                if ($('#staffSelect48').val() !== undefined) {
+                    $.ajax({
+                        url: "/StaffPayment/AddStaffPaymentMultipleWithAjax/" + 100,
+                        type: "POST",
+                        data: formdata,
+
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data == "true") {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                    showCancelButton: false
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+                            }
+
                         }
+                    });
+                }
+                else {
+                    $.ajax({
+                        url: "/StaffPayment/AddStaffPaymentWithAjax/" + 100,
+                        type: "POST",
+                        data: formdata,
 
-                    }
-                });
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data == "true") {
+                                Swal.fire({
+                                    title: "Eklendi!",
+                                    text: "Kaydınız eklendi.",
+                                    icon: "success",
+                                    showCancelButton: false
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+                            }
+
+                        }
+                    });
+                }
+                
 
             }
         });
