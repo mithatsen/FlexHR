@@ -14777,7 +14777,7 @@ button.toast-close-button {
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        font-size: 3.75em;
+        font-size: 3.75em!important;
     }
 
     .swal2-icon.swal2-error {

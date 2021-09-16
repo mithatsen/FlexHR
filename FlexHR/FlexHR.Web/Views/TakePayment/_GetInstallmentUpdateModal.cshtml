@@ -27,9 +27,9 @@
                                             <div class="form-group row  ">
                                                 <label id="jobStartDateLbl">Ödeme Tarihi *</label>
                                                 <div class="input-group">
-                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_5" data-target-input="nearest">
-                                                        <input id="PaymentDateUpdate" asp-for="PaymentDate" value="@Model.PaymentDate.ToString("dd.MM.yyyy")" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_5" />
-                                                        <div class="input-group-append" data-target="#kt_datetimepicker_5" data-toggle="datetimepicker">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_92" data-target-input="nearest">
+                                                        <input id="PaymentDateUpdate" asp-for="PaymentDate" value="@Model.PaymentDate.ToString("dd.MM.yyyy")" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_92" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_92" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
                                                             </span>
@@ -44,7 +44,7 @@
                                                         <label class="checkbox checkbox-primary">
                                                             <input id="IsPaidUpdate" type="checkbox" asp-for="IsPaid" />
                                                             <span></span>
-                                                            Taksit ödendi
+                                                            Taksit ödemesi alındı
                                                         </label>
                                                     </div>
                                                 </div>
@@ -81,6 +81,12 @@
 </div>
 <!--end::Card-->
 <script src="~/assets/js/pages/crud/ktdatatable/child/data-ajax.js" charset="windows-1254"></script>
+<script>
+    $('#kt_datetimepicker_92').datetimepicker({
+        locale: 'tr',
+        format: 'DD.MM.YYYY'
+    });
+</script>
 <script>
     var fvInstallmentUpdate = FormValidation.formValidation(document.getElementById('modalUpdateInstallmentForm'), {
         fields: {

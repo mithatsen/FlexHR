@@ -63,6 +63,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<FileColumn_FileColumnProperties> FileColumn_FileColumnProperties { get; set; }
         public virtual DbSet<FileType> FileType { get; set; }
         public virtual DbSet<TakePayment> TakePayment { get; set; }
+        public virtual DbSet<ColorCode> ColorCode { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

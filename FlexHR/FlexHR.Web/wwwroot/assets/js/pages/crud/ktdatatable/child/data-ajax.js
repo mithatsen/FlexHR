@@ -54,6 +54,11 @@ var KTDatatableChildRemoteDataDemo = function () {
                     field: 'nameSurname',
                     title: 'Ad Soyad',
                     sortable: 'asc',
+                    template: function (row) {
+                        return '\
+	                                 <a href="/StaffGeneral/Index/'+ row.staffId + '">' + row.nameSurname + ' </a>\
+	                            ';
+                    },
                 }, {
                     field: 'paymentType',
                     title: 'Ödeme Türü',
@@ -286,7 +291,7 @@ var fvInstallment = FormValidation.formValidation(document.getElementById('modal
                 },
                 numeric: {
                     message: ' Tutar rakamlardan oluþmalýdýr',
-
+                    decimalSeparator: ','
                 }
             }
         },

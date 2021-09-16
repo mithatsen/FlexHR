@@ -42,21 +42,14 @@
                     <div class="col-md-4 border-2">
                         <table class="table table-light table-sm w-50 ">
                             <tr>
-
-                                <td class="table-success text-center font-weight-bolder px-2">X</td>
-                                <td class="text-center pl-3 pr-5">Geldi</td>
-
-                                <td class="table-warning text-center font-weight-bolder px-2">İ</td>
-                                <td class="text-center  pl-3 pr-5">İzinli</td>
-
-                                <td class="table-primary text-center font-weight-bolder px-2">R</td>
-                                <td class="text-center pl-3 pr-5">Raporlu</td>
-
-                                <td class="table-danger text-center font-weight-bolder px-2">D</td>
-                                <td class="text-center  pl-3 pr-5">Devamsız</td>
+                                @foreach (var item in Model.ListStaffTimeKeepings.FirstOrDefault().ColorCodes)
+                                {
+                                    <td class=" text-center font-weight-bolder px-2" style="background-color:@item.Color">@item.Code</td>
+                                    <td class="text-center pl-3 pr-5">@item.Description</td>
+                                }
 
                             </tr>
-                  
+
                         </table>
                     </div>
                     <div class="col-md-4">
@@ -132,29 +125,10 @@
 
                                 @for (int i = 0; i < item.DaysStatus.Count - 1; i++)
                                 {
-                                    if (@item.DaysStatus[i] == "İ")
-                                    {
-                                        <td class="table-warning text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
-                                    }
-                                    else if (@item.DaysStatus[i] == "D")
-                                    {
-                                        <td class="table-danger text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
-                                    }
-                                    else if (@item.DaysStatus[i] == "R")
-                                    {
-                                        <td class="table-primary text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
-                                    }
-                                    else if (@item.DaysStatus[i] == "X")
-                                    {
-                                        <td class="table-success text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
-                                    }
-                                    else
-                                    {
-                                        <td class="table-secondary text-center font-weight-bolder px-2">@item.DaysStatus[i]</td>
-                                    }
-
-
+                                    <td class=" text-center font-weight-bolder px-2" style="background-color:@item.DaysStatus[i].Color;">@item.DaysStatus[i].Code</td>
                                 }
+
+                              
                             </tr>
                         }
                     </tbody>

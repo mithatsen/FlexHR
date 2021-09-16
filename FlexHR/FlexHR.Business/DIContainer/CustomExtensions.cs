@@ -42,7 +42,7 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<ILeaveTypeService, LeaveTypeManager>();
             services.AddScoped<ILeaveRuleService, LeaveRuleManager>();
             services.AddScoped<ITakePaymentService, TakePaymentManager>();
-          
+            services.AddScoped<IColorCodeService, ColorCodeManager>();          
             services.AddScoped<IAppUserService, AppUserManager>();
             services.AddScoped<IFileColumnService, FileColumnManager>();
 
@@ -72,6 +72,7 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<IStaffShiftDal, EfStaffShiftRepository>();
             services.AddScoped<ITownDal, EfTownRepository>();
             services.AddScoped<IAppUserDal, EfAppUserRepository>();
+            services.AddScoped<IColorCodeDal, EfColorCodeRepository>();
          //   services.AddScoped<IStaffRoleDal, EfStaffRoleRepository>();
             services.AddScoped<ILeaveTypeDal, EfLeaveTypeRepository>();
             services.AddScoped<ILeaveRuleDal, EfLeaveRuleRepository>();

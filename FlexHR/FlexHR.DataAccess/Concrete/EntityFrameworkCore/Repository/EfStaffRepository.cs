@@ -43,62 +43,65 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             List<StaffTrackingHelper> mainModels = new List<StaffTrackingHelper>();
             while (drMain.Read())
             {
-                mainModels.Add(new StaffTrackingHelper { UploadDate = drMain.GetDateTime(0), CardNo = drMain.GetString(1), Status = drMain.GetString(2),Branch= drMain.GetString(3),Department= drMain.GetString(4) });
+                mainModels.Add(new StaffTrackingHelper { UploadDate = drMain.GetDateTime(0), CardNo = drMain.GetString(1), Status = drMain.GetString(2), Branch = drMain.GetString(3), Department = drMain.GetString(4) });
 
             }
-
+            var resultColor = _context.ColorCode.ToList();
+            List<ColorCodeHelper> colorCodes = new List<ColorCodeHelper>();
+            
+            foreach (var x in resultColor)
+            {
+                ColorCodeHelper colorCode = new ColorCodeHelper {Code=x.Code,Color=x.Color,Description=x.Description};
+                colorCodes.Add(colorCode);
+            }
+           
+           
             foreach (var item in staffs)
             {
                 var trackingList = mainModels.Where(x => Convert.ToInt32(x.CardNo) == item.PersonalNo).ToList();
-                var status = "";
-                List<string> statusList = new List<string>();
+               
+                List<ColorCodeHelper> statusList = new List<ColorCodeHelper>();
                 for (int i = 1; i < 32; i++)
                 {
-
+                    ColorCodeHelper statusOnly = new ColorCodeHelper();
                     for (int j = 0; j < trackingList.Count; j++)
-                    {
+                    {                       
                         if (trackingList[j].UploadDate.Day == i)
                         {
-                            if (trackingList[j].Status == "Devamsız")
+                            foreach (var item2 in resultColor)
                             {
-                                status = "D";
+                                
+                                if (trackingList[j].Status == item2.Name)
+                                {
+                                    statusOnly.Code = item2.Code;
+                                    statusOnly.Color = item2.Color;
+                                    break;
+                                }
+                            }
 
-                            }
-                            else if (trackingList[j].Status == "Yıllık İzin")
-                            {
-                                status = "İ";
-                            }
-                            else if (trackingList[j].Status == "RAPORLU")
-                            { 
-                                status = "R";
-                            }
-                            else
-                            {
-                                status = "X";
-                            }
-                        
                             break;
                         }
                         else
                         {
-                            status = "";
-                         
+                            statusOnly.Code = "";
+                            statusOnly.Color = "";
                         }
                     }
-                    statusList.Add(status);
+                    statusList.Add(statusOnly);
                 }
                 if (trackingList.Count != 0)
                 {
                     models.Add(new ListStaffTimeKeepingDto
                     {
                         DaysStatus = statusList,
+                        ColorCodes= colorCodes,
                         NameSurname = item.NameSurname,
                         PersonalNo = item.PersonalNo,
                         Branch = trackingList[0].Branch,
                         Department = trackingList[0].Department
                     });
                 }
-               
+
 
 
 
