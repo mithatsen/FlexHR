@@ -8803,8 +8803,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		// By default the stirngs will be in the plugin source and here can override it
 		translate: {
 			records: {
-				processing: 'Please wait...',
-				noRecords: 'No records found',
+				processing: 'Lütfen bekleyin...',
+				noRecords: 'Kayıt bulunamadı',
 			},
 			toolbar: {
 				pagination: {
@@ -8819,7 +8819,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 							select: 'Select page size',
 							all: 'all',
 						},
-						info: 'Showing {{start}} - {{end}} of {{total}}',
+                        info: '{{total}} Kayıttan {{start}} - {{end}} arasındaki kayıtlar gösteriliyor',
 					},
 				},
 			},

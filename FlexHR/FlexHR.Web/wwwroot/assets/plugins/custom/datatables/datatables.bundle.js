@@ -11344,7 +11344,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sProcessing": "Processing...",
+				"sProcessing": "İşleniyor...",
 
 
 				/**
