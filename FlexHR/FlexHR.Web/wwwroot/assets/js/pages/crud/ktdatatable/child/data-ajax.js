@@ -49,7 +49,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                     field: 'staffPaymentId',
                     title: '#',
                     sortable: 'asc',
-                    width: 40
+                    width: 40,
                 }, {
                     field: 'nameSurname',
                     title: 'Ad Soyad',
@@ -83,8 +83,12 @@ var KTDatatableChildRemoteDataDemo = function () {
                     }
                 }, {
                     field: 'amount',
-                    title: 'Tutar',
+                    title: 'Toplam Tutar',
                     sortable: 'asc',
+                    template: function (row) {
+
+                        return row.amount + " " + row.currencyType;
+                    }
                 }, {
                     field: 'installment',
                     title: 'Taksit Miktarý',
@@ -186,8 +190,12 @@ var KTDatatableChildRemoteDataDemo = function () {
                         },
                     }, {
                         field: 'installmentAmount',
-                        title: 'Tutar',
-                        sortable: true,
+                        title: 'Taksit Tutarý',
+                        sortable: true, 
+                        template: function (row) {
+
+                            return row.installmentAmount + " " + row.currencyType;
+                        }
                     }, {
                         field: 'isPaid',
                         title: 'Durumu',

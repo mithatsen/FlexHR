@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlexHR.DTO.Dtos.StaffPaymentDtos;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,6 +18,7 @@ namespace FlexHR.DTO.Dtos.StaffSalaryDtos
         public decimal? IncomePerShiftHour { get; set; }
         public decimal? TotalDeservedSalary { get; set; }
         public decimal? NetSalary { get; set; }
+        public List<ListTakePaymentDto> TakePayments { get; set; }
 
     }
 }
