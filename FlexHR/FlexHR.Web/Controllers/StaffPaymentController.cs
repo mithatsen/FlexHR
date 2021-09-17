@@ -44,7 +44,7 @@ namespace FlexHR.Web.Controllers
             _appUserService = appUserService;
             _takePaymentService = takePaymentService;
         }
-        [Authorize(Roles = "ViewStaffPaymentInfo,Manager")]
+        [Authorize(Roles = "ViewStaffPaymentInfo,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))

@@ -36,7 +36,7 @@ namespace FlexHR.Web.Controllers
             _appUserService = appUserService;
             _roleManager = roleManager;
         }
-        [Authorize(Roles = "ViewStaffGeneralPage,Manager")]
+        [Authorize(Roles = "ViewStaffGeneralPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))

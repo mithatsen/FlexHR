@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 'use strict';
 // Class definition
 
@@ -456,3 +458,4 @@ function DeleteInstallment(id) {
 }
 
 
+>>>>>>> 9e6bb0db3de9971750ec502b5505c8a9baf554f1

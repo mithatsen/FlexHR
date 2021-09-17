@@ -27,7 +27,7 @@ namespace FlexHR.Web.Controllers
             _mapper = mapper;
             _staffPersonelInfoService = staffPersonelInfoService;
         }
-        [Authorize(Roles = "ViewStaffPersonalInfoPage,Manager")]
+        [Authorize(Roles = "ViewStaffPersonalInfoPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))

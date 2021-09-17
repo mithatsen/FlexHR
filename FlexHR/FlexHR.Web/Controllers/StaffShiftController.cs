@@ -31,7 +31,7 @@ namespace FlexHR.Web.Controllers
             _generalSubTypeService = generalSubTypeService;
             _appUserService = appUserService;
         }
-        [Authorize(Roles = "ViewStaffShiftPage,Manager")]
+        [Authorize(Roles = "ViewStaffShiftPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))

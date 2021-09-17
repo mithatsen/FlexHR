@@ -37,7 +37,7 @@ namespace FlexHR.Web.Controllers
             _leaveRuleService = leaveRuleService;
             _staffService = staffService;
         }
-        [Authorize(Roles = "ViewStaffLeavePage,Manager")]
+        [Authorize(Roles = "ViewStaffLeavePage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))

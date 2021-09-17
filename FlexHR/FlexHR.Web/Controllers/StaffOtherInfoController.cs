@@ -35,7 +35,7 @@ namespace FlexHR.Web.Controllers
             _townService = townService;
             _cityService = cityService;
         }
-        [Authorize(Roles = "ViewStaffOtherInfoPage,Manager")]
+        [Authorize(Roles = "ViewStaffOtherInfoPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))
