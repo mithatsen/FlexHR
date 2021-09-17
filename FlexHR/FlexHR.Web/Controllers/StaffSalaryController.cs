@@ -35,7 +35,7 @@ namespace FlexHR.Web.Controllers
             _companyBranchService = companyBranchService;
             _staffCareerService = staffCareerService;
         }
-        [Authorize(Roles = "YeniRol,Manager")]
+        [Authorize(Roles = "YeniRol,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))

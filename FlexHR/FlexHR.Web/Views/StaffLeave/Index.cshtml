@@ -76,34 +76,42 @@
                                             {
                                                 <th>İşlemler</th>
                                             }
+                                            else
+                                            {
+                                                <th width="1"></th>
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                            <tr>
+                                        <tr>
 
-                                                <td>@item.LeaveStartDate.ToString("d")</td>
+                                            <td>@item.LeaveStartDate.ToString("d")</td>
 
-                                                <td>@item.LeaveEndDate.ToString("d")</td>
+                                            <td>@item.LeaveEndDate.ToString("d")</td>
 
-                                                <td>@item.TotalDay Gün</td>
-                                                <td>@item.LeaveType</td>
-                                                <td>@item.Description</td>
-                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
-                                                @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                                {
-                                                    <td>
-                                                        <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
-                                                            <i class="la la-edit text-warning"></i>
-                                                        </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" onclick=" DeleteStaffLeave(@item.StaffLeaveId)" title="Sil">
+                                            <td>@item.TotalDay Gün</td>
+                                            <td>@item.LeaveType</td>
+                                            <td>@item.Description</td>
+                                            <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                            @if ((User.IsInRole("UpdateDeleteLeave") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <td>
+                                                    <a id="CareerUpdateBtn" onclick="LeaveUpdate(@item.StaffLeaveId)" class="btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffLeaveUpdateModal">
+                                                        <i class="la la-edit text-warning"></i>
+                                                    </a>
+                                                    <a class="btn btn-sm btn-clean btn-icon" onclick=" DeleteStaffLeave(@item.StaffLeaveId)" title="Sil">
 
-                                                            <i class="la la-trash text-danger"></i>
-                                                        </a>
-                                                    </td>
-                                                }
-                                            </tr>
+                                                        <i class="la la-trash text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                        </tr>
 
                                         }
                                     </tbody>
@@ -235,7 +243,7 @@
 
                                         </div>
                                         <div class="col-md-12">
-                                           
+
 
                                             <div class="form-group row">
                                                 <label>Açıklama</label>
@@ -276,7 +284,7 @@
                         <button type="button" class="btn btn-light-primary font-weight-bold " data-dismiss="modal">Vazgeç</button>
                         <button type="button" onclick="leaveClickFunction()" id="btnNewStaff" class="btn btn-primary font-weight-bold">Kaydet</button>
                     </div>
-                    
+
                 </div>
             </form>
         </div>

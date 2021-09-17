@@ -27,7 +27,7 @@ namespace FlexHR.Web.Controllers
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
         }
-        [Authorize(Roles = "ViewStaffDebitPage,Manager")]
+        [Authorize(Roles = "ViewStaffDebitPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))

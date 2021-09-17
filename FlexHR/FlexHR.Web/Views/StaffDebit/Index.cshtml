@@ -59,38 +59,46 @@
                                             {
                                                 <th>İşlemler</th>
                                             }
+                                            else
+                                            {
+                                                <th width="1"></th>
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                            <tr>
+                                        <tr>
 
-                                                <td>@item.DebitGeneralSubTypeName</td>
-                                                <td>@item.SerialNumber</td>
-                                                <td>@item.IssueDate.ToString("dd.MM.yyyy")</td>
-                                                @if (item.ReturnDate != null)
-                                                {
-                                                    <td>@item.ReturnDate.Value.ToString("dd.MM.yyyy")</td>
-                                                }
-                                                else
-                                                {
-                                                    <td> - </td>
-                                                }
-                                                <td>@item.Description</td>
-                                                @if ((User.IsInRole("UpdateDeleteDebit") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                                {
-                                                    <td>
-                                                        <a id="DebitUpdateBtn" onclick="DebitUpdate(@item.StaffDebitId)" class="btn btn-sm btn-clean btn-icon" title="Edit Debits" data-toggle="modal">
-                                                            <i class="la la-edit text-warning"></i>
-                                                        </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffDebit(@item.StaffDebitId)" title="Sil">
+                                            <td>@item.DebitGeneralSubTypeName</td>
+                                            <td>@item.SerialNumber</td>
+                                            <td>@item.IssueDate.ToString("dd.MM.yyyy")</td>
+                                            @if (item.ReturnDate != null)
+                                            {
+                                                <td>@item.ReturnDate.Value.ToString("dd.MM.yyyy")</td>
+                                            }
+                                            else
+                                            {
+                                                <td> - </td>
+                                            }
+                                            <td>@item.Description</td>
+                                            @if ((User.IsInRole("UpdateDeleteDebit") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <td>
+                                                    <a id="DebitUpdateBtn" onclick="DebitUpdate(@item.StaffDebitId)" class="btn btn-sm btn-clean btn-icon" title="Edit Debits" data-toggle="modal">
+                                                        <i class="la la-edit text-warning"></i>
+                                                    </a>
+                                                    <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffDebit(@item.StaffDebitId)" title="Sil">
 
-                                                            <i class="la la-trash text-danger"></i>
-                                                        </a>
-                                                    </td>
-                                                }
-                                            </tr>
+                                                        <i class="la la-trash text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>

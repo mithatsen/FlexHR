@@ -73,6 +73,10 @@
                                             {
                                                 <th width="12%">İşlemler</th>
                                             }
+                                            else
+                                            {
+                                                <th width="1"></th>
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -520,20 +524,20 @@
 
                 $("#IsCheckedApprove").prop("checked", true)
             }
-          
-            
+
+
         });
-    
+
         $('#IsCheckedApprove').on('change', function () {
             debugger;
-            if ($("#IsCheckedApprove").is(":checked")==false) {
+            if ($("#IsCheckedApprove").is(":checked") == false) {
 
                 $("#IsPaidApprove").prop("checked", false)
             }
 
         });
-            
-  
+
+
 
         $('input[name="PaymentDate"]').mask('00.00.0000');
 

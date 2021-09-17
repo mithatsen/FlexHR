@@ -43,7 +43,7 @@ namespace FlexHR.Web.Controllers
             var unaccentedText = String.Join("", text.Normalize(NormalizationForm.FormD).Where(c => char.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.NonSpacingMark));
             return unaccentedText.Replace("ı", "i");
         }
-        [Authorize(Roles = "ViewStaffFilePage,Manager")]
+        [Authorize(Roles = "ViewStaffFilePage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))

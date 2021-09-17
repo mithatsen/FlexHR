@@ -56,34 +56,42 @@
                                             {
                                                 <th width="10%">İşlemler</th>
                                             }
+                                            else
+                                            {
+                                                <th width="1"></th>
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                            <tr>
+                                        <tr>
 
-                                                <td>@item.StartDate.ToString("g")</td>
+                                            <td>@item.StartDate.ToString("g")</td>
 
-                                                <td>@item.ShiftHour Saat @item.ShiftMinute Dakika</td>
+                                            <td>@item.ShiftHour Saat @item.ShiftMinute Dakika</td>
 
-                                                <td>@item.Description</td>
-                                                <td>@item.GeneralStatusGeneralSubTypeId</td>
+                                            <td>@item.Description</td>
+                                            <td>@item.GeneralStatusGeneralSubTypeId</td>
 
-                                                @if ((User.IsInRole("UpdateDeleteShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
-                                                {
-                                                    <td>
-                                                        <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
-                                                            <i class="la la-edit text-warning"></i>
-                                                        </a>
-                                                        <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffShift(@item.StaffShiftId)" title="Sil">
+                                            @if ((User.IsInRole("UpdateDeleteShift") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <td>
+                                                    <a id="CareerUpdateBtn" onclick="ShiftUpdate(@item.StaffShiftId)" class=" btn btn-sm btn-clean btn-icon" title="Edit details" data-toggle="modal" data-target="#staffShiftModal">
+                                                        <i class="la la-edit text-warning"></i>
+                                                    </a>
+                                                    <a class="btn btn-sm btn-clean btn-icon" onclick="DeleteStaffShift(@item.StaffShiftId)" title="Sil">
 
-                                                            <i class="la la-trash text-danger"></i>
-                                                        </a>
+                                                        <i class="la la-trash text-danger"></i>
+                                                    </a>
 
-                                                    </td>
-                                                }
-                                            </tr>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                        </tr>
 
                                         }
                                     </tbody>

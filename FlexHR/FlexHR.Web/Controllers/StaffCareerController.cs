@@ -33,7 +33,7 @@ namespace FlexHR.Web.Controllers
             _mapper = mapper;
             _companyBranchService = companyBranchService;
         }
-        [Authorize(Roles = "ViewStaffCareerPage,Manager")]
+        [Authorize(Roles = "ViewStaffCareerPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {
             if (await IsAuthority(id))
