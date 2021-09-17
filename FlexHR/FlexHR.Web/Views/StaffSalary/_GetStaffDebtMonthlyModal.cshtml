@@ -1,0 +1,41 @@
+﻿@model List<GetMonthlyTakePaymentViewModel>
+
+
+
+<div class="modal fade" id="GetDebtMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 id="" class="card-label font-weight-bolder text-dark lead">
+                        <i class="fas fa-credit-card mr-2 text-dark"></i>Bu Ay Bulunan Ödemeler (Avans-İcra)
+                    </h3>
+
+                </div>
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class='table table-light mx-auto text-center'>
+                    <tr class="table table-secondary" >
+                        <th width="60%">Türü</th>
+                        <th width="40%">Tutar</th>
+                      
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="bg-white">
+                            @*<td>  <img style="width: 150px; height: 150px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.FileName" /></td>*@
+                            <td>@item.PaymentType</td>
+                            <td>@item.InstallmentAmount @item.CurrencyType</td>                      
+                        </tr>
+                    }
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
+using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.DTO.Dtos.StaffSalaryDtos;
 using FlexHR.DTO.ViewModels;
 using FlexHR.Entity.Concrete;
@@ -25,8 +26,9 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffService _staffService;
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IStaffCareerService _staffCareerService;
+        private readonly ITakePaymentService _takePaymentService;
 
-        public StaffSalaryController(IMapper mapper, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager, IStaffService staffService, IStaffSalaryService staffSalaryService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService) : base(userManager)
+        public StaffSalaryController(IMapper mapper, ITakePaymentService takePaymentService, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager, IStaffService staffService, IStaffSalaryService staffSalaryService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService) : base(userManager)
         {
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
@@ -34,6 +36,7 @@ namespace FlexHR.Web.Controllers
             _staffSalaryService = staffSalaryService;
             _companyBranchService = companyBranchService;
             _staffCareerService = staffCareerService;
+            _takePaymentService = takePaymentService;
         }
         [Authorize(Roles = "YeniRol,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
@@ -44,7 +47,6 @@ namespace FlexHR.Web.Controllers
                 ViewBag.CurrencyList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Currency), "GeneralSubTypeId", "Description");
                 ViewBag.PeriodList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.Period), "GeneralSubTypeId", "Description");
                 ViewBag.FeeTypeList = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.FeeType), "GeneralSubTypeId", "Description");
-
                 ViewBag.StaffSalaryUpdateStatus = TempData["StaffSalaryUpdateStatus"];
                 return View(_mapper.Map<ListStaffSalaryDto>(salaryInfo));
             }
@@ -110,9 +112,11 @@ namespace FlexHR.Web.Controllers
 
                     }
                 }
-        
+                
+               
                 models.Add(new ListStaffSalaryMonthlyDto
                 {
+                    StaffId=item.StaffId,
                     NameSurname = item.NameSurname,
                     CardNo = item.PersonalNo,
                     Branch=branch,
@@ -123,17 +127,32 @@ namespace FlexHR.Web.Controllers
                     TotalOvertimeHour = totalOvertimeHour.Hours + " sa " + totalOvertimeHour.Minutes + " dk ",
                     TotalDeservedSalary= Math.Round((incomePerHour * (totalWorkingHour.Hours + totalWorkingHour.Minutes / 60) + salaryInfo.OvertimePayPerHour * (totalOvertimeHour.Hours + totalWorkingHour.Minutes / 60)??0),2),
                     NetSalary=salaryInfo.Salary,
-                    CurrencyTypeName= _generalSubTypeService.GetDescriptionByGeneralSubTypeId(salaryInfo.CurrencyGeneralSubTypeId)
-
-//                    TotalDeservedSalary= (decimal)(incomePerHour * (totalWorkingHour.Hours + (decimal)totalWorkingHour.Minutes / 60)) + (decimal)(salaryInfo.OvertimePayPerHour * (totalOvertimeHour.Hours + (decimal)totalOvertimeHour.Minutes / 60)),
-//                    NetSalary=salaryInfo.Salary
-//>>>>>>> 690af50837d30d96f46c2c47a3f991a5f7904c62
+                    CurrencyTypeName= _generalSubTypeService.GetDescriptionByGeneralSubTypeId(salaryInfo.CurrencyGeneralSubTypeId),
+                
                 });
             }
             StaffSalaryMonthlyViewModal listModel = new StaffSalaryMonthlyViewModal { filterDate = date, ListStaffSalaryMonthly = models };
             return View(listModel);
         }
+        [HttpGet]
+        public IActionResult GetDebtMonthlyModal(int id,int monthDate,int yearDate)
+        {
+            var takePayments = _takePaymentService.Get(x => x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate, null, "StaffPayment").Where(x => x.StaffPayment.StaffId == id).ToList();
+            var takePaymentVmList = new List<GetMonthlyTakePaymentViewModel>();
+            foreach (var temp in takePayments)
+            {
+                var takePaymentVm = new GetMonthlyTakePaymentViewModel
+                {
+                    CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(temp.StaffPayment.CurrencyGeneralSubTypeId),
+                    InstallmentAmount = temp.InstallmentAmount,
+                    PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(temp.StaffPayment.PaymentTypeGeneralSubTypeId)
+                };
+                takePaymentVmList.Add(takePaymentVm);
+            }
+            return PartialView("_GetStaffDebtMonthlyModal",takePaymentVmList);
+        }
     }
 
-
+   
 }
+

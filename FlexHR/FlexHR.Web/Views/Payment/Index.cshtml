@@ -20,7 +20,7 @@
             @if ((User.IsInRole("ViewLeaveRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <!--begin::Actions-->
-                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_1" asp-controller="Leave" asp-action="Index" asp-route-id="@Model">
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 "  asp-controller="Leave" asp-action="Index" asp-route-id="@Model">
                     <span class="nav-icon mr-2">
                         <span class="svg-icon mr-3">
                             <i class="fas fa-plane-departure"></i>
@@ -31,7 +31,7 @@
             }
             @if ((User.IsInRole("ViewPaymentRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 active" id="tab_2" asp-controller="Payment" asp-action="Index" asp-route-id="@Model">
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 active" asp-controller="Payment" asp-action="Index" asp-route-id="@Model">
                     <span class="nav-icon mr-2">
                         <span class="svg-icon mr-3">
                             <i class="fas fa-chart-bar"></i>
@@ -42,7 +42,7 @@
             }
             @if ((User.IsInRole("ViewShiftRequestPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 " id="tab_2" asp-controller="Shift" asp-action="Index" asp-route-id="@Model">
+                <a class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1 "asp-controller="Shift" asp-action="Index" asp-route-id="@Model">
                     <span class="nav-icon mr-2">
                         <span class="svg-icon mr-3">
                             <i class="fas fa-chart-bar"></i>
@@ -65,7 +65,7 @@
                 @if ((User.IsInRole("ViewPaymentRequestPendingApprovalPaymentsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
-                        <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                        <a id="tab2_btn" class="nav-link" data-toggle="tab" href="#tab_2">
                             <span class="nav-icon mr-2">
                                 <span class="svg-icon mr-3">
                                     <i class="fas fa-user-clock"></i>
@@ -78,7 +78,7 @@
                 @if ((User.IsInRole("ViewPaymentRequestApprovedPaymentsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
-                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                        <a id="tab3_btn" class="nav-link" data-toggle="tab" href="#tab_3">
                             <span class="nav-icon mr-2">
                                 <span class="svg-icon mr-3">
                                     <i class="fas fa-user-check"></i>
@@ -91,7 +91,7 @@
                 @if ((User.IsInRole("ViewPaymentRequestRejectedPaymentsTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item mr-3">
-                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
+                        <a id="tab4_btn" class="nav-link" data-toggle="tab" href="#tab_4">
                             <span class="nav-icon mr-2">
                                 <span class="svg-icon mr-3">
                                     <i class="fas fa-user-times"></i>
@@ -109,7 +109,7 @@
             <div class="tab-content pt-5">
 
                 @*Onay bekleyenler*@
-                <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
+                <div class="tab-pane" id="tab_2" role="tabpanel">
                     <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_14">
                         <thead>
                             <tr>
@@ -177,7 +177,7 @@
 
 
                 @*onaylananlar*@
-                <div class="tab-pane" id="kt_apps_contacts_view_tab_3" role="tabpanel">
+                <div class="tab-pane" id="tab_3" role="tabpanel">
                     <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_15">
                         <thead>
                             <tr>
@@ -238,7 +238,7 @@
                     </table>
                 </div>
                 @*reddedilenler*@
-                <div class="tab-pane" id="kt_apps_contacts_view_tab_4" role="tabpanel">
+                <div class="tab-pane" id="tab_4" role="tabpanel">
                     <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_16">
                         <thead>
                             <tr>
