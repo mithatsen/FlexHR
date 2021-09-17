@@ -6,7 +6,7 @@ var KTDatatableChildRemoteDataDemo = function () {
 
     // demo initializer
     var demo = function () {
-        var datatable = $('#kt_datatable').KTDatatable({
+        var datatable = $('#kt_datatable4545').KTDatatable({
             // datasource definition
             data: {
                 type: 'remote',
@@ -201,6 +201,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                         title: 'Durumu',
                         // callback function support for column rendering
                         template: function (row) {
+                            console.log(row);
                             if (row.isPaid == true) {
                                 return '<span class="label label-light-success label-inline font-weight-bold label-lg">Ödeme Alýndý</span>';
                             } else {
@@ -219,7 +220,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                             if (row.isPaid == true) {
                                 return '\
                                      <div class="text-center">\
-	                                    <a onclick="getInstallmentUpdateModal('+row.id+')" class="btn btn-sm btn-warning btn-icon mr-2" title="Düzenle">\
+	                                    <a onclick="getInstallmentUpdateModal('+ row.id + ',' + row+')" class="btn btn-sm btn-warning btn-icon mr-2" title="Düzenle">\
 	                                        <span class="svg-icon svg-icon-md">\
                                                 <i class="fa fa-edit text-white"></i>\
 	                                        </span>\
@@ -349,7 +350,7 @@ function AddInstallmentButton() {
 
 //update ýnstallment
 
-function getInstallmentUpdateModal(id) {
+function getInstallmentUpdateModal(id,row) {
 
     var modelContent = $("#InstallmentUpdateModalDiv")
     $("#InstallmentUpdateModalDiv").empty();

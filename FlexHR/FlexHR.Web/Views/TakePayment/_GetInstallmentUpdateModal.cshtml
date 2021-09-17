@@ -148,7 +148,9 @@
                                 text: "Kaydınız güncellendi.",
                                 icon: "success",
                             }).then(function () {
-                                window.location.reload()
+                                                           
+                                datatable.ajax.reload(null, false);
+
                             })
                         }
 

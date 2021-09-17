@@ -75,6 +75,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             CreateMap<AddInstallmentDto, TakePayment>().ReverseMap();
             CreateMap<ListInstallmentDto, TakePayment>().ReverseMap();
             CreateMap<TakePayment, ListTakePaymentDto>().ForMember(d => d.CurrencyGeneralSubTypeId, o => o.MapFrom(s => s.StaffPayment.CurrencyGeneralSubTypeId)); ;
+            CreateMap<ListTakePaymentDto, TakePayment>();
             CreateMap<AddStaffPaymentDto, StaffPayment>().ReverseMap();
             CreateMap<StaffPayment, ListStaffPaymentDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));
             CreateMap<StaffPayment, ListStaffPaymentWithUserActiveInfoDto>().ForMember(d => d.NameSurname, o => o.MapFrom(s => s.Staff.NameSurname));

@@ -16,3 +16,4 @@ namespace FlexHR.DTO.Dtos.StaffPaymentDtos
         public bool IsActive { get; set; }
     }
 }
+

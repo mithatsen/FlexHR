@@ -91,6 +91,7 @@
                             <th>Saatlik Ücreti</th>
                             <th>Saatlik Ek Mesai Ücreti</th>
                             <th>Toplam Hakedilen Maaş</th>
+                            <th>Borçlar</th>
                             <th>Aldığı Maaş</th>
                         </tr>
                     </thead>
@@ -107,16 +108,15 @@
                                 <td>@item.IncomePerHour @item.CurrencyTypeName</td>
                                 <td>@item.IncomePerShiftHour @item.CurrencyTypeName</td>
                                 <td>@item.TotalDeservedSalary @item.CurrencyTypeName</td>
+
+                                <td><a onclick="GetDebtMonthly(@item.StaffId)" class="btn btn-outline-info btn-sm">Detay</a></td>
                                 <td>@item.NetSalary @item.CurrencyTypeName</td>
 
-                                @*      <td>@item.IncomePerHour</td>
-                                    <td>@item.IncomePerShiftHour</td>
-                                    <td>@Math.Round(item.TotalDeservedSalary??0,2)</td>
-                                    <td>@item.NetSalary</td>  *@
                             </tr>
-
                         }
                     </tbody>
+                    <!-- Modal -->
+
                 </table>
                 <!--end: Datatable-->
             </div>
@@ -125,6 +125,8 @@
     </div>
     <!--end::Container-->
 </div>
+@* update leave modal*@
+<div id="GetDebtMonthlyModalDiv"></div>
 <!--end::Entry-->
 @section Scripts{
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
@@ -135,4 +137,40 @@
             format: 'MM.yyyy'
         });
     </script>
+
+    <script>
+        function GetDebtMonthly(id) {
+            var modelContent = $("#GetDebtMonthlyModalDiv")
+            $("#GetDebtMonthlyModalDiv").empty();
+            var formData = {
+                MonthDate:@Html.Raw(Json.Serialize(@Model.filterDate.Month)),
+                YearDate:@Html.Raw(Json.Serialize(@Model.filterDate.Year)),
+            };
+           
+            console.log(formData);
+            $.ajax({
+                method: "GET",
+                url: "/StaffSalary/GetDebtMonthlyModal/" + id,
+                dataType: "html",
+                data: formData,
+                cache: false,
+            }).done(function (content) {
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#GetDebtMonthlyModal").modal("show");
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+    </script>
+
+
+
+
+
+
+
 }

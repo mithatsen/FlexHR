@@ -1,4 +1,24 @@
-﻿function approvePayment(id) {
+﻿$(document).ready(function () {
+    if (localStorage.PaymentTabId == "tab_3") {
+        $("#tab_3").addClass("active");
+        $("#tab3_btn").addClass("active");
+        $("#tab_2").removeClass("active");
+        $("#tab2_btn").removeClass("active");
+    }
+    else {
+        $("#tab_2").addClass("active");
+        $("#tab2_btn").addClass("active");
+        $("#tab_3").removeClass("active");
+        $("#tab3_btn").removeClass("active");
+    } 
+});
+$("#tab2_btn").click(function () {
+    localStorage.PaymentTabId = "0";
+});
+$("#tab3_btn").click(function () {
+    localStorage.PaymentTabId = "tab_3";
+});
+function approvePayment(id) {
     Swal.fire({
         title: "Onaylamak ister misiniz ?",
         text: "Bunu geri alamazsınız!",
@@ -21,6 +41,7 @@
                         icon: "success",
                         showCancelButton: false
                     }).then(function () {
+
                         window.location.reload();
                     })
 
@@ -115,6 +136,7 @@ function isPaidPayment(id) {
                         showCancelButton: false
                     }).then(function () {
                         localStorage.SingleRoleAssignUserId = id;
+                        localStorage.PaymentTabId = "tab_3";
                         window.location.reload();
                     })
 
