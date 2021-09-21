@@ -17,6 +17,9 @@ namespace FlexHR.DTO.Dtos.StaffPersonalInfoDtos
         public int? BloodGroupGeneralSubTypeId { get; set; }
         public int? EducationStatusGeneralSubTypeId { get; set; }
         public int? EducationLevelGeneralSubTypeId { get; set; }
+        public string PartnerWorkingStatus { get; set; }
+        public int ChildrenCount { get; set; }
+        public bool IsRetired { get; set; }
         public bool IsActive { get; set; } = true;
 
     }

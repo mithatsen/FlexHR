@@ -71,6 +71,11 @@
                                     <div class="col-lg-12 col-xl-12">
                                         <button id="btnGetCompanyBranchs" onclick="GetCompanyBranches()" class="form-control form-control-solid form-control-lg btn btn-primary"> Şubeleri Listele </button>
                                     </div>
+                                </div>  
+                                <div class="form-group row">
+                                    <div class="col-lg-12 col-xl-12">
+                                        <button id="btnGetColorCodes" onclick="GetColorCodes()" class="form-control form-control-solid form-control-lg btn btn-primary">Puantaj Renk Düzenle</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -124,6 +129,10 @@
             else if (localStorage.SystemVariableId == 1004) {
                 GetCompanyBranches();
                 $("#btnGetCompanyBranchs").addClass("active");
+            }
+            else if (localStorage.SystemVariableId == 1005) {
+                GetColorCodes();
+                $("#btnGetColorCodes").addClass("active");
             }
         });
     </script>

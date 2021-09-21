@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FlexHR.Business.Interface;
+using FlexHR.DTO.Dtos.ColorCodeDtos;
 using FlexHR.DTO.Dtos.CompanyBranchDtos;
 using FlexHR.DTO.Dtos.CompanyDtos;
 using FlexHR.DTO.Dtos.GeneralSubTypeDtos;
@@ -33,10 +34,11 @@ namespace FlexHR.Web.Controllers
         private readonly IMapper _mapper;
         private readonly ICompanyService _companyService;
         private readonly IAppRoleService _appRoleService;
+        private readonly IColorCodeService _colorCodeService;
         private readonly RoleManager<AppRole> _roleManager;
 
         public SystemVariableController(IGeneralTypeService generalTypeService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,
-            ICompanyService companyService,  ICompanyBranchService companyBranchService, IAppRoleService appRoleService, RoleManager<AppRole> roleManager)
+            ICompanyService companyService,  ICompanyBranchService companyBranchService, IAppRoleService appRoleService, RoleManager<AppRole> roleManager, IColorCodeService colorCodeService)
         {
             _generalTypeService = generalTypeService;
             _generalSubTypeService = generalSubTypeService;
@@ -47,6 +49,7 @@ namespace FlexHR.Web.Controllers
             _appRoleService = appRoleService;
             _companyBranchService = companyBranchService;
             _roleManager = roleManager;
+            _colorCodeService = colorCodeService;
         }
         [Authorize(Roles = "ViewSystemVariablePage,Manager")]
         public IActionResult Index()
@@ -81,6 +84,11 @@ namespace FlexHR.Web.Controllers
         {
             var result = _companyService.GetById(id);
             return PartialView("_GetCompanyUpdateModal", _mapper.Map<ListCompanyDto>(result));
+        } 
+        public IActionResult GetUpdateColorCodeModal(int id)
+        {
+            var result = _colorCodeService.GetById(id);
+            return PartialView("_GetColorCodeUpdateModal", _mapper.Map<ListColorCodeDto>(result));
         }
         public IActionResult GetUpdateRoleModal(int id)
         {
@@ -141,6 +149,19 @@ namespace FlexHR.Web.Controllers
             try
             {
                 _companyService.Add(_mapper.Map<Company>(model));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        } 
+        [HttpPost]
+        public bool AddColorCode(AddColorCodeDto model)
+        {
+            try
+            {
+                _colorCodeService.Add(_mapper.Map<ColorCode>(model));
                 return true;
             }
             catch (Exception)
@@ -230,6 +251,14 @@ namespace FlexHR.Web.Controllers
         {
             model.IsActive = true;
             _companyService.Update(_mapper.Map<Company>(model));
+            TempData["GeneralSubTypeUpdateStatus"] = "true";
+            return RedirectToAction("Index");
+        }   
+        [HttpPost]
+        public IActionResult UpdateColorCode(ListColorCodeDto model)
+        {
+            model.IsActive = true;
+            _colorCodeService.Update(_mapper.Map<ColorCode>(model));
             TempData["GeneralSubTypeUpdateStatus"] = "true";
             return RedirectToAction("Index");
         }
@@ -323,6 +352,21 @@ namespace FlexHR.Web.Controllers
             }
         }
         [HttpPost]
+        public bool DeleteColorCode(int id)
+        {
+            try
+            {
+                var temp = _colorCodeService.GetById(id);
+                temp.IsActive = false;
+                _colorCodeService.Update(temp);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        } 
+        [HttpPost]
         public bool DeleteCompanyBranch(int id)
         {
             try
@@ -386,9 +430,15 @@ namespace FlexHR.Web.Controllers
            
 
             return PartialView("_GetCompanyBranchTable", temp);
-        }
-        
+        }  
+        public IActionResult GetColorCodeList()
+        {
+            var result = _colorCodeService.Get(x => x.IsActive == true);
+            var temp = _mapper.Map<List<ListColorCodeDto>>(result);  // ÖĞREN İÇ İÇE MAP
+           
 
+            return PartialView("_GetColorCodeTable", temp);
+        }
 
     }
 }

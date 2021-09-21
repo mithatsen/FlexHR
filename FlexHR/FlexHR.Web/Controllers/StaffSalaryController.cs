@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -40,7 +41,7 @@ namespace FlexHR.Web.Controllers
         }
         [Authorize(Roles = "YeniRol,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
-        {
+        {           
             if (await IsAuthority(id))
             {
                 var salaryInfo = _staffSalaryService.Get(x => x.StaffId == id).FirstOrDefault();
@@ -75,6 +76,7 @@ namespace FlexHR.Web.Controllers
         [Authorize(Roles = "YeniRol,Manager")]
         public IActionResult GetStaffSalaryMonthlyList(DateTime dateTime)
         {
+            TempData["Active"] = TempdataInfo.Salary;
             DateTime date = dateTime.Year != 0001 ? dateTime : DateTime.Now;
             var staffs = _staffService.Get(x => x.IsActive == true,null,"StaffCareer");
             var result = _staffSalaryService.GetStaffSalaryMonthly(date);

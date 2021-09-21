@@ -59,42 +59,53 @@ namespace FlexHR.Web.Controllers
             var shifts = _mapper.Map<List<ListStaffShiftOnDashboardDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff")).Take(4).ToList();
             var payments = _mapper.Map<List<ListStaffPaymentOnDashboardDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff").Take(4).ToList());
             var leaves = _mapper.Map<List<ListStaffLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff,LeaveType").Take(4).ToList());
-            var birthDates = _mapper.Map<List<ListStaffBirthOnDashboardDto>>(_staffPersonelInfoService.Get(p => p.IsActive == true && p.Staff.IsActive==true && (( p.BirthDate.Value.Month == DateTime.Now.Month && p.BirthDate.Value.Day>= DateTime.Now.Day)||(p.BirthDate.Value.Month - DateTime.Now.Month==1)), null, "Staff").Take(4).OrderBy(p=>p.BirthDate.Value.ToString("M")).Take(4).ToList());
+            var currentlyOnLeave = _mapper.Map<List<ListStaffLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.LeaveStartDate <= DateTime.Now && p.LeaveEndDate >= DateTime.Now && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.Staff.IsActive == true, null, "Staff,LeaveType").Take(4).ToList());
+            var birthDates = _mapper.Map<List<ListStaffBirthOnDashboardDto>>(_staffPersonelInfoService.Get(p => p.IsActive == true && p.Staff.IsActive==true && (( p.BirthDate.Value.Month == DateTime.Now.Month && p.BirthDate.Value.Day>= DateTime.Now.Day)||(p.BirthDate.Value.Month - DateTime.Now.Month==1)), null, "Staff").ToList());
+            foreach (var item in birthDates)
+            {
+                var year = DateTime.Now.Year;
+                var month = item.BirthDate.Value.Month;
+                var day = item.BirthDate.Value.Day;
+                var newDate =new DateTime(year, month, day);
+                item.BirthDate = newDate;
+            }
+            List<ListStaffBirthOnDashboardDto> sortedbirthList=new List<ListStaffBirthOnDashboardDto>();
+            sortedbirthList = (List<ListStaffBirthOnDashboardDto>)birthDates.OrderBy(x => x.BirthDate).ToList();
             var events = _mapper.Map<List<ListStaffEventOnDashboardDto>>(_eventService.Get(p => p.IsActive == true && p.Start > DateTime.Now).Take(4).ToList());
             var publicDays = _mapper.Map<List<ListStaffPublicDayOnDashboardDto>>(_publicHolidayService.Get(p=>p.IsActive == true && p.Start > DateTime.Now).Take(4).ToList());
             var upcomingLeaves = _mapper.Map<List<ListStaffUpcomingLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive == true && p.LeaveStartDate > DateTime.Now && p.Staff.IsActive == true, null, "Staff,LeaveType").Take(4).ToList());
-            foreach (var item in shifts)
-            {
-                var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
-                var genderId = temp.GenderGeneralSubTypeId != null ? temp.GenderGeneralSubTypeId : 54;
-                item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
-            }
-            foreach (var item in leaves)
-            {
-                var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
-                var genderId = temp.GenderGeneralSubTypeId != null ? temp.GenderGeneralSubTypeId : 54;
-                item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
-            }
-            foreach (var item in payments)
-            {
-                var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
-                var genderId = temp.GenderGeneralSubTypeId != null ? temp.GenderGeneralSubTypeId : 54;
-                item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
-            } 
-            foreach (var item in birthDates)
-            {
-                var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
-                var genderId = temp.GenderGeneralSubTypeId != null ? temp.GenderGeneralSubTypeId : 54;
-                item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
-            } 
-            foreach (var item in upcomingLeaves)
-            {
-                var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
-                var genderId = temp.GenderGeneralSubTypeId!=null? temp.GenderGeneralSubTypeId:54;
-                item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
-            }
+            //foreach (var item in shifts)
+            //{
+            //    var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
+            //    var genderId = temp.GenderGeneralSubTypeId != null ? temp.GenderGeneralSubTypeId : 54;
+            //    item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
+            //}
+            //foreach (var item in leaves)
+            //{
+            //    var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
+            //    var genderId = temp.GenderGeneralSubTypeId != null ? temp.GenderGeneralSubTypeId : 54;
+            //    item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
+            //}
+            //foreach (var item in payments)
+            //{
+            //    var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
+            //    var genderId = temp.GenderGeneralSubTypeId != null ? temp.GenderGeneralSubTypeId : 54;
+            //    item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
+            //} 
+            //foreach (var item in birthDates)
+            //{
+            //    var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
+            //    var genderId = temp.GenderGeneralSubTypeId != null ? temp.GenderGeneralSubTypeId : 54;
+            //    item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
+            //} 
+            //foreach (var item in upcomingLeaves)
+            //{
+            //    var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
+            //    var genderId = temp.GenderGeneralSubTypeId!=null? temp.GenderGeneralSubTypeId:54;
+            //    item.GenderGeneralSubTypeId = ((int)genderId != 52 && (int)genderId != 53) ? 54 : (int)genderId;
+            //}
 
-            var model = new ListDashboardViewModel { StaffShifts = shifts, StaffLeaves=leaves,StaffPayments=payments ,BirtDates=birthDates,Events=events,PublicDays=publicDays,UpcomingLeaves=upcomingLeaves};
+            var model = new ListDashboardViewModel { StaffShifts = shifts, StaffLeaves=leaves,StaffPayments=payments ,BirtDates= sortedbirthList, Events=events,PublicDays=publicDays,UpcomingLeaves=upcomingLeaves,CurrentlyOnLeave=currentlyOnLeave};
             return View(model);
         }
 
@@ -109,6 +120,18 @@ namespace FlexHR.Web.Controllers
       
 
             return PartialView("_GetApproveStaffLeaveModal",result);
+        }  
+        [HttpGet]
+        public IActionResult GetCurrentlyOnStaffLeaveModal(int id)
+        {
+            var temp=_staffLeaveService.Get(x=>x.StaffLeaveId==id,null,"Staff,LeaveType").FirstOrDefault();
+            var result=_mapper.Map<ListStaffLeaveOnDashboardDto>(temp);
+            var totalDayDeserved = CalculateTotalLeaveAmountDeservedBySeniority(temp.Staff.JobJoinDate);
+            var totalDayUsed = _staffLeaveService.Get(p => p.StaffId == temp.StaffId && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.LeaveTypeId == 14).Sum(p => p.TotalDay);
+            result.TotalRemainingDay = totalDayDeserved - totalDayUsed;
+      
+
+            return PartialView("_GetCurrentlyOnStaffLeaveModal", result);
         }
         [HttpGet]
         public IActionResult GetApproveStaffShiftModal(int id)

@@ -6,6 +6,7 @@
     $("#btnGetLeaveRules").removeClass("active");
     $("#btnGetRoles").removeClass("active");
     $("#btnGetCompanies").removeClass("active");
+    $("#btnGetColorCodes").removeClass("active");
     $("#btnGetCompanyBranchs").removeClass("active");
 
     var id = document.getElementById("kt_select2_1").value;
@@ -32,6 +33,7 @@ function GetLeaveTypes() {
     $("#btnGetCompanyBranchs").removeClass("active");
     $("#btnGetCompanies").removeClass("active");
     $("#btnGetLeaveRules").removeClass("active");
+    $("#btnGetColorCodes").removeClass("active");
     $("#btnGetLeaveTypes").addClass("active");
 
     var modelContent = $("#systemVariableTable")
@@ -57,6 +59,7 @@ function GetLeaveRules() {
     $("#btnGetRoles").removeClass("active");
     $("#btnGetCompanyBranchs").removeClass("active");
     $("#btnGetCompanies").removeClass("active");
+    $("#btnGetColorCodes").removeClass("active");
     $("#btnGetLeaveRules").addClass("active");
 
     var modelContent = $("#systemVariableTable")
@@ -83,6 +86,7 @@ function GetCompanies() {
     $("#btnGetLeaveTypes").removeClass("active");
     $("#btnGetLeaveRules").removeClass("active");
     $("#btnGetCompanyBranchs").removeClass("active");
+    $("#btnGetColorCodes").removeClass("active");
     $("#btnGetCompanies").addClass("active");
     var modelContent = $("#systemVariableTable")
     $("#systemVariableTable").empty();
@@ -106,6 +110,7 @@ function GetRoles() {
     $("#btnGetLeaveRules").removeClass("active");
     $("#btnGetCompanyBranchs").removeClass("active");
     $("#btnGetCompanies").removeClass("active");
+    $("#btnGetColorCodes").removeClass("active");
     $("#btnGetRoles").addClass("active");
     var modelContent = $("#systemVariableTable")
     $("#systemVariableTable").empty();
@@ -128,6 +133,7 @@ function GetCompanyBranches() {
     $("#btnGetLeaveRules").removeClass("active");
     $("#btnGetRoles").removeClass("active");
     $("#btnGetCompanies").removeClass("active");
+    $("#btnGetColorCodes").removeClass("active");
     $("#btnGetCompanyBranchs").addClass("active");
     var modelContent = $("#systemVariableTable")
     $("#systemVariableTable").empty();
@@ -135,6 +141,30 @@ function GetCompanyBranches() {
     $.ajax({
         method: "GET",
         url: "/SystemVariable/GetCompanyBranchList/",
+        dataType: "html",
+        cache: false,
+    }).done(function (content) {
+        if (content != null) {
+            modelContent.html(content);
+        }
+    }).fail(function (error) {
+        alert(error);
+    });
+}
+function GetColorCodes() {
+    debugger;
+    $("#btnGetLeaveTypes").removeClass("active");
+    $("#btnGetLeaveRules").removeClass("active");
+    $("#btnGetRoles").removeClass("active");
+    $("#btnGetCompanies").removeClass("active");
+    $("#btnGetCompanyBranchs").removeClass("active");
+    $("#btnGetColorCodes").addClass("active");
+    var modelContent = $("#systemVariableTable")
+    $("#systemVariableTable").empty();
+    localStorage.SystemVariableId = 1005;
+    $.ajax({
+        method: "GET",
+        url: "/SystemVariable/GetColorCodeList/",
         dataType: "html",
         cache: false,
     }).done(function (content) {

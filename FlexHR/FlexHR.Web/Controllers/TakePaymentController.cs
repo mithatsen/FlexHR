@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -25,6 +26,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult Index()
         {
+            TempData["Active"] = TempdataInfo.TakePayment;
             return View();
         }
         public IActionResult GetStaffPayments()

@@ -2,9 +2,6 @@
 @{
     ViewData["Title"] = "Kişisel Bilgiler";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-
-
 }
 @section Styles{
     <!--begin::Page Vendors Styles(used by this page)-->
@@ -37,7 +34,7 @@
                                         {
                                             <button class="btn btn-primary mr-2">Kaydet</button>
                                         }
-                                       
+
                                     </div>
                                 </div>
                                 <!--end::Header-->
@@ -50,7 +47,65 @@
 
                                             <div class="col-md-5">
                                                 <div class="form-group row">
-                                                    <label >Doğum Tarihi</label>
+                                                    <label>Kimlik Numarası</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group input-group-lg input-group-solid">
+
+                                                            <input asp-for="IdNumber" type="text" class="form-control form-control-lg form-control-solid" placeholder="Kimlik Numarası" />
+                                                            <input type="hidden" asp-for="StaffPersonelInfoId" />
+                                                            <input type="hidden" asp-for="StaffId" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label>Cinsiyet</label>
+                                                    <div class="input-group">
+                                                        <select style=" width: 100% !important;" id="Select4" asp-for="GenderGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.GenderList">
+                                                            <option selected value="-1">Seçiniz</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label>Medeni Hal</label>
+                                                    <div class="input-group">
+                                                        <select style=" width: 100% !important;" id="Select1" asp-for="MaritalStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.MaritalStatusList">
+                                                            <option selected value="-1">Seçiniz</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Çocuk Sayısı</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="ChildrenCount" type="text" class="form-control form-control-lg form-control-solid" placeholder="Çocuk Sayısı" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label>Eş Çalışma Durumu</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="PartnerWorkingStatus" type="text" class="form-control form-control-lg form-control-solid" placeholder="Eş Çalışma Durumu" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label></label>
+                                                    <div class="input-group col-form-label">
+                                                        <div class="checkbox-inline">
+                                                            <label class="checkbox checkbox-primary">
+                                                                <input id="isRetired" type="checkbox" asp-for="IsRetired"  />
+                                                                <span></span>
+                                                                Emekli Çalışan
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">   </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label>Doğum Tarihi</label>
                                                     <div class="input-group">
                                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_4" data-target-input="nearest">
                                                             @{ var birthDate = "";
@@ -73,17 +128,18 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group row">
-                                                    <label >Medeni Hal</label>
+                                                    <label>Kan Grubu</label>
                                                     <div class="input-group">
-                                                        <select style=" width: 100% !important;" id="Select1" asp-for="MaritalStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.MaritalStatusList">
+                                                        <select style=" width: 100% !important;" id="Select5" asp-for="BloodGroupGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.BloodGroupList">
                                                             <option selected value="-1">Seçiniz</option>
 
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label >Engel Derecesi</label>
+                                                    <label>Engel Derecesi</label>
                                                     <div class="input-group">
                                                         <select style=" width: 100% !important;" id="Select2" asp-for="DegreeOfDisabilityGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.DegreeOfDisabilityList">
                                                             <option selected value="-1">Seçiniz</option>
@@ -94,7 +150,7 @@
 
 
                                                 <div class="form-group row">
-                                                    <label >Eğitim Durumu</label>
+                                                    <label>Eğitim Durumu</label>
                                                     <div class="input-group">
                                                         <select style=" width: 100% !important;" id="Select3" asp-for="EducationStatusGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.EducationStatusList">
                                                             <option selected value="-1">Seçiniz</option>
@@ -102,42 +158,8 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">   </div>
-                                            <div class="col-md-5">
                                                 <div class="form-group row">
-                                                    <label >Kimlik Numarası</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group input-group-lg input-group-solid">
-
-                                                            <input asp-for="IdNumber" type="text" class="form-control form-control-lg form-control-solid" placeholder="Kimlik Numarası" />
-                                                            <input type="hidden" asp-for="StaffPersonelInfoId" />
-                                                            <input type="hidden" asp-for="StaffId" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label >Cinsiyet</label>
-                                                    <div class="input-group">
-                                                        <select style=" width: 100% !important;" id="Select4" asp-for="GenderGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.GenderList">
-                                                            <option selected value="-1">Seçiniz</option>
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label >Kan Grubu</label>
-                                                    <div class="input-group">
-                                                        <select style=" width: 100% !important;" id="Select5" asp-for="BloodGroupGeneralSubTypeId" class="form-control form-control-solid form-control-lg" asp-items="ViewBag.BloodGroupList">
-                                                            <option selected value="-1">Seçiniz</option>
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label >Eğitim Düzeyi</label>
+                                                    <label>Eğitim Düzeyi</label>
                                                     <div class="input-group">
                                                         <select style=" width: 100% !important;" id="Select6" asp-for="EducationLevelGeneralSubTypeId" class="form-control form-control-solid form-control-lg " asp-items="ViewBag.EducationLevelList">
                                                             <option selected value="-1">Seçiniz</option>
@@ -145,6 +167,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -192,7 +215,7 @@
     </script>
     <script>
         $('input[name="BirthDate"]').mask('00.00.0000');
-       
+
     </script>
     <script>
 
@@ -216,7 +239,7 @@
                             numeric: {
                                 message: 'Kimlik numaranız rakamlardan oluşmalı'
                             },
-                            stringLength: {                            
+                            stringLength: {
                                 max: 11,
                                 message: 'Geçerli bir kimlik numarası girin'
                             }

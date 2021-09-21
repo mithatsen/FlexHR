@@ -1,10 +1,10 @@
-﻿function RoleUpdate(id) {
-    var modelContent = $("#roleUpdateDiv")
-    $("#roleUpdateDiv").empty();
-
+﻿
+function ColorCodeUpdate(id) {
+    var modelContent = $("#ColorCodeUpdateDiv")
+    $("#ColorCodeUpdateDiv").empty();
     $.ajax({
         method: "GET",
-        url: "/SystemVariable/GetUpdateRoleModal/" + id,
+        url: "/SystemVariable/GetUpdateColorCodeModal/" + id,
         dataType: "html",
         cache: false,
     }).done(function (content) {
@@ -12,7 +12,7 @@
         if (content != null) {
             modelContent.html(content);
         }
-        $("#roleUpdateModal").modal("show");
+        $("#ColorCodeUpdateModal").modal("show");
 
 
 
@@ -22,36 +22,33 @@
 }
 
 
+
+
 var fv = FormValidation.formValidation(
-    document.getElementById('RoleAddForm'),
+    document.getElementById('colorCodeAddForm'),
     {
         fields: {
-            Name: {
-                validators: {
-                    notEmpty: {
-                        message: 'İzin türü adı alanı boş geçilemez'
-                    }
-                }
-            },
             Description: {
                 validators: {
                     notEmpty: {
                         message: 'Açıklama alanı boş geçilemez'
-                    },
-                    stringLength: {
-                        max: 999,
-                        message: '1000 karakterden az girin'
                     }
                 }
             },
-            AuthorizeTypeGeneralSubTypeId: {
+            Color: {
                 validators: {
                     notEmpty: {
-                        message: 'Yetki Tipi boş geçilemez '
+                        message: 'Renk kodu alanı boş geçilemez'
                     }
                 }
             },
-
+            Code: {
+                validators: {
+                    notEmpty: {
+                        message: 'Tanımlama kodu alanı boş geçilemez'
+                    }
+                }
+            },
         },
         plugins: {
             trigger: new FormValidation.plugins.Trigger(),
@@ -62,18 +59,19 @@ var fv = FormValidation.formValidation(
         }
     }
 );
-
-function roleAddClickFunction() {
+function colorCodeAddClickFunction() {
     fv.validate().then(function (status) {
         if (status == 'Valid') {
             var formData = {
-                Name: $("#Name").val(),
+                Color: $("#Color").val(),
+                Code: $("#Code").val(),
                 Description: $("#Description").val(),
-                AuthorizeTypeGeneralSubTypeId: $("#authorizeType").val()
+                Name: $("#Name").val()
             };
+            debugger;
             $.ajax({
                 method: 'post',
-                url: '/SystemVariable/AddRole',
+                url: '/SystemVariable/AddColorCode',
                 data: formData,
                 success: function (data) {
                     if (data == true) {
@@ -84,28 +82,19 @@ function roleAddClickFunction() {
                         }).then(function () {
                             window.location.reload()
                         })
-                    } else {
-                        Swal.fire({
-                            title: "Başarısız!",
-                            text: "Kaydınız eklenmedi.",
-                            icon: "error",
-                        }).then(function () {
-                            window.location.reload()
-                        })
                     }
 
                 }
 
             })
         }
-
     });
 }
 
 
-// Delete generalSubRule with sweet alert 
+// Delete company with sweet alert 
 
-function DeleteRole(id) {
+function DeleteColorCode(id) {
     Swal.fire({
         title: "Silmek istediğinize emin misiniz ?",
         text: "Bunu geri alamazsınız!",
@@ -119,7 +108,7 @@ function DeleteRole(id) {
 
             $.ajax({
                 method: "POST",
-                url: "/SystemVariable/DeleteRole/" + id,
+                url: "/SystemVariable/DeleteColorCode/" + id,
             }).done(function (result) {
                 if (result == true) {
                     Swal.fire({
@@ -135,20 +124,12 @@ function DeleteRole(id) {
                     Swal.fire(
                         "Hata",
                         "Kaydınız silinemedi",
-                        "hata"
+                        "error"
                     )
                 }
 
             })
-        } else if (result.dismiss === "cancel") {
-            Swal.fire({
-                title: "İptal Edildi",
-                text: "Kaydınız silinmedi",
-                icon: "error",
-                showCancelButton: false
-            })
-
-
         }
     });
 }
+

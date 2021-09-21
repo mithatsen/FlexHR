@@ -27,7 +27,7 @@
     <!--begin::Row-->
     <div class="row">
         @*Harcama Talepleri*@
-        <div class="col-xl-4">
+        <div class="col-xl-3">
             <!--begin::List Widget 2-->
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
@@ -86,7 +86,7 @@
             <!--end::List Widget 2-->
         </div>
         @*Mesai Talepleri*@
-        <div class="col-xl-4">
+        <div class="col-xl-3">
             <!--begin::List Widget 2-->
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
@@ -147,8 +147,9 @@
             </div>
             <!--end::List Widget 2-->
         </div>
+
         @*İzin Talepleri*@
-        <div class="col-xl-4">
+        <div class="col-xl-3">
             <!--begin::List Widget 2-->
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
@@ -205,9 +206,70 @@
                 <!--end::Body-->
             </div>
             <!--end::List Widget 2-->
+        </div> 
+
+        @*Şuanda İzinde olanlar*@
+        <div class="col-xl-3">
+            <!--begin::List Widget 2-->
+            <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-success">  <a class="text-success" asp-controller="Leave" asp-action="Index">İzindeki Personeller</a></h3>
+
+                </div>
+
+                <!--end::Header-->
+                @*style="max-height: 300px; overflow-x: hidden; overflow-y: scroll;"*@
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+
+                    @if (Model.CurrentlyOnLeave.Count > 0)
+                    {
+
+                        @foreach (var item in Model.CurrentlyOnLeave)
+                        {
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
+                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 mr-2">
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
+                                </div>
+                                <!--end::Text-->
+                                <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> <a onclick="getCurrentlyOnStaffLeaveApproveModal(@item.StaffLeaveId)" class="cursor-pointer">Detay</a></span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+
+                        <div class="d-flex align-items-center flex-wrap mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-50 symbol-white pl-0">
+                                <span>
+                                    <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 ml-2">
+                                <span> İzin talebi bulunmamaktadır</span>
+                            </div>
+                            <!--end::Text-->
+                        </div>
+                    }
+
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::List Widget 2-->
         </div>
         @*Yaklaşan İzinler*@
-        <div class="col-xl-4">
+        <div class="col-xl-3">
             <!--begin::List Widget 2-->
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
@@ -262,7 +324,7 @@
         </div>
 
         @*Doğum günleri*@
-        <div class="col-xl-4">
+        <div class="col-xl-3">
             <!--begin::List Widget 2-->
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
@@ -324,7 +386,7 @@
             <!--end::List Widget 2-->
         </div>
         @*Etkinlikler*@
-        <div class="col-xl-4">
+        <div class="col-xl-3">
             <!--begin::List Widget 2-->
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
@@ -384,7 +446,7 @@
             <!--end::List Widget 2-->
         </div>
         @*Resmi tatiller Günleri*@
-        <div class="col-xl-4">
+        <div class="col-xl-3">
             <!--begin::List Widget 2-->
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->

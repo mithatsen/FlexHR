@@ -1,0 +1,28 @@
+﻿@model ListStaffLeaveOnDashboardDto
+
+<div class="modal fade" id="staffCurrentlyOnLeaveApprove" tabindex="-1" role="dialog" aria-labelledby="staffCurrentlyOnLeaveApprove" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder ">
+                        <i class="fas fa-umbrella-beach mr-2 "></i>İzin Detay
+                    </h3>
+                </div>
+                <button type="button" class="link-2 text-white bg-danger " data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="font-size-lg">@Model.NameSurname <span class="font-weight-bolder"> @Model.LeaveType </span> talebinde bulunmuştur.</p>
+                <p class="font-size-lg"><span class="font-weight-bolder"> Tarih Aralığı : </span> @Model.LeaveStartDate.ToShortDateString() - @Model.LeaveEndDate.ToShortDateString()  ( @Model.TotalDay gün ) </p>
+                <p class="font-size-lg"><span class="font-weight-bolder">Açıklama : </span> @Model.Description </p>
+                <div>
+                    <p class="font-size-lg"><span class="font-weight-bolder"> Kalan Yıllık İzin Hakkı : </span> @Model.TotalRemainingDay Gün</p>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+<script src="~/js/_getApproveStaffLeaveModal.js"></script>

@@ -1,0 +1,150 @@
+﻿@model List<ListColorCodeDto>
+<div class="tab-content w-100">
+    <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+        <!--begin::Entry-->
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <!--begin::Notice-->
+                <!--end::Notice-->
+                <!--begin::Card-->
+                <div class="card card-custom">
+                    <div class="card-header flex-wrap py-5">
+                        <div class="card-title">
+                            <i class="fas fa-palette text-dark mr-2"></i>
+                            <h3 id="VariableTitle" class="card-label">
+                                Durum ve Renk Kodları
+
+                            </h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <!--begin::Button-->
+                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#colorCodeAddModal">
+                                Ekle
+                            </button>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                            <thead>
+                                <tr>
+                                    <th>Excel Durum</th>
+                                    <th>Tanımlama Kodu</th>
+                                    <th>Renk Kodu</th>
+                                    <th>Açıklama</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td width="25%">@item.Name</td>
+                                        <td width="15%">@item.Code</td>
+                                        <td width="20%">@item.Color</td>
+                                        <td width="25%">@item.Description</td>
+                                        <td width="15%">
+                                            <a onclick="ColorCodeUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                                <i class="la la-edit text-warning"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteColorCode(@item.Id)">
+
+                                                <i class="la la-trash text-danger"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--end::Card-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+    </div>
+</div>
+
+
+<!--end: Datatable-->
+@* add Company modal *@
+<div class="modal fade" id="colorCodeAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark lead">
+                        <i class="fas fa-building mr-2 text-dark"></i> Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class=" text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="colorCodeAddForm" method="POST">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Excel Durum *</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Name" id="Name" placeholder="Excel Durum" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label>Açıklama *</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Description" id="Description" placeholder="Açıklama" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Renk Kodu *</label>
+                                                <div class="input-group">
+                                                    <input type="color" class="form-control form-control-lg form-control-solid" name="Color" id="Color" placeholder="Renk Kodu" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label>Tanımlama Kodu *</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Code"  id="Code" placeholder="Tanımlama Kodu" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="button" onclick="colorCodeAddClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* update type modal*@
+<div id="ColorCodeUpdateDiv"></div>
+<script src="~/js/SystemVariable/_getColorCodeTable.js"></script>

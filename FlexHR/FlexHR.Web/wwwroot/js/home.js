@@ -19,6 +19,27 @@
     });
 
 }
+function getCurrentlyOnStaffLeaveApproveModal(id) {
+    var modelContent = $("#approveDiv")
+    $("#approveDiv").empty();
+
+    $.ajax({
+        method: "GET",
+        url: "/Home/GetCurrentlyOnStaffLeaveModal/" + id,
+        dataType: "html",
+        cache: false,
+    }).done(function (content) {
+        if (content != null) {
+            modelContent.html(content);
+        }
+        $("#staffCurrentlyOnLeaveApprove").modal("show");
+
+
+    }).fail(function (error) {
+        alert(error);
+    });
+
+}
 
 function getStaffShiftApproveModal(id) {
     var modelContent = $("#approveDiv")

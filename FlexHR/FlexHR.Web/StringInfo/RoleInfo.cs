@@ -18,6 +18,9 @@
             public const string RemainInfo = "remainInfo";
             public const string MonthlyInfo = "monthlyInfo";
             public const string Refectory = "refectory";
+            public const string StaffTracking = "staffTracking";
+            public const string TakePayment = "takePayment";
+            public const string Salary = "salary";
         }
     }
 }

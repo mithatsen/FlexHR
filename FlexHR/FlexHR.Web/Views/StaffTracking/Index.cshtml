@@ -27,9 +27,6 @@
 
 <br />
 <div class="card card-custom">
-
-
-
     <div class="card card-custom">
         <div class="card-body  ">
 
@@ -42,7 +39,8 @@
                     <div class="col-md-4 border-2">
                         <table class="table table-light table-sm w-50 ">
                             <tr>
-                                @foreach (var item in Model.ListStaffTimeKeepings.FirstOrDefault().ColorCodes)
+
+                                @foreach (var item in Model.ColorCodes)
                                 {
                                     <td class=" text-center font-weight-bolder text-light px-2" style="background-color:@item.Color">@item.Code</td>
                                     <td class="text-center pl-3 pr-5">@item.Description</td>
@@ -125,10 +123,27 @@
 
                                 @for (int i = 0; i < item.DaysStatus.Count - 1; i++)
                                 {
-                                    <td class=" text-center font-weight-bolder px-2 text-light" style="background-color:@item.DaysStatus[i].Color;">@item.DaysStatus[i].Code</td>
+                                    var counter = 1;
+                                    //for ile dönerek yapılacak
+                                    @for (int j = 0; j < Model.PublicHolidays.Count; j++)
+                                    {
+                                        if (i == Model.PublicHolidays[j].Start.Day - 1)
+                                        {
+                                            var colorCodes = Model.ColorCodes.Where(x => x.Code == "T").FirstOrDefault();
+                                            <td class=" text-center font-weight-bolder px-2 text-light" style="background-color:@colorCodes.Color;">@colorCodes.Code</td>
+                                            break;
+                                        }
+                                        else if (counter == 3)
+                                        {
+                                            <td class=" text-center font-weight-bolder px-2 text-light" style="background-color:@item.DaysStatus[i].Color;">@item.DaysStatus[i].Code</td>
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            counter++;
+                                        }
+                                    }
                                 }
-
-                              
                             </tr>
                         }
                     </tbody>

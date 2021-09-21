@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 'use strict';
 // Class definition
 
@@ -8,7 +6,7 @@ var KTDatatableChildRemoteDataDemo = function () {
 
     // demo initializer
     var demo = function () {
-        var datatable = $('#kt_datatable4545').KTDatatable({
+        var datatable = $('#kt_datatable').KTDatatable({
             // datasource definition
             data: {
                 type: 'remote',
@@ -457,5 +455,3 @@ function DeleteInstallment(id) {
     });
 }
 
-
->>>>>>> 9e6bb0db3de9971750ec502b5505c8a9baf554f1

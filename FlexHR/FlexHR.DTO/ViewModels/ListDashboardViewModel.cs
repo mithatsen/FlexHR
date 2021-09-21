@@ -10,6 +10,7 @@ namespace FlexHR.DTO.ViewModels
     {
         public List<ListStaffShiftOnDashboardDto> StaffShifts { get; set; }
         public List<ListStaffLeaveOnDashboardDto> StaffLeaves { get; set; }
+        public List<ListStaffLeaveOnDashboardDto> CurrentlyOnLeave { get; set; }
         public List<ListStaffPaymentOnDashboardDto> StaffPayments { get; set; }
         public List<ListStaffBirthOnDashboardDto> BirtDates { get; set; }
         public List<ListStaffEventOnDashboardDto> Events { get; set; }

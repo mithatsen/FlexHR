@@ -1,0 +1,124 @@
+﻿@model ListColorCodeDto
+<div class="modal fade" id="ColorCodeUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark lead">
+                        <i class="fas fa-palette mr-2 text-dark"></i> Düzenle
+                    </h3>
+
+                </div>
+                <button type="button" class=" text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="ColorCodeUpdateForm" asp-controller="SystemVariable" asp-action="UpdateColorCode" method="POST">
+                <input type="hidden"  asp-for="Id"/>
+
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Excel Durum *</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" asp-for="Name" placeholder="Excel Durum" />
+                                                </div>
+                                            </div>    
+                                            <div class="form-group row">
+                                                <label>Açıklama *</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" asp-for="Description" placeholder="Açıklama" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label>Renk Kodu *</label>
+                                                <div class="input-group">
+                                                    <input type="color" class="form-control form-control-lg form-control-solid" asp-for="Color" placeholder="Renk Kodu" />
+                                                </div>
+                                            </div>    
+                                            <div class="form-group row">
+                                                <label>Tanımlama Kodu *</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" asp-for="Code" placeholder="Tanımlama Kodu" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+
+
+                    </div>
+
+                    <!--end::Form-->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    FormValidation.formValidation(
+        document.getElementById('ColorCodeUpdateForm'),
+        {
+            fields: {
+                Description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Açıklama alanı boş geçilemez'
+                        }
+                    }
+                },
+                Color: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Renk kodu alanı boş geçilemez'
+                        }
+                    }
+                },
+                Code: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tanımlama kodu alanı boş geçilemez'
+                        }
+                    }
+                },
+                //Name: {
+                //    validators: {
+                //        notEmpty: {
+                //            message: 'Durum alanı boş geçilemez'
+                //        }
+                //    }
+                //},
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            }
+        }
+    );
+</script>

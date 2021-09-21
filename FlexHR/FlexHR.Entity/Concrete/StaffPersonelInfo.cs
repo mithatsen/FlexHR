@@ -17,6 +17,9 @@ namespace FlexHR.Entity.Concrete
         public int? BloodGroupGeneralSubTypeId { get; set; } = 1;
         public int? EducationStatusGeneralSubTypeId { get; set; } = 1;
         public int? EducationLevelGeneralSubTypeId { get; set; } = 1;
+        public string PartnerWorkingStatus { get; set; }
+        public int ChildrenCount { get; set; }
+        public bool IsRetired { get; set; }
         public bool IsActive { get; set; }
 
         public virtual Staff Staff { get; set; }

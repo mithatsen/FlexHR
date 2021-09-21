@@ -140,7 +140,7 @@
             }
             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
+                <li class="menu-item @(active=="staffTracking"?"menu-item-active":" ") " aria-haspopup="true">
                     <a asp-controller="StaffTracking" asp-action="Index" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <i class="fas fa-calendar-check"></i>
@@ -152,7 +152,7 @@
             }
             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
+                <li class="menu-item @(active=="salary"?"menu-item-active":" ") " aria-haspopup="true">
                     <a asp-controller="StaffSalary" asp-action="GetStaffSalaryMonthlyList" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <i class="fas fa-wallet"></i>
@@ -164,7 +164,7 @@
             }    
             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="menu-item @(active=="event"?"menu-item-active":" ") " aria-haspopup="true">
+                <li class="menu-item @(active=="takePayment"?"menu-item-active":" ") " aria-haspopup="true">
                     <a asp-controller="TakePayment" asp-action="Index" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <i class="fas fa-credit-card"></i>

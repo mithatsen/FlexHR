@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FlexHR.DTO.Dtos.AppUserDtos;
+using FlexHR.DTO.Dtos.ColorCodeDtos;
 using FlexHR.DTO.Dtos.CompanyBranchDtos;
 using FlexHR.DTO.Dtos.CompanyDtos;
 using FlexHR.DTO.Dtos.DashboardDtos;
@@ -93,6 +94,10 @@ namespace FlexHR.Web.Mapping.AutoMapper
             
             #region Receipt
             CreateMap<ListReceiptDto, Receipt>().ReverseMap();
+            #endregion 
+            #region ColorCode
+            CreateMap<ListColorCodeDto, ColorCode>().ReverseMap();
+            CreateMap<AddColorCodeDto, ColorCode>().ReverseMap();
             #endregion
             #region PublicHoliday
             CreateMap<AddPublicHolidayDto, PublicHoliday>().ReverseMap();
