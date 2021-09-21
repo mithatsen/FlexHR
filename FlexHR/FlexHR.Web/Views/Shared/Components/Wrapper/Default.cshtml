@@ -140,6 +140,45 @@
             }
             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
+                <li class="menu-item menu-item-submenu @(active=="leave"?"menu-item-active menu-item-open":" ") @(active=="payment"?"menu-item-active menu-item-open":" ") @(active=="shift"?"menu-item-active menu-item-open":" ")" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon">
+                            <i class="fas fa-people-arrows"></i>
+                        </span>
+                        <span class="menu-text">Vardiya</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu" kt-hidden-height="80" style="">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item @(active=="leave"?"menu-item-active":" ")" aria-haspopup="true">
+                                    <a asp-controller="JobRotation" asp-action="Index" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text"> Vardiya Oluştur</span>
+                                    </a>
+                                </li>
+                            }
+                            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item @(active=="payment"?"menu-item-active":" ")" aria-haspopup="true">
+                                    <a asp-controller="Payment" asp-action="Index" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Vardiya Tanımla</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+            }
+            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            {
                 <li class="menu-item @(active=="staffTracking"?"menu-item-active":" ") " aria-haspopup="true">
                     <a asp-controller="StaffTracking" asp-action="Index" class="menu-link">
                         <span class="svg-icon menu-icon">
@@ -161,7 +200,7 @@
                         <span class="menu-text">Maaş Listesi</span>
                     </a>
                 </li>
-            }    
+            }
             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="menu-item @(active=="takePayment"?"menu-item-active":" ") " aria-haspopup="true">

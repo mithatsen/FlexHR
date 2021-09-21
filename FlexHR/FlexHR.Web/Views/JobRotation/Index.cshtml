@@ -1,0 +1,240 @@
+﻿@model List<ListJobRotationDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+}
+<div class="card card-custom ">
+    <div class="card-body">
+        <!--begin::Profile Personal Information-->
+        <div class="tab-content">
+            <div class="tab-pane active " role="tabpanel" id="kt_apps_contacts_view_tab_2">
+                <!--begin::Entry-->
+                <div class="d-flex flex-column-fluid">
+                    <!--begin::Container-->
+                    <div class="container-fluid">
+                        <!--begin::Notice-->
+                        <!--end::Notice-->
+                        <!--begin::Card-->
+                        <div class="card card-custom">
+                            <div class="card-header flex-wrap py-5">
+                                <div class="card-title">
+                                    <i class="fas fa-people-arrows text-dark mr-2"></i>
+                                    <h3 class="card-label">
+                                        Vardiyalar
+                                    </h3>
+                                </div>
+                                <div class="card-toolbar">
+                                    <!--begin::Button-->
+                                    @if ((User.IsInRole("AddStaffCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                    {
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffCareerAddModal">
+                                            Vardiya Ekle
+                                        </button>
+                                    }
+                                    <!--end::Button-->
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!--begin: Datatable-->
+                                <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+                                    <thead>
+                                        <tr>
+                                            <th width="45%">Name</th>
+                                            <th width="15%">Başlangıç</th>
+                                            <th width="15%">Bitiş</th>
+                                            <th width="15%">Vardiya Süresi</th>
+
+                                            @if ((User.IsInRole("UpdateDeleteCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            {
+                                                <th width="10%">İşlemler</th>
+                                            }
+                                            else
+                                            {
+                                                <th width="1"></th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.Name</td>
+                                                <td>@item.StartDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                                <td>@item.EndDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                                <td>@item.ShiftTime</td>
+                                                @if ((User.IsInRole("UpdateDeleteCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                {
+                                                    <td>
+                                                        <a id="CareerUpdateBtn" onclick="JobRotationUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                                            <i class="la la-edit text-warning"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteJobRotation(@item.Id)">
+                                                            <i class="la la-trash text-danger"></i>
+                                                        </a>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                            </tr>
+
+                                        }
+                                    </tbody>
+                                </table>
+                                <!--end: Datatable-->
+                            </div>
+                        </div>
+                        <!--end::Card-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Entry-->
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@* add career modal*@
+<div class="modal fade" id="staffCareerAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark lead">
+                        <i class="fas fa-people-arrows mr-2 text-dark"></i>Vardiya Ekle
+                    </h3>
+
+                </div>
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="modalAddJobRotationForm" method="POST">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row ">
+                                                <label>Vardiya Adı *</label>
+                                                <div class="input-group">
+                                                    <input name="Name" id="RotationName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Vardiya Adı" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <label>Vardiya Süresi *</label>
+                                                <div class="input-group">
+                                                    <input name="ShiftTime" id="ShiftTime" class="form-control form-control-lg  text-center" type="text" placeholder="Vardiya Süresi" value="0" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row  ">
+                                                <label>Başlangıç Tarihi *</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_62" data-target-input="nearest">
+                                                        <input id="StartDate" name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_62" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_62" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row  ">
+                                                <label>Bitiş Tarihi</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_63" data-target-input="nearest">
+                                                        <input id="EndDate" name="EndDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_63" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_63" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="button" onclick="jobRotationClickFunction()" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* update career modal*@
+<div id="jobRotationUpdateDiv"></div>
+
+@section Scripts{
+    @*begin::Page Scripts(used by this page)*@
+    <script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>
+    @*end::Page Scripts*@
+    <script src="~/js/jobRotation.js"></script>
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
+
+
+    <script>
+        $('input[name="StartDate"]').mask('00.00.0000 00:00');
+        $('input[name="EndDate"]').mask('00.00.0000 00:00');
+    </script>
+    <script>
+        $('#kt_datetimepicker_62').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY HH:mm'
+        });
+        $('#kt_datetimepicker_63').datetimepicker({
+            locale: 'tr',
+            format: 'DD.MM.YYYY HH:mm'
+        });
+        $('#ShiftTime, #kt_touchspin_2_1').TouchSpin({
+            buttondown_class: 'btn btn-secondary',
+            buttonup_class: 'btn btn-secondary',
+
+            min: 0,
+            max: 60,
+            step: 1,
+            int: 1,
+            boostat: 5,
+            maxboostedstep: 10,
+        });
+    </script>
+    <script>
+         $(document).ready(function () {
+             if (@ViewBag.JobRotationUpdateStatus == true)
+                Swal.fire("Güncellendi!", "Güncelleme işlemi başarılı!", "success");
+         });
+    </script>
+}

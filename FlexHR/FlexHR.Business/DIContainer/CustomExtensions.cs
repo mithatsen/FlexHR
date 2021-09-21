@@ -45,8 +45,10 @@ namespace FlexHR.Business.DIContainer
             services.AddScoped<IColorCodeService, ColorCodeManager>();          
             services.AddScoped<IAppUserService, AppUserManager>();
             services.AddScoped<IFileColumnService, FileColumnManager>();
+            services.AddScoped<IJobRotationService, JobRotationManager>();
 
            
+            services.AddScoped<IJobRotationDal, EfJobRotationRepository>();
             services.AddScoped<IReceiptDal, EfReceiptRepository>();
             services.AddScoped<ITakePaymentDal, EfTakePaymentRepository>();
             services.AddScoped<ICityDal, EfCityRepository>();

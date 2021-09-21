@@ -64,6 +64,8 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
         public virtual DbSet<FileType> FileType { get; set; }
         public virtual DbSet<TakePayment> TakePayment { get; set; }
         public virtual DbSet<ColorCode> ColorCode { get; set; }
+        public virtual DbSet<JobRotation> JobRotation { get; set; }
+        public virtual DbSet<JobRotationHistory> JobRotationHistory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

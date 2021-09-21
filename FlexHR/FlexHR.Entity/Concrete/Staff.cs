@@ -8,6 +8,7 @@ namespace FlexHR.Entity.Concrete
     public class Staff : ITable
     {
         public int StaffId { get; set; }
+        public int? JobRotationId { get; set; }
         public string NameSurname { get; set; }
         public string EmailJob { get; set; }
         public string EmailPersonal { get; set; }
@@ -21,6 +22,7 @@ namespace FlexHR.Entity.Concrete
         public bool IsActive { get; set; }
 
         public AppUser AppUser { get; set; }
+        public JobRotation JobRotation { get; set; }
         public virtual ICollection<StaffCareer> StaffCareer { get; set; }
         public virtual ICollection<StaffDebit> StaffDebit { get; set; }
         public virtual ICollection<StaffFile> StaffFile { get; set; }

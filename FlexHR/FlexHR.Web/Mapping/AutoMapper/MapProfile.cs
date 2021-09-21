@@ -6,6 +6,7 @@ using FlexHR.DTO.Dtos.CompanyDtos;
 using FlexHR.DTO.Dtos.DashboardDtos;
 using FlexHR.DTO.Dtos.EventDtos;
 using FlexHR.DTO.Dtos.GeneralSubTypeDtos;
+using FlexHR.DTO.Dtos.JobRotationDtos;
 using FlexHR.DTO.Dtos.LeaveRuleDtos;
 using FlexHR.DTO.Dtos.LeaveTypeDtos;
 using FlexHR.DTO.Dtos.ReceiptDtos;
@@ -94,6 +95,9 @@ namespace FlexHR.Web.Mapping.AutoMapper
             
             #region Receipt
             CreateMap<ListReceiptDto, Receipt>().ReverseMap();
+            #endregion 
+            #region JobRotation
+            CreateMap<ListJobRotationDto, JobRotation>().ReverseMap();
             #endregion 
             #region ColorCode
             CreateMap<ListColorCodeDto, ColorCode>().ReverseMap();

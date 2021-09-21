@@ -1,0 +1,182 @@
+﻿@model ListJobRotationDto
+
+<div class="modal fade" id="jobRotationUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark lead">
+                        <i class="fas fa-people-arrows mr-2 text-dark"></i>Vardiyayı Düzenle
+                    </h3>
+                </div>
+                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form id="updateJobRotationForm" asp-controller="JobRotation" asp-action="UpdateJobRotation" method="POST">
+                <div class="modal-body">
+                    <div class="flex-row-fluid ">
+                        <!--begin::Form-->
+                        <!--begin::Card-->
+                        <div class="card card-custom card-stretch">
+                            <!--begin::Header-->
+                            <!--end::Header-->
+
+                            <div class="container ">
+                                <!--begin::Body-->
+                                <div class="card-body mx-auto">
+
+                                    <div class="row">
+                                        <input type="hidden" asp-for="@Model.Id"/>
+                                        <div class="col-md-5 ">
+                                            <div class="form-group row ">
+                                                <label>Vardiya Adı *</label>
+                                                <div class="input-group">
+                                                    <input asp-for="Name" id="RotationName" class="form-control form-control-lg form-control-solid" type="text" placeholder="Vardiya Adı" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <label>Vardiya Süresi *</label>
+                                                <div class="input-group">
+                                                    <input asp-for="ShiftTime" id="ShiftTimeUpdate" class="form-control form-control-lg  text-center" type="text" placeholder="Vardiya Süresi" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row  ">
+                                                <label>Başlangıç Tarihi *</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_64" data-target-input="nearest">
+                                                        <input id="StartDate" asp-for="StartDate" value="@Model.StartDate.ToString("dd.MM.yyyy HH:mm")" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_64" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_64" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row  ">
+                                                <label>Bitiş Tarihi</label>
+                                                <div class="input-group">
+                                                    <div class="input-group date input-group-solid" id="kt_datetimepicker_65" data-target-input="nearest">
+                                                        <input id="EndDate" asp-for="EndDate" value="@Model.EndDate.ToString("dd.MM.yyyy HH:mm")" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_65" />
+                                                        <div class="input-group-append" data-target="#kt_datetimepicker_65" data-toggle="datetimepicker">
+                                                            <span class="input-group-text">
+                                                                <i class="ki ki-calendar"></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+
+                        </div>
+
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    $('input[name="StartDate"]').mask('00.00.0000 00:00');
+    $('input[name="EndDate"]').mask('00.00.0000 00:00');
+</script>
+<script>
+    $('#kt_datetimepicker_64').datetimepicker({
+        locale: 'tr',
+        format: 'DD.MM.YYYY HH:mm'
+    });
+    $('#kt_datetimepicker_65').datetimepicker({
+        locale: 'tr',
+        format: 'DD.MM.YYYY HH:mm'
+    });
+    $('#ShiftTimeUpdate, #kt_touchspin_2_1').TouchSpin({
+        buttondown_class: 'btn btn-secondary',
+        buttonup_class: 'btn btn-secondary',
+
+        min: 0,
+        max: 60,
+        step: 1,
+        int: 1,
+        boostat: 5,
+        maxboostedstep: 10,
+    });
+</script>
+<script>
+    FormValidation.formValidation(
+        document.getElementById('updateJobRotationForm'),
+        {
+            fields: {
+                StartDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
+                        date: {
+                            format: 'DD.MM.YYYY HH:mm',
+                            message: 'Geçerli bir tarih girin'
+                        }
+                    }
+                },
+                EndDate: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Tarih alanı boş geçilemez'
+                        },
+                        date: {
+                            format: 'DD.MM.YYYY HH:mm',
+                            message: 'Geçerli bir tarih girin'
+                        }
+                    }
+                },
+                Name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Vardiya adı alanı boş geçilemez'
+                        },
+                    }
+                },
+                ShiftTime: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Vardiya süresi alanı boş geçilemez',
+                        },
+                        greaterThan: {
+                            min: 0,
+                            message: 'Vardiya süresi alanı sıfırdan küçük olamaz',
+                        }
+
+                    }
+                },
+            },
+
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            }
+        }
+    );
+</script>
