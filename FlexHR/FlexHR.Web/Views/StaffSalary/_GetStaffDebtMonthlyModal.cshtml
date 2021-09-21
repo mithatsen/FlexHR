@@ -16,21 +16,39 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class='table table-light mx-auto text-center'>
-                    <tr class="table table-secondary" >
-                        <th width="60%">Türü</th>
-                        <th width="40%">Tutar</th>
-                      
-                    </tr>
-                    @foreach (var item in Model)
-                    {
-                        <tr class="bg-white">
-                            @*<td>  <img style="width: 150px; height: 150px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.FileName" /></td>*@
-                            <td>@item.PaymentType</td>
-                            <td>@item.InstallmentAmount @item.CurrencyType</td>                      
+                @if (Model.Count > 0)
+                {
+                    <table class='table table-light mx-auto text-center'>
+                        <tr class="table table-secondary">
+                            <th width="60%">Türü</th>
+                            <th width="40%">Tutar</th>
+
                         </tr>
-                    }
-                </table>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="bg-white">
+                                @*<td>  <img style="width: 150px; height: 150px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.FileName" /></td>*@
+                                <td>@item.PaymentType</td>
+                                <td>@item.InstallmentAmount @item.CurrencyType</td>
+                            </tr>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <div class="mb-5  text-center">
+                       
+                            <span class="">
+                                <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                            </span>
+                      
+                       
+                            <span class="ml-2"> Herhangi bir ödeme bulunmamaktadır</span>
+                        
+                     
+                    </div>
+                }
+
 
             </div>
 
