@@ -1,0 +1,61 @@
+﻿@model List<ListStaffJobRotationDto>
+<div id="JobRotationDivTable" class="card card-custom">
+    <div class="card-header flex-wrap py-5">
+        <div class="card-title">
+            <i class="fas fa-people-arrows text-dark mr-2"></i>
+            <h1 id="tableHeader"  class="card-label">
+               
+            </h1>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <!--begin: Datatable-->
+        <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+            <thead>
+                <tr>
+                    <th width="25%">Personel Numarası</th>
+                    <th width="65%">Ad Soyad</th>
+
+                    @if ((User.IsInRole("UpdateDeleteCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                    {
+                    <th width="10%">İşlemler</th>
+                    }
+                    else
+                    {
+                    <th width="1"></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.PersonalNo</td>
+                    <td>@item.NameSurname</td>                   
+                    @if ((User.IsInRole("UpdateDeleteCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                    {
+                    <td>
+                        <a id="CareerUpdateBtn" onclick="JobRotationUpdate(@item.StaffId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                            <i class="la la-edit text-warning"></i>
+                        </a>
+                        <a class="btn btn-sm btn-clean btn-icon" title="Delete" onclick="DeleteJobRotation(@item.StaffId)">
+                            <i class="la la-trash text-danger"></i>
+                        </a>
+                    </td>
+                    }
+                    else
+                    {
+                    <td></td>
+                    }
+                </tr>
+
+                }
+            </tbody>
+        </table>
+        <!--end: Datatable-->
+    </div>
+</div>
+
+<script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+<script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>

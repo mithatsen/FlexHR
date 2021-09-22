@@ -49,6 +49,14 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _context.Set<T>().Update(table);
             _context.SaveChanges();
         }
+        public void UpdateNotSave(T table)
+        {
+            _context.Set<T>().Update(table);
+        } 
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
         public virtual IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
         {
             IQueryable<T> query = _context.Set<T>();

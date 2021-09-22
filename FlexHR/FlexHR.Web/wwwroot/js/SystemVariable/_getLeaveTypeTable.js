@@ -151,7 +151,7 @@ function DeleteLeaveType(id) {
                     Swal.fire(
                         "Hata",
                         "Kaydınız silinemedi",
-                        "hata"
+                        "error"
                     )
                 }
 

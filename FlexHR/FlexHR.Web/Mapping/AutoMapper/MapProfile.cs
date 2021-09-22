@@ -98,6 +98,7 @@ namespace FlexHR.Web.Mapping.AutoMapper
             #endregion 
             #region JobRotation
             CreateMap<ListJobRotationDto, JobRotation>().ReverseMap();
+            CreateMap<ListStaffJobRotationDto, Staff>().ReverseMap();
             #endregion 
             #region ColorCode
             CreateMap<ListColorCodeDto, ColorCode>().ReverseMap();

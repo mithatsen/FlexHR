@@ -165,7 +165,7 @@
                             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
                                 <li class="menu-item @(active=="payment"?"menu-item-active":" ")" aria-haspopup="true">
-                                    <a asp-controller="Payment" asp-action="Index" class="menu-link">
+                                    <a asp-controller="JobRotation" asp-action="JobRotationDescribing" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
                                         </i>

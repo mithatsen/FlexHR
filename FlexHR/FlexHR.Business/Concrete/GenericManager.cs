@@ -49,9 +49,20 @@ namespace FlexHR.Business.Concrete
         {
             return _genericDal.GetById(id);
         }
+
+        public void SaveChanges()
+        {
+            _genericDal.SaveChanges();
+        }
+
         public void Update(T table)
         {
             _genericDal.Update(table);
+        }
+
+        public void UpdateNotSave(T table)
+        {
+            _genericDal.UpdateNotSave(table);
         }
     }
 }
