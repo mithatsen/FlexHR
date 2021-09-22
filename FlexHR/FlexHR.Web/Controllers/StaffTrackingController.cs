@@ -27,7 +27,7 @@ namespace FlexHR.Web.Controllers
             ViewBag.SortDate = date ;
             var result = _staffService.Get(x => x.IsActive == true);
             var staffTracking = _staffService.GetStaffTimeKeepingMonthly(date, result.ToList());
-            var publicDays = _publicHolidayService.GetAll();
+            var publicDays = _publicHolidayService.Get(x=>x.Start.Month== date.Month && x.IsActive==true).ToList();
             var colorCodes = _colorCodeService.GetAll();
             
             StaffTrackingMonthlyViewModal model = new StaffTrackingMonthlyViewModal { filterDate = date, ListStaffTimeKeepings = staffTracking ,PublicHolidays=publicDays,ColorCodes=colorCodes};

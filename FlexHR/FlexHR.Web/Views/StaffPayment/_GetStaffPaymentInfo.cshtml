@@ -14,40 +14,59 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class='table table-responsive table-secondary mx-auto'>
-                    <tr class='table '>
-                        <th width="60%">Fiş Adı</th>
-                        <th width="15%">KDV(%)</th>
-                        <th width="15%">Tutar</th>
-                        <th width="10%"></th>
-                    </tr>
-                    @foreach (var item in Model)
-                    {
-                        <tr class="bg-white">
-                            @*<td>  <img style="width: 150px; height: 150px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.FileName" /></td>*@
-                            <td>@item.Name</td>
-                            <td>@item.Vat</td>
-                            <td>@item.Amount</td>
-                            <td>
-                                <div class="gallery">
-                                    @if (item.FileName != "")
-                                    {
-
-                                        <a href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
-                                            <i style="cursor:pointer" class="fas fa-eye text-secondary p-2 "></i>
-                                        </a>
-
-                                    }
-                                    else
-                                    {
-                                        <p class="ml-3">-</p>
-                                    }
-                                </div>
-                            </td>
+                @if (Model.Count > 0)
+                {
+                    <table class='table table-responsive table-secondary mx-auto'>
+                        <tr class='table '>
+                            <th width="60%">Fiş Adı</th>
+                            <th width="15%">KDV(%)</th>
+                            <th width="15%">Tutar</th>
+                            <th width="10%"></th>
                         </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="bg-white">
+                                @*<td>  <img style="width: 150px; height: 150px;" src="/img/@item.FileFullPath@item.FileName" alt="@item.FileName" /></td>*@
+                                <td>@item.Name</td>
+                                <td>@item.Vat</td>
+                                <td>@item.Amount</td>
+                                <td>
+                                    <div class="gallery">
+                                        @if (item.FileName != "")
+                                        {
 
-                    }
-                </table>
+                                            <a href="/img/@item.FileFullPath@item.FileName" title="@item.FileName" data-toggle="tooltip" data-lightbox="my-gallery">
+                                                <i style="cursor:pointer" class="fas fa-eye text-secondary p-2 "></i>
+                                            </a>
+
+                                        }
+                                        else
+                                        {
+                                            <p class="ml-3">-</p>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+                    </table>
+                }
+                else
+                {
+                    <div class="mb-5  text-center">
+
+                        <span class="">
+                            <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                        </span>
+
+
+                        <span class="ml-2"> Herhangi bir fiş bulunmamaktadır</span>
+
+
+                    </div>
+                }
+
+
 
             </div>
 

@@ -21,6 +21,9 @@
             public const string StaffTracking = "staffTracking";
             public const string TakePayment = "takePayment";
             public const string Salary = "salary";
+            public const string JobRotation = "rotation";
+            public const string AddJobRotation = "addRotation";
+            public const string AssignJobRotation = "assignRotation";
         }
     }
 }

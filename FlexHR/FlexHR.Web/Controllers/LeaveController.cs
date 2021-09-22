@@ -113,7 +113,7 @@ namespace FlexHR.Web.Controllers
 
             foreach (var item in staffs)
             {
-                var birthDate = item.StaffPersonelInfo.FirstOrDefault() != null ? item.StaffPersonelInfo.FirstOrDefault().BirthDate : new DateTime(2000, 01, 01);
+                var birthDate = item.StaffPersonelInfo.FirstOrDefault() != null ? ( item.StaffPersonelInfo.FirstOrDefault().BirthDate !=null ? item.StaffPersonelInfo.FirstOrDefault().BirthDate : new DateTime(2000, 01, 01)) : new DateTime(2000, 01, 01);
                 var totalDayDeserved = CalculateTotalLeaveAmountDeservedBySeniority(item.JobJoinDate,(DateTime)birthDate);
                 var totalDayUsed = _staffLeaveService.Get(p => p.StaffId == item.StaffId && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.LeaveTypeId == 14).Sum(p => p.TotalDay);
                 var staffCareer = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).FirstOrDefault();

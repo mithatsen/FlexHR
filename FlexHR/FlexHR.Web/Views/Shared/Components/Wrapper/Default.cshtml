@@ -140,7 +140,7 @@
             }
             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
-                <li class="menu-item menu-item-submenu @(active=="leave"?"menu-item-active menu-item-open":" ") @(active=="payment"?"menu-item-active menu-item-open":" ") @(active=="shift"?"menu-item-active menu-item-open":" ")" aria-haspopup="true" data-menu-toggle="hover">
+                <li class="menu-item menu-item-submenu @(active=="rotation"?"menu-item-active menu-item-open":" ") @(active=="addRotation"?"menu-item-active menu-item-open":" ") @(active=="assignRotation"?"menu-item-active menu-item-open":" ")" aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
                         <span class="svg-icon menu-icon">
                             <i class="fas fa-people-arrows"></i>
@@ -153,7 +153,7 @@
                         <ul class="menu-subnav">
                             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
-                                <li class="menu-item @(active=="leave"?"menu-item-active":" ")" aria-haspopup="true">
+                                <li class="menu-item @(active=="addRotation"?"menu-item-active":" ")" aria-haspopup="true">
                                     <a asp-controller="JobRotation" asp-action="Index" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
@@ -164,7 +164,7 @@
                             }
                             @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
-                                <li class="menu-item @(active=="payment"?"menu-item-active":" ")" aria-haspopup="true">
+                                <li class="menu-item @(active=="assignRotation"?"menu-item-active":" ")" aria-haspopup="true">
                                     <a asp-controller="JobRotation" asp-action="JobRotationDescribing" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>

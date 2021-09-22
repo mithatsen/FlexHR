@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FlexHR.Web.StringInfo.RoleInfo;
 
 namespace FlexHR.Web.Controllers
 {
@@ -27,12 +28,14 @@ namespace FlexHR.Web.Controllers
 
         public IActionResult Index()
         {
+            TempData["Active"] = TempdataInfo.AddJobRotation;
             ViewBag.JobRotationUpdateStatus = TempData["JobRotationUpdateStatus"];
             var result = _jobRotationService.GetAll();
             return View(_mapper.Map<List<ListJobRotationDto>>(result));
         }
         public IActionResult JobRotationDescribing()
         {
+            TempData["Active"] = TempdataInfo.AssignJobRotation;
             ViewBag.JobRotationList = new SelectList(_jobRotationService.GetAll(), "Id", "Name");
             ViewBag.PersonalList = new SelectList(_staffService.GetAll(), "StaffId", "NameSurname");
             return View();

@@ -37,7 +37,7 @@
                         <span class="text-dark mb-4 font-size-h3"> @Model.filterDate.ToString("Y") Puantaj Tablosu</span>
                     </div>
                     <div class="col-md-4 border-2">
-                        <table class="table table-light table-sm w-50 ">
+                        <table class="table table-light table-sm w-100 ">
                             <tr>
 
                                 @foreach (var item in Model.ColorCodes)
@@ -123,25 +123,15 @@
 
                                 @for (int i = 0; i < item.DaysStatus.Count - 1; i++)
                                 {
-                                    var counter = 1;
-                                    //for ile dönerek yapılacak
-                                    @for (int j = 0; j < Model.PublicHolidays.Count; j++)
+                                    if (Model.PublicHolidays.Any(x => x.Start.Day == i + 1))
                                     {
-                                        if (i == Model.PublicHolidays[j].Start.Day - 1)
-                                        {
-                                            var colorCodes = Model.ColorCodes.Where(x => x.Code == "T").FirstOrDefault();
-                                            <td class=" text-center font-weight-bolder px-2 text-light" style="background-color:@colorCodes.Color;">@colorCodes.Code</td>
-                                            break;
-                                        }
-                                        else if (counter == 3)
-                                        {
-                                            <td class=" text-center font-weight-bolder px-2 text-light" style="background-color:@item.DaysStatus[i].Color;">@item.DaysStatus[i].Code</td>
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            counter++;
-                                        }
+                                        var colorCodes = Model.ColorCodes.Where(x => x.Code == "T").FirstOrDefault();
+                                        <td class=" text-center font-weight-bolder px-2 text-light" style="background-color:@colorCodes.Color;">@colorCodes.Code</td>
+
+                                    }
+                                    else
+                                    {
+                                        <td class=" text-center font-weight-bolder px-2 text-light" style="background-color:@item.DaysStatus[i].Color;">@item.DaysStatus[i].Code</td>
                                     }
                                 }
                             </tr>
