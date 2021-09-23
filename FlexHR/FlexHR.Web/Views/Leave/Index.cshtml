@@ -100,6 +100,19 @@
                             <span class="nav-text font-weight-bold">Reddedilenler</span>
                         </a>
                     </li>
+                }   
+                @if ((User.IsInRole("ViewCurrentlyOnLeaveInLeavesTab") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item mr-3">
+                        <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_5">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <i class="fas fa-umbrella-beach"></i>
+                                </span>
+                            </span>
+                            <span class="nav-text font-weight-bold">İzindekiler</span>
+                        </a>
+                    </li>
                 }
             </ul>
         </div>
@@ -223,6 +236,47 @@
                         </thead>
                         <tbody>
                             @foreach (var item in Model.RejectedLeaves)
+                            {
+                            <tr>
+                                @if (item.IsUserActive)
+                                {
+                                    <td> <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId">@item.NameSurname</a></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @item.NameSurname
+                                    </td>
+                                }                               
+
+                                <td>@item.LeaveStartDate.ToString("d")</td>
+
+                                <td>@item.LeaveEndDate.ToString("d")</td>
+
+                                <td>@item.TotalDay Gün</td>
+                                <td>@item.LeaveType</td>
+                                <td>@item.Description</td>
+                            </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>  
+                @*izindekiler*@
+                <div class="tab-pane" id="kt_apps_contacts_view_tab_5" role="tabpanel">
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable_79">
+                        <thead>
+                            <tr>
+                                <th>Ad Soyad</th>
+                                <th>Başlangıç</th>
+                                <th>Bitiş</th>
+                                <th>Süre</th>
+                                <th>İzin Türü</th>
+                                <th>Açıklama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CurrentlyOnLeaves)
                             {
                             <tr>
                                 @if (item.IsUserActive)

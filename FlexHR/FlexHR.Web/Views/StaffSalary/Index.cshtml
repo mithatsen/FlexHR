@@ -35,7 +35,7 @@
                                     </div>
                                   
                                     <div class="card-toolbar">
-                                        @if ((User.IsInRole("yenirol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                        @if ((User.IsInRole("UpdateStaffSalaryButton") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                         {
                                             <button type="submit" class="btn btn-primary mr-2">Kaydet</button>
                                         }

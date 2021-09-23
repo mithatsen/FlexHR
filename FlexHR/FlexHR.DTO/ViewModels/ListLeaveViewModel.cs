@@ -11,5 +11,6 @@ namespace FlexHR.DTO.ViewModels
         public List<ListStaffLeaveWithUserActiveInfoDto> PendingApprovalLeaves { get; set; }
         public List<ListStaffLeaveWithUserActiveInfoDto> ApprovedLeaves { get; set; }
         public List<ListStaffLeaveWithUserActiveInfoDto> RejectedLeaves { get; set; }
+        public List<ListStaffLeaveWithUserActiveInfoDto> CurrentlyOnLeaves { get; set; }
     }
 }

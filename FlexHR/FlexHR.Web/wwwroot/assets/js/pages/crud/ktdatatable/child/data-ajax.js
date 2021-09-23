@@ -110,7 +110,7 @@ var KTDatatableChildRemoteDataDemo = function () {
 	                                      </span>\
 	                                  </a>\
 	                             </div>\
-	                            ';
+	                            ';                        
                     },
                 }],
         });
@@ -220,7 +220,7 @@ var KTDatatableChildRemoteDataDemo = function () {
                             if (row.isPaid == true) {
                                 return '\
                                      <div class="text-center">\
-	                                    <a onclick="getInstallmentUpdateModal('+ row.id + ',' + row+')" class="btn btn-sm btn-warning btn-icon mr-2" title="Düzenle">\
+	                                    <a onclick="getInstallmentUpdateModal('+ row.id + ')" class="btn btn-sm btn-warning btn-icon mr-2" title="Düzenle">\
 	                                        <span class="svg-icon svg-icon-md">\
                                                 <i class="fa fa-edit text-white"></i>\
 	                                        </span>\

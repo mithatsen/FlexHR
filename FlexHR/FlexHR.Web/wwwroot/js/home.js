@@ -40,6 +40,27 @@ function getCurrentlyOnStaffLeaveApproveModal(id) {
     });
 
 }
+function getUpcomingStaffLeaveApproveModal() {
+    var modelContent = $("#approveDiv")
+    $("#approveDiv").empty();
+
+    $.ajax({
+        method: "GET",
+        url: "/Home/GetUpcomingStaffShiftModal",
+        dataType: "html",
+        cache: false,
+    }).done(function (content) {
+        if (content != null) {
+            modelContent.html(content);
+        }
+        $("#staffUpcomingLeaveApprove").modal("show");
+
+
+    }).fail(function (error) {
+        alert(error);
+    });
+
+}
 
 function getStaffShiftApproveModal(id) {
     var modelContent = $("#approveDiv")

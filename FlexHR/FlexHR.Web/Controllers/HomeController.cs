@@ -56,10 +56,10 @@ namespace FlexHR.Web.Controllers
             int userId = Convert.ToInt32(_userManager.GetUserId(HttpContext.User));
             var staffId = _appUserService.Get(x => x.Id == userId).FirstOrDefault().StaffId;
             ViewBag.StaffName = _staffService.Get(x => x.StaffId == staffId).FirstOrDefault().NameSurname;
-            var shifts = _mapper.Map<List<ListStaffShiftOnDashboardDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff")).Take(4).ToList();
-            var payments = _mapper.Map<List<ListStaffPaymentOnDashboardDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff").Take(4).ToList());
-            var leaves = _mapper.Map<List<ListStaffLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff,LeaveType").Take(4).ToList());
-            var currentlyOnLeave = _mapper.Map<List<ListStaffLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.LeaveStartDate <= DateTime.Now && p.LeaveEndDate >= DateTime.Now && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.Staff.IsActive == true, null, "Staff,LeaveType").Take(4).ToList());
+            var shifts = _mapper.Map<List<ListStaffShiftOnDashboardDto>>(_staffShiftService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff")).ToList();
+            var payments = _mapper.Map<List<ListStaffPaymentOnDashboardDto>>(_staffPaymentService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff").ToList());
+            var leaves = _mapper.Map<List<ListStaffLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true && p.Staff.IsActive == true, null, "Staff,LeaveType").ToList());
+            var currentlyOnLeave = _mapper.Map<List<ListStaffLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.LeaveStartDate <= DateTime.Now && p.LeaveEndDate >= DateTime.Now && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.Staff.IsActive == true, null, "Staff,LeaveType").ToList());
             var birthDates = _mapper.Map<List<ListStaffBirthOnDashboardDto>>(_staffPersonelInfoService.Get(p => p.IsActive == true && p.Staff.IsActive==true && (( p.BirthDate.Value.Month == DateTime.Now.Month && p.BirthDate.Value.Day>= DateTime.Now.Day)||(p.BirthDate.Value.Month - DateTime.Now.Month==1)), null, "Staff").ToList());
             foreach (var item in birthDates)
             {
@@ -73,7 +73,7 @@ namespace FlexHR.Web.Controllers
             sortedbirthList = (List<ListStaffBirthOnDashboardDto>)birthDates.OrderBy(x => x.BirthDate).ToList();
             var events = _mapper.Map<List<ListStaffEventOnDashboardDto>>(_eventService.Get(p => p.IsActive == true && p.Start > DateTime.Now).Take(4).ToList());
             var publicDays = _mapper.Map<List<ListStaffPublicDayOnDashboardDto>>(_publicHolidayService.Get(p=>p.IsActive == true && p.Start > DateTime.Now).Take(4).ToList());
-            var upcomingLeaves = _mapper.Map<List<ListStaffUpcomingLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive == true && p.LeaveStartDate > DateTime.Now && p.Staff.IsActive == true, null, "Staff,LeaveType").Take(4).ToList());
+            var upcomingLeaves = _mapper.Map<List<ListStaffUpcomingLeaveOnDashboardDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive == true && p.LeaveStartDate > DateTime.Now && p.Staff.IsActive == true, null, "Staff,LeaveType").ToList());
             //foreach (var item in shifts)
             //{
             //    var temp = _staffPersonelInfoService.Get(x => x.StaffId == item.StaffId && x.IsActive == true).FirstOrDefault();
@@ -139,6 +139,13 @@ namespace FlexHR.Web.Controllers
             var staffShift = _staffShiftService.Get(p => p.StaffShiftId == id,null,"Staff").FirstOrDefault();
             
             return PartialView("_GetApproveStaffShiftModal", _mapper.Map<ListStaffShiftOnDashboardDto>(staffShift));
+        }  
+        [HttpGet]
+        public IActionResult GetUpcomingStaffShiftModal(int id)
+        {
+            var staffShift = _staffShiftService.Get(p => p.StaffShiftId == id,null,"Staff").FirstOrDefault();
+            
+            return PartialView("_GetUpcomingStaffLeaveModal", _mapper.Map<ListStaffShiftOnDashboardDto>(staffShift));
         }
         [HttpGet]
         public IActionResult GetApproveStaffPaymentModal(int id)

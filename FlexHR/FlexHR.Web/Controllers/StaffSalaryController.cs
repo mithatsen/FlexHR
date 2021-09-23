@@ -39,7 +39,7 @@ namespace FlexHR.Web.Controllers
             _staffCareerService = staffCareerService;
             _takePaymentService = takePaymentService;
         }
-        [Authorize(Roles = "YeniRol,Manager,Staff")]
+        [Authorize(Roles = "ViewStaffSalaryPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
         {           
             if (await IsAuthority(id))
@@ -57,7 +57,6 @@ namespace FlexHR.Web.Controllers
             }
 
         }
-        [Authorize(Roles = "YeniRol,Manager")]
         public IActionResult UpdateStaffSalary(UpdateStaffSalaryDto model)
         {
             try
@@ -73,7 +72,7 @@ namespace FlexHR.Web.Controllers
                 return View();
             }
         }
-        [Authorize(Roles = "YeniRol,Manager")]
+        [Authorize(Roles = "ViewSalaryMonthlyListPage,Manager")]
         public IActionResult GetStaffSalaryMonthlyList(DateTime dateTime)
         {
             TempData["Active"] = TempdataInfo.Salary;

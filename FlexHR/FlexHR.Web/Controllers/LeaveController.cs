@@ -48,6 +48,8 @@ namespace FlexHR.Web.Controllers
             var approvedLeaves = _mapper.Map<List<ListStaffLeaveWithUserActiveInfoDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 97 && p.IsActive == true, null, "Staff,LeaveType").ToList());
             var pendingApprovalLeaves = _mapper.Map<List<ListStaffLeaveWithUserActiveInfoDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 96 && p.IsActive == true, null, "Staff,LeaveType").ToList());
             var rejectedLeaves = _mapper.Map<List<ListStaffLeaveWithUserActiveInfoDto>>(_staffLeaveService.Get(p => p.GeneralStatusGeneralSubTypeId == 98 && p.IsActive == true, null, "Staff,LeaveType").ToList());
+            var currentlyOnLeaves = _mapper.Map<List<ListStaffLeaveWithUserActiveInfoDto>>(_staffLeaveService.Get(p => p.LeaveStartDate <= DateTime.Now && p.LeaveEndDate >= DateTime.Now && p.IsActive == true && p.GeneralStatusGeneralSubTypeId == 97 && p.Staff.IsActive == true, null, "Staff,LeaveType").ToList());
+
             foreach (var item in approvedLeaves)
             {
                 item.IsUserActive = _staffService.Get(p => p.StaffId == item.StaffId).FirstOrDefault().IsActive;
@@ -60,6 +62,10 @@ namespace FlexHR.Web.Controllers
             {
                 item.IsUserActive = _staffService.Get(p => p.StaffId == item.StaffId).FirstOrDefault().IsActive;
             }
+             foreach (var item in currentlyOnLeaves)
+            {
+                item.IsUserActive = _staffService.Get(p => p.StaffId == item.StaffId).FirstOrDefault().IsActive;
+            }
 
 
             ListLeaveViewModel listLeaveViewModel = new ListLeaveViewModel
@@ -67,6 +73,7 @@ namespace FlexHR.Web.Controllers
                 ApprovedLeaves = approvedLeaves,
                 PendingApprovalLeaves = pendingApprovalLeaves,
                 RejectedLeaves = rejectedLeaves,
+                CurrentlyOnLeaves=currentlyOnLeaves
             };
             return View(listLeaveViewModel);
         }

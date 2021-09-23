@@ -8,6 +8,27 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Vardiya Oluştur</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+
+<br />
 <div class="card card-custom ">
     <div class="card-body">
         <!--begin::Profile Personal Information-->
@@ -30,9 +51,9 @@
                                 </div>
                                 <div class="card-toolbar">
                                     <!--begin::Button-->
-                                    @if ((User.IsInRole("AddStaffCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                    @if ((User.IsInRole("AddJobRotation") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                     {
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#staffCareerAddModal">
+                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#jobRotationAddModal">
                                             Vardiya Ekle
                                         </button>
                                     }
@@ -49,7 +70,7 @@
                                             <th width="15%">Bitiş</th>
                                             <th width="15%">Vardiya Süresi</th>
 
-                                            @if ((User.IsInRole("UpdateDeleteCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                            @if ((User.IsInRole("UpdateDeleteJobRotation") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                             {
                                                 <th width="10%">İşlemler</th>
                                             }
@@ -64,10 +85,10 @@
                                         {
                                             <tr>
                                                 <td>@item.Name</td>
-                                                <td>@item.StartDate.ToString("dd.MM.yyyy HH:mm")</td>
-                                                <td>@item.EndDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                                <td>@item.StartDate.ToString("HH:mm")</td>
+                                                <td>@item.EndDate.ToString("HH:mm")</td>
                                                 <td>@item.ShiftTime</td>
-                                                @if ((User.IsInRole("UpdateDeleteCareer") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                @if ((User.IsInRole("UpdateDeleteJobRotation") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                                 {
                                                     <td>
                                                         <a id="CareerUpdateBtn" onclick="JobRotationUpdate(@item.Id)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
@@ -102,7 +123,7 @@
 </div>
 
 @* add career modal*@
-<div class="modal fade" id="staffCareerAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+<div class="modal fade" id="jobRotationAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -146,7 +167,7 @@
                                         <div class="col-md-2"> </div>
                                         <div class="col-md-5">
                                             <div class="form-group row  ">
-                                                <label>Başlangıç Tarihi *</label>
+                                                <label>Başlangıç Saati *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_62" data-target-input="nearest">
                                                         <input id="StartDate" name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_62" />
@@ -159,7 +180,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row  ">
-                                                <label>Bitiş Tarihi</label>
+                                                <label>Bitiş Saati</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_63" data-target-input="nearest">
                                                         <input id="EndDate" name="EndDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_63" />
@@ -207,17 +228,17 @@
 
 
     <script>
-        $('input[name="StartDate"]').mask('00.00.0000 00:00');
-        $('input[name="EndDate"]').mask('00.00.0000 00:00');
+        $('input[name="StartDate"]').mask('00:00');
+        $('input[name="EndDate"]').mask('00:00');
     </script>
     <script>
         $('#kt_datetimepicker_62').datetimepicker({
             locale: 'tr',
-            format: 'DD.MM.YYYY HH:mm'
+            format: 'HH:mm'
         });
         $('#kt_datetimepicker_63').datetimepicker({
             locale: 'tr',
-            format: 'DD.MM.YYYY HH:mm'
+            format: 'HH:mm'
         });
         $('#ShiftTime, #kt_touchspin_2_1').TouchSpin({
             buttondown_class: 'btn btn-secondary',

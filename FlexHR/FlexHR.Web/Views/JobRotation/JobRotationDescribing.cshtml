@@ -9,6 +9,27 @@
     <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
 }
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Page Title-->
+            <!--end::Page Title-->
+            <!--begin::Actions-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Vardiya Tanımlama</h5>
+            <!--end::Actions-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+
+<br />
 <div class="card card-custom ">
     <div class="card-body">
         <!--begin::Profile Personal Information-->
@@ -22,7 +43,7 @@
                         <!--end::Notice-->
                         <!--begin::Card-->
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <div class="card card-custom">
                                     <div class="card-header flex-wrap py-5">
                                         <div class="card-title">
@@ -33,7 +54,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form asp-action="JobRotationAssignStaff" asp-controller="JobRotation" method="post">
+                                        <form id="jobRotationDescribingForm" asp-action="JobRotationAssignStaff" asp-controller="JobRotation" method="post">
                                             <div class="form-group row">
                                                 <select id="JobRotationSelect" onchange="jobRotationChange()" class="form-control form-control-solid d-block  form-control-lg" name="JobRotationId" asp-items="ViewBag.JobRotationList">
                                                     <option hidden value="">Vardiya Seçiniz</option>
@@ -41,20 +62,26 @@
                                             </div>
 
                                             <div class="form-group row">
-                                                <select class="form-control select2" id="staffSelectList" name="StaffList" multiple="multiple"  asp-items="ViewBag.PersonalList">
+                                                <select class="form-control select2" id="staffSelectList" name="StaffList" multiple="multiple" asp-items="ViewBag.PersonalList">
                                                 </select>
                                             </div>
                                             <div class="form-group row">
                                                 @* onclick="jobRotationAssignStaffClickFunction()" *@
-                                                <button type="submit" class="btn btn-success btn-block">Kaydet</button>
-                                                <a onclick="deleteAllRotation()" class="btn btn-secondary btn-block">Sıfırla</a>
+                                                @if ((User.IsInRole("DescribingJobRotationButton") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                {
+                                                    <button type="submit" class="btn btn-success btn-block">Kaydet</button>
+                                                }
+                                                @if ((User.IsInRole("ResetJobRotationButton") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                                                {
+                                                    <a onclick="deleteAllRotation()" class="btn btn-secondary btn-block">Sıfırla</a>
+                                                }
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8" id="JobRotationDiv">
-                               
+                            <div class="col-md-7" id="JobRotationDiv">
+
                             </div>
                         </div>
 
@@ -77,7 +104,7 @@
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js" charset="windows-1254"></script>
     <script>
-   // multi select
+        // multi select
         $('#staffSelectList').select2({
             closeOnSelect: false,
             placeholder: "Perseonel Seçiniz",
@@ -85,8 +112,42 @@
         });
     </script>
     <script>
+        //  document.addEventListener('DOMContentLoaded', function (e) {
+
+        var fv = FormValidation.formValidation(document.getElementById('jobRotationDescribingForm'), {
+            fields: {
+
+                StaffList: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Personel alanı boş geçilemez',
+                        },
+
+                    }
+                },
+                JobRotationId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Vardiya alanı boş geçilemez'
+                        },
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                // Bootstrap Framework Integration
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                // Validate fields when clicking the Submit button
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // Submit the form when all fields are valid
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            },
+        });
+
+    </script>
+    <script>
         function jobRotationChange() {
-           
+
             var id = $("#JobRotationSelect").val();
             var modelContent = $("#JobRotationDiv")
             $("#JobRotationDiv").empty();
@@ -100,7 +161,7 @@
 
                 if (content != null) {
                     modelContent.html(content);
-                    $("#tableHeader").text($("#JobRotationSelect option:selected").text()+"Vardiya Listesi" );
+                    $("#tableHeader").text($("#JobRotationSelect option:selected").text() + "Vardiya Listesi");
                 }
             }).fail(function (error) {
                 alert(error);
@@ -116,10 +177,10 @@
                 if (data != null) {
                     for (var i = 0; i < data.length; i++) {
                         if (id == data[i].jobRotationId) {
-                            var opt = '<option selected value="' + data[i].staffId + '">' + data[i].nameSurname + '</option>';
+                            var opt = '<option selected value="' + data[i].staffId + '">' + data[i].nameSurname + '(' + data[i].departmentName + ')' + '</option>';
                             $("#staffSelectList").append(opt);
                         } else {
-                            var opt = '<option value="' + data[i].staffId + '">' + data[i].nameSurname + '</option>';
+                            var opt = '<option value="' + data[i].staffId + '">' + data[i].nameSurname + '(' + data[i].departmentName + ')' + '</option>';
                             $("#staffSelectList").append(opt);
                         }
                     }
@@ -165,9 +226,15 @@
                         }
 
                     })
-                } 
+                }
             });
 
         }
+    </script>
+    <script>
+         $(document).ready(function () {
+             if (@ViewBag.JobRotationAddStatus == true)
+                Swal.fire("Eklendi!", "Ekleme işlemi başarılı!", "success");
+         });
     </script>
 }

@@ -32,8 +32,10 @@
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
                 <div class="card-header border-0">
-                    <h3 class="card-title font-weight-bolder text-success"> <a class="text-success" asp-controller="Payment" asp-action="Index">Ödeme Talepleri</a></h3>
-
+                    <h3 class="card-title font-weight-bolder text-success">
+                        <a class="text-success" asp-controller="Payment" asp-action="Index">Ödeme Talepleri</a>
+                    </h3>
+                    <div class="card-toolbar"> <span class="badge badge-success">@Model.StaffPayments.Count</span></div>
                 </div>
 
                 <!--end::Header-->
@@ -42,23 +44,27 @@
 
                     @if (Model.StaffPayments.Count > 0)
                     {
-
-                        @foreach (var item in Model.StaffPayments)
+                        var counter = Model.StaffPayments.Count >= 4 ? 4 : Model.StaffPayments.Count;
+                        @for (int i = 0; i < counter; i++)
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
-                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
+                                    <div class="symbol-label font-size-h1"> @Model.StaffPayments[i].NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
-                                    <span class="text-muted font-weight-bold">@item.CreationDate.ToString("d")</span>
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@Model.StaffPayments[i].StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@Model.StaffPayments[i].NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@Model.StaffPayments[i].CreationDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
-                                <a onclick=getStaffPaymentApproveModal(@item.StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                                <a onclick=getStaffPaymentApproveModal(@Model.StaffPayments[i].StaffPaymentId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
                             </div>
+                        }
+                        if (Model.StaffPayments.Count > 4)
+                        {
+                            <div class="text-muted text-center font-weight-bold  mt-1"><a class="font-size-xs" asp-controller="Payment" asp-action="Index">Tümünü Gör</a></div>
                         }
                     }
                     else
@@ -91,8 +97,10 @@
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
                 <div class="card-header border-0">
-                    <h3 class="card-title font-weight-bolder text-success"> <a class="text-success" asp-controller="Shift" asp-action="Index">Mesai Talepleri</a></h3>
-
+                    <h3 class="card-title font-weight-bolder text-success">
+                        <a class="text-success" asp-controller="Shift" asp-action="Index">Mesai Talepleri</a>
+                    </h3>
+                    <div class="card-toolbar"> <span class="badge badge-success">@Model.StaffShifts.Count</span></div>
                 </div>
 
                 <!--end::Header-->
@@ -102,25 +110,28 @@
 
                     @if (Model.StaffShifts.Count > 0)
                     {
-
-                        @foreach (var item in Model.StaffShifts)
+                        var counter = Model.StaffShifts.Count >= 4 ? 4 : Model.StaffShifts.Count;
+                        @for (int i = 0; i < counter; i++)
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
-                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
+                                    <div class="symbol-label font-size-h1"> @Model.StaffShifts[i].NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
-                                    <span class="text-muted font-weight-bold">@item.StartDate.ToString("d")</span>
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@Model.StaffShifts[i].StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@Model.StaffShifts[i].NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@Model.StaffShifts[i].StartDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
-                                <a onclick=getStaffShiftApproveModal(@item.StaffShiftId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
+                                <a onclick=getStaffShiftApproveModal(@Model.StaffShifts[i].StaffShiftId) class="cursor-pointer"><span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder">Detay</span></a>
                             </div>
                         }
-
+                        if (Model.StaffShifts.Count > 4)
+                        {
+                            <div class="text-muted text-center font-weight-bold  mt-1"><a class="font-size-xs" asp-controller="Shift" asp-action="Index">Tümünü Gör</a></div>
+                        }
                     }
                     else
                     {
@@ -154,8 +165,10 @@
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
                 <div class="card-header border-0">
-                    <h3 class="card-title font-weight-bolder text-success">  <a class="text-success" asp-controller="Leave" asp-action="Index">İzin Talepleri</a></h3>
-
+                    <h3 class="card-title font-weight-bolder text-success">
+                        <a class="text-success" asp-controller="Leave" asp-action="Index">İzin Talepleri</a>
+                    </h3>
+                    <div class="card-toolbar"> <span class="badge badge-success">@Model.StaffLeaves.Count</span></div>
                 </div>
 
                 <!--end::Header-->
@@ -164,23 +177,27 @@
 
                     @if (Model.StaffLeaves.Count > 0)
                     {
-
-                        @foreach (var item in Model.StaffLeaves)
+                        var counter = Model.StaffLeaves.Count >= 4 ? 4 : Model.StaffLeaves.Count;
+                        @for (int i = 0; i < counter; i++)
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
-                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
+                                    <div class="symbol-label font-size-h1"> @Model.StaffLeaves[i].NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
-                                    <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@Model.StaffLeaves[i].StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@Model.StaffLeaves[i].NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@Model.StaffLeaves[i].LeaveStartDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
-                                <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> <a onclick="getStaffLeaveApproveModal(@item.StaffLeaveId)" class="cursor-pointer">Detay</a></span>
+                                <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> <a onclick="getStaffLeaveApproveModal(@Model.StaffLeaves[i].StaffLeaveId)" class="cursor-pointer">Detay</a></span>
                             </div>
+                        }
+                        if (Model.StaffLeaves.Count > 4)
+                        {
+                            <div class="text-muted text-center font-weight-bold  mt-1"><a class="font-size-xs" asp-controller="Leave" asp-action="Index">Tümünü Gör</a></div>
                         }
                     }
                     else
@@ -206,7 +223,7 @@
                 <!--end::Body-->
             </div>
             <!--end::List Widget 2-->
-        </div> 
+        </div>
 
         @*Şuanda İzinde olanlar*@
         <div class="col-xl-3">
@@ -214,8 +231,10 @@
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
                 <div class="card-header border-0">
-                    <h3 class="card-title font-weight-bolder text-success">  <a class="text-success" asp-controller="Leave" asp-action="Index">İzindeki Personeller</a></h3>
-
+                    <h3 class="card-title font-weight-bolder text-success ">
+                        <a class="text-success" asp-controller="Leave" asp-action="Index">İzindeki Personeller</a>
+                    </h3>
+                    <div class="card-toolbar"><span class="badge badge-success ">@Model.CurrentlyOnLeave.Count</span></div>
                 </div>
 
                 <!--end::Header-->
@@ -225,23 +244,28 @@
 
                     @if (Model.CurrentlyOnLeave.Count > 0)
                     {
-
-                        @foreach (var item in Model.CurrentlyOnLeave)
+                        var counter = Model.CurrentlyOnLeave.Count >= 4 ? 4 : Model.StaffLeaves.Count;
+                        @for (int i = 0; i < counter; i++)
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
-                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
+                                    <div class="symbol-label font-size-h1"> @Model.CurrentlyOnLeave[i].NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
-                                    <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@Model.CurrentlyOnLeave[i].StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@Model.CurrentlyOnLeave[i].NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@Model.CurrentlyOnLeave[i].LeaveEndDate.ToString("d")</span>
                                 </div>
                                 <!--end::Text-->
-                                <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> <a onclick="getCurrentlyOnStaffLeaveApproveModal(@item.StaffLeaveId)" class="cursor-pointer">Detay</a></span>
+                                <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> <a onclick="getCurrentlyOnStaffLeaveApproveModal(@Model.CurrentlyOnLeave[i].StaffLeaveId)" class="cursor-pointer">Detay</a></span>
                             </div>
+
+                        }
+                        if (Model.CurrentlyOnLeave.Count > 4)
+                        {
+                            <div class="text-muted text-center font-weight-bold  mt-1"><a class="font-size-xs" asp-controller="Leave" asp-action="Index">Tümünü Gör</a></div>
                         }
                     }
                     else
@@ -274,28 +298,34 @@
             <div class="shadow p-3 mb-5 bg-white rounded card card-custom bg-light-white card-stretch gutter-b">
                 <!--begin::Header-->
                 <div class="card-header border-0">
-                    <h3 class="card-title font-weight-bolder text-success">Yaklaşan İzinler</h3>
-
+                    <h3 class="card-title font-weight-bolder text-success">
+                        <a class="cursor-pointer" data-toggle="modal" data-target="#staffUpcomingLeaveApprove">Yaklaşan İzinler</a>
+                    </h3>
                 </div>
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body pt-2">
                     @if (Model.UpcomingLeaves.Count > 0)
                     {
-                        @foreach (var item in Model.UpcomingLeaves)
+                        var counter = Model.UpcomingLeaves.Count >= 4 ? 4 : Model.UpcomingLeaves.Count;
+                        @for (int i = 0; i < counter; i++)
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
-                                    <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
+                                    <div class="symbol-label font-size-h1"> @Model.UpcomingLeaves[i].NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
-                                    <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d")</span>
+                                    <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id=" @Model.UpcomingLeaves[i].StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@Model.UpcomingLeaves[i].NameSurname</a>
+                                    <span class="text-muted font-weight-bold">@Model.UpcomingLeaves[i].LeaveStartDate.ToString("d")</span>
                                 </div>
                             </div>
+                        }
+                        if (Model.UpcomingLeaves.Count > 4)
+                        {
+                            <div class="text-muted text-center font-weight-bold  mt-1"><a  class="font-size-xs text-primary cursor-pointer"  data-toggle="modal" data-target="#staffUpcomingLeaveApprove" >Tümünü Gör</a></div>
                         }
                     }
                     else
@@ -321,6 +351,63 @@
                 <!--end::Body-->
             </div>
             <!--end::List Widget 2-->
+        </div>
+
+        <div class="modal fade" id="staffUpcomingLeaveApprove" tabindex="-1" role="dialog" aria-labelledby="staffCurrentlyOnLeaveApprove" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header ">
+                        <div class="card-title align-items-start flex-column">
+                            <h3 class="card-label font-weight-bolder ">
+                                <i class="fas fa-umbrella-beach mr-2 "></i>Yaklaşan İzinler
+                            </h3>
+                        </div>
+                        <button type="button" class="link-2 text-white bg-danger " data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 300px; overflow-x: hidden; overflow-y: scroll;">
+                        @if (Model.UpcomingLeaves.Count > 0)
+                        {
+                            @foreach (var item in Model.UpcomingLeaves)
+                            {
+                                <div class="d-flex align-items-center flex-wrap mb-5">
+                                    <!--begin::Symbol-->
+                                    <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
+                                        <div class="symbol-label font-size-h1"> @item.NameSurname.Substring(0, 1)</div>
+                                    </div>
+                                    <!--end::Symbol-->
+                                    <!--begin::Text-->
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a asp-controller="StaffGeneral" asp-action="Index" asp-route-id="@item.StaffId" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">@item.NameSurname</a>
+                                        <span class="text-muted font-weight-bold">@item.LeaveStartDate.ToString("d") - @item.LeaveEndDate.ToString("d")</span>
+                                    </div>
+                                    <span class="label label-xl label-light label-inline my-lg-0 my-2 text-dark-50 font-weight-bolder"> @item.LeaveType</span>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+
+                            <div class="d-flex align-items-center flex-wrap mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-50 symbol-white pl-0">
+                                    <span>
+                                        <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column flex-grow-1 ml-2">
+                                    <span> Yaklaşan izin bulunmamaktadır</span>
+                                </div>
+                                <!--end::Text-->
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
         </div>
 
         @*Doğum günleri*@
@@ -515,11 +602,60 @@
 @section Scripts{
 
     @*<script>
+            $(document).ready(function () {
+                if (@ViewBag.StaffRemoveStatus == false) {
+                    Swal.fire("Hata!", "Silme işlemi başarısız!", "error");
+                }
+            })
+        </script>*@
+    <script>
+            $(document).ready(function () {
+                if (@ViewBag.StaffRemoveStatus == false) {
+                    Swal.fire("Hata!", "Silme işlemi başarısız!", "error");
+                }
+            })
+    </script>
+    <script>
+            $(document).ready(function () {
+                if (@ViewBag.StaffRemoveStatus == false) {
+                    Swal.fire("Hata!", "Silme işlemi başarısız!", "error");
+                }
+            })
+    </script>
+    <script>
+            $(document).ready(function () {
+                if (@ViewBag.StaffRemoveStatus == false) {
+                    Swal.fire("Hata!", "Silme işlemi başarısız!", "error");
+                }
+            })
+    </script>
+    <script>
+            $(document).ready(function () {
+                if (@ViewBag.StaffRemoveStatus == false) {
+                    Swal.fire("Hata!", "Silme işlemi başarısız!", "error");
+                }
+            })
+    </script>
+    <script>
+            $(document).ready(function () {
+                if (@ViewBag.StaffRemoveStatus == false) {
+                    Swal.fire("Hata!", "Silme işlemi başarısız!", "error");
+                }
+            })
+    </script>
+    <script>
+            $(document).ready(function () {
+                if (@ViewBag.StaffRemoveStatus == false) {
+                    Swal.fire("Hata!", "Silme işlemi başarısız!", "error");
+                }
+            })
+    </script>
+    <script>
         $(document).ready(function () {
             if (@ViewBag.StaffRemoveStatus == false) {
                 Swal.fire("Hata!", "Silme işlemi başarısız!", "error");
             }
         })
-    </script>*@
+    </script>
     <script src="~/js/home.js"></script>
 }

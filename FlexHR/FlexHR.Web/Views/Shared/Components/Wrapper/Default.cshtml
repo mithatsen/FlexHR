@@ -138,7 +138,7 @@
                     </div>
                 </li>
             }
-            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            @if ((User.IsInRole("ViewJobRotationSidebar") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="menu-item menu-item-submenu @(active=="rotation"?"menu-item-active menu-item-open":" ") @(active=="addRotation"?"menu-item-active menu-item-open":" ") @(active=="assignRotation"?"menu-item-active menu-item-open":" ")" aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
@@ -151,7 +151,7 @@
                     <div class="menu-submenu" kt-hidden-height="80" style="">
                         <i class="menu-arrow"></i>
                         <ul class="menu-subnav">
-                            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            @if ((User.IsInRole("ViewCreateJobRotationPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
                                 <li class="menu-item @(active=="addRotation"?"menu-item-active":" ")" aria-haspopup="true">
                                     <a asp-controller="JobRotation" asp-action="Index" class="menu-link">
@@ -162,7 +162,7 @@
                                     </a>
                                 </li>
                             }
-                            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+                            @if ((User.IsInRole("ViewDescribingJobRotationPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                             {
                                 <li class="menu-item @(active=="assignRotation"?"menu-item-active":" ")" aria-haspopup="true">
                                     <a asp-controller="JobRotation" asp-action="JobRotationDescribing" class="menu-link">
@@ -177,7 +177,7 @@
                     </div>
                 </li>
             }
-            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            @if ((User.IsInRole("ViewStaffTrackingPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="menu-item @(active=="staffTracking"?"menu-item-active":" ") " aria-haspopup="true">
                     <a asp-controller="StaffTracking" asp-action="Index" class="menu-link">
@@ -189,7 +189,7 @@
                     </a>
                 </li>
             }
-            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            @if ((User.IsInRole("ViewSalaryMonthlyListPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="menu-item @(active=="salary"?"menu-item-active":" ") " aria-haspopup="true">
                     <a asp-controller="StaffSalary" asp-action="GetStaffSalaryMonthlyList" class="menu-link">
@@ -201,7 +201,7 @@
                     </a>
                 </li>
             }
-            @if ((User.IsInRole("YeniRol") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            @if ((User.IsInRole("ViewTakePaymentPage") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="menu-item @(active=="takePayment"?"menu-item-active":" ") " aria-haspopup="true">
                     <a asp-controller="TakePayment" asp-action="Index" class="menu-link">

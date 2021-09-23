@@ -1,5 +1,6 @@
 ﻿using FlexHR.Business.Interface;
 using FlexHR.DTO.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace FlexHR.Web.Controllers
             _publicHolidayService = publicHolidayService;
             _colorCodeService = colorCodeService;
         }
+        [Authorize(Roles = "ViewStaffTrackingPage,Manager")]
         public IActionResult Index(DateTime dateTime)
         {
             TempData["Active"] = TempdataInfo.StaffTracking;

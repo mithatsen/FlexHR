@@ -96,17 +96,17 @@
 
 
 <script>
-    $('input[name="StartDate"]').mask('00.00.0000 00:00');
-    $('input[name="EndDate"]').mask('00.00.0000 00:00');
+    $('input[name="StartDate"]').mask('00:00');
+    $('input[name="EndDate"]').mask('00:00');
 </script>
 <script>
     $('#kt_datetimepicker_64').datetimepicker({
         locale: 'tr',
-        format: 'DD.MM.YYYY HH:mm'
+        format: 'HH:mm'
     });
     $('#kt_datetimepicker_65').datetimepicker({
         locale: 'tr',
-        format: 'DD.MM.YYYY HH:mm'
+        format: 'HH:mm'
     });
     $('#ShiftTimeUpdate, #kt_touchspin_2_1').TouchSpin({
         buttondown_class: 'btn btn-secondary',
@@ -128,23 +128,17 @@
                 StartDate: {
                     validators: {
                         notEmpty: {
-                            message: 'Tarih alanı boş geçilemez'
+                            message: 'Saat alanı boş geçilemez'
                         },
-                        date: {
-                            format: 'DD.MM.YYYY HH:mm',
-                            message: 'Geçerli bir tarih girin'
-                        }
+                        
                     }
                 },
                 EndDate: {
                     validators: {
                         notEmpty: {
-                            message: 'Tarih alanı boş geçilemez'
+                            message: 'Saat alanı boş geçilemez'
                         },
-                        date: {
-                            format: 'DD.MM.YYYY HH:mm',
-                            message: 'Geçerli bir tarih girin'
-                        }
+                      
                     }
                 },
                 Name: {
@@ -160,8 +154,8 @@
                             message: 'Vardiya süresi alanı boş geçilemez',
                         },
                         greaterThan: {
-                            min: 0,
-                            message: 'Vardiya süresi alanı sıfırdan küçük olamaz',
+                            min: 1,
+                            message: 'Vardiya süresi alanı birden küçük olamaz',
                         }
 
                     }

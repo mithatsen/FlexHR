@@ -28,7 +28,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Context
             //base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }
             base.OnConfiguring(optionsBuilder);
         }

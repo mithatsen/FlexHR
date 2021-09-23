@@ -2,6 +2,7 @@
 using FlexHR.Business.Interface;
 using FlexHR.DTO.Dtos.StaffPaymentDtos;
 using FlexHR.Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,11 +25,13 @@ namespace FlexHR.Web.Controllers
             _generalSubTypeService = generalSubTypeService;
             _takePaymentService = takePaymentService;
         }
+        [Authorize(Roles = "ViewTakePaymentPage,Manager")]
         public IActionResult Index()
         {
             TempData["Active"] = TempdataInfo.TakePayment;
             return View();
         }
+     
         public IActionResult GetStaffPayments()
         {
             var paymentList = _staffPaymentService.Get(x => (x.PaymentTypeGeneralSubTypeId == 100 || x.PaymentTypeGeneralSubTypeId == 103) && x.IsPaid == true && x.GeneralStatusGeneralSubTypeId == 97, null, "Staff").ToList();
@@ -42,6 +45,7 @@ namespace FlexHR.Web.Controllers
             return Json(result);
 
         }
+  
         public IActionResult GetStaffPaymentInfo(int id)
         {
             var paymentList = _takePaymentService.Get(x => x.StaffPaymentId == id && x.IsActive == true,null,"StaffPayment").OrderBy(x => x.PaymentDate).ToList();

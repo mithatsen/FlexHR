@@ -29,7 +29,7 @@
                     </a>
                 </li>
             }
-            @if ((User.IsInRole("YeniRol") || User.IsInRole("Staff") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
+            @if ((User.IsInRole("ViewStaffSalaryPage") || User.IsInRole("Staff") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
             {
                 <li class="nav-item  mr-5 pr-3">
                     <a class="nav-link" id="tab_11" asp-controller="StaffSalary" asp-action="Index" asp-route-id="@Model">

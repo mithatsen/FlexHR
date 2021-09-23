@@ -518,6 +518,14 @@ var KTDatatablesAdvancedColumnRendering = function () {
             paging: true,
 
         });
+           var table = $('#kt_datatable_79');
+
+        // begin first table
+        table.DataTable({
+            responsive: true,
+            paging: true,
+
+        });
 
   
 
