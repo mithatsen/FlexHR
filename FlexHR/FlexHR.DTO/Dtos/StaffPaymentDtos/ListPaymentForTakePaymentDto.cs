@@ -16,6 +16,7 @@ namespace FlexHR.DTO.Dtos.StaffPaymentDtos
         public string CurrencyType { get; set; }
         public DateTime CreationDate { get; set; }
         public decimal Amount { get; set; }
+        public decimal RemainingAmount { get; set; }
         public int? Installment { get; set; }
     }
 }

@@ -36,7 +36,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row ">
-                                                <label>Vardiya Süresi *</label>
+                                                <label>Vardiyadaki Çalışma Saati *</label>
                                                 <div class="input-group">
                                                     <input asp-for="ShiftTime" id="ShiftTimeUpdate" class="form-control form-control-lg  text-center" type="text" placeholder="Vardiya Süresi" />
                                                 </div>
@@ -45,10 +45,10 @@
                                         <div class="col-md-2"> </div>
                                         <div class="col-md-5">
                                             <div class="form-group row  ">
-                                                <label>Başlangıç Tarihi *</label>
+                                                <label>Başlangıç Saati *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_64" data-target-input="nearest">
-                                                        <input id="StartDate" asp-for="StartDate" value="@Model.StartDate.ToString("dd.MM.yyyy HH:mm")" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_64" />
+                                                        <input id="StartDate" asp-for="StartDate" value="@Model.StartDate.ToString("dd.MM.yyyy HH:mm")" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Saat Seçiniz" data-target="#kt_datetimepicker_64" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_64" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -58,10 +58,10 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row  ">
-                                                <label>Bitiş Tarihi</label>
+                                                <label>Bitiş Saati</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_65" data-target-input="nearest">
-                                                        <input id="EndDate" asp-for="EndDate" value="@Model.EndDate.ToString("dd.MM.yyyy HH:mm")" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_65" />
+                                                        <input id="EndDate" asp-for="EndDate" value="@Model.EndDate.ToString("dd.MM.yyyy HH:mm")" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Saat Seçiniz" data-target="#kt_datetimepicker_65" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_65" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>

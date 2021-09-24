@@ -86,8 +86,8 @@ var KTDatatableChildRemoteDataDemo = function () {
                     title: 'Toplam Tutar',
                     sortable: 'asc',
                     template: function (row) {
-
-                        return row.amount + " " + row.currencyType;
+                        debugger;
+                        return '\ ' + row.amount + " " + row.currencyType + " " + '<span class="badge badge-info "> ' + row.remainingAmount + " " +  row.currencyType + ' kaldý </span>';
                     }
                 }, {
                     field: 'installment',

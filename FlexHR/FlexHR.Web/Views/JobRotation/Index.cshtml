@@ -68,7 +68,7 @@
                                             <th width="45%">Name</th>
                                             <th width="15%">Başlangıç</th>
                                             <th width="15%">Bitiş</th>
-                                            <th width="15%">Vardiya Süresi</th>
+                                            <th width="15%">Vardiyadaki Çalışma Saati</th>
 
                                             @if ((User.IsInRole("UpdateDeleteJobRotation") || User.IsInRole("Manager")) && User.Identity.IsAuthenticated)
                                             {
@@ -158,7 +158,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row ">
-                                                <label>Vardiya Süresi *</label>
+                                                <label>Vardiyadaki Çalışma Saati *</label>
                                                 <div class="input-group">
                                                     <input name="ShiftTime" id="ShiftTime" class="form-control form-control-lg  text-center" type="text" placeholder="Vardiya Süresi" value="0" />
                                                 </div>
@@ -170,7 +170,7 @@
                                                 <label>Başlangıç Saati *</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_62" data-target-input="nearest">
-                                                        <input id="StartDate" name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_62" />
+                                                        <input id="StartDate" name="StartDate" type="text" class="form-control form-control-lg datetimepicker-input" placeholder="Saat Seçiniz" data-target="#kt_datetimepicker_62" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_62" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>
@@ -183,7 +183,7 @@
                                                 <label>Bitiş Saati</label>
                                                 <div class="input-group">
                                                     <div class="input-group date input-group-solid" id="kt_datetimepicker_63" data-target-input="nearest">
-                                                        <input id="EndDate" name="EndDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_63" />
+                                                        <input id="EndDate" name="EndDate" type="text" class="form-control form-control-lg datetimepicker-input " placeholder="Saat Seçiniz" data-target="#kt_datetimepicker_63" />
                                                         <div class="input-group-append" data-target="#kt_datetimepicker_63" data-toggle="datetimepicker">
                                                             <span class="input-group-text">
                                                                 <i class="ki ki-calendar"></i>

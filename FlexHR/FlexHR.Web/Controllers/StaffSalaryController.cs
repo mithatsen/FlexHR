@@ -28,9 +28,11 @@ namespace FlexHR.Web.Controllers
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IStaffCareerService _staffCareerService;
         private readonly ITakePaymentService _takePaymentService;
-        
+        private readonly IJobRotationHistoryService _jobRotationHistoryService;
 
-        public StaffSalaryController(IMapper mapper, ITakePaymentService takePaymentService, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager, IStaffService staffService, IStaffSalaryService staffSalaryService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService) : base(userManager)
+
+        public StaffSalaryController(IMapper mapper, ITakePaymentService takePaymentService, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager, IStaffService staffService,
+            IStaffSalaryService staffSalaryService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService, IJobRotationHistoryService jobRotationHistoryService) : base(userManager)
         {
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
@@ -39,6 +41,7 @@ namespace FlexHR.Web.Controllers
             _companyBranchService = companyBranchService;
             _staffCareerService = staffCareerService;
             _takePaymentService = takePaymentService;
+            _jobRotationHistoryService = jobRotationHistoryService;
         }
         [Authorize(Roles = "ViewStaffSalaryPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
@@ -80,6 +83,7 @@ namespace FlexHR.Web.Controllers
             DateTime date = dateTime.Year != 0001 ? dateTime : DateTime.Now;
             var staffs = _staffService.Get(x => x.IsActive == true, null, "StaffCareer");
             var result = _staffSalaryService.GetStaffSalaryMonthly(date);
+
             List<ListStaffSalaryMonthlyDto> models = new List<ListStaffSalaryMonthlyDto>();
             foreach (var item in staffs)
             {
@@ -93,30 +97,40 @@ namespace FlexHR.Web.Controllers
                 var branch = item.StaffCareer.Count > 0 ? careerResult.CompanyBranch.BranchName : "";
                 if (trackingList.Count != 0)
                 {
-
-                    foreach (var personal in trackingList)
+                    var jobRotationHistory = _jobRotationHistoryService.Get(x => x.IsActive && x.StaffId == item.StaffId).ToList();
+                    foreach (var historyItem in jobRotationHistory)
                     {
-                        department = personal.Department;
-                        branch = personal.Branch;
-                        if (personal.CkeckoutTime == "")
-                        {
-                            continue;
-                        }
-                        var time = (Convert.ToDateTime(personal.CkeckoutTime) - Convert.ToDateTime(personal.EntryTime));
+                        //foreach (var rotationItem in historyItem.)
+                        //{
 
-                        if (time.CompareTo(TimeSpan.Zero) < 0)
-                        {
-                            time = time.Add(TimeSpan.FromHours(24));
-                        }
-                        if (personal.Overtime != "")
-                        {
-                            time = time.Subtract(TimeSpan.FromHours(Convert.ToDateTime(personal.Overtime).Hour));
-                            time = time.Subtract(TimeSpan.FromMinutes(Convert.ToDateTime(personal.Overtime).Minute));
-                            totalOvertimeHour += Convert.ToDateTime(personal.Overtime).TimeOfDay;
-                        }
-                        totalWorkingHour += time;
+                            foreach (var personal in trackingList)
+                            {
+                                if (true)
+                                {
+                                    department = personal.Department;
+                                    branch = personal.Branch;
+                                    if (personal.CkeckoutTime == "")
+                                    {
+                                        continue;
+                                    }
+                                    var time = (Convert.ToDateTime(personal.CkeckoutTime) - Convert.ToDateTime(personal.EntryTime));
 
+                                    if (time.CompareTo(TimeSpan.Zero) < 0)
+                                    {
+                                        time = time.Add(TimeSpan.FromHours(24));
+                                    }
+                                    if (personal.Overtime != "")
+                                    {
+                                        time = time.Subtract(TimeSpan.FromHours(Convert.ToDateTime(personal.Overtime).Hour));
+                                        time = time.Subtract(TimeSpan.FromMinutes(Convert.ToDateTime(personal.Overtime).Minute));
+                                        totalOvertimeHour += Convert.ToDateTime(personal.Overtime).TimeOfDay;
+                                    }
+                                    totalWorkingHour += time;
+                            //    }
+                            }
+                        }
                     }
+
                 }
 
 

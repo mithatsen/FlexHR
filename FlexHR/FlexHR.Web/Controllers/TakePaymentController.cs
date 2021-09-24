@@ -35,12 +35,18 @@ namespace FlexHR.Web.Controllers
         public IActionResult GetStaffPayments()
         {
             var paymentList = _staffPaymentService.Get(x => (x.PaymentTypeGeneralSubTypeId == 100 || x.PaymentTypeGeneralSubTypeId == 103) && x.IsPaid == true && x.GeneralStatusGeneralSubTypeId == 97, null, "Staff").ToList();
-
+            decimal remainingAmount=0;
             var result = _mapper.Map<List<ListPaymentForTakePaymentDto>>(paymentList);
             foreach (var item in result)
             {
+                var remainingPayments= _takePaymentService.Get(x => x.StaffPaymentId == item.StaffPaymentId && x.IsPaid==false && x.IsActive==true).ToList();
+                foreach (var temp in remainingPayments)
+                {
+                     remainingAmount += temp.InstallmentAmount;
+                }
                 item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
                 item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
+                item.RemainingAmount = remainingAmount;
             }
             return Json(result);
 
