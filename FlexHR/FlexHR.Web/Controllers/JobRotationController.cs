@@ -38,7 +38,7 @@ namespace FlexHR.Web.Controllers
             var result = _jobRotationService.GetAll();
             return View(_mapper.Map<List<ListJobRotationDto>>(result));
         }
-        [Authorize(Roles = "ViewDescribingJobRotationPage,Manager")] 
+        [Authorize(Roles = "ViewDescribingJobRotationPage,Manager")]
         public IActionResult JobRotationDescribing()
         {
             TempData["Active"] = TempdataInfo.AssignJobRotation;
@@ -62,10 +62,11 @@ namespace FlexHR.Web.Controllers
                 var result = _staffService.GetById(item);
                 result.JobRotationId = model.JobRotationId;
                 _staffService.UpdateNotSave(result);
-                ListJobRotationHistoryDto historyDto = new ListJobRotationHistoryDto {
+                ListJobRotationHistoryDto historyDto = new ListJobRotationHistoryDto
+                {
                     JobRotationDate = DateTime.Now,
-                    JobRotationId=model.JobRotationId,
-                    StaffId=item                
+                    JobRotationId = model.JobRotationId,
+                    StaffId = item
                 };
                 _jobRotationHistoryService.Add(_mapper.Map<JobRotationHistory>(historyDto));
             }
@@ -79,10 +80,10 @@ namespace FlexHR.Web.Controllers
             List<ListStaffJobRotationDto> models = new List<ListStaffJobRotationDto>();
             foreach (var item in result)
             {
-                
+
                 ListStaffJobRotationDto model = new ListStaffJobRotationDto
                 {
-                    DepartmentName = item.StaffCareer.FirstOrDefault()!=null? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId):"-",
+                    DepartmentName = item.StaffCareer.FirstOrDefault() != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId) : "-",
                     NameSurname = item.NameSurname,
                     PersonalNo = item.PersonalNo,
                     StaffId = item.StaffId
@@ -106,25 +107,40 @@ namespace FlexHR.Web.Controllers
             var jobRotation = _jobRotationService.GetById(id);
             return PartialView("_GetUpdateJobRotationModal", _mapper.Map<ListJobRotationDto>(jobRotation));
         }
-        public IActionResult GetJobRotationSelectbox()
+        public IActionResult GetJobRotationSelectbox(int id)
         {
-            var jobRotation = _staffService.Get(x=>x.IsActive == true, null, "StaffCareer").ToList();
+            var jobRotation = _staffService.Get(x => x.IsActive == true, null, "StaffCareer").ToList();
             List<ListStaffJobRotationDto> models = new List<ListStaffJobRotationDto>();
             foreach (var item in jobRotation)
             {
-                ListStaffJobRotationDto model = new ListStaffJobRotationDto
+                if (item.JobRotationId == id)
                 {
-                    DepartmentName = item.StaffCareer.FirstOrDefault() != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId) : "-",
-                    NameSurname = item.NameSurname,
-                    PersonalNo = item.PersonalNo,
-                    StaffId = item.StaffId,
-                    JobRotationId=item.JobRotationId
-                };
-                models.Add(model);
+                    ListStaffJobRotationDto model = new ListStaffJobRotationDto
+                    {
+                        DepartmentName = item.StaffCareer.FirstOrDefault() != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId) : "-",
+                        NameSurname = item.NameSurname,
+                        PersonalNo = item.PersonalNo,
+                        StaffId = item.StaffId,
+                        JobRotationId = item.JobRotationId
+                    };
+                    models.Add(model);
+                }
+                if (item.JobRotationId == null)
+                {
+                    ListStaffJobRotationDto model = new ListStaffJobRotationDto
+                    {
+                        DepartmentName = item.StaffCareer.FirstOrDefault() != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId) : "-",
+                        NameSurname = item.NameSurname,
+                        PersonalNo = item.PersonalNo,
+                        StaffId = item.StaffId,
+                        JobRotationId = item.JobRotationId
+                    };
+                    models.Add(model);
+                }
             }
             return Json(models);
         }
-  
+
         [HttpPost]
         public IActionResult UpdateJobRotation(ListJobRotationDto model)
         {

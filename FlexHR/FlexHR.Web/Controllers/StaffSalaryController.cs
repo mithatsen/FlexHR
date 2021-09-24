@@ -28,6 +28,7 @@ namespace FlexHR.Web.Controllers
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IStaffCareerService _staffCareerService;
         private readonly ITakePaymentService _takePaymentService;
+        
 
         public StaffSalaryController(IMapper mapper, ITakePaymentService takePaymentService, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager, IStaffService staffService, IStaffSalaryService staffSalaryService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService) : base(userManager)
         {
@@ -41,7 +42,7 @@ namespace FlexHR.Web.Controllers
         }
         [Authorize(Roles = "ViewStaffSalaryPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
-        {           
+        {
             if (await IsAuthority(id))
             {
                 var salaryInfo = _staffSalaryService.Get(x => x.StaffId == id).FirstOrDefault();
@@ -77,7 +78,7 @@ namespace FlexHR.Web.Controllers
         {
             TempData["Active"] = TempdataInfo.Salary;
             DateTime date = dateTime.Year != 0001 ? dateTime : DateTime.Now;
-            var staffs = _staffService.Get(x => x.IsActive == true,null,"StaffCareer");
+            var staffs = _staffService.Get(x => x.IsActive == true, null, "StaffCareer");
             var result = _staffSalaryService.GetStaffSalaryMonthly(date);
             List<ListStaffSalaryMonthlyDto> models = new List<ListStaffSalaryMonthlyDto>();
             foreach (var item in staffs)
@@ -88,15 +89,19 @@ namespace FlexHR.Web.Controllers
                 TimeSpan totalWorkingHour = new TimeSpan(0, 0, 0, 0);
                 TimeSpan totalOvertimeHour = new TimeSpan(0, 0, 0, 0);
                 var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).FirstOrDefault();
-                var department = item.StaffCareer.Count > 0?  _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId).ToString():"";
-                var branch = item.StaffCareer.Count>0 ? careerResult.CompanyBranch.BranchName:"";
+                var department = item.StaffCareer.Count > 0 ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId).ToString() : "";
+                var branch = item.StaffCareer.Count > 0 ? careerResult.CompanyBranch.BranchName : "";
                 if (trackingList.Count != 0)
                 {
 
                     foreach (var personal in trackingList)
                     {
-                        department = personal.Department ;
-                        branch = personal.Branch ;
+                        department = personal.Department;
+                        branch = personal.Branch;
+                        if (personal.CkeckoutTime == "")
+                        {
+                            continue;
+                        }
                         var time = (Convert.ToDateTime(personal.CkeckoutTime) - Convert.ToDateTime(personal.EntryTime));
 
                         if (time.CompareTo(TimeSpan.Zero) < 0)
@@ -113,30 +118,30 @@ namespace FlexHR.Web.Controllers
 
                     }
                 }
-                
-               
+
+
                 models.Add(new ListStaffSalaryMonthlyDto
                 {
-                    StaffId=item.StaffId,
+                    StaffId = item.StaffId,
                     NameSurname = item.NameSurname,
                     CardNo = item.PersonalNo,
-                    Branch=branch,
-                    Department=department,
-                    IncomePerHour=Math.Round(incomePerHour??0,2),
-                    IncomePerShiftHour=salaryInfo.OvertimePayPerHour,
-                    TotalWorkingHour = totalWorkingHour.Hours + " sa " + totalWorkingHour.Minutes + " dk ",
-                    TotalOvertimeHour = totalOvertimeHour.Hours + " sa " + totalOvertimeHour.Minutes + " dk ",
-                    TotalDeservedSalary= Math.Round((incomePerHour * (totalWorkingHour.Hours + totalWorkingHour.Minutes / 60) + salaryInfo.OvertimePayPerHour * (totalOvertimeHour.Hours + totalWorkingHour.Minutes / 60)??0),2),
-                    NetSalary=salaryInfo.Salary,
-                    CurrencyTypeName= _generalSubTypeService.GetDescriptionByGeneralSubTypeId(salaryInfo.CurrencyGeneralSubTypeId),
-                
+                    Branch = branch,
+                    Department = department,
+                    IncomePerHour = Math.Round(incomePerHour ?? 0, 2),
+                    IncomePerShiftHour = salaryInfo.OvertimePayPerHour,
+                    TotalWorkingHour = totalWorkingHour.Days * 24 + totalWorkingHour.Hours + " sa " + totalWorkingHour.Minutes + " dk ",
+                    TotalOvertimeHour = totalOvertimeHour.Days * 24 + totalOvertimeHour.Hours + " sa " + totalOvertimeHour.Minutes + " dk ",
+                    TotalDeservedSalary = Math.Round((incomePerHour * ((totalWorkingHour.Days * 24 + totalWorkingHour.Hours) + totalWorkingHour.Minutes / 60) + salaryInfo.OvertimePayPerHour * ((totalOvertimeHour.Days * 24 + totalOvertimeHour.Hours) + totalWorkingHour.Minutes / 60) ?? 0), 2),
+                    NetSalary = salaryInfo.Salary,
+                    CurrencyTypeName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(salaryInfo.CurrencyGeneralSubTypeId),
+
                 });
             }
             StaffSalaryMonthlyViewModal listModel = new StaffSalaryMonthlyViewModal { filterDate = date, ListStaffSalaryMonthly = models };
             return View(listModel);
         }
         [HttpGet]
-        public IActionResult GetDebtMonthlyModal(int id,int monthDate,int yearDate)
+        public IActionResult GetDebtMonthlyModal(int id, int monthDate, int yearDate)
         {
             var takePayments = _takePaymentService.Get(x => x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate, null, "StaffPayment").Where(x => x.StaffPayment.StaffId == id).ToList();
             var takePaymentVmList = new List<GetMonthlyTakePaymentViewModel>();
@@ -150,10 +155,10 @@ namespace FlexHR.Web.Controllers
                 };
                 takePaymentVmList.Add(takePaymentVm);
             }
-            return PartialView("_GetStaffDebtMonthlyModal",takePaymentVmList);
+            return PartialView("_GetStaffDebtMonthlyModal", takePaymentVmList);
         }
     }
 
-   
+
 }
 

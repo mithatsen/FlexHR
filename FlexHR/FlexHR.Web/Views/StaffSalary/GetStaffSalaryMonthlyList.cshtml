@@ -31,6 +31,9 @@
 </div>
 
 <br />
+
+
+@* *******************************************Eski Tablo**************************************************************** *@
 <div class="card card-custom">
     <div class="card card-custom">
         <div class="card-body  ">
@@ -127,11 +130,34 @@
 </div>
 @* update leave modal*@
 <div id="GetDebtMonthlyModalDiv"></div>
+
+
+
+
 <!--end::Entry-->
 @section Scripts{
     <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="~/assets/js/pages/crud/datatables/advanced/column-rendering.js"></script>
     <script>
+        var table = $('#kt_datatable_SalaryList');
+
+        // begin first table
+
+        table.DataTable({
+            responsive: false,
+            paging: true,
+            sorting: false,
+            "targets": 'no-sort',
+
+            "order": [],
+            "scrollX": true,
+
+            "aoColumnDefs": [
+                { "bSortable": false, "aTargets": ["_all"] }
+            ]
+
+
+        })
         $('#kt_datetimepicker_79').datetimepicker({
             locale: 'tr',
             format: 'MM.yyyy'
@@ -146,7 +172,7 @@
                 MonthDate:@Html.Raw(Json.Serialize(@Model.filterDate.Month)),
                 YearDate:@Html.Raw(Json.Serialize(@Model.filterDate.Year)),
             };
-           
+
             console.log(formData);
             $.ajax({
                 method: "GET",
@@ -166,11 +192,4 @@
             });
         }
     </script>
-
-
-
-
-
-
-
 }
