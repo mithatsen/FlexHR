@@ -88,7 +88,7 @@ namespace FlexHR.Web.Controllers
             foreach (var item in staffs)
             {
                 var salaryInfo = _staffSalaryService.Get(x => x.StaffId == item.StaffId).FirstOrDefault();
-                var incomePerHour = salaryInfo.Salary / salaryInfo.TotalWorkingHour;
+                var incomePerHour = salaryInfo.Salary / 12;
                 var trackingList = result.Where(x => Convert.ToInt32(x.CardNo) == item.PersonalNo).ToList();
                 TimeSpan totalWorkingHour = new TimeSpan(0, 0, 0, 0);
                 TimeSpan totalOvertimeHour = new TimeSpan(0, 0, 0, 0);
@@ -141,11 +141,11 @@ namespace FlexHR.Web.Controllers
                     CardNo = item.PersonalNo,
                     Branch = branch,
                     Department = department,
-                    IncomePerHour = Math.Round(incomePerHour ?? 0, 2),
-                    IncomePerShiftHour = salaryInfo.OvertimePayPerHour,
+                    IncomePerHour = 12,
+                    IncomePerShiftHour = 12,
                     TotalWorkingHour = totalWorkingHour.Days * 24 + totalWorkingHour.Hours + " sa " + totalWorkingHour.Minutes + " dk ",
                     TotalOvertimeHour = totalOvertimeHour.Days * 24 + totalOvertimeHour.Hours + " sa " + totalOvertimeHour.Minutes + " dk ",
-                    TotalDeservedSalary = Math.Round((incomePerHour * ((totalWorkingHour.Days * 24 + totalWorkingHour.Hours) + totalWorkingHour.Minutes / 60) + salaryInfo.OvertimePayPerHour * ((totalOvertimeHour.Days * 24 + totalOvertimeHour.Hours) + totalWorkingHour.Minutes / 60) ?? 0), 2),
+                   // TotalDeservedSalary = Math.Round((incomePerHour * ((totalWorkingHour.Days * 24 + totalWorkingHour.Hours) + totalWorkingHour.Minutes / 60) + 12 * ((totalOvertimeHour.Days * 24 + totalOvertimeHour.Hours) + totalWorkingHour.Minutes / 60) ?? 0), 2),
                     NetSalary = salaryInfo.Salary,
                     CurrencyTypeName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(salaryInfo.CurrencyGeneralSubTypeId),
 
@@ -171,7 +171,14 @@ namespace FlexHR.Web.Controllers
             }
             return PartialView("_GetStaffDebtMonthlyModal", takePaymentVmList);
         }
+        [HttpGet]
+        public IActionResult GetSalaryMonthlyModal(int id, int monthDate, int yearDate)
+        {
+            
+            return PartialView("_GetStaffSalaryMonthlyModal");
+        }
     }
+    
 
 
 }

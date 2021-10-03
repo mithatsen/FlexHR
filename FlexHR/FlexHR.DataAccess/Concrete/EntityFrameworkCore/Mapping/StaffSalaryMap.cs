@@ -15,7 +15,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
 
             entity.Property(e => e.FoodPayment).HasColumnType("numeric(18, 2)");
 
-            entity.Property(e => e.IsAgi).HasColumnName("IsAGI");
+     
 
             entity.Property(e => e.PrivateHealthCare).HasColumnType("numeric(18, 2)");
 

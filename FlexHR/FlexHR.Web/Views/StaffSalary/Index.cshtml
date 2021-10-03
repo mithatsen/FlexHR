@@ -72,16 +72,11 @@
                                                     </div>
 
                                                 </div>
+
                                                 <div class="form-group row">
-                                                    <label>Aylık Toplam Çalışma Saati</label>
+                                                    <label>Saat Ücreti</label>
                                                     <div class="input-group">
-                                                        <input id="txtTotalWorkingHour" type="text" asp-for="TotalWorkingHour" class="form-control form-control-solid form-control-lg">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label>Saat Başına Fazla Mesai Ücreti</label>
-                                                    <div class="input-group">
-                                                        <input id="txtOvertimePayPerHour" type="text" asp-for="OvertimePayPerHour" class="form-control form-control-solid form-control-lg">
+                                                        <input id="txtOvertimePayPerHour" type="text" asp-for="PayPerHour" class="form-control form-control-solid form-control-lg">
                                                     </div>
                                                 </div>
 
@@ -97,7 +92,13 @@
                                                         <input id="txtPrivateHealthCare" type="text" asp-for="PrivateHealthCare" class="form-control form-control-solid form-control-lg">
                                                     </div>
                                                 </div>
-                                                
+                                                <div class="form-group row">
+                                                    <label>Agi Ücreti</label>
+                                                    <div class="input-group">
+                                                        <input id="agiPayment" type="text" asp-for="AgiPayment" class="form-control form-control-solid form-control-lg">
+                                                    </div>
+                                                </div>
+
                                             </div>
                                             <div class="col-md-2">   </div>
                                             <div class="col-md-5">
@@ -141,18 +142,7 @@
                                                         <input id="txtPrivatePension" type="text" asp-for="PrivatePension" class="form-control form-control-solid form-control-lg">
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label></label>
-                                                    <div class="input-group col-form-label">
-                                                        <div class="checkbox-inline">
-                                                            <label class="checkbox checkbox-primary">
-                                                                <input id="isAgi" type="checkbox" asp-for="IsAgi" />
-                                                                <span></span>
-                                                                AGİ
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                               
 
                                             </div>
                                         </div>
@@ -217,6 +207,7 @@
         $("#txtRoadPayment").mask('000.000.000.000,00', { reverse: true });
         $("#txtConstantBonus").mask('000.000.000.000,00', { reverse: true });
         $("#txtPrivatePension").mask('000.000.000.000,00', { reverse: true });
+        $("#agiPayment").mask('000.000.000.000,00', { reverse: true });
     </script>
     <script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>
     <script>

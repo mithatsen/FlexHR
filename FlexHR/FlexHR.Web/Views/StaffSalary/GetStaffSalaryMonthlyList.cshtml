@@ -32,114 +32,7 @@
 
 <br />
 
-<div class="card card-custom mb-10">
-    <div class="card card-custom">
-        <div class="card-body  ">
 
-            <!--begin: Datatable-->
-            <div class="tab-content pt-5">
-                <div class="row">
-                    <div class="col-md-4">
-                        <span class="text-dark mb-4 font-size-h3"> @Model.filterDate.ToString("Y") Puantaj Tablosu</span>
-                    </div>
-                    <div class="col-md-4 border-2">
-                        @*<table class="table table-light table-sm w-100 ">
-                                <tr>
-
-                                    @foreach (var item in Model.ColorCodes)
-                                    {
-                                        <td class=" text-center font-weight-bolder text-light px-2" style="background-color:@item.Color">@item.Code</td>
-                                        <td class="text-center pl-3 pr-5">@item.Description</td>
-                                    }
-
-                                </tr>
-
-                            </table>*@
-                    </div>
-                    <div class="col-md-4">
-                        <div class="col-md-12 float-right">
-                            <!--begin: Search Form-->
-                            <form asp-controller="StaffTracking" asp-action="Index" method="post">
-
-                                <div class="row ">
-                                    <div class="col-md-4"></div>
-                                    <div class="input-group d-inline col-md-5">
-                                        <div class="input-group date input-group-solid" id="kt_datetimepicker_78" data-target-input="nearest">
-                                            <input name="dateTime" type="text" class="form-control form-control-lg datetimepicker-input" value="@Model.filterDate.Month.@Model.filterDate.Year" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_78" autocomplete="off" />
-                                            <div class="input-group-append" data-target="#kt_datetimepicker_78" data-toggle="datetimepicker">
-                                                <span class="input-group-text">
-                                                    <i class="ki ki-calendar"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary btn-primary--icon d-inline col-md-3" type="submit">
-                                        <span>
-                                            <i class="la la-search"></i>
-                                            <span>Listele</span>
-                                        </span>
-                                    </button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-
-
-                </div>
-
-
-                <hr />
-                <!--begin: Search Form-->
-
-                <table class="table table-bordered table-head-custom table-sm " id="kt_datatable_SalaryList">
-                    <thead class="pe-none">
-                        <tr>
-                            <th>No</th>
-                            <th>Ad Soyad</th>
-                            <th>Şube</th>
-                            <th>Bölüm</th>
-                            @{var abc = DateTime.DaysInMonth(Model.filterDate.Year, Model.filterDate.Month); }
-                            @for (int i = 1; i <= DateTime.DaysInMonth(Model.filterDate.Year, Model.filterDate.Month); i++)
-                            {
-                                var tooltipTitle = new DateTime(Model.filterDate.Year, Model.filterDate.Month, i);
-                                if (i < 10)
-                                {
-                                    var x = "0" + i;
-
-                                    <th class="px-2 text-center" data-toggle="tooltip" data-placement="top" title="@tooltipTitle.ToString("dddd")">@x</th>
-                                }
-                                else
-                                {
-                                    <th class="px-2 text-center" data-toggle="tooltip" data-placement="top" title="@tooltipTitle.ToString("dddd")">@i</th>
-                                }
-
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.ListStaffSalaryMonthly)
-                        {
-                            <tr>
-
-                                <td>@item.CardNo</td>
-                                <td>@item.NameSurname</td>
-                                <td>@item.Branch</td>
-                                <td>@item.Department</td>
-                                @for (int i = 0; i < 30; i++)
-                                {
-                                    <td class=" text-center font-weight-bolder px-2 text-light" style="background-color:darkgray;">8</td>
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-    </div>
-
-</div>
 
 @* *******************************************Eski Tablo**************************************************************** *@
 <div class="card card-custom">
@@ -193,17 +86,12 @@
                 <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Ad Soyad</th>
-                            <th>Şube</th>
-                            <th>Bölüm</th>
-                            <th>Toplam Çalışma Saati</th>
-                            <th>Toplam Mesai Saati</th>
-                            <th>Saatlik Ücreti</th>
-                            <th>Saatlik Ek Mesai Ücreti</th>
-                            <th>Toplam Hakedilen Maaş</th>
-                            <th>Borçlar</th>
-                            <th>Aldığı Maaş</th>
+                            <th width="10%">No</th>
+                            <th width="25%">Ad Soyad</th>
+                            <th width="20%">Şube</th>
+                            <th width="25%">Bölüm</th>                         
+                            <th width="10%">Borçlar</th>
+                            <th width="10%">Maaş Dökümü</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -213,15 +101,10 @@
                                 <td>@item.CardNo</td>
                                 <td>@item.NameSurname</td>
                                 <td>@item.Branch</td>
-                                <td>@item.Department</td>
-                                <td>@item.TotalWorkingHour</td>
-                                <td>@item.TotalOvertimeHour</td>
-                                <td>@item.IncomePerHour @item.CurrencyTypeName</td>
-                                <td>@item.IncomePerShiftHour @item.CurrencyTypeName</td>
-                                <td>@item.TotalDeservedSalary @item.CurrencyTypeName</td>
-
+                                <td>@item.Department</td>             
                                 <td><a onclick="GetDebtMonthly(@item.StaffId)" class="btn btn-outline-info btn-sm">Detay</a></td>
-                                <td>@item.NetSalary @item.CurrencyTypeName</td>
+                                <td><a onclick="GetSalaryMonthly(@item.StaffId)" class="btn btn-outline-primary btn-sm">Detay</a></td>
+                                
 
                             </tr>
                         }
@@ -281,7 +164,7 @@
                 YearDate:@Html.Raw(Json.Serialize(@Model.filterDate.Year)),
             };
 
-            console.log(formData);
+
             $.ajax({
                 method: "GET",
                 url: "/StaffSalary/GetDebtMonthlyModal/" + id,
@@ -298,6 +181,33 @@
             }).fail(function (error) {
                 alert(error);
             });
+        }
+
+        function GetSalaryMonthly(id) {
+            var modelContent = $("#GetDebtMonthlyModalDiv")
+            $("#GetDebtMonthlyModalDiv").empty();
+            var formData = {
+                MonthDate:@Html.Raw(Json.Serialize(@Model.filterDate.Month)),
+                YearDate:@Html.Raw(Json.Serialize(@Model.filterDate.Year)),
+            };
+            $.ajax({
+                method: "GET",
+                url: "/StaffSalary/GetSalaryMonthlyModal/" + id,
+                dataType: "html",
+                data: formData,
+                cache: false,
+            }).done(function (content) {
+                if (content != null) {
+                    modelContent.html(content);
+                }
+                $("#GetDebtMonthlyModal").modal("show");
+
+
+            }).fail(function (error) {
+                alert(error);
+            });
+
+
         }
     </script>
 }

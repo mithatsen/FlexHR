@@ -11,8 +11,7 @@ namespace FlexHR.DTO.Dtos.StaffSalaryDtos
         public int CurrencyGeneralSubTypeId { get; set; }
         public int PeriodGeneralSubTypeId { get; set; } 
         public int FeeTypeGeneralSubTypeId { get; set; }
-        public int TotalWorkingHour { get; set; }
-        public decimal OvertimePayPerHour { get; set; }
+        public decimal PayPerHour { get; set; }
         public decimal Salary { get; set; }
      
         public decimal? RoadPayment { get; set; }
@@ -21,7 +20,7 @@ namespace FlexHR.DTO.Dtos.StaffSalaryDtos
         public decimal? PrivateHealthCare { get; set; }
         public decimal? PrivatePension { get; set; }
         public DateTime StartDate { get; set; }
-        public bool IsAgi { get; set; }
+        public decimal? AgiPayment { get; set; }
         public bool IsActive { get; set; }
 
     }
