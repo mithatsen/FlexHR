@@ -33,10 +33,10 @@
             <!--begin: Datatable-->
             <div class="tab-content pt-5">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <span class="text-dark mb-4 font-size-h3"> @Model.filterDate.ToString("Y") Puantaj Tablosu</span>
                     </div>
-                    <div class="col-md-4 border-2">
+                    <div class="col-md-6 border-2">
                         <table class="table table-light table-sm w-100 ">
                             <tr>
 
@@ -50,14 +50,14 @@
 
                         </table>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="col-md-12 float-right">
                             <!--begin: Search Form-->
                             <form asp-controller="StaffTracking" asp-action="Index" method="post">
 
                                 <div class="row ">
-                                    <div class="col-md-4"></div>
-                                    <div class="input-group d-inline col-md-5">
+                                    
+                                    <div class="input-group d-inline col-md-7">
                                         <div class="input-group date input-group-solid" id="kt_datetimepicker_78" data-target-input="nearest">
                                             <input name="dateTime" type="text" class="form-control form-control-lg datetimepicker-input" value="@Model.filterDate.Month.@Model.filterDate.Year" placeholder="Tarih Seçiniz" data-target="#kt_datetimepicker_78" autocomplete="off" />
                                             <div class="input-group-append" data-target="#kt_datetimepicker_78" data-toggle="datetimepicker">
@@ -67,7 +67,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-primary--icon d-inline col-md-3" type="submit">
+                                    <button class="btn btn-primary btn-primary--icon d-inline col-md-5" type="submit">
                                         <span>
                                             <i class="la la-search"></i>
                                             <span>Listele</span>
