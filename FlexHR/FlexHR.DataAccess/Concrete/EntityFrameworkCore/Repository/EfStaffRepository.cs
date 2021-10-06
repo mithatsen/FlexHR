@@ -23,10 +23,88 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _configuration = configuration;
         }
 
+        public StaffSalaryMonthlyHelper GetAbsenceInformationMonthly(DateTime dateTime, int staffId)
+        {
+            var jobRotation = _context.JobRotation.ToList();
+            var jobRotationHistory = _context.JobRotationHistory.Include(x=>x.JobRotations).ToList();
+            var cardNo = _context.Staff.FirstOrDefault(X => X.StaffId == staffId).PersonalNo;
+            List<ListStaffTrackingDto> models = new List<ListStaffTrackingDto>();
+            var connectionStrings = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection con = new SqlConnection(connectionStrings);
+            var queryMain = $"SELECT  UploadDate,KART_NO,GIRIS_SAAT,CIKIS_SAAT,DURUMU FROM StaffTracking WHERE YEAR(UploadDate) = '{dateTime.Year}' AND MONTH(UploadDate) = '{dateTime.Month}' AND KART_NO='{cardNo}' ";
+            SqlCommand cmdMain = new SqlCommand();
+            cmdMain.Connection = con;
+            cmdMain.CommandText = queryMain;
+            con.Open();
+            SqlDataReader drMain = cmdMain.ExecuteReader();
+
+            while (drMain.Read())
+            {
+                models.Add(new ListStaffTrackingDto { UploadDate = drMain.GetDateTime(0), CardNo = Convert.ToInt32(drMain.GetString(1)), EnterTime = drMain.GetString(2), ExitTime = drMain.GetString(3), Status = drMain.GetString(4) });
+            }
+            int deductionMinute = 0;
+            int deductionDay = 0;
+            var resultColor = _context.ColorCode.ToList();
+            var description = resultColor.FirstOrDefault(x => x.Description == "Devamsız").Name;
+
+            foreach (var item in models)
+            {
+                var rotation = jobRotationHistory.Where(x => x.StaffId == staffId && x.JobRotationDate <= item.UploadDate).OrderByDescending(x => x.JobRotationDate).FirstOrDefault();
+                var shiftTime = rotation.JobRotations != null ? rotation.JobRotations.ShiftTime : jobRotation.FirstOrDefault().ShiftTime;
+                if (item.Status == description) // o gün geldi mi
+                {
+                    deductionDay++;
+                }
+                else if (rotation.JobRotations != null)// o gün geldi ama saatinde geldi mi , daha önce vardiya tanmlama yapılmadıysa giriş çıkış saat hesabı olmuyor
+                {
+                    //MESAİ BAŞLANGICINDA GEÇ KALIRSA
+                    if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi
+                    {
+                        deductionMinute += Convert.ToInt32((Convert.ToDateTime(Convert.ToDateTime(item.EnterTime).ToString("hh:mm")) - (Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")))).TotalMinutes);
+                    }
+                    //MESAİ BİTİMİ ERKEN ÇIKARSA
+                    if ((Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm")) < TimeSpan.Zero)
+    
+                    {
+                        deductionMinute += Convert.ToInt32((Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm"))-(Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm")))).TotalMinutes);
+                    }
+                    //burada vardiyada sadece saat tutulduğu için  2 takla attırdım
+                }
+
+            }
+
+
+            return new StaffSalaryMonthlyHelper { Day = deductionDay, Hour = (float)deductionMinute / 60 };
+        }
 
         public List<Staff> GetStaffBySearchString(string search)
         {
             return _context.Staff.Include(p => p.StaffPersonelInfo).Where(p => p.IsActive == true && (p.NameSurname.Contains(search) || p.StaffPersonelInfo.FirstOrDefault().IdNumber.Contains(search))).ToList();
+        }
+
+        public int GetStaffReportDayMonthly(DateTime dateTime, int cardNo)
+        {
+            var connectionStrings = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection con = new SqlConnection(connectionStrings);
+            con.Open();
+            var resultColor = _context.ColorCode.ToList();
+            var desc = resultColor.FirstOrDefault(x => x.Description == "Raporlu").Name;
+            var queryMain = $"select COUNT(*) from StaffTracking where YEAR(UploadDate) = '{dateTime.Year}' AND MONTH(UploadDate) = '{dateTime.Month}' AND KART_NO='{cardNo}' AND DURUMU='{desc}' ";
+            SqlCommand cmdMain = new SqlCommand();
+            cmdMain.Connection = con;
+            cmdMain.CommandText = queryMain;
+
+            SqlDataReader drMain = cmdMain.ExecuteReader();
+            var reportDayCount = 0;
+            while (drMain.Read())
+            {
+                reportDayCount = drMain.GetInt32(0);
+
+            }
+
+            con.Close();
+            return reportDayCount;
+
         }
 
         public List<ListStaffTimeKeepingDto> GetStaffTimeKeepingMonthly(DateTime dateTime, List<Staff> staffs)
@@ -48,29 +126,29 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             }
             var resultColor = _context.ColorCode.ToList();
             List<ColorCodeHelper> colorCodes = new List<ColorCodeHelper>();
-            
+
             foreach (var x in resultColor)
             {
-                ColorCodeHelper colorCode = new ColorCodeHelper {Code=x.Code,Color=x.Color,Description=x.Description};
+                ColorCodeHelper colorCode = new ColorCodeHelper { Code = x.Code, Color = x.Color, Description = x.Description };
                 colorCodes.Add(colorCode);
             }
-           
-           
+
+
             foreach (var item in staffs)
             {
                 var trackingList = mainModels.Where(x => Convert.ToInt32(x.CardNo) == item.PersonalNo).ToList();
-               
+
                 List<ColorCodeHelper> statusList = new List<ColorCodeHelper>();
                 for (int i = 1; i < 32; i++)
                 {
                     ColorCodeHelper statusOnly = new ColorCodeHelper();
                     for (int j = 0; j < trackingList.Count; j++)
-                    {                       
+                    {
                         if (trackingList[j].UploadDate.Day == i)
                         {
                             foreach (var item2 in resultColor)
                             {
-                                
+
                                 if (trackingList[j].Status == item2.Name)
                                 {
                                     statusOnly.Code = item2.Code;
@@ -94,7 +172,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                     models.Add(new ListStaffTimeKeepingDto
                     {
                         DaysStatus = statusList,
-                        ColorCodes= colorCodes,
+                        ColorCodes = colorCodes,
                         NameSurname = item.NameSurname,
                         PersonalNo = item.PersonalNo,
                         Branch = trackingList[0].Branch,
