@@ -49,7 +49,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
             foreach (var item in models)
             {
-                var rotation = jobRotationHistory.Where(x => x.StaffId == staffId && x.JobRotationDate <= item.UploadDate).OrderByDescending(x => x.JobRotationDate).FirstOrDefault();
+                var rotation = jobRotationHistory.Where(x => x.StaffId == staffId && x.JobRotationDate >= item.UploadDate).OrderByDescending(x => x.JobRotationDate).FirstOrDefault();   // <= vardı,  galiba >= olması gerekiyor 
                 var shiftTime = rotation.JobRotations != null ? rotation.JobRotations.ShiftTime : jobRotation.FirstOrDefault().ShiftTime;
                 if (item.Status == description) // o gün geldi mi
                 {
@@ -58,7 +58,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 else if (rotation.JobRotations != null)// o gün geldi ama saatinde geldi mi , daha önce vardiya tanmlama yapılmadıysa giriş çıkış saat hesabı olmuyor
                 {
                     //MESAİ BAŞLANGICINDA GEÇ KALIRSA
-                    if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi
+                    if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   **********devamsızlarda hata veriyor***************
                     {
                         deductionMinute += Convert.ToInt32((Convert.ToDateTime(Convert.ToDateTime(item.EnterTime).ToString("hh:mm")) - (Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")))).TotalMinutes);
                     }
