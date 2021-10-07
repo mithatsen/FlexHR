@@ -244,13 +244,13 @@
 
                     @if (Model.CurrentlyOnLeave.Count > 0)
                     {
-                        var counter = Model.CurrentlyOnLeave.Count >= 4 ? 4 : Model.StaffLeaves.Count;
+                        var counter = Model.CurrentlyOnLeave.Count >= 4 ? 4 : Model.CurrentlyOnLeave.Count;
                         @for (int i = 0; i < counter; i++)
                         {
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-50  mr-5 symbol-light-@colors[rand.Next(5)]" flex-shrink-0">
-                                    <div class="symbol-label font-size-h1"> @Model.CurrentlyOnLeave[i].NameSurname.Substring(0, 1)</div>
+                                    <div class="symbol-label font-size-h1">@Model.CurrentlyOnLeave[i].NameSurname.Substring(0, 1)</div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
