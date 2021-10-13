@@ -225,8 +225,8 @@ namespace FlexHR.Web.Controllers
             }
 
 
-            var sundayShift = new StaffSalaryMonthlyHelper { Hour = ((float)SundayShiftTotalMinute / 60), Amounts = (decimal)salary.PayPerHour * Convert.ToDecimal((float)SundayShiftTotalMinute / 60) * 2 };
-            var normalShift = new StaffSalaryMonthlyHelper { Hour = ((float)NormalShiftTotalMinute / 60), Amounts = (decimal)salary.PayPerHour * Convert.ToDecimal((float)NormalShiftTotalMinute / 60) * 3 / 2 };
+            var sundayShift = new StaffSalaryMonthlyHelper { Hour = ((float)SundayShiftTotalMinute / 60), Amounts = Decimal.Round((decimal)salary.PayPerHour * Convert.ToDecimal((float)SundayShiftTotalMinute / 60) * 2, 2) };
+            var normalShift = new StaffSalaryMonthlyHelper { Hour = ((float)NormalShiftTotalMinute / 60), Amounts = Decimal.Round((decimal)salary.PayPerHour * Convert.ToDecimal((float)NormalShiftTotalMinute / 60) * 3 / 2, 2) };
 
 
             ////////////////////////////////// report
@@ -251,10 +251,10 @@ namespace FlexHR.Web.Controllers
             ////////////////////////////////genel çalışma saati
             var totalGeneralWorkDayCount = 30 - (weekHolidayDays + totalLeaveDay);
             var normalWorking = new StaffSalaryMonthlyHelper { Day = totalGeneralWorkDayCount, Amounts = Decimal.Round((totalGeneralWorkDayCount * daySalary), 2) };
-
+            var idNumber = _staffPersonelInfoService.Get(x => x.StaffId == id).FirstOrDefault().IdNumber;
             ListStaffSalaryMonthylyDetailInfo model = new ListStaffSalaryMonthylyDetailInfo
             {
-                IdNumber = _staffPersonelInfoService.GetById(id).IdNumber,
+                IdNumber = idNumber,
                 NameSurname = staff.NameSurname,
                 JobJoinDate = staff.JobJoinDate,
                 PayrollDate = new DateTime(yearDate, monthDate, 1),
@@ -270,7 +270,7 @@ namespace FlexHR.Web.Controllers
                 Bonus = advancePayment.Sum(x => x.Amount),
                 AdvanceDeduction = Convert.ToDecimal(takePaymentsAdvanceAmount),
                 ExecutiveDeduction = Convert.ToDecimal(takePaymentsExecutiveAmount),
-                PrivatePensionDeduction = salary != null ? (decimal)salary.PrivateHealthCare : 0,
+                PrivatePensionDeduction = salary.PrivatePension != null ? (decimal)salary.PrivatePension : 0,
                 Report = report,
                 Absence = absenceTotal,
                 NormalWorking = normalWorking,

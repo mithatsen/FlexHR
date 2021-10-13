@@ -47,6 +47,7 @@ namespace FlexHR.Web.Controllers
                 item.PaymentType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.PaymentTypeGeneralSubTypeId);
                 item.CurrencyType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.CurrencyGeneralSubTypeId);
                 item.RemainingAmount = remainingAmount;
+                remainingAmount = 0;
             }
             return Json(result);
 
