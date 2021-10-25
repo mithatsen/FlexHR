@@ -47,10 +47,13 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             var resultColor = _context.ColorCode.ToList();
             var description = resultColor.FirstOrDefault(x => x.Description == "Devamsız").Name;
             var come = resultColor.FirstOrDefault(x => x.Description == "Geldi").Name;
+<<<<<<< HEAD
 
+=======
+>>>>>>> ce776323f189937b9f8ace7ef65f0b54767ec783
             foreach (var item in models)
             {
-                var rotation = jobRotationHistory.Where(x => x.StaffId == staffId && x.JobRotationDate >= item.UploadDate).OrderByDescending(x => x.JobRotationDate).FirstOrDefault();   // <= vardı,  galiba >= olması gerekiyor 
+                var rotation = jobRotationHistory.Where(x => x.StaffId == staffId && x.JobRotationDate <= item.UploadDate).OrderByDescending(x => x.JobRotationDate).FirstOrDefault();   // <= vardı,  galiba >= olması gerekiyor 
                 var shiftTime = rotation.JobRotations != null ? rotation.JobRotations.ShiftTime : jobRotation.FirstOrDefault().ShiftTime;
                 if (item.Status == description) // o gün geldi mi
                 {
@@ -58,10 +61,17 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 }
                 else if (rotation.JobRotations != null)// o gün geldi ama saatinde geldi mi , daha önce vardiya tanmlama yapılmadıysa giriş çıkış saat hesabı olmuyor
                 {
+<<<<<<< HEAD
                     if (item.Status != come)
                     {
                         //MESAİ BAŞLANGICINDA GEÇ KALIRSA
                         if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   **********devamsızlarda hata veriyor***************
+=======
+                    if (item.Status == come)
+                    {
+                        //MESAİ BAŞLANGICINDA GEÇ KALIRSA
+                        if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   *********devamsızlarda hata veriyor**************
+>>>>>>> ce776323f189937b9f8ace7ef65f0b54767ec783
                         {
                             deductionMinute += Convert.ToInt32((Convert.ToDateTime(Convert.ToDateTime(item.EnterTime).ToString("hh:mm")) - (Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")))).TotalMinutes);
                         }

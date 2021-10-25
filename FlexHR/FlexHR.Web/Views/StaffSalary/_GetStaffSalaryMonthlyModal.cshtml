@@ -1,8 +1,10 @@
-﻿
+﻿@model ListStaffSalaryMonthylyDetailInfo
 
-<div class="modal fade" id="GetSalaryMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+<link href="~/css/getStaffSalaryMonthlyList.css" rel="stylesheet" />
+
+<div class="modal fade " id="GetSalaryMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content">
+        <div class="modal-content ">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 id="" class="card-label font-weight-bolder text-dark lead">
@@ -13,236 +15,288 @@
                 <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-5">
-                        <table class="justify-content-center">
-                            <tr>
-                                <th>T.C. Kimlik No :</th>
-                                <td>215415454155</td>
-                            </tr>
-                            <tr>
-                                <th>Ad Soyad :</th>
-                                <td>Hasan Taş</td>
-                            </tr>
-                            <tr>
-                                <th>İşe Giriş Tarihi :</th>
-                                <td>15 Haziran 2021</td>
-                            </tr>
-                            <tr>
-                                <th>Bordro Hazırlanma Tarihi :</th>
-                                <td>15 Temmuz 2021</td>
-                            </tr>
-                            <tr>
-                                <th>Şube :</th>
-                                <td>Gebze</td>
-                            </tr>
-                        </table>
+            <div  class="modal-body ">
+                <div id="printContent" class="page" style="width: 240mm; min-height: 297mm; padding: 20mm; margin: 10mm auto; border: 1px #D3D3D3 solid; size: A4; border-radius: 5px; background: white; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); ">
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-5">
+                            <table class="justify-content-center">
+                                <tr>
+                                    <th>T.C. Kimlik No : </th>
+                                    <td>@Model.IdNumber</td>
+                                </tr>
+                                <tr>
+                                    <th>Ad Soyad : </th>
+                                    <td>@Model.NameSurname</td>
+                                </tr>
+                                <tr>
+                                    <th>İşe Giriş Tarihi : </th>
+                                    <td>@Model.JobJoinDate.ToString("d")</td>
+                                </tr>
+                                <tr>
+                                    <th>Bordro Tarihi : </th>
+                                    <td>@Model.PayrollDate.ToString("d")</td>
+                                </tr>
+                                <tr>
+                                    <th>Şube : </th>
+                                    <td>@Model.Branch</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-5">
+                            <table>
+                                <tr>
+                                    <th>Görevi : </th>
+                                    <td>@Model.Title</td>
+                                </tr>
+                                <tr>
+                                    <th>Saat Ücreti : </th>
+                                    <td>@Model.PaymentPerHour</td>
+                                </tr>
+                                <tr>
+                                    <th>Agi Hariç Maaş : </th>
+                                    <td>@Model.SalaryWithoutAgi</td>
+                                </tr>
+                                <tr>
+                                    <th>Hakedilen Agi : </th>
+                                    <td>@Model.Agi</td>
+                                </tr>
+                                <tr>
+                                    <th>Agi Dahil Maaş : </th>
+                                    <td>@Model.SalaryWithAgi</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-5">
-                        <table>
-                            <tr>
-                                <th>Görevi :</th>
-                                <td>215415454155</td>
-                            </tr>
-                            <tr>
-                                <th>Saat Ücreti :</th>
-                                <td>Hasan Taş</td>
-                            </tr>
-                            <tr>
-                                <th>Agi Hariç Maaş :</th>
-                                <td>15 Haziran 2021</td>
-                            </tr>
-                            <tr>
-                                <th>Hakedilen Agi :</th>
-                                <td>15 Temmuz 2021</td>
-                            </tr>
-                            <tr>
-                                <th>Agi Dahil Maaş :</th>
-                                <td>Gebze</td>
-                            </tr>
-                        </table>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Kazançlar </th>
+                                        <th width="25%">Gün </th>
+                                        <th width="25%">Saat </th>
+                                        <th width="25%">Tutarlar </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="mt-5">
+                                    <tr style="margin-top:25%!important;">
+                                        <td>Normal Çalışma</td>
+                                        <td contenteditable='true'>@Model.NormalWorking.Day</td>
+                                        <td contenteditable='true'>@Model.NormalWorking.Hour</td>
+                                        <td contenteditable='true' class="earning">@Model.NormalWorking.Amounts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hafta Tatili</td>
+                                        <td contenteditable='true'>@Model.WeekBreak.Day</td>
+                                        <td contenteditable='true'>@Model.WeekBreak.Hour</td>
+                                        <td contenteditable='true' class="earning">@Model.WeekBreak.Amounts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ücretli İzin</td>
+                                        <td contenteditable='true'>@Model.HolidaysWithPay.Day</td>
+                                        <td contenteditable='true'>@Model.HolidaysWithPay.Hour</td>
+                                        <td contenteditable='true' class="earning">@Model.HolidaysWithPay.Amounts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Normal Mesai</td>
+                                        <td contenteditable='true'>@Model.Shift.Day</td>
+                                        <td contenteditable='true'>@Model.Shift.Hour</td>
+                                        <td contenteditable='true' class="earning">@Model.Shift.Amounts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pazar / Bayram Mesaisi</td>
+                                        <td contenteditable='true'>@Model.SundayShift.Day</td>
+                                        <td contenteditable='true'>@Model.SundayShift.Hour</td>
+                                        <td contenteditable='true' class="earning">@Model.SundayShift.Amounts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prim</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="earning">@Model.Bonus</td>
+                                    </tr>
+                                    <tr>
+                                        <td>İkramiye</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="earning">@Model.Perks</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ek Kazanç 1</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="earning"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ek Kazanç 2</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="earning"></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="border-top">
+                                    <tr>
+                                        <td class="font-weight-boldest" colspan="3">Toplam Kazanç :</td>
+                                        <td id="totalEarningSalary" contenteditable='true' colspan="1"></td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </div>
+                        <div class="col-md-6 border-left">
+                            <table class="table table-borderless ">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Kesintiler </th>
+                                        <th width="25%">Gün </th>
+                                        <th width="25%">Saat </th>
+                                        <th width="25%">Tutarlar </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Devamsızlık</td>
+                                        <td contenteditable='true'>@Model.Absence.Day</td>
+                                        @{
+                                            var absenceHour = Convert.ToDecimal(Model.Absence.Hour);
+                                        }
+                                        <td contenteditable='true'>@Decimal.Round(absenceHour, 2)</td>
+                                        <td contenteditable='true' class="losing">@Model.Absence.Amounts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ücretsiz İzin</td>
+                                        <td contenteditable='true'>@Model.HolidayWithoutPay.Day</td>
+                                        <td contenteditable='true'>@Model.HolidayWithoutPay.Hour</td>
+                                        <td contenteditable='true' class="losing">@Model.HolidayWithoutPay.Amounts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rapor</td>
+                                        <td contenteditable='true'>@Model.Report.Day</td>
+                                        <td contenteditable='true'>@Model.Report.Hour</td>
+                                        <td contenteditable='true' class="losing">@Model.Report.Amounts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Avans Kesintileri</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="losing">@Model.AdvanceDeduction</td>
+                                    </tr>
+                                    <tr>
+                                        <td>İcra Kesintileri</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="losing">@Model.ExecutiveDeduction</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bireysel Emeklilik Kesintisi</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="losing">@Model.PrivatePensionDeduction</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kesinti 1 :</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="losing"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kesinti 2 :</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td contenteditable='true' class="losing"></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+
+                                </tbody>
+                                <tfoot class="border-top">
+                                    <tr>
+                                        <td class="font-weight-boldest" colspan="3">Toplam Kesinti :</td>
+                                        <td id="totalLoseSalary" width="70" contenteditable='true' colspan="1"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
                     </div>
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="col-md-6">
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th width="25%">Kazançlar </th>
-                                    <th width="25%">Gün </th>
-                                    <th width="25%">Saat </th>
-                                    <th width="25%">Tutarlar </th>
-
-                                </tr>
-                            </thead>
-                            <tbody class="mt-5">
-                                <tr style="margin-top:25%!important;">
-                                    <td>Normal Çalışma</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td contenteditable='true'>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Hafta Tatili</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td contenteditable='true'>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Ücretli İzin</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Normal Mesai</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Pazar / Bayram Mesaisi</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Prim</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>İkramiye</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Ek Kazanç 1</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Ek Kazanç 2</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                            </tbody>
-                            <tfoot class="border-top">
-                                <tr>
-                                    <td class="font-weight-boldest" colspan="3">Toplam Kazanç :</td>
-                                    <td colspan="1">545454</td>
-                                </tr>
-                            </tfoot>
-
-                        </table>
+                    <hr />
+                    <div class="row my-5">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6  border p-3">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th colspan="2" class="font-weight-boldest"> Hesaba Yatırılacak Toplam Kazanç :</th>
+                                        <td id="reelSalary" colspan="2" width="150" contenteditable='true'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="col-md-6 border-left">
-                        <table class="table table-borderless ">
-                            <thead>
-                                <tr>
-                                    <th width="25%">Kesintiler </th>
-                                    <th width="25%">Gün </th>
-                                    <th width="25%">Saat </th>
-                                    <th width="25%">Tutarlar </th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Devamsızlık</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Ücretsiz İzin</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Rapor</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Avans Kesintileri</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>İcra Kesintileri</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Bireysel Emeklilik Kesintisi</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Kesinti 1 :</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td>Kesinti 2 :</td>
-                                    <td>asfsaf</td>
-                                    <td>safasf</td>
-                                    <td>asfasf</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                </tr>
-
-                            </tbody>
-                            <tfoot class="border-top">
-                                <tr>
-                                    <td class="font-weight-boldest" colspan="3">Toplam Kesinti :</td>
-                                    <td colspan="1">545454</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-
+                    <div class="row border p-5">
+                        <div class="col-md-6 pb-9">
+                            İş Alan İmza :
+                            <br />
+                            <br />
+                        </div>
+                        <div class="col-md-6  pb-9">
+                            İş Veren İmza :
+                            <br />
+                            <br />
+                        </div>
                     </div>
-                </div>
-                <hr />
-                <div class="row my-5">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6 font-weight-boldest border p-3"> Hesaba Yatırılacak Toplam Kazanç :</div>
-                </div>
-
-                <div class="row border p-5">
-                    <div class="col-md-6 pb-9">
-                        İş Alan İmza :
-                        <br />
-                        <br />
-                    </div>
-                    <div class="col-md-6  pb-9">
-                        İş Veren İmza :
-                        <br />
-                        <br />
-                    </div>
-                </div>
+                
             </div>
-            <div class="modal-footer">
-                <button type="button" onclick="approveShiftDash()" class="btn btn-primary font-weight-bold"><i class="fas fa-print"></i> Yazdır</button>
+                <button id="btnPrint" type="button" class="btn btn-primary font-weight-bold"><i class="fas fa-print"></i> Yazdır</button>
             </div>
         </div>
     </div>
 
+
 </div>
 
+
+<script>
+    var totalEarningSalary = 0;
+    $("td.earning").each(function (i, obj) {
+        if ($(this).text() != '') {
+            totalEarningSalary += parseFloat($(this).text());
+        }
+    });
+    $("#totalEarningSalary").text(totalEarningSalary);
+
+    var totalLoseSalary = 0;
+    $("td.losing").each(function (i, obj) {
+        if ($(this).text() != '') {
+            totalLoseSalary += parseFloat($(this).text());
+        }
+    });
+    $("#totalLoseSalary").text(totalLoseSalary);
+    $("#reelSalary").text(totalEarningSalary - totalLoseSalary);
+
+    document.getElementById("btnPrint").onclick = function () {
+        var printContents = document.getElementById("printContent").innerHTML;
+
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+
+    //var getSalaryMonthlyModal = document.getElementById("GetSalaryMonthlyModal");
+    //document.getElementById("btnPrint").onclick = function () {
+    //    document.getElementById("nonPrintable").className += "noPrint";
+    //    window.print();
+    //    window.print(getSalaryMonthlyModal);
+    //}
+</script>

@@ -189,7 +189,7 @@ namespace FlexHR.Web.Controllers
             var staff = _staffService.GetById(id);
             var cardNo = staff.PersonalNo;
             var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList().First();
-            var salary = _staffSalaryService.GetById(id);
+            var salary = _staffSalaryService.Get(x => x.StaffId == id).FirstOrDefault();
             var daySalary = salary.Salary / 30;
             int days = DateTime.DaysInMonth(yearDate, monthDate);
             List<DateTime> dates = new List<DateTime>();
@@ -199,40 +199,40 @@ namespace FlexHR.Web.Controllers
             }
             //bir ayda kaç pazar var
             int weekHolidayDays = dates.Where(d => d.DayOfWeek == DayOfWeek.Sunday).Count();
-            var weekBreak = new StaffSalaryMonthlyHelper { Day = weekHolidayDays, Amounts = weekHolidayDays * daySalary };
+            var weekBreak = new StaffSalaryMonthlyHelper { Day = weekHolidayDays, Amounts = Decimal.Round((weekHolidayDays * daySalary), 2) };
 
             var totalSalaryWithAgi = salary != null ? (decimal)salary.Salary + (decimal)salary.AgiPayment : 0;
             var shifts = _staffShiftService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsActive == true && x.StaffId == id && x.StartDate.Month == monthDate && x.StartDate.Year == yearDate);
             var leaves = _staffLeaveService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsActive == true && x.StaffId == id && x.LeaveStartDate.Month == monthDate && x.LeaveStartDate.Year == yearDate, null, "LeaveType").ToList();
-            var advancePayment = _staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 &&x.IsPaid==true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 101 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate);
+            var advancePayment = _staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 101 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate);
             var takePaymentsAdvanceAmount = _takePaymentService.Get(x => x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate && x.IsActive == true, null, "StaffPayment").Where(x => x.StaffPayment.StaffId == id && x.StaffPayment.PaymentTypeGeneralSubTypeId == 100).Sum(x => x.InstallmentAmount);
             var takePaymentsExecutiveAmount = _takePaymentService.Get(x => x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate && x.IsActive == true, null, "StaffPayment").Where(x => x.StaffPayment.StaffId == id && x.StaffPayment.PaymentTypeGeneralSubTypeId == 103).Sum(x => x.InstallmentAmount);
             var publicHolidays = _publicHolidayService.Get(x => x.IsActive == true && x.Start.Month == monthDate && x.Start.Year == yearDate).ToList();
-            
+
 
             /////////////////////////////////mesailer
             var SundayShiftTotalMinute = shifts.Where(x => x.StartDate.DayOfWeek == DayOfWeek.Sunday).Sum(x => x.ShiftHour) * 60 + shifts.Where(x => x.StartDate.DayOfWeek == DayOfWeek.Sunday).Sum(x => x.ShiftMinute);
             var NormalShiftTotalMinute = shifts.Where(x => x.StartDate.DayOfWeek != DayOfWeek.Sunday).Sum(x => x.ShiftHour) * 60 + shifts.Where(x => x.StartDate.DayOfWeek != DayOfWeek.Sunday).Sum(x => x.ShiftMinute);
-            
+
             foreach (var item in publicHolidays)
             {
-                if(item.Start.DayOfWeek != DayOfWeek.Sunday)
+                if (item.Start.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    var temp= shifts.Where(x => x.StartDate.ToShortDateString() == item.Start.ToShortDateString()).Sum(x => x.ShiftHour) * 60 + shifts.Where(x => x.StartDate == item.Start).Sum(x => x.ShiftMinute);
+                    var temp = shifts.Where(x => x.StartDate.ToShortDateString() == item.Start.ToShortDateString()).Sum(x => x.ShiftHour) * 60 + shifts.Where(x => x.StartDate == item.Start).Sum(x => x.ShiftMinute);
                     SundayShiftTotalMinute += temp;
                     NormalShiftTotalMinute -= temp;
-                }              
+                }
             }
-          
-            
-            var sundayShift = new StaffSalaryMonthlyHelper { Hour = ((float)SundayShiftTotalMinute / 60), Amounts = (decimal)salary.PayPerHour * Convert.ToDecimal((float)SundayShiftTotalMinute / 60) * 2 };
-            var normalShift = new StaffSalaryMonthlyHelper { Hour = ((float)NormalShiftTotalMinute / 60), Amounts = (decimal)salary.PayPerHour * Convert.ToDecimal((float)NormalShiftTotalMinute / 60) * 3/2 };
+
+
+            var sundayShift = new StaffSalaryMonthlyHelper { Hour = ((float)SundayShiftTotalMinute / 60), Amounts = Decimal.Round((decimal)salary.PayPerHour * Convert.ToDecimal((float)SundayShiftTotalMinute / 60) * 2, 2) };
+            var normalShift = new StaffSalaryMonthlyHelper { Hour = ((float)NormalShiftTotalMinute / 60), Amounts = Decimal.Round((decimal)salary.PayPerHour * Convert.ToDecimal((float)NormalShiftTotalMinute / 60) * 3 / 2, 2) };
 
 
             ////////////////////////////////// report
             var totalReportDay = _staffService.GetStaffReportDayMonthly(new DateTime(yearDate, monthDate, 1), cardNo);
             var reportDeduction = daySalary * totalReportDay;
-            var report = new StaffSalaryMonthlyHelper { Day = totalReportDay, Amounts = reportDeduction };
+            var report = new StaffSalaryMonthlyHelper { Day = totalReportDay, Amounts = Decimal.Round(reportDeduction, 2) };
 
             ////////////////////////////////// ücretsiz izin, ücretli izin
             var totalFreeLeaveDay = leaves.Where(x => x.LeaveType.IsFree == true).Sum(x => x.TotalDay);
@@ -240,21 +240,21 @@ namespace FlexHR.Web.Controllers
             var totalLeaveDay = leaves.Where(x => x.LeaveType.IsFree == false).Sum(x => x.TotalDay);
             var leaveAddition = daySalary * totalLeaveDay;
 
-            var holidayWithoutPay = new StaffSalaryMonthlyHelper { Day = totalFreeLeaveDay, Amounts = freeLeaveDeduction };
-            var holidayWithPay = new StaffSalaryMonthlyHelper { Day = totalLeaveDay, Amounts = leaveAddition };
-            
+            var holidayWithoutPay = new StaffSalaryMonthlyHelper { Day = totalFreeLeaveDay, Amounts = Decimal.Round(freeLeaveDeduction, 2) };
+            var holidayWithPay = new StaffSalaryMonthlyHelper { Day = totalLeaveDay, Amounts = Decimal.Round(leaveAddition, 2) };
+
             //////////////////////////////////devamsızlık
             var absenceTotal = _staffService.GetAbsenceInformationMonthly(new DateTime(yearDate, monthDate, 1), id);
             var totalAmount = (decimal)(daySalary * absenceTotal.Day + salary.PayPerHour * Convert.ToDecimal(absenceTotal.Hour));
-            absenceTotal.Amounts = totalAmount;
+            absenceTotal.Amounts = Decimal.Round(totalAmount, 2);
 
             ////////////////////////////////genel çalışma saati
             var totalGeneralWorkDayCount = 30 - (weekHolidayDays + totalLeaveDay);
-            var normalWorking = new StaffSalaryMonthlyHelper { Day = totalGeneralWorkDayCount, Amounts = totalGeneralWorkDayCount * daySalary };
-
+            var normalWorking = new StaffSalaryMonthlyHelper { Day = totalGeneralWorkDayCount, Amounts = Decimal.Round((totalGeneralWorkDayCount * daySalary), 2) };
+            var idNumber = _staffPersonelInfoService.Get(x => x.StaffId == id).FirstOrDefault().IdNumber;
             ListStaffSalaryMonthylyDetailInfo model = new ListStaffSalaryMonthylyDetailInfo
             {
-                IdNumber = _staffPersonelInfoService.GetById(id).IdNumber,
+                IdNumber = idNumber,
                 NameSurname = staff.NameSurname,
                 JobJoinDate = staff.JobJoinDate,
                 PayrollDate = new DateTime(yearDate, monthDate, 1),
@@ -263,31 +263,24 @@ namespace FlexHR.Web.Controllers
                 PaymentPerHour = salary != null ? (decimal)salary.PayPerHour : 0,
                 SalaryWithoutAgi = salary != null ? salary.Salary : 0,
                 Agi = salary != null ? (decimal)salary.AgiPayment : 0,
-                SalaryWithAgi = totalSalaryWithAgi,             
+                SalaryWithAgi = totalSalaryWithAgi,
                 HolidayWithoutPay = holidayWithoutPay,
                 Shift = normalShift,
                 SundayShift = sundayShift,
                 Bonus = advancePayment.Sum(x => x.Amount),
                 AdvanceDeduction = Convert.ToDecimal(takePaymentsAdvanceAmount),
                 ExecutiveDeduction = Convert.ToDecimal(takePaymentsExecutiveAmount),
-                PrivatePensionDeduction = salary != null ? (decimal)salary.PrivateHealthCare : 0,
+                PrivatePensionDeduction = salary.PrivatePension != null ? (decimal)salary.PrivatePension : 0,
                 Report = report,
                 Absence = absenceTotal,
                 NormalWorking = normalWorking,
                 WeekBreak = weekBreak,
-                HolidaysWithPay = holidayWithPay
-
-
-
-
-
-
-
-
+                HolidaysWithPay = holidayWithPay,
+                Perks = _staffPaymentService.Get(x => x.PaymentTypeGeneralSubTypeId == 128 && x.CreationDate.Month == monthDate && x.CreationDate.Year == yearDate && x.IsActive == true).ToList().Sum(x => x.Amount)
             };
 
 
-            return PartialView("_GetStaffSalaryMonthlyModal");
+            return PartialView("_GetStaffSalaryMonthlyModal", model);
         }
     }
 
