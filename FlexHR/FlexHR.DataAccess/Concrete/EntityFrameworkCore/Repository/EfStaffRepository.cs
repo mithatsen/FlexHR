@@ -46,6 +46,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             int deductionDay = 0;
             var resultColor = _context.ColorCode.ToList();
             var description = resultColor.FirstOrDefault(x => x.Description == "Devamsız").Name;
+            var come = resultColor.FirstOrDefault(x => x.Description == "Geldi").Name;
 
             foreach (var item in models)
             {
@@ -57,18 +58,22 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 }
                 else if (rotation.JobRotations != null)// o gün geldi ama saatinde geldi mi , daha önce vardiya tanmlama yapılmadıysa giriş çıkış saat hesabı olmuyor
                 {
-                    //MESAİ BAŞLANGICINDA GEÇ KALIRSA
-                    if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   **********devamsızlarda hata veriyor***************
+                    if (item.Status != come)
                     {
-                        deductionMinute += Convert.ToInt32((Convert.ToDateTime(Convert.ToDateTime(item.EnterTime).ToString("hh:mm")) - (Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")))).TotalMinutes);
+                        //MESAİ BAŞLANGICINDA GEÇ KALIRSA
+                        if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   **********devamsızlarda hata veriyor***************
+                        {
+                            deductionMinute += Convert.ToInt32((Convert.ToDateTime(Convert.ToDateTime(item.EnterTime).ToString("hh:mm")) - (Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")))).TotalMinutes);
+                        }
+                        //MESAİ BİTİMİ ERKEN ÇIKARSA
+                        if ((Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm")) < TimeSpan.Zero)
+
+                        {
+                            deductionMinute += Convert.ToInt32((Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm")) - (Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm")))).TotalMinutes);
+                        }
+                        //burada vardiyada sadece saat tutulduğu için  2 takla attırdım
                     }
-                    //MESAİ BİTİMİ ERKEN ÇIKARSA
-                    if ((Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm")) < TimeSpan.Zero)
-    
-                    {
-                        deductionMinute += Convert.ToInt32((Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm"))-(Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm")))).TotalMinutes);
-                    }
-                    //burada vardiyada sadece saat tutulduğu için  2 takla attırdım
+
                 }
 
             }
