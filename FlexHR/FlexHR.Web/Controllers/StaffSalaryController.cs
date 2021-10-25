@@ -99,11 +99,11 @@ namespace FlexHR.Web.Controllers
             List<ListStaffSalaryMonthlyDto> models = new List<ListStaffSalaryMonthlyDto>();
             foreach (var item in staffs)
             {
-               
+
                 var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).FirstOrDefault();
                 var department = item.StaffCareer.Count > 0 ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId).ToString() : "";
                 var branch = item.StaffCareer.Count > 0 ? careerResult.CompanyBranch.BranchName : "";
-    
+
                 models.Add(new ListStaffSalaryMonthlyDto
                 {
                     StaffId = item.StaffId,
@@ -139,12 +139,12 @@ namespace FlexHR.Web.Controllers
             var staff = _staffService.GetById(id);
             var cardNo = staff.PersonalNo;
             var careerResultt = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList();
-            StaffCareer careerResult=new StaffCareer();
-            if (careerResultt.Count>0)
+            StaffCareer careerResult = new StaffCareer();
+            if (careerResultt.Count > 0)
             {
                 careerResult = careerResultt.First();
             }
-           
+
             var salary = _staffSalaryService.Get(x => x.StaffId == id).FirstOrDefault();
             if (salary.AgiPayment != null && salary.Salary != null && salary.PayPerHour != null && salary.PrivatePension != null)
             {
@@ -211,7 +211,7 @@ namespace FlexHR.Web.Controllers
                 var normalWorking = new StaffSalaryMonthlyHelper { Day = totalGeneralWorkDayCount, Amounts = Decimal.Round((totalGeneralWorkDayCount * daySalary), 2) };
                 var idNumber = _staffPersonelInfoService.Get(x => x.StaffId == id).FirstOrDefault().IdNumber;
 
-              
+
                 ListStaffSalaryMonthylyDetailInfo model = new ListStaffSalaryMonthylyDetailInfo
                 {
                     IdNumber = idNumber,
