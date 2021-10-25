@@ -26,7 +26,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         public StaffSalaryMonthlyHelper GetAbsenceInformationMonthly(DateTime dateTime, int staffId)
         {
             var jobRotation = _context.JobRotation.ToList();
-            var jobRotationHistory = _context.JobRotationHistory.Include(x=>x.JobRotations).ToList();
+            var jobRotationHistory = _context.JobRotationHistory.Include(x => x.JobRotations).ToList();
             var cardNo = _context.Staff.FirstOrDefault(X => X.StaffId == staffId).PersonalNo;
             List<ListStaffTrackingDto> models = new List<ListStaffTrackingDto>();
             var connectionStrings = _configuration.GetConnectionString("DefaultConnection");
@@ -47,10 +47,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             var resultColor = _context.ColorCode.ToList();
             var description = resultColor.FirstOrDefault(x => x.Description == "Devamsız").Name;
             var come = resultColor.FirstOrDefault(x => x.Description == "Geldi").Name;
-<<<<<<< HEAD
 
-=======
->>>>>>> ce776323f189937b9f8ace7ef65f0b54767ec783
             foreach (var item in models)
             {
                 var rotation = jobRotationHistory.Where(x => x.StaffId == staffId && x.JobRotationDate <= item.UploadDate).OrderByDescending(x => x.JobRotationDate).FirstOrDefault();   // <= vardı,  galiba >= olması gerekiyor 
@@ -61,17 +58,12 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 }
                 else if (rotation.JobRotations != null)// o gün geldi ama saatinde geldi mi , daha önce vardiya tanmlama yapılmadıysa giriş çıkış saat hesabı olmuyor
                 {
-<<<<<<< HEAD
-                    if (item.Status != come)
-                    {
-                        //MESAİ BAŞLANGICINDA GEÇ KALIRSA
-                        if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   **********devamsızlarda hata veriyor***************
-=======
+
                     if (item.Status == come)
                     {
                         //MESAİ BAŞLANGICINDA GEÇ KALIRSA
                         if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   *********devamsızlarda hata veriyor**************
->>>>>>> ce776323f189937b9f8ace7ef65f0b54767ec783
+
                         {
                             deductionMinute += Convert.ToInt32((Convert.ToDateTime(Convert.ToDateTime(item.EnterTime).ToString("hh:mm")) - (Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")))).TotalMinutes);
                         }
@@ -88,14 +80,17 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
             }
 
-
             return new StaffSalaryMonthlyHelper { Day = deductionDay, Hour = (float)deductionMinute / 60 };
         }
+
+       
 
         public List<Staff> GetStaffBySearchString(string search)
         {
             return _context.Staff.Include(p => p.StaffPersonelInfo).Where(p => p.IsActive == true && (p.NameSurname.Contains(search) || p.StaffPersonelInfo.FirstOrDefault().IdNumber.Contains(search))).ToList();
         }
+
+    
 
         public int GetStaffReportDayMonthly(DateTime dateTime, int cardNo)
         {
@@ -121,6 +116,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             return reportDayCount;
 
         }
+
 
         public List<ListStaffTimeKeepingDto> GetStaffTimeKeepingMonthly(DateTime dateTime, List<Staff> staffs)
         {
@@ -205,9 +201,14 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
         }
 
+      
+
         //public int GetStaffIdByUserName(string userName)
         //{
         //    return _context.Staff.Where(p => p.UserName == userName).FirstOrDefault().StaffId;
         //}
     }
+
+
 }
+
