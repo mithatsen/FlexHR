@@ -1,7 +1,33 @@
 ﻿@model ListStaffSalaryMonthylyDetailInfo
 
-<link href="~/css/getStaffSalaryMonthlyList.css" rel="stylesheet" />
+<style>
 
+    td{
+        font-size:8pt !important;
+    }
+
+
+@@page {
+    size: A4;
+    margin: 0;
+}
+
+@@media print {
+
+
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 5mm;
+        margin: 10mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+}
+
+</style>
 <div class="modal fade " id="GetSalaryMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content ">
@@ -15,8 +41,9 @@
                 <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <div  class="modal-body ">
-                <div id="printContent" class="page" style="width: 240mm; min-height: 297mm; padding: 20mm; margin: 10mm auto; border: 1px #D3D3D3 solid; size: A4; border-radius: 5px; background: white; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); ">
+            <div class="modal-body ">
+                <div id="printContent" class="page" style=" width: 210mm;  min-height: 297mm; padding: 5mm; margin: 10mm auto; border: 1px #D3D3D3 solid; border-radius: 5px; background: white; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);">
+                    <p class="text-center py-10 font-size-h3">Personel Hesap Pusulası</p>
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-5">
@@ -252,8 +279,8 @@
                             <br />
                         </div>
                     </div>
-                
-            </div>
+
+                </div>
                 <button id="btnPrint" type="button" class="btn btn-primary font-weight-bold"><i class="fas fa-print"></i> Yazdır</button>
             </div>
         </div>
