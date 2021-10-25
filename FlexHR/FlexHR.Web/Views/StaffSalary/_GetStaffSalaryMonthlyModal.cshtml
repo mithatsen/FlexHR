@@ -2,7 +2,7 @@
 
 <style>
 
-<<<<<<< HEAD
+
     td{
         font-size:8pt !important;
     }
@@ -29,74 +29,8 @@
 }
 
 </style>
-<div class="modal fade " id="GetSalaryMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content ">
-            <div class="modal-header">
-                <div class="card-title align-items-start flex-column">
-                    <h3 id="" class="card-label font-weight-bolder text-dark lead">
-                        <i class="fas fa-credit-card mr-2 text-dark"></i>Personel Hesap Pusulası
-                    </h3>
 
-                </div>
-                <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <div class="modal-body ">
-                <div id="printContent" class="page" style=" width: 210mm;  min-height: 297mm; padding: 5mm; margin: 10mm auto; border: 1px #D3D3D3 solid; border-radius: 5px; background: white; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);">
-                    <p class="text-center py-10 font-size-h3">Personel Hesap Pusulası</p>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-5">
-                            <table class="justify-content-center">
-                                <tr>
-                                    <th>T.C. Kimlik No : </th>
-                                    <td>@Model.IdNumber</td>
-                                </tr>
-                                <tr>
-                                    <th>Ad Soyad : </th>
-                                    <td>@Model.NameSurname</td>
-                                </tr>
-                                <tr>
-                                    <th>İşe Giriş Tarihi : </th>
-                                    <td>@Model.JobJoinDate.ToString("d")</td>
-                                </tr>
-                                <tr>
-                                    <th>Bordro Tarihi : </th>
-                                    <td>@Model.PayrollDate.ToString("d")</td>
-                                </tr>
-                                <tr>
-                                    <th>Şube : </th>
-                                    <td>@Model.Branch</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-1"></div>
-                        <div class="col-md-5">
-                            <table>
-                                <tr>
-                                    <th>Görevi : </th>
-                                    <td>@Model.Title</td>
-                                </tr>
-                                <tr>
-                                    <th>Saat Ücreti : </th>
-                                    <td>@Model.PaymentPerHour</td>
-                                </tr>
-                                <tr>
-                                    <th>Agi Hariç Maaş : </th>
-                                    <td>@Model.SalaryWithoutAgi</td>
-                                </tr>
-                                <tr>
-                                    <th>Hakedilen Agi : </th>
-                                    <td>@Model.Agi</td>
-                                </tr>
-                                <tr>
-                                    <th>Agi Dahil Maaş : </th>
-                                    <td>@Model.SalaryWithAgi</td>
-                                </tr>
-                            </table>
-                        </div>
-=======
+
 @if (Model != null)
 {
     <div class="modal fade " id="GetSalaryMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
@@ -108,9 +42,9 @@
                             <i class="fas fa-credit-card mr-2 text-dark"></i>Personel Hesap Pusulası
                         </h3>
 
->>>>>>> 5ac344eaea8f86fcd72b7a8d588812f30a12f5ff
+
                     </div>
-                    <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                    <button type="button"  class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body ">
@@ -372,7 +306,7 @@ else
                         </h3>
 
                     </div>
-                    <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                    <button id="closeButton"  type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body ">
@@ -392,10 +326,9 @@ else
                     </div>
 
                 </div>
-<<<<<<< HEAD
+
                 <button id="btnPrint" type="button" class="btn btn-primary font-weight-bold"><i class="fas fa-print"></i> Yazdır</button>
-=======
->>>>>>> 5ac344eaea8f86fcd72b7a8d588812f30a12f5ff
+
             </div>
 
 
@@ -434,7 +367,7 @@ else
 
         document.body.innerHTML = originalContents;
     }
-
+ 
                                     //var getSalaryMonthlyModal = document.getElementById("GetSalaryMonthlyModal");
                                     //document.getElementById("btnPrint").onclick = function () {
                                     //    document.getElementById("nonPrintable").className += "noPrint";
