@@ -1,6 +1,34 @@
 ﻿@model ListStaffSalaryMonthylyDetailInfo
 
-<link href="~/css/getStaffSalaryMonthlyList.css" rel="stylesheet" />
+<style>
+
+
+    td {
+        font-size: 8pt !important;
+    }
+
+
+    @@page {
+        size: A4;
+        margin: 0;
+    }
+
+    @@media print {
+
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 5mm;
+            margin: 10mm auto;
+            border: 1px #D3D3D3 solid;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+    }
+</style>
+
 
 @if (Model != null)
 {
@@ -12,6 +40,7 @@
                         <h3 id="" class="card-label font-weight-bolder text-dark lead">
                             <i class="fas fa-credit-card mr-2 text-dark"></i>Personel Hesap Pusulası
                         </h3>
+
 
                     </div>
                     <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
@@ -276,7 +305,7 @@ else
                         </h3>
 
                     </div>
-                    <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                    <button id="closeButton" type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body ">
@@ -297,8 +326,6 @@ else
 
                 </div>
             </div>
-
-
         </div>
     </div>
 }
