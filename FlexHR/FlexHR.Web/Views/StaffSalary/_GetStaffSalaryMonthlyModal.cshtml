@@ -3,31 +3,30 @@
 <style>
 
 
-    td{
-        font-size:8pt !important;
+    td {
+        font-size: 8pt !important;
     }
 
 
-@@page {
-    size: A4;
-    margin: 0;
-}
-
-@@media print {
-
-
-    .page {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 5mm;
-        margin: 10mm auto;
-        border: 1px #D3D3D3 solid;
-        border-radius: 5px;
-        background: white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    @@page {
+        size: A4;
+        margin: 0;
     }
-}
 
+    @@media print {
+
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 5mm;
+            margin: 10mm auto;
+            border: 1px #D3D3D3 solid;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+    }
 </style>
 
 
@@ -44,7 +43,7 @@
 
 
                     </div>
-                    <button type="button"  class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body ">
@@ -306,7 +305,7 @@ else
                         </h3>
 
                     </div>
-                    <button id="closeButton"  type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
+                    <button id="closeButton" type="button" class="text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body ">
@@ -326,12 +325,7 @@ else
                     </div>
 
                 </div>
-
-                <button id="btnPrint" type="button" class="btn btn-primary font-weight-bold"><i class="fas fa-print"></i> Yazdır</button>
-
             </div>
-
-
         </div>
     </div>
 }
@@ -367,7 +361,7 @@ else
 
         document.body.innerHTML = originalContents;
     }
- 
+
                                     //var getSalaryMonthlyModal = document.getElementById("GetSalaryMonthlyModal");
                                     //document.getElementById("btnPrint").onclick = function () {
                                     //    document.getElementById("nonPrintable").className += "noPrint";
