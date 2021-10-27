@@ -31,6 +31,7 @@
                             <thead>
                                 <tr>
                                     <th>Şirket Adı</th>
+                                    <th>Logo</th>
                                     <th>İşlemler</th>
                                 </tr>
                             </thead>
@@ -38,8 +39,24 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td width="85%">@item.CompanyName</td>
-                                        <td width="15%">
+                                        <td width="55%">@item.CompanyName</td>
+                                        <td width="25%">
+                                            @{
+                                                if (item.CompanyLogo!=null)
+                                                {
+                                                    <img width="50" src="/img/@item.CompanyLogo" />
+                                                }
+                                                else
+                                                {
+                                                    <p>-</p>
+                                                }
+                                            }
+                                        </td>
+                                        <td width="20%">
+                                            <a id="companyLogoUpdateBtn" onclick="CompanyLogoUpdate(@item.CompanyId)"  class="btn btn-sm btn-clean btn-icon" title="Logo Düzenle">
+                                                <i class="la la-upload text-danger"></i>
+                                            </a>
+                                      
                                             <a id="CareerUpdateBtn" onclick="CompanyUpdate(@item.CompanyId)" class="btn btn-sm btn-clean btn-icon" title="Edit details">
                                                 <i class="la la-edit text-warning"></i>
                                             </a>
@@ -117,8 +134,12 @@
         </div>
     </div>
 </div>
+    <!--end: Datatable-->
+
 
 @* update type modal*@
 <div id="companyUpdateDiv"></div>
+    @* update logo modal*@
+<div id="companyLogoUpdateDiv"></div>
 
 <script src="~/js/SystemVariable/_getCompanyTable.js"></script>

@@ -10,12 +10,15 @@ using FlexHR.DTO.Dtos.RoleDtos;
 using FlexHR.Entity.Concrete;
 using FlexHR.Entity.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static FlexHR.Web.StringInfo.RoleInfo;
@@ -25,11 +28,11 @@ namespace FlexHR.Web.Controllers
     [Authorize]
     public class SystemVariableController : Controller
     {
-        
+        private readonly IConfiguration _configuration;
         private readonly IGeneralTypeService _generalTypeService;
         private readonly IGeneralSubTypeService _generalSubTypeService;
         private readonly ILeaveTypeService _leaveTypeService;
-        private readonly ILeaveRuleService _leaveRuleService;        
+        private readonly ILeaveRuleService _leaveRuleService;
         private readonly ICompanyBranchService _companyBranchService;
         private readonly IMapper _mapper;
         private readonly ICompanyService _companyService;
@@ -38,12 +41,13 @@ namespace FlexHR.Web.Controllers
         private readonly RoleManager<AppRole> _roleManager;
 
         public SystemVariableController(IGeneralTypeService generalTypeService, IGeneralSubTypeService generalSubTypeService, IMapper mapper, ILeaveTypeService leaveTypeService, ILeaveRuleService leaveRuleService,
-            ICompanyService companyService,  ICompanyBranchService companyBranchService, IAppRoleService appRoleService, RoleManager<AppRole> roleManager, IColorCodeService colorCodeService)
+            ICompanyService companyService, ICompanyBranchService companyBranchService, IAppRoleService appRoleService, RoleManager<AppRole> roleManager, IColorCodeService colorCodeService, IConfiguration configuration)
         {
             _generalTypeService = generalTypeService;
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
             _leaveTypeService = leaveTypeService;
+            _configuration = configuration;
             _companyService = companyService;
             _leaveRuleService = leaveRuleService;
             _appRoleService = appRoleService;
@@ -63,8 +67,8 @@ namespace FlexHR.Web.Controllers
         {
             var result = _generalSubTypeService.GetGeneralSubTypeByGeneralTypeId(id);
             return PartialView("_GetGeneralSubTypeTable", _mapper.Map<List<ListGeneralSubTypeDto>>(result));
-        } 
-       
+        }
+
         public IActionResult GetUpdateGeneralSubTypeModal(int id)
         {
             var result = _generalSubTypeService.GetById(id);
@@ -72,19 +76,24 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetUpdateLeaveTypeModal(int id)
         {
-            var result = _leaveTypeService.GetById(id);         
+            var result = _leaveTypeService.GetById(id);
             return PartialView("_GetLeaveTypeUpdateModal", _mapper.Map<ListLeaveTypeDto>(result));
         }
         public IActionResult GetUpdateLeaveRuleModal(int id)
         {
             var result = _leaveRuleService.GetById(id);
             return PartialView("_GetLeaveRuleUpdateModal", _mapper.Map<ListLeaveRuleDto>(result));
-        } 
+        }
         public IActionResult GetUpdateCompanyModal(int id)
         {
             var result = _companyService.GetById(id);
             return PartialView("_GetCompanyUpdateModal", _mapper.Map<ListCompanyDto>(result));
-        } 
+        }
+        public IActionResult GetUpdateCompanyLogoModal(int id)
+        {
+            var result = _companyService.GetById(id);
+            return PartialView("_GetCompanyLogoUpdateModal", _mapper.Map<ListCompanyDto>(result));
+        }
         public IActionResult GetUpdateColorCodeModal(int id)
         {
             var result = _colorCodeService.GetById(id);
@@ -100,7 +109,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetUpdateCompanyBranchModal(int id)
         {
-            ViewBag.Companies = new SelectList(_companyService.Get(p=>p.IsActive==true), "CompanyId", "CompanyName");
+            ViewBag.Companies = new SelectList(_companyService.Get(p => p.IsActive == true), "CompanyId", "CompanyName");
             var result = _companyBranchService.GetById(id);
             return PartialView("_GetCompanyBranchUpdateModal", _mapper.Map<ListCompanyBranchDto>(result));
         }
@@ -129,7 +138,7 @@ namespace FlexHR.Web.Controllers
             catch (Exception)
             {
                 return false;
-            }      
+            }
         }
         public bool AddLeaveRule(AddLeaveRuleDto model)
         {
@@ -155,7 +164,7 @@ namespace FlexHR.Web.Controllers
             {
                 return false;
             }
-        } 
+        }
         [HttpPost]
         public bool AddColorCode(AddColorCodeDto model)
         {
@@ -187,8 +196,9 @@ namespace FlexHR.Web.Controllers
         {
             try
             {
-                var temp=_appRoleService.Get(x => x.Name == model.Name).FirstOrDefault();
-                if (temp != null && temp.IsActive==false){
+                var temp = _appRoleService.Get(x => x.Name == model.Name).FirstOrDefault();
+                if (temp != null && temp.IsActive == false)
+                {
                     temp.IsActive = true;
                     temp.Description = model.Description;
                     temp.AuthorizeTypeGeneralSubTypeId = model.AuthorizeTypeGeneralSubTypeId;
@@ -202,16 +212,16 @@ namespace FlexHR.Web.Controllers
 
                         return false;
                     }
-                    
-                    
+
+
                 }
-                else if(temp != null && temp.IsActive == true)
+                else if (temp != null && temp.IsActive == true)
                 {
                     return false;
                 }
 
-                var x= await _roleManager.CreateAsync(_mapper.Map<AppRole>(model));
-                
+                var x = await _roleManager.CreateAsync(_mapper.Map<AppRole>(model));
+
                 return true;
             }
             catch (Exception)
@@ -234,7 +244,7 @@ namespace FlexHR.Web.Controllers
         {
             model.IsActive = true;
             _leaveTypeService.Update(_mapper.Map<LeaveType>(model));
-       
+
             TempData["GeneralSubTypeUpdateStatus"] = "true";
             return RedirectToAction("Index");
         }
@@ -245,7 +255,7 @@ namespace FlexHR.Web.Controllers
             _leaveRuleService.Update(_mapper.Map<LeaveRule>(model));
             TempData["GeneralSubTypeUpdateStatus"] = "true";
             return RedirectToAction("Index");
-        } 
+        }
         [HttpPost]
         public IActionResult UpdateCompany(ListCompanyDto model)
         {
@@ -253,7 +263,40 @@ namespace FlexHR.Web.Controllers
             _companyService.Update(_mapper.Map<Company>(model));
             TempData["GeneralSubTypeUpdateStatus"] = "true";
             return RedirectToAction("Index");
-        }   
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateCompanyLogo(ListCompanyDto model, IFormFile file)
+        {
+            if (file != null)
+            {
+                string categoryNameFolder = "Logo";
+                var fullPath = _configuration.GetValue<string>("FullPath:DefaultPath");
+                var folderPath = Path.Combine(fullPath + "/" + categoryNameFolder);
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
+                var imagePath = Path.Combine(folderPath + "/" + file.FileName);
+                if (file.Length > 0)
+                {
+                    //dosyamızı kaydediyoruz.
+
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                }
+                model.IsActive = true;
+                model.CompanyLogo = categoryNameFolder+"/"+file.FileName;
+                _companyService.Update(_mapper.Map<Company>(model));
+                TempData["GeneralSubTypeUpdateStatus"] = "true";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["GeneralSubTypeUpdateStatus"] = "false";
+                return RedirectToAction("Index");
+            }
+            
+        }
         [HttpPost]
         public IActionResult UpdateColorCode(ListColorCodeDto model)
         {
@@ -335,7 +378,7 @@ namespace FlexHR.Web.Controllers
         {
             try
             {
-                var branclist=_companyBranchService.Get(x=>x.CompanyId==id).ToList();
+                var branclist = _companyBranchService.Get(x => x.CompanyId == id).ToList();
                 foreach (var item in branclist)
                 {
                     item.IsActive = false;
@@ -365,7 +408,7 @@ namespace FlexHR.Web.Controllers
             {
                 return false;
             }
-        } 
+        }
         [HttpPost]
         public bool DeleteCompanyBranch(int id)
         {
@@ -403,7 +446,7 @@ namespace FlexHR.Web.Controllers
         }
         public IActionResult GetLeaveRuleList()
         {
-            var result = _leaveRuleService.GetAll().OrderBy(x=>x.SeniorityYear);
+            var result = _leaveRuleService.GetAll().OrderBy(x => x.SeniorityYear);
             return PartialView("_GetLeaveRuleTable", _mapper.Map<List<ListLeaveRuleDto>>(result));
         }
         public IActionResult GetCompanyList()
@@ -418,24 +461,24 @@ namespace FlexHR.Web.Controllers
             ViewBag.AuthorizeTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.AuthorizeType), "GeneralSubTypeId", "Description");
             foreach (var item in temp)
             {
-                item.AuthorizeType= _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.AuthorizeTypeGeneralSubTypeId);
+                item.AuthorizeType = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.AuthorizeTypeGeneralSubTypeId);
             }
             return PartialView("_GetRoleTable", _mapper.Map<List<ListRoleDto>>(temp));
         }
         public IActionResult GetCompanyBranchList()
         {
             ViewBag.Companies = new SelectList(_companyService.Get(p => p.IsActive == true), "CompanyId", "CompanyName");
-            var result = _companyBranchService.Get(x => x.IsActive == true,null,"Company");
+            var result = _companyBranchService.Get(x => x.IsActive == true, null, "Company");
             var temp = _mapper.Map<List<ListCompanyBranchDto>>(result);  // ÖĞREN İÇ İÇE MAP
-           
+
 
             return PartialView("_GetCompanyBranchTable", temp);
-        }  
+        }
         public IActionResult GetColorCodeList()
         {
             var result = _colorCodeService.Get(x => x.IsActive == true);
             var temp = _mapper.Map<List<ListColorCodeDto>>(result);  // ÖĞREN İÇ İÇE MAP
-           
+
 
             return PartialView("_GetColorCodeTable", temp);
         }

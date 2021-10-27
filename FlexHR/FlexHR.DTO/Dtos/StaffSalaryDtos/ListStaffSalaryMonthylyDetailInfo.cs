@@ -27,7 +27,6 @@ namespace FlexHR.DTO.Dtos.StaffSalaryDtos
         public decimal Bonus { get; set; } //prim
         public decimal Perks { get; set; } //ikramiye
         public decimal AdditionIncome1 { get; set; } 
-        public decimal AdditionIncome2 { get; set; }
 
         /////////////////////////////////////////////
         public StaffSalaryMonthlyHelper Absence { get; set; }
@@ -37,6 +36,6 @@ namespace FlexHR.DTO.Dtos.StaffSalaryDtos
         public decimal ExecutiveDeduction { get; set; } // icra kesintisi
         public decimal PrivatePensionDeduction { get; set; } 
         public decimal Deduction1 { get; set; } 
-        public decimal Deduction2 { get; set; } 
+        public string CompanyLogo { get; set; } 
     }
 }

@@ -34,12 +34,12 @@ namespace FlexHR.Web.Controllers
         private readonly IStaffShiftService _staffShiftService;
         private readonly IPublicHolidayService _publicHolidayService;
         private readonly IStaffPaymentService _staffPaymentService;
-
+        private readonly ICompanyService _companyService;
 
         public StaffSalaryController(IMapper mapper, ITakePaymentService takePaymentService, IGeneralSubTypeService generalSubTypeService, UserManager<AppUser> userManager, IStaffService staffService,
             IStaffSalaryService staffSalaryService, ICompanyBranchService companyBranchService, IStaffCareerService staffCareerService, IJobRotationHistoryService jobRotationHistoryService,
             IStaffPersonelInfoService staffPersonelInfoService, IStaffLeaveService staffLeaveService, IStaffShiftService staffShiftService, IPublicHolidayService publicHolidayService,
-            IStaffPaymentService staffPaymentService) : base(userManager)
+            IStaffPaymentService staffPaymentService, ICompanyService companyService) : base(userManager)
         {
             _generalSubTypeService = generalSubTypeService;
             _mapper = mapper;
@@ -54,6 +54,7 @@ namespace FlexHR.Web.Controllers
             _staffShiftService = staffShiftService;
             _publicHolidayService = publicHolidayService;
             _staffPaymentService = staffPaymentService;
+            _companyService = companyService;
         }
         [Authorize(Roles = "ViewStaffSalaryPage,Manager,Staff")]
         public async Task<IActionResult> Index(int id)
@@ -186,9 +187,9 @@ namespace FlexHR.Web.Controllers
         [HttpGet]
         public IActionResult GetSalaryMonthlyModal(int id, int monthDate, int yearDate)
         {
-            var staff = _staffService.GetById(id);
+            var staff = _staffService.GetById(id);            
             var cardNo = staff.PersonalNo;
-            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList().First();
+            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList().First();            
             var salary = _staffSalaryService.Get(x => x.StaffId == id).FirstOrDefault();
             if (salary.AgiPayment != null && salary.Salary != null && salary.PayPerHour != null && salary.PrivatePension != null)
             {
@@ -254,8 +255,12 @@ namespace FlexHR.Web.Controllers
                 var totalGeneralWorkDayCount = 30 - (weekHolidayDays + totalLeaveDay);
                 var normalWorking = new StaffSalaryMonthlyHelper { Day = totalGeneralWorkDayCount, Amounts = Decimal.Round((totalGeneralWorkDayCount * daySalary), 2) };
                 var idNumber = _staffPersonelInfoService.Get(x => x.StaffId == id).FirstOrDefault().IdNumber;
+                var company = _companyService.Get(x=>x.CompanyId== careerResult.CompanyId).FirstOrDefault();
                 ListStaffSalaryMonthylyDetailInfo model = new ListStaffSalaryMonthylyDetailInfo
                 {
+                    CompanyLogo=company.CompanyLogo,
+                    AdditionIncome1=(decimal)_staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 129 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate).Sum(x=>x.Amount),
+                    Deduction1= (decimal)_staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 130 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate).Sum(x => x.Amount),
                     IdNumber = idNumber,
                     NameSurname = staff.NameSurname,
                     JobJoinDate = staff.JobJoinDate,

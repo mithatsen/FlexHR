@@ -86,25 +86,8 @@ namespace FlexHR.Web.Controllers
                     if (item.GeneralSubTypeId == categoryId)
                     {
 
-                        //string uzanti = Path.GetExtension(item.FileName);
-                        //string imageName = Guid.NewGuid() + uzanti;
-                        //Dosyamızın kaydedileceği Klasörün yolunu belirliyoruz.
+
                         categoryNameFolder = ClearTurkishCharacter(item.Description);
-
-
-                        //var userFileList = _staffFileService.Get(x => x.StaffId == id && x.IsActive == true);
-                        //foreach (var userFile in userFileList)
-                        //{
-                        //    var x = userFile.FileFullPath + userFile.FileName;
-                        //    var img = staffName + "\\" + categoryNameFolder + "/" + file.FileName;
-                        //    if (img == x)
-                        //    {
-                        //        count++;
-                        //    }
-
-                        //}
-                        //if (count == 0)
-                        //{
                         var stafFileResult = _staffFileService.AddResult(new StaffFile()
                         {
                             FileFullPath = Path.Combine(staffName, categoryNameFolder + "/"),

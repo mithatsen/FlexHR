@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,7 @@ namespace FlexHR.DTO.Dtos.CompanyDtos
     {
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public string CompanyLogo { get; set; }
         public bool IsActive { get; set; }
 
     }

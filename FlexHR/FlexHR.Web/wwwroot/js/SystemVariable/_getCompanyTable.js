@@ -21,6 +21,28 @@ function CompanyUpdate(id) {
         alert(error);
     });
 }
+function CompanyLogoUpdate(id) {
+    var modelContent = $("#companyLogoUpdateDiv")
+    $("#companyLogoUpdateDiv").empty();
+
+    $.ajax({
+        method: "GET",
+        url: "/SystemVariable/GetUpdateCompanyLogoModal/" + id,
+        dataType: "html",
+        cache: false,
+    }).done(function (content) {
+
+        if (content != null) {
+            modelContent.html(content);
+        }
+        $("#companyLogoUpdateModal").modal("show");
+
+
+
+    }).fail(function (error) {
+        alert(error);
+    });
+}
 
 
 

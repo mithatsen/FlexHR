@@ -1,30 +1,29 @@
 ﻿@model ListStaffSalaryMonthylyDetailInfo
 
 <style>
+    /*#printThis td, th {
+        font-size: .8vw !important;
+    }*/
 
-
-    td {
-        font-size: 8pt !important;
-    }
-
-
-    @@page {
-        size: A4;
-        margin: 0;
+    @@media screen {
+        #printSection {
+            display: none;
+        }
     }
 
     @@media print {
+        body * {
+            visibility: hidden;
+        }
 
+        #printSection, #printSection * {
+            visibility: visible;
+        }
 
-        .page {
-            width: 210mm;
-            min-height: 297mm;
-            padding: 5mm;
-            margin: 10mm auto;
-            border: 1px #D3D3D3 solid;
-            border-radius: 5px;
-            background: white;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        #printSection {
+            position: absolute;
+            left: 0;
+            top: 0;
         }
     }
 </style>
@@ -47,30 +46,47 @@
                     </button>
                 </div>
                 <div class="modal-body ">
-                    <div id="printContent" class="page" style="width: 240mm; min-height: 297mm; padding: 20mm; margin: 10mm auto; border: 1px #D3D3D3 solid; size: A4; border-radius: 5px; background: white; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); ">
+                    <div id="printThis" style="width: 275mm; min-height: 330mm; padding:4mm;   border: 1px #D3D3D3 solid;  border-radius: 5px; background: white; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); ">
+                        <table width="100%" class="mb-10">
+                            <tr>
+                                <td width="20%"></td>  
+                                <td width="60%"> <p class="font-size-h1 text-center mb-5"> Personel Maaş Pusulası</p></td>
+                                <td class="text-right" width="20%">
+                                    @if (Model.CompanyLogo!=null)
+                                    {
+                                    <img class="img-thumbnail " width="160" src="/img/@Model.CompanyLogo" />
+                                    }
+                                    else
+                                    {
+                                    <p></p>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                       
                         <div class="row">
                             <div class="col-md-1"></div>
                             <div class="col-md-5">
                                 <table class="justify-content-center">
                                     <tr>
-                                        <th>T.C. Kimlik No : </th>
-                                        <td>@Model.IdNumber</td>
+                                        <th class="font-size-h5">T.C. Kimlik No : </th>
+                                        <td class="font-size-h5">@Model.IdNumber</td>
                                     </tr>
                                     <tr>
-                                        <th>Ad Soyad : </th>
-                                        <td>@Model.NameSurname</td>
+                                        <th class="font-size-h5">Ad Soyad : </th>
+                                        <td class="font-size-h5">@Model.NameSurname</td>
                                     </tr>
                                     <tr>
-                                        <th>İşe Giriş Tarihi : </th>
-                                        <td>@Model.JobJoinDate.ToString("d")</td>
+                                        <th class="font-size-h5">İşe Giriş Tarihi : </th>
+                                        <td class="font-size-h5">@Model.JobJoinDate.ToString("d")</td>
                                     </tr>
                                     <tr>
-                                        <th>Bordro Tarihi : </th>
-                                        <td>@Model.PayrollDate.ToString("d")</td>
+                                        <th class="font-size-h5">Bordro Tarihi : </th>
+                                        <td class="font-size-h5">@Model.PayrollDate.ToString("d")</td>
                                     </tr>
                                     <tr>
-                                        <th>Şube : </th>
-                                        <td>@Model.Branch</td>
+                                        <th class="font-size-h5">Şube : </th>
+                                        <td class="font-size-h5">@Model.Branch</td>
                                     </tr>
                                 </table>
                             </div>
@@ -78,24 +94,24 @@
                             <div class="col-md-5">
                                 <table>
                                     <tr>
-                                        <th>Görevi : </th>
-                                        <td>@Model.Title</td>
+                                        <th class="font-size-h5">Görevi : </th>
+                                        <td class="font-size-h5">@Model.Title</td>
                                     </tr>
                                     <tr>
-                                        <th>Saat Ücreti : </th>
-                                        <td>@Model.PaymentPerHour</td>
+                                        <th class="font-size-h5">Saat Ücreti : </th>
+                                        <td class="font-size-h5">@Model.PaymentPerHour</td>
                                     </tr>
                                     <tr>
-                                        <th>Agi Hariç Maaş : </th>
-                                        <td>@Model.SalaryWithoutAgi</td>
+                                        <th class="font-size-h5">Agi Hariç Maaş : </th>
+                                        <td class="font-size-h5">@Model.SalaryWithoutAgi</td>
                                     </tr>
                                     <tr>
-                                        <th>Hakedilen Agi : </th>
-                                        <td>@Model.Agi</td>
+                                        <th class="font-size-h5">Hakedilen Agi : </th>
+                                        <td class="font-size-h5">@Model.Agi</td>
                                     </tr>
                                     <tr>
-                                        <th>Agi Dahil Maaş : </th>
-                                        <td>@Model.SalaryWithAgi</td>
+                                        <th class="font-size-h5">Agi Dahil Maaş : </th>
+                                        <td class="font-size-h5">@Model.SalaryWithAgi</td>
                                     </tr>
                                 </table>
                             </div>
@@ -106,73 +122,68 @@
                                 <table class="table table-borderless">
                                     <thead>
                                         <tr>
-                                            <th width="25%">Kazançlar </th>
-                                            <th width="25%">Gün </th>
-                                            <th width="25%">Saat </th>
-                                            <th width="25%">Tutarlar </th>
+                                            <th class="font-size-h5" width="45%">Kazançlar </th>
+                                            <th class="font-size-h5" width="10%">Gün </th>
+                                            <th class="font-size-h5" width="15%">Saat </th>
+                                            <th class="font-size-h5" width="30%">Tutarlar </th>
 
                                         </tr>
                                     </thead>
                                     <tbody class="mt-5">
                                         <tr style="margin-top:25%!important;">
-                                            <td>Normal Çalışma</td>
-                                            <td contenteditable='true'>@Model.NormalWorking.Day</td>
-                                            <td contenteditable='true'>@Model.NormalWorking.Hour</td>
-                                            <td contenteditable='true' class="earning">@Model.NormalWorking.Amounts</td>
+                                            <td class="font-size-h5">Normal Çalışma</td>
+                                            <td class="font-size-h5" >@Model.NormalWorking.Day</td>
+                                            <td class="font-size-h5" >@Model.NormalWorking.Hour</td>
+                                            <td class="font-size-h5 earning"  >@Model.NormalWorking.Amounts</td>
                                         </tr>
                                         <tr>
-                                            <td>Hafta Tatili</td>
-                                            <td contenteditable='true'>@Model.WeekBreak.Day</td>
-                                            <td contenteditable='true'>@Model.WeekBreak.Hour</td>
-                                            <td contenteditable='true' class="earning">@Model.WeekBreak.Amounts</td>
+                                            <td class="font-size-h5">Hafta Tatili</td>
+                                            <td class="font-size-h5" >@Model.WeekBreak.Day</td>
+                                            <td class="font-size-h5" >@Model.WeekBreak.Hour</td>
+                                            <td class="font-size-h5 earning"  >@Model.WeekBreak.Amounts</td>
                                         </tr>
                                         <tr>
-                                            <td>Ücretli İzin</td>
-                                            <td contenteditable='true'>@Model.HolidaysWithPay.Day</td>
-                                            <td contenteditable='true'>@Model.HolidaysWithPay.Hour</td>
-                                            <td contenteditable='true' class="earning">@Model.HolidaysWithPay.Amounts</td>
+                                            <td class="font-size-h5">Ücretli İzin</td>
+                                            <td class="font-size-h5" >@Model.HolidaysWithPay.Day</td>
+                                            <td class="font-size-h5" >@Model.HolidaysWithPay.Hour</td>
+                                            <td class="font-size-h5 earning"  >@Model.HolidaysWithPay.Amounts</td>
                                         </tr>
                                         <tr>
-                                            <td>Normal Mesai</td>
-                                            <td contenteditable='true'>@Model.Shift.Day</td>
-                                            <td contenteditable='true'>@Model.Shift.Hour</td>
-                                            <td contenteditable='true' class="earning">@Model.Shift.Amounts</td>
+                                            <td class="font-size-h5">Normal Mesai</td>
+                                            <td class="font-size-h5" >@Model.Shift.Day</td>
+                                            <td class="font-size-h5" >@Model.Shift.Hour</td>
+                                            <td class="font-size-h5 earning"  >@Model.Shift.Amounts</td>
                                         </tr>
                                         <tr>
-                                            <td>Pazar / Bayram Mesaisi</td>
-                                            <td contenteditable='true'>@Model.SundayShift.Day</td>
-                                            <td contenteditable='true'>@Model.SundayShift.Hour</td>
-                                            <td contenteditable='true' class="earning">@Model.SundayShift.Amounts</td>
+                                            <td class="font-size-h5">Pazar / Bayram Mesaisi</td>
+                                            <td class="font-size-h5" >@Model.SundayShift.Day</td>
+                                            <td class="font-size-h5" >@Model.SundayShift.Hour</td>
+                                            <td class="font-size-h5 earning"  >@Model.SundayShift.Amounts</td>
                                         </tr>
                                         <tr>
-                                            <td>Prim</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="earning">@Model.Bonus</td>
+                                            <td class="font-size-h5">Prim</td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5 earning"  >@Model.Bonus</td>
                                         </tr>
                                         <tr>
-                                            <td>İkramiye</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="earning">@Model.Perks</td>
+                                            <td class="font-size-h5">İkramiye</td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5 earning"  >@Model.Perks</td>
                                         </tr>
                                         <tr>
-                                            <td>Ek Kazanç 1</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="earning"></td>
+                                            <td class="font-size-h5">Ek Kazanç </td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5 earning"  >@Model.AdditionIncome1</td>
                                         </tr>
-                                        <tr>
-                                            <td>Ek Kazanç 2</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="earning"></td>
-                                        </tr>
+
                                     </tbody>
                                     <tfoot class="border-top">
                                         <tr>
-                                            <td class="font-weight-boldest" colspan="3">Toplam Kazanç :</td>
-                                            <td id="totalEarningSalary" contenteditable='true' colspan="1"></td>
+                                            <td class="font-weight-boldest font-size-h5" colspan="3">Toplam Kazanç :</td>
+                                            <td id="totalEarningSalary" class="font-size-h5"  colspan="1"></td>
                                         </tr>
                                     </tfoot>
 
@@ -182,74 +193,69 @@
                                 <table class="table table-borderless ">
                                     <thead>
                                         <tr>
-                                            <th width="25%">Kesintiler </th>
-                                            <th width="25%">Gün </th>
-                                            <th width="25%">Saat </th>
-                                            <th width="25%">Tutarlar </th>
+                                            <th class="font-size-h5" width="45%">Kesintiler </th>
+                                            <th class="font-size-h5" width="10%">Gün </th>
+                                            <th class="font-size-h5" width="15%">Saat </th>
+                                            <th class="font-size-h5" width="30%">Tutarlar </th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Devamsızlık</td>
-                                            <td contenteditable='true'>@Model.Absence.Day</td>
+                                            <td class="font-size-h5">Devamsızlık</td>
+                                            <td class="font-size-h5" >@Model.Absence.Day</td>
                                             @{
                                                 var absenceHour = Convert.ToDecimal(Model.Absence.Hour);
                                             }
-                                            <td contenteditable='true'>@Decimal.Round(absenceHour, 2)</td>
-                                            <td contenteditable='true' class="losing">@Model.Absence.Amounts</td>
+                                            <td class="font-size-h5" >@Decimal.Round(absenceHour, 2)</td>
+                                            <td class="font-size-h5 losing" >@Model.Absence.Amounts</td>
                                         </tr>
                                         <tr>
-                                            <td>Ücretsiz İzin</td>
-                                            <td contenteditable='true'>@Model.HolidayWithoutPay.Day</td>
-                                            <td contenteditable='true'>@Model.HolidayWithoutPay.Hour</td>
-                                            <td contenteditable='true' class="losing">@Model.HolidayWithoutPay.Amounts</td>
+                                            <td class="font-size-h5">Ücretsiz İzin</td>
+                                            <td class="font-size-h5" >@Model.HolidayWithoutPay.Day</td>
+                                            <td class="font-size-h5" >@Model.HolidayWithoutPay.Hour</td>
+                                            <td class="font-size-h5 losing" >@Model.HolidayWithoutPay.Amounts</td>
                                         </tr>
                                         <tr>
-                                            <td>Rapor</td>
-                                            <td contenteditable='true'>@Model.Report.Day</td>
-                                            <td contenteditable='true'>@Model.Report.Hour</td>
-                                            <td contenteditable='true' class="losing">@Model.Report.Amounts</td>
+                                            <td class="font-size-h5">Rapor</td>
+                                            <td class="font-size-h5" >@Model.Report.Day</td>
+                                            <td class="font-size-h5" >@Model.Report.Hour</td>
+                                            <td class="font-size-h5 losing" >@Model.Report.Amounts</td>
                                         </tr>
                                         <tr>
-                                            <td>Avans Kesintileri</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="losing">@Model.AdvanceDeduction</td>
+                                            <td class="font-size-h5">Avans Kesintileri</td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5 losing" >@Model.AdvanceDeduction</td>
                                         </tr>
                                         <tr>
-                                            <td>İcra Kesintileri</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="losing">@Model.ExecutiveDeduction</td>
+                                            <td class="font-size-h5">İcra Kesintileri</td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5 losing"  >@Model.ExecutiveDeduction</td>
                                         </tr>
                                         <tr>
-                                            <td>Bireysel Emeklilik Kesintisi</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="losing">@Model.PrivatePensionDeduction</td>
+                                            <td class="font-size-h5">Bireysel Emeklilik Kesintisi</td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5 losing"  >@Model.PrivatePensionDeduction</td>
                                         </tr>
                                         <tr>
-                                            <td>Kesinti 1 :</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="losing"></td>
+                                            <td class="font-size-h5">Kesinti  :</td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5"></td>
+                                            <td class="font-size-h5 losing"  >@Model.Deduction1</td>
                                         </tr>
+
                                         <tr>
-                                            <td>Kesinti 2 :</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td contenteditable='true' class="losing"></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
+                                            <td class="font-size-h5"></td>
                                         </tr>
 
                                     </tbody>
                                     <tfoot class="border-top">
                                         <tr>
-                                            <td class="font-weight-boldest" colspan="3">Toplam Kesinti :</td>
-                                            <td id="totalLoseSalary" width="70" contenteditable='true' colspan="1"></td>
+                                            <td class="font-weight-boldest font-size-h5" colspan="3">Toplam Kesinti :</td>
+                                            <td id="totalLoseSalary" width="70" class="font-size-h5"  colspan="1"></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -263,8 +269,8 @@
                                 <table class="table table-borderless">
                                     <tbody>
                                         <tr>
-                                            <th colspan="2" class="font-weight-boldest"> Hesaba Yatırılacak Toplam Kazanç :</th>
-                                            <td id="reelSalary" colspan="2" width="150" contenteditable='true'></td>
+                                            <th colspan="2" class="font-weight-boldest font-size-h5"> Hesaba Yatırılacak Toplam Kazanç :</th>
+                                            <td id="reelSalary" colspan="2" width="150" class="font-size-h5" ></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -273,12 +279,13 @@
 
                         <div class="row border p-5">
                             <div class="col-md-6 pb-9">
-                                İş Alan İmza :
+                                <p class="font-size-h5 font-weight-bolder"> İş Alan İmza :</p>
                                 <br />
                                 <br />
                             </div>
                             <div class="col-md-6  pb-9">
-                                İş Veren İmza :
+                                <p class="font-size-h5 font-weight-bolder">İş Veren İmza :</p>
+                                
                                 <br />
                                 <br />
                             </div>
@@ -351,17 +358,49 @@ else
     $("#reelSalary").text(totalEarningSalary - totalLoseSalary);
 
     document.getElementById("btnPrint").onclick = function () {
-        var printContents = document.getElementById("printContent").innerHTML;
-
-        var originalContents = document.body.innerHTML;
-
-        document.body.innerHTML = printContents;
-
-        window.print();
-
-        document.body.innerHTML = originalContents;
+        printElement(document.getElementById("printThis"));
     }
 
+    function printElement(elem) {
+        var domClone = elem.cloneNode(true);
+
+        var $printSection = document.getElementById("printSection");
+
+        if (!$printSection) {
+            var $printSection = document.createElement("div");
+            $printSection.id = "printSection";
+            document.body.appendChild($printSection);
+            //     $("#printThis td,th").css({ "font-size": "15pt"});
+        }
+
+        $printSection.innerHTML = "";
+        $printSection.appendChild(domClone);
+        window.print();
+    }
+
+    //document.getElementById("btnPrint").onclick = function () {
+    //    var printContents = document.getElementById("printContent").innerHTML;
+
+    //    var originalContents = document.body.innerHTML;
+
+    //    document.body.innerHTML = printContents;
+
+    //    window.print();
+
+    //    document.body.innerHTML = originalContents;
+    //}
+    //$("#printContent").printThis({
+    //    debug: false,
+    //    importCSS: true,
+    //    importStyle: true,
+    //    printContainer: true,
+    //    loadCSS: "../css/style.css",
+    //    pageTitle: "My Modal",
+    //    removeInline: false,
+    //    printDelay: 333,
+    //    header: null,
+    //    formValues: true
+    //});
                                     //var getSalaryMonthlyModal = document.getElementById("GetSalaryMonthlyModal");
                                     //document.getElementById("btnPrint").onclick = function () {
                                     //    document.getElementById("nonPrintable").className += "noPrint";

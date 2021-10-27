@@ -1,21 +1,21 @@
 ﻿@model ListCompanyDto
 
-<div class="modal fade" id="companyUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+<div class="modal fade" id="companyLogoUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title align-items-start flex-column">
                     <h3 class="card-label font-weight-bolder text-dark lead">
-                        <i class="fas fa-building mr-2 text-dark"></i> Düzenle
+                        <i class="fas fa-building mr-2 text-dark"></i> Ekle
                     </h3>
 
                 </div>
                 <button type="button" class=" text-white bg-danger link-2" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form id="CompanyUpdateForm" asp-controller="SystemVariable" asp-action="UpdateCompany" method="POST">
+            <form id="CompanyLogoUpdateForm" asp-controller="SystemVariable" asp-action="UpdateCompanyLogo" method="POST" enctype="multipart/form-data">
                 <input type="hidden" asp-for="CompanyId" />
-                <input type="hidden" asp-for="CompanyLogo" />
+                <input type="hidden" asp-for="CompanyName" />
 
                 <div class="modal-body">
                     <div class="flex-row-fluid ">
@@ -29,11 +29,12 @@
                                 <!--begin::Body-->
                                 <div class="card-body mx-auto">
                                     <div class="row">
+
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label>Şirket Adı *</label>
+                                                <label>Şirket Logosu *</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-control-lg form-control-solid" asp-for="CompanyName" placeholder="Şirket Adı" />
+                                                    <input type="file" class="form-control form-control-lg form-control-solid" name="file"/>
                                                 </div>
                                             </div>
                                         </div>

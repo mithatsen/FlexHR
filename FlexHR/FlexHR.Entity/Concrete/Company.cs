@@ -9,6 +9,7 @@ namespace FlexHR.Entity.Concrete
     {
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public string CompanyLogo { get; set; }
         public bool IsActive { get; set; }
 
         public virtual ICollection<CompanyBranch> CompanyBranch { get; set; }
