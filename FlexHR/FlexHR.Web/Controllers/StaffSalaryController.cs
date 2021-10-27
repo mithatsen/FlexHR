@@ -100,52 +100,10 @@ namespace FlexHR.Web.Controllers
             List<ListStaffSalaryMonthlyDto> models = new List<ListStaffSalaryMonthlyDto>();
             foreach (var item in staffs)
             {
-                var salaryInfo = _staffSalaryService.Get(x => x.StaffId == item.StaffId).FirstOrDefault();
-                var incomePerHour = salaryInfo.Salary / 12;
-                var trackingList = result.Where(x => Convert.ToInt32(x.CardNo) == item.PersonalNo).ToList();
-                TimeSpan totalWorkingHour = new TimeSpan(0, 0, 0, 0);
-                TimeSpan totalOvertimeHour = new TimeSpan(0, 0, 0, 0);
+
                 var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).FirstOrDefault();
                 var department = item.StaffCareer.Count > 0 ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId).ToString() : "";
                 var branch = item.StaffCareer.Count > 0 ? careerResult.CompanyBranch.BranchName : "";
-                if (trackingList.Count != 0)
-                {
-                    var jobRotationHistory = _jobRotationHistoryService.Get(x => x.IsActive && x.StaffId == item.StaffId).ToList();
-                    foreach (var historyItem in jobRotationHistory)
-                    {
-                        //foreach (var rotationItem in historyItem.)
-                        //{
-
-                        foreach (var personal in trackingList)
-                        {
-                            if (true)
-                            {
-                                department = personal.Department;
-                                branch = personal.Branch;
-                                if (personal.CkeckoutTime == "")
-                                {
-                                    continue;
-                                }
-                                var time = (Convert.ToDateTime(personal.CkeckoutTime) - Convert.ToDateTime(personal.EntryTime));
-
-                                if (time.CompareTo(TimeSpan.Zero) < 0)
-                                {
-                                    time = time.Add(TimeSpan.FromHours(24));
-                                }
-                                if (personal.Overtime != "")
-                                {
-                                    time = time.Subtract(TimeSpan.FromHours(Convert.ToDateTime(personal.Overtime).Hour));
-                                    time = time.Subtract(TimeSpan.FromMinutes(Convert.ToDateTime(personal.Overtime).Minute));
-                                    totalOvertimeHour += Convert.ToDateTime(personal.Overtime).TimeOfDay;
-                                }
-                                totalWorkingHour += time;
-                                //    }
-                            }
-                        }
-                    }
-
-                }
-
 
                 models.Add(new ListStaffSalaryMonthlyDto
                 {
@@ -153,15 +111,7 @@ namespace FlexHR.Web.Controllers
                     NameSurname = item.NameSurname,
                     CardNo = item.PersonalNo,
                     Branch = branch,
-                    Department = department,
-                    IncomePerHour = 12,
-                    IncomePerShiftHour = 12,
-                    TotalWorkingHour = totalWorkingHour.Days * 24 + totalWorkingHour.Hours + " sa " + totalWorkingHour.Minutes + " dk ",
-                    TotalOvertimeHour = totalOvertimeHour.Days * 24 + totalOvertimeHour.Hours + " sa " + totalOvertimeHour.Minutes + " dk ",
-                    // TotalDeservedSalary = Math.Round((incomePerHour * ((totalWorkingHour.Days * 24 + totalWorkingHour.Hours) + totalWorkingHour.Minutes / 60) + 12 * ((totalOvertimeHour.Days * 24 + totalOvertimeHour.Hours) + totalWorkingHour.Minutes / 60) ?? 0), 2),
-                    NetSalary = salaryInfo.Salary,
-                    CurrencyTypeName = _generalSubTypeService.GetDescriptionByGeneralSubTypeId(salaryInfo.CurrencyGeneralSubTypeId),
-
+                    Department = department
                 });
             }
             StaffSalaryMonthlyViewModal listModel = new StaffSalaryMonthlyViewModal { filterDate = date, ListStaffSalaryMonthly = models };
@@ -187,9 +137,16 @@ namespace FlexHR.Web.Controllers
         [HttpGet]
         public IActionResult GetSalaryMonthlyModal(int id, int monthDate, int yearDate)
         {
-            var staff = _staffService.GetById(id);            
+            var staff = _staffService.GetById(id)
+;
             var cardNo = staff.PersonalNo;
-            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList().First();            
+            var careerResultt = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList();
+            StaffCareer careerResult = new StaffCareer();
+            if (careerResultt.Count > 0)
+            {
+                careerResult = careerResultt.First();
+            }
+
             var salary = _staffSalaryService.Get(x => x.StaffId == id).FirstOrDefault();
             if (salary.AgiPayment != null && salary.Salary != null && salary.PayPerHour != null && salary.PrivatePension != null)
             {
@@ -255,12 +212,14 @@ namespace FlexHR.Web.Controllers
                 var totalGeneralWorkDayCount = 30 - (weekHolidayDays + totalLeaveDay);
                 var normalWorking = new StaffSalaryMonthlyHelper { Day = totalGeneralWorkDayCount, Amounts = Decimal.Round((totalGeneralWorkDayCount * daySalary), 2) };
                 var idNumber = _staffPersonelInfoService.Get(x => x.StaffId == id).FirstOrDefault().IdNumber;
-                var company = _companyService.Get(x=>x.CompanyId== careerResult.CompanyId).FirstOrDefault();
+
+                var company = _companyService.Get(x => x.CompanyId == careerResult.CompanyId).FirstOrDefault();
+
                 ListStaffSalaryMonthylyDetailInfo model = new ListStaffSalaryMonthylyDetailInfo
                 {
-                    CompanyLogo=company.CompanyLogo,
-                    AdditionIncome1=(decimal)_staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 129 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate).Sum(x=>x.Amount),
-                    Deduction1= (decimal)_staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 130 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate).Sum(x => x.Amount),
+                    CompanyLogo = company.CompanyLogo,
+                    AdditionIncome1 = (decimal)_staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 129 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate).Sum(x => x.Amount),
+                    Deduction1 = (decimal)_staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 130 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate).Sum(x => x.Amount),
                     IdNumber = idNumber,
                     NameSurname = staff.NameSurname,
                     JobJoinDate = staff.JobJoinDate,
