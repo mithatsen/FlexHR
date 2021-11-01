@@ -147,7 +147,8 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
             foreach (var item in staffs)
             {
-                var trackingList = mainModels.Where(x => Convert.ToInt32(x.CardNo) == item.PersonalNo).ToList();
+               
+                var trackingList = mainModels.Where(x => x.CardNo == Convert.ToString(item.PersonalNo)).ToList();
 
                 List<ColorCodeHelper> statusList = new List<ColorCodeHelper>();
                 for (int i = 1; i < 32; i++)

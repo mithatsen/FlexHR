@@ -64,7 +64,7 @@ namespace FlexHR.Web
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IStaffService staffService,
-            IStaffPersonelInfoService personelInfoService, IStaffOtherInfoService otherInfoService)
+            IStaffPersonelInfoService personelInfoService, IStaffOtherInfoService otherInfoService, IStaffSalaryService staffSalaryService)
         {
             if (env.IsDevelopment())
             {
@@ -87,7 +87,7 @@ namespace FlexHR.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            IdentityInitializer.SeedData(userManager, roleManager, staffService, personelInfoService, otherInfoService).Wait();
+            IdentityInitializer.SeedData(userManager, roleManager, staffService, personelInfoService, otherInfoService,staffSalaryService).Wait();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

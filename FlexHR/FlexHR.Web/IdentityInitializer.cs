@@ -13,7 +13,7 @@ namespace FlexHR.Web
     public static class IdentityInitializer
     {
         public static async Task SeedData(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,IStaffService staffService ,
-            IStaffPersonelInfoService personelInfoService,IStaffOtherInfoService otherInfoService)
+            IStaffPersonelInfoService personelInfoService,IStaffOtherInfoService otherInfoService,IStaffSalaryService staffSalaryService)
         {
             var userCount = userManager.Users.ToList().Count;
             if (userCount <= 0)
@@ -34,7 +34,8 @@ namespace FlexHR.Web
                         JobJoinDate=DateTime.Now,
                         IsActive=true,
                         WillUseSystem=true,
-                        ContractTypeGeneralSubTypeId=2
+                        ContractTypeGeneralSubTypeId=2,
+                        PersonalNo=1
                     });
                     personelInfoService.Add(new StaffPersonelInfo
                     {
@@ -45,7 +46,18 @@ namespace FlexHR.Web
                     {
                         StaffId = addedStaff.StaffId,
                         IsActive = true
-                    });
+                    }); 
+                    staffSalaryService.Add(new StaffSalary 
+                    {
+                        StaffId = addedStaff.StaffId,
+                        CurrencyGeneralSubTypeId = 111,
+                        PeriodGeneralSubTypeId = 115,
+                        FeeTypeGeneralSubTypeId = 107,
+                        StartDate = DateTime.Now,
+                        AgiPayment = 12,
+                        Salary = 2825, 
+                        IsActive = true }
+                    );
                     AppUser user = new AppUser
                     {
                         UserName = "admin",
