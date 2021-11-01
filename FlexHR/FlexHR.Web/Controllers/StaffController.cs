@@ -59,7 +59,7 @@ namespace FlexHR.Web.Controllers
          
             TempData["Active"] = TempdataInfo.Staff;
             var result = _staffService.Get(x => x.IsActive == true, null, "StaffFile");
-            var abs= _staffService.GetStaffTimeKeepingMonthly(DateTime.Now,result.ToList());
+           
             ViewBag.ContractTypes = new SelectList(_generalSubTypeService.GetGeneralSubTypeByGeneralTypeId((int)GeneralTypeEnum.ContractType), "GeneralSubTypeId", "Description");
             ViewBag.Roles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 125), "Id", "Description");
             ViewBag.PageRoles = new SelectList(_appRoleService.Get(x => x.AuthorizeTypeGeneralSubTypeId == 126), "Id", "Description");

@@ -102,8 +102,8 @@ namespace FlexHR.Web.Controllers
             {
 
                 var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == item.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).FirstOrDefault();
-                var department = item.StaffCareer.Count > 0 ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(item.StaffCareer.FirstOrDefault().DepartmantGeneralSubTypeId).ToString() : "";
-                var branch = item.StaffCareer.Count > 0 ? careerResult.CompanyBranch.BranchName : "";
+                var department = careerResult != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(careerResult.DepartmantGeneralSubTypeId).ToString() : "";
+                var branch = careerResult != null ? careerResult.CompanyBranch.BranchName : "";
 
                 models.Add(new ListStaffSalaryMonthlyDto
                 {
@@ -140,12 +140,8 @@ namespace FlexHR.Web.Controllers
             var staff = _staffService.GetById(id)
 ;
             var cardNo = staff.PersonalNo;
-            var careerResultt = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == id, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).ToList();
-            StaffCareer careerResult = new StaffCareer();
-            if (careerResultt.Count > 0)
-            {
-                careerResult = careerResultt.First();
-            }
+            var careerResult = _staffCareerService.Get(x => x.IsActive == true && x.StaffId == staff.StaffId, null, "CompanyBranch").OrderByDescending(p => p.JobStartDate).FirstOrDefault();
+
 
             var salary = _staffSalaryService.Get(x => x.StaffId == id).FirstOrDefault();
             if (salary.AgiPayment != null && salary.Salary != null && salary.PayPerHour != null && salary.PrivatePension != null)
@@ -213,18 +209,18 @@ namespace FlexHR.Web.Controllers
                 var normalWorking = new StaffSalaryMonthlyHelper { Day = totalGeneralWorkDayCount, Amounts = Decimal.Round((totalGeneralWorkDayCount * daySalary), 2) };
                 var idNumber = _staffPersonelInfoService.Get(x => x.StaffId == id).FirstOrDefault().IdNumber;
 
-                var company = _companyService.Get(x => x.CompanyId == careerResult.CompanyId).FirstOrDefault();
+                var company = careerResult !=null ? _companyService.Get(x => x.CompanyId == careerResult.CompanyId).FirstOrDefault() : null;
 
                 ListStaffSalaryMonthylyDetailInfo model = new ListStaffSalaryMonthylyDetailInfo
                 {
-                    CompanyLogo = company.CompanyLogo,
+                    CompanyLogo = company!=null ? company.CompanyLogo : "",
                     AdditionIncome1 = (decimal)_staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 129 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate).Sum(x => x.Amount),
                     Deduction1 = (decimal)_staffPaymentService.Get(x => x.GeneralStatusGeneralSubTypeId == 97 && x.IsPaid == true && x.IsActive == true && x.PaymentTypeGeneralSubTypeId == 130 && x.StaffId == id && x.PaymentDate.Month == monthDate && x.PaymentDate.Year == yearDate).Sum(x => x.Amount),
                     IdNumber = idNumber,
                     NameSurname = staff.NameSurname,
                     JobJoinDate = staff.JobJoinDate,
                     PayrollDate = new DateTime(yearDate, monthDate, 1),
-                    Branch = careerResult.CompanyBranch != null ? careerResult.CompanyBranch.BranchName : "-",
+                    Branch = careerResult!=null ? (careerResult.CompanyBranch != null ? careerResult.CompanyBranch.BranchName : "-") : "-",
                     Title = careerResult != null ? _generalSubTypeService.GetDescriptionByGeneralSubTypeId(careerResult.TitleGeneralSubTypeId) : "-",
                     PaymentPerHour = salary != null ? (decimal)salary.PayPerHour : 0,
                     SalaryWithoutAgi = salary != null ? salary.Salary : 0,
