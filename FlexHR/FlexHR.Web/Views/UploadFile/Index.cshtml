@@ -38,7 +38,7 @@
                     <!--begin::Body-->
                     <div class="card-body pt-4">
 
-                        <form id="uploadExcelFileForm" method="post"  enctype="multipart/form-data">
+                        <form id="uploadExcelFileForm" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="categoryId" id="categoryId" value="1" />
                             <div class="row">
                                 <div class="form-group row col-md-8">
@@ -64,7 +64,7 @@
                                     {
                                         <button id="uploadUpdateButton" onclick="addUpdateExcelButtonClick()" type="button" class="btn btn-primary btn-lg input-group">Yükle </button>
                                     }
-                                    </div>
+                                </div>
                             </div>
                         </form>
 
@@ -90,7 +90,7 @@
                             </h3>
                         </div>
                         <div class="card-toolbar">
-                            
+
                         </div>
                     </div>
                     <div class="card-body">
@@ -147,7 +147,7 @@
                     processing: true,
                     responsive: false,
                     fixedHeader: true,
-                    
+
                     "scrollX": true,
                     "bFilter": true,
                     searching: true,
@@ -239,10 +239,19 @@
                                 cache: false,
                                 processData: false,
                             }).done(function (result) {
-                                console.log(result);
+                                var messsageList = result.message.split('|');
+                                console.log(messsageList);
+
+                                var tableRows = "";
+                                for (var i = 0; i < messsageList.length; i++) {
+                                    tableRows += "<tr><th>" + messsageList[i] + "</th></tr>";
+                                }
+                                var tableHtml = '<table class="table"><tbody>' + tableRows + '</tbody></table>';
+
                                 debugger;
                                 if (result.isSuccess == true) {
                                     Swal.fire({
+
                                         title: "Yüklendi!",
                                         text: result.message,
                                         icon: "success",
@@ -252,11 +261,12 @@
                                     })
 
                                 } else {
-                                    Swal.fire(
-                                        "Hata",
-                                        result.Message,
-                                        "error"
-                                    )
+                                    Swal.fire({
+                                        width: 850,
+                                        html: tableHtml,
+                                        title: "Hata Listesi",
+                                        icon: "error"
+                                    })
                                 }
 
                             })
@@ -279,6 +289,8 @@
                         processData: false,
                     }).done(function (result) {
                         debugger;
+                        var messsageList = result.message.split('|');
+                        console.log(messsageList);
                         if (result.isSuccess == true) {
                             Swal.fire({
                                 title: "Yüklendi!",

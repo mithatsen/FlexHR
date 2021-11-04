@@ -275,6 +275,14 @@
             demoForm,
             {
                 fields: {
+                    StaffId: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Personel seçiniz'
+                            },
+
+                        }
+                    },
                     PaymentDate: {
                         validators: {
                             notEmpty: {

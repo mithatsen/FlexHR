@@ -218,6 +218,14 @@
         document.getElementById('modalAddLeaveRequestForm'),
         {
             fields: {
+                StaffId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Personel seçiniz'
+                        },
+
+                    }
+                },
                 LeaveStartDate: {
                     validators: {
                         notEmpty: {

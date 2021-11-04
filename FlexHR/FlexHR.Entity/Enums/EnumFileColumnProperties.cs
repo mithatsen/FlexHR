@@ -9,5 +9,6 @@ namespace FlexHR.Entity.Enums
         IsExistControl = 1,
         OnlyShowDateInDateTime = 2,
         OnlyShowHourInDateTime = 3,
+        IsEmptyRow=4
     }
 }

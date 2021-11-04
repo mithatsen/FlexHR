@@ -28,7 +28,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             _context = context;
             _configuration = configuration;
         }
-        
+
         // 1-> (Ana Metod) - Excelden veri yükleme
         public GenericResultViewModel LoadDataFromExcel(FileUploadViewModel fuvm)
         {
@@ -177,10 +177,30 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
                 if (isCreatedTable)
                 {
+                    var errorMessageList = "";
+                    var nullTextList = new Dictionary<string, List<string>>();
                     var readList = new Dictionary<string, List<string>>();
 
                     for (int t = 0; t < fuvm.rows.Count; t++)
                     {
+                        #region Excel'de boş kayıt kontrolü
+
+                        if (fuvm.columnCount > 0)
+                        {
+                            for (int c = 0; c < fuvm.columnCount; c++)
+                            {
+                                if (fuvm.columnList[c].FileColumn_FileColumnProperties.Any(x => x.FileColumnPropertiesId == EnumFileColumnProperties.IsEmptyRow.GetHashCode()))
+                                {
+                                    if (fuvm.rows[t][c].Equals(""))
+                                    {
+                                        errorMessageList += "|" + $"Dosyanın {t + 2}. satırında boş kayıt bulundu! Boş kayıt : {fuvm.columnList[c].ColumnDescription}"; 
+                                    }                                   
+                                }
+                            }
+                        }
+
+                        #endregion
+
                         #region Excel'de mükerrer kayıt kontrolü
 
                         if (fuvm.columnCount > 0)
@@ -193,11 +213,12 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                                     {
                                         if (readList.FirstOrDefault(x => x.Key == fuvm.columnList[c].ColumnName).Value.Any(x => x.Equals($"{fuvm.rows[t][c]}")))
                                         {
-                                            return new GenericResultViewModel()
-                                            {
-                                                IsSuccess = false,
-                                                Message = $"Dosyanın {t + 2}. satırında mükerrer kayıt bulundu! Mükerrer kayıt : {fuvm.columnList[c].ColumnDescription}",
-                                            };
+                                            //return new GenericResultViewModel()
+                                            //{
+                                            //    IsSuccess = false,
+                                            //    Message = $"Dosyanın {t + 2}. satırında mükerrer kayıt bulundu! Mükerrer kayıt : {fuvm.columnList[c].ColumnDescription}",
+                                            //};
+                                            errorMessageList += "|" + $"Dosyanın {t + 2}. satırında mükerrer kayıt bulundu! Mükerrer kayıt : {fuvm.columnList[c].ColumnDescription}";
                                         }
                                         else
                                         {
@@ -214,6 +235,16 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                         }
 
                         #endregion
+                    }
+
+                    if (errorMessageList != "")
+                    {
+                        errorMessageList = errorMessageList.Remove(0, 1);
+                        return new GenericResultViewModel()
+                        {
+                            IsSuccess = false,
+                            Message = errorMessageList,
+                        };
                     }
 
                     // Bulk Insert    
@@ -385,7 +416,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
         public List<FileColumn> FileColumnListByTypeId(int typeId)
         {
             var columnList = new List<FileColumn>();
-            columnList = _context.FileColumn.Where(x => x.IsActive&& x.FileTypeId == typeId).Include(x => x.FileColumn_FileColumnProperties).OrderBy(x => x.ColumnSequence).ToList();
+            columnList = _context.FileColumn.Where(x => x.IsActive && x.FileTypeId == typeId).Include(x => x.FileColumn_FileColumnProperties).OrderBy(x => x.ColumnSequence).ToList();
             return columnList != null ? columnList : new List<FileColumn>();
         }
 
@@ -409,7 +440,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
                 }
 
                 var dt = new DataTable();
-                
+
                 var connectionStrings = _configuration.GetConnectionString("DefaultConnection");
                 SqlConnection connectionString = new SqlConnection(connectionStrings);
                 using (SqlConnection con = new SqlConnection(connectionString.ConnectionString))
