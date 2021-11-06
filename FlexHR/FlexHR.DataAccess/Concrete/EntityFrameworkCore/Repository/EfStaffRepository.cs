@@ -51,46 +51,50 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
             foreach (var item in models)
             {
                 var rotation = jobRotationHistory.Where(x => x.StaffId == staffId && x.JobRotationDate <= item.UploadDate).OrderByDescending(x => x.JobRotationDate).FirstOrDefault();   // <= vardı,  galiba >= olması gerekiyor 
-                var shiftTime = rotation.JobRotations != null ? rotation.JobRotations.ShiftTime : jobRotation.FirstOrDefault().ShiftTime;
+                //var shiftTime = rotation.JobRotations != null ? rotation.JobRotations.ShiftTime : jobRotation.FirstOrDefault().ShiftTime;
                 if (item.Status == description) // o gün geldi mi
                 {
                     deductionDay++;
                 }
-                else if (rotation.JobRotations != null)// o gün geldi ama saatinde geldi mi , daha önce vardiya tanmlama yapılmadıysa giriş çıkış saat hesabı olmuyor
+                else if (rotation != null)
                 {
-
-                    if (item.Status == come)
+                    if (rotation.JobRotations != null)// o gün geldi ama saatinde geldi mi , daha önce vardiya tanmlama yapılmadıysa giriş çıkış saat hesabı olmuyor
                     {
-                        //MESAİ BAŞLANGICINDA GEÇ KALIRSA
-                        if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   *********devamsızlarda hata veriyor**************
 
+                        if (item.Status == come)
                         {
-                            deductionMinute += Convert.ToInt32((Convert.ToDateTime(Convert.ToDateTime(item.EnterTime).ToString("hh:mm")) - (Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")))).TotalMinutes);
-                        }
-                        //MESAİ BİTİMİ ERKEN ÇIKARSA
-                        if ((Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm")) < TimeSpan.Zero)
+                            //MESAİ BAŞLANGICINDA GEÇ KALIRSA
+                            if (Convert.ToDateTime((Convert.ToDateTime(item.EnterTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")) > TimeSpan.Zero) //sabah geç geldi   *********devamsızlarda hata veriyor**************
 
-                        {
-                            deductionMinute += Convert.ToInt32((Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm")) - (Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm")))).TotalMinutes);
+                            {
+                                deductionMinute += Convert.ToInt32((Convert.ToDateTime(Convert.ToDateTime(item.EnterTime).ToString("hh:mm")) - (Convert.ToDateTime(rotation.JobRotations.StartDate.ToString("hh:mm")))).TotalMinutes);
+                            }
+                            //MESAİ BİTİMİ ERKEN ÇIKARSA
+                            if ((Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm"))) - Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm")) < TimeSpan.Zero)
+
+                            {
+                                deductionMinute += Convert.ToInt32((Convert.ToDateTime(rotation.JobRotations.EndDate.ToString("hh:mm")) - (Convert.ToDateTime(Convert.ToDateTime(item.ExitTime).ToString("hh:mm")))).TotalMinutes);
+                            }
+                            //burada vardiyada sadece saat tutulduğu için  2 takla attırdım
                         }
-                        //burada vardiyada sadece saat tutulduğu için  2 takla attırdım
                     }
 
-                }
 
+                }
             }
 
             return new StaffSalaryMonthlyHelper { Day = deductionDay, Hour = (float)deductionMinute / 60 };
         }
 
-       
+
+
 
         public List<Staff> GetStaffBySearchString(string search)
         {
             return _context.Staff.Include(p => p.StaffPersonelInfo).Where(p => p.IsActive == true && (p.NameSurname.Contains(search) || p.StaffPersonelInfo.FirstOrDefault().IdNumber.Contains(search))).ToList();
         }
 
-    
+
 
         public int GetStaffReportDayMonthly(DateTime dateTime, int cardNo)
         {
@@ -147,7 +151,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
             foreach (var item in staffs)
             {
-               
+
                 var trackingList = mainModels.Where(x => x.CardNo == Convert.ToString(item.PersonalNo)).ToList();
 
                 List<ColorCodeHelper> statusList = new List<ColorCodeHelper>();
@@ -202,7 +206,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Repository
 
         }
 
-      
+
 
         //public int GetStaffIdByUserName(string userName)
         //{

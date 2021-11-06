@@ -203,34 +203,121 @@
         }();
 
     </script>
-    <script>
-        function addUpdateExcelButtonClick() {
-            var file = $("#customFile").prop('files');
-            var formData = new FormData();
 
-            formData.append("file", file[0]);
-            formData.append("Date", $("#ExcelUploadDate").val());
-            formData.append("CategoryId", $("#categoryId").val());
-            $.ajax({
-                method: 'Post',
-                url: '/UploadFile/UploadingFileIsExist',
-                data: formData,
-                contentType: false,
-                cache: false,
-                processData: false,
-            }).done(function (result) {
-                if (result == true) {
-                    Swal.fire({
-                        title: "Uyarı!",
-                        text: "Aynı isimde dosyanız bulunmaktadır. Onaylarsanız eski verileriniz silinecektir.",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Evet",
-                        cancelButtonText: "Hayır",
-                        reverseButtons: true
-                    }).then(function (result) {
-                        debugger;
-                        if (result.value) {
+    <script>
+        
+        var excelValidate = FormValidation.formValidation(
+            document.getElementById('uploadExcelFileForm'),
+            {
+                fields: {
+                    Date: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tarih alanı boş geçilemez'
+                            },
+                            date: {
+                                format: 'DD.MM.YYYY',
+                                message: 'Geçerli bir tarih girin'
+                            },
+                        }
+                    },
+                    file: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Dosya ekleme alanı boş geçilemez'
+                            }
+                        }
+                    }
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                    // Validate fields when clicking the Submit button
+
+                }
+            }
+        );
+
+        function addUpdateExcelButtonClick() {
+            excelValidate.validate().then(function (status) {
+                if (status == 'Valid') {
+                    var file = $("#customFile").prop('files');
+                    var formData = new FormData();
+
+                    formData.append("file", file[0]);
+                    formData.append("Date", $("#ExcelUploadDate").val());
+                    formData.append("CategoryId", $("#categoryId").val());
+                    $.ajax({
+                        method: 'Post',
+                        url: '/UploadFile/UploadingFileIsExist',
+                        data: formData,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                    }).done(function (result) {
+                        if (result == true) {
+                            Swal.fire({
+                                title: "Uyarı!",
+                                text: "Aynı isimde dosyanız bulunmaktadır. Onaylarsanız eski verileriniz silinecektir.",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonText: "Evet",
+                                cancelButtonText: "Hayır",
+                                reverseButtons: true
+                            }).then(function (result) {
+                                debugger;
+                                if (result.value) {
+                                    $.ajax({
+                                        method: "POST",
+                                        url: "/UploadFile/AddExcelWithAjax",
+                                        data: formData,
+                                        contentType: false,
+                                        cache: false,
+                                        processData: false,
+                                    }).done(function (result) {
+                                        var messsageList = result.message.split('|');
+                                        console.log(messsageList);
+
+                                        var tableRows = "";
+                                        for (var i = 0; i < messsageList.length; i++) {
+                                            tableRows += "<tr><th>" + messsageList[i] + "</th></tr>";
+                                        }
+                                        var tableHtml = '<table class="table"><tbody>' + tableRows + '</tbody></table>';
+
+                                        debugger;
+                                        if (result.isSuccess == true) {
+                                            Swal.fire({
+
+                                                title: "Yüklendi!",
+                                                text: result.message,
+                                                icon: "success",
+                                                showCancelButton: false
+                                            }).then(function () {
+                                                window.location.reload();
+                                            })
+
+                                        } else {
+                                            Swal.fire({
+                                                width: 850,
+                                                html: tableHtml,
+                                                title: "Hata Listesi",
+                                                icon: "error"
+                                            })
+                                        }
+
+                                    })
+                                } else if (result.dismiss === "cancel") {
+                                    Swal.fire({
+                                        title: "İptal Edildi",
+                                        text: "Kaydınız silinmedi",
+                                        icon: "error",
+                                        showCancelButton: false
+                                    })
+                                }
+                            })
+                        } else {
                             $.ajax({
                                 method: "POST",
                                 url: "/UploadFile/AddExcelWithAjax",
@@ -239,6 +326,7 @@
                                 cache: false,
                                 processData: false,
                             }).done(function (result) {
+
                                 var messsageList = result.message.split('|');
                                 console.log(messsageList);
 
@@ -248,10 +336,8 @@
                                 }
                                 var tableHtml = '<table class="table"><tbody>' + tableRows + '</tbody></table>';
 
-                                debugger;
                                 if (result.isSuccess == true) {
                                     Swal.fire({
-
                                         title: "Yüklendi!",
                                         text: result.message,
                                         icon: "success",
@@ -263,58 +349,26 @@
                                 } else {
                                     Swal.fire({
                                         width: 850,
+                                        title: "Hata!",
                                         html: tableHtml,
-                                        title: "Hata Listesi",
-                                        icon: "error"
+                                        icon: "error",
+                                        showCancelButton: false
+                                    }).then(function () {
+                                        window.location.reload();
                                     })
                                 }
 
                             })
-                        } else if (result.dismiss === "cancel") {
-                            Swal.fire({
-                                title: "İptal Edildi",
-                                text: "Kaydınız silinmedi",
-                                icon: "error",
-                                showCancelButton: false
-                            })
                         }
-                    })
-                } else {
-                    $.ajax({
-                        method: "POST",
-                        url: "/UploadFile/AddExcelWithAjax",
-                        data: formData,
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                    }).done(function (result) {
-                        debugger;
-                        var messsageList = result.message.split('|');
-                        console.log(messsageList);
-                        if (result.isSuccess == true) {
-                            Swal.fire({
-                                title: "Yüklendi!",
-                                text: result.message,
-                                icon: "success",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
+                    });
 
-                        } else {
-                            Swal.fire({
-                                title: "Hata!",
-                                text: result.message,
-                                icon: "error",
-                                showCancelButton: false
-                            }).then(function () {
-                                window.location.reload();
-                            })
-                        }
-
-                    })
                 }
+
             });
         }
+
+
+
+
     </script>
-}
+    }
