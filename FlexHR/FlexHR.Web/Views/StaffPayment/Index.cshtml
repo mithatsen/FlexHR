@@ -90,7 +90,7 @@
 
                                                 <td>@item.Description</td>
                                                 @{var InstallmentStatus = item.Installment != null ? "Taksit" : null;}
-                                                <td>
+                                                <td class="decimalwithdot">
                                                     @item.Amount @item.CurrencyType
                                                     @if (InstallmentStatus != null)
                                                     {
@@ -763,8 +763,8 @@
             }
         }
 
-        $("#txtAmount").mask('000000000000.00', { reverse: true });
-
+        $("#txtAmount").mask('000.000.000.000,00', { reverse: true });
+        $(".decimalwithdot").mask('000.000.000.000,00', { reverse: true });
 
 
     </script>

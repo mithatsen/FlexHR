@@ -99,19 +99,19 @@
                                     </tr>
                                     <tr>
                                         <th class="font-size-h5">Saat Ücreti : </th>
-                                        <td class="font-size-h5">@Model.PaymentPerHour</td>
+                                        <td class="font-size-h5 decimalwithdot">@Model.PaymentPerHour</td>
                                     </tr>
                                     <tr>
                                         <th class="font-size-h5">Agi Hariç Maaş : </th>
-                                        <td class="font-size-h5">@Model.SalaryWithoutAgi</td>
+                                        <td class="font-size-h5 decimalwithdot">@Model.SalaryWithoutAgi</td>
                                     </tr>
                                     <tr>
                                         <th class="font-size-h5">Hakedilen Agi : </th>
-                                        <td class="font-size-h5">@Model.Agi</td>
+                                        <td class="font-size-h5 decimalwithdot">@Model.Agi</td>
                                     </tr>
                                     <tr>
                                         <th class="font-size-h5">Agi Dahil Maaş : </th>
-                                        <td class="font-size-h5">@Model.SalaryWithAgi</td>
+                                        <td class="font-size-h5 decimalwithdot">@Model.SalaryWithAgi</td>
                                     </tr>
                                 </table>
                             </div>
@@ -134,49 +134,49 @@
                                             <td class="font-size-h5">Normal Çalışma</td>
                                             <td class="font-size-h5" >@Model.NormalWorking.Day</td>
                                             <td class="font-size-h5" >@Model.NormalWorking.Hour</td>
-                                            <td class="font-size-h5 earning"  >@Model.NormalWorking.Amounts</td>
+                                            <td class="font-size-h5 earning decimalwithdot"  >@Model.NormalWorking.Amounts</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Hafta Tatili</td>
                                             <td class="font-size-h5" >@Model.WeekBreak.Day</td>
                                             <td class="font-size-h5" >@Model.WeekBreak.Hour</td>
-                                            <td class="font-size-h5 earning"  >@Model.WeekBreak.Amounts</td>
+                                            <td class="font-size-h5 earning decimalwithdot"  >@Model.WeekBreak.Amounts</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Ücretli İzin</td>
                                             <td class="font-size-h5" >@Model.HolidaysWithPay.Day</td>
                                             <td class="font-size-h5" >@Model.HolidaysWithPay.Hour</td>
-                                            <td class="font-size-h5 earning"  >@Model.HolidaysWithPay.Amounts</td>
+                                            <td class="font-size-h5 earning decimalwithdot"  >@Model.HolidaysWithPay.Amounts</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Normal Mesai</td>
                                             <td class="font-size-h5" >@Model.Shift.Day</td>
                                             <td class="font-size-h5" >@Model.Shift.Hour</td>
-                                            <td class="font-size-h5 earning"  >@Model.Shift.Amounts</td>
+                                            <td class="font-size-h5 earning decimalwithdot"  >@Model.Shift.Amounts</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Pazar / Bayram Mesaisi</td>
                                             <td class="font-size-h5" >@Model.SundayShift.Day</td>
                                             <td class="font-size-h5" >@Model.SundayShift.Hour</td>
-                                            <td class="font-size-h5 earning"  >@Model.SundayShift.Amounts</td>
+                                            <td class="font-size-h5 earning decimalwithdot"  >@Model.SundayShift.Amounts</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Prim</td>
                                             <td class="font-size-h5"></td>
                                             <td class="font-size-h5"></td>
-                                            <td class="font-size-h5 earning"  >@Model.Bonus</td>
+                                            <td class="font-size-h5 earning decimalwithdot"  >@Model.Bonus</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">İkramiye</td>
                                             <td class="font-size-h5"></td>
                                             <td class="font-size-h5"></td>
-                                            <td class="font-size-h5 earning"  >@Model.Perks</td>
+                                            <td class="font-size-h5 earning decimalwithdot"  >@Model.Perks</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Ek Kazanç </td>
                                             <td class="font-size-h5"></td>
                                             <td class="font-size-h5"></td>
-                                            <td class="font-size-h5 earning"  >@Model.AdditionIncome1</td>
+                                            <td class="font-size-h5 earning decimalwithdot"  >@Model.AdditionIncome1</td>
                                         </tr>
 
                                     </tbody>
@@ -208,43 +208,43 @@
                                                 var absenceHour = Convert.ToDecimal(Model.Absence.Hour);
                                             }
                                             <td class="font-size-h5" >@Decimal.Round(absenceHour, 2)</td>
-                                            <td class="font-size-h5 losing" >@Model.Absence.Amounts</td>
+                                            <td class="font-size-h5 losing decimalwithdot" >@Model.Absence.Amounts</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Ücretsiz İzin</td>
                                             <td class="font-size-h5" >@Model.HolidayWithoutPay.Day</td>
                                             <td class="font-size-h5" >@Model.HolidayWithoutPay.Hour</td>
-                                            <td class="font-size-h5 losing" >@Model.HolidayWithoutPay.Amounts</td>
+                                            <td class="font-size-h5 losing decimalwithdot" >@Model.HolidayWithoutPay.Amounts</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Rapor</td>
                                             <td class="font-size-h5" >@Model.Report.Day</td>
                                             <td class="font-size-h5" >@Model.Report.Hour</td>
-                                            <td class="font-size-h5 losing" >@Model.Report.Amounts</td>
+                                            <td class="font-size-h5 losing decimalwithdot" >@Model.Report.Amounts</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Avans Kesintileri</td>
                                             <td class="font-size-h5"></td>
                                             <td class="font-size-h5"></td>
-                                            <td class="font-size-h5 losing" >@Model.AdvanceDeduction</td>
+                                            <td class="font-size-h5 losing decimalwithdot" >@Model.AdvanceDeduction</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">İcra Kesintileri</td>
                                             <td class="font-size-h5"></td>
                                             <td class="font-size-h5"></td>
-                                            <td class="font-size-h5 losing"  >@Model.ExecutiveDeduction</td>
+                                            <td class="font-size-h5 losing decimalwithdot"  >@Model.ExecutiveDeduction</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Bireysel Emeklilik Kesintisi</td>
                                             <td class="font-size-h5"></td>
                                             <td class="font-size-h5"></td>
-                                            <td class="font-size-h5 losing"  >@Model.PrivatePensionDeduction</td>
+                                            <td class="font-size-h5 losing decimalwithdot"  >@Model.PrivatePensionDeduction</td>
                                         </tr>
                                         <tr>
                                             <td class="font-size-h5">Kesinti  :</td>
                                             <td class="font-size-h5"></td>
                                             <td class="font-size-h5"></td>
-                                            <td class="font-size-h5 losing"  >@Model.Deduction1</td>
+                                            <td class="font-size-h5 losing decimalwithdot"  >@Model.Deduction1</td>
                                         </tr>
 
                                         <tr>
@@ -270,7 +270,7 @@
                                     <tbody>
                                         <tr>
                                             <th colspan="2" class="font-weight-boldest font-size-h5"> Hesaba Yatırılacak Toplam Kazanç :</th>
-                                            <td id="reelSalary" colspan="2" width="150" class="font-size-h5" ></td>
+                                            <td id="reelSalary" colspan="2" width="150" class="font-size-h5 decimalwithdot" ></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -378,6 +378,7 @@ else
         window.print();
     }
 
+    $(".decimalwithdot").mask('000.000.000.000,00', { reverse: true });
     //document.getElementById("btnPrint").onclick = function () {
     //    var printContents = document.getElementById("printContent").innerHTML;
 
