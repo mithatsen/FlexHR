@@ -10,7 +10,7 @@ namespace FlexHR.DataAccess.Concrete.EntityFrameworkCore.Mapping
     public class TownMap : IEntityTypeConfiguration<Town>
     {
         public void Configure(EntityTypeBuilder<Town> entity)
-        {
+        { 
             entity.Property(e => e.IsActive).HasColumnName("isActive");
 
             entity.Property(e => e.Name)
